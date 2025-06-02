@@ -1,6 +1,9 @@
 # Questionnaires
 
 Ce repo contient tous les fichiers .html des questionnaires présent sur MEMMAUDATA (https://data.memau.eu).
+
+Licence EUPL.
+
 Contact (site parent de data.memau.eu):
 hello@memau.eu 
 
