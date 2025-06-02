@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GHABP</title>
+    <style>
+      body {
+        font-family: Montserrat, sans-serif;
+        color: black;
+      }
+
+      p,
+      h1 {
+        text-align:center;}
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px; /* Add some space below tables */
+      }
+
+      th,
+      td {
+        border: 1px solid black !important;
+        padding: 10px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      .question {
+        background-color: #eeeeee;
+        width: 250px;
+      }
+
+      .reponse {
+        text-align: center;
+        width: 230px;
+      }
+
+      .question_sup {
+        text-align: center;
+        margin-bottom: 15px;
+      }
+
+      input[type="number"] {
+        width: 100px;
+        padding: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #eeeeee;
+        border-radius: 4px;
+      }
+
+
+
+      .prompt-section {
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #eeeeee;
+        border-radius: 6px;
+        background-color: #eeeeee;
+      }
+
+      /* Style for the empty row to ensure visibility */
+      .empty-row td {
+        border: none !important; /* Remove borders for a cleaner look */
+        padding: 10px 0; /* Add vertical padding to create space */
+        height: 10px; /* Ensure minimum height */
+      }
+
+      .buttons-container {
+        text-align: center;
+        margin-top: 30px;
+      }
+      .buttons-container button {
+        padding: 12px 25px;
+        margin: 0 10px;
+        font-size: 17px;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        background-color: #eeeeee;
+
+      }
+
+      .buttons-container button:hover {
+        background-color: #0056b3;
+        color : white;
+      }
+
+      #result { /* Correction ici : cibler l'ID directement */
+        text-align: center;
+        font-size: 20px;
+        margin-top: 30px;
+        border: 1px solid #eeeeee;
+        background-color: #eeeeee;
+        padding: 15px;
+        display: none;
+        border-radius: 5px;
+        padding: 15px;
+        display:none;
+      }
+
+      ul.myList {
+        display: inline-block;
+        text-align: left;
+      }
+
+    </style>
+  </head>
+  <body>
+    <h1>Glasgow Hearing Aid Benefit Profile (GHABP)</h1>
+    <p >Gatehouse, 1999</p>
+    <p ><b>Consignes</b></p>
+    <p >Pour remplir ce questionnaire, veuillez répondre à chaque question seulement si elle s'applique (en cochant Oui), sinon cochez la case "Non" et passez à la suivante.</p>
+
+    <br>
+
+    <form id="GHABP">
+      <table>
+        <tbody>
+          <tr>
+            <td class="question" colspan="6">
+              Cette situation se produit-elle dans votre vie?<br>
+              <b>Écouter la télévision avec votre famille ou des amis lorsque le volume est réglé pour convenir aux autres</b> <br>
+              <label><input type="checkbox" name="q1_applies" value="0" onclick="toggleRadios('q1', false)">Non</label>
+              <label><input type="checkbox" name="q1_applies" value="1" onclick="toggleRadios('q1', true)">Oui</label>
+            </td>
+          </tr>
+          <tr>
+            <td class="reponse">Quel degré de difficulté éprouvez-vous dans cette situation?</td>
+            <td class="reponse">Les difficultés liées à cette situation vous causent-elles de l’inquiétude, de
+              la colère ou de la contrariété?</td>
+            <td class="reponse">Dans cette situation, combien de temps portez-vous votre prothèse auditive?</td>
+            <td class="reponse">Dans cette situation,votre prothèse auditive vous aide-t-elle?</td>
+            <td class="reponse">Dans cette situation,quels degrés de difficulté éprouvez-vous lorsque vous portez votre appareil auditif ?</td>
+            <td class="reponse">Dans cette situation, êtes-vous satisfait(e) de votre prothèse auditive?</td>
+          </tr>
+          <tr>
+            <td>
+              <label><input type="radio" name="difficulty_q1" value="0">Sans objet</label><br>
+              <label><input type="radio" name="difficulty_q1" value="1">Aucune</label><br>
+              <label><input type="radio" name="difficulty_q1" value="2">Faible</label><br>
+              <label><input type="radio" name="difficulty_q1" value="3">Moyenne</label><br>
+              <label><input type="radio" name="difficulty_q1" value="4">Grande</label><br>
+              <label><input type="radio" name="difficulty_q1" value="5">Insurmontable</label><br>
+            </td>
+            <td>
+              <label><input type="radio" name="concern_q1" value="0">Sans objet</label><br>
+              <label><input type="radio" name="concern_q1" value="1">Nullement</label><br>
+              <label><input type="radio" name="concern_q1" value="2">Très peu</label><br>
+              <label><input type="radio" name="concern_q1" value="3">Peu</label><br>
+              <label><input type="radio" name="concern_q1" value="4">Beaucoup</label><br>
+              <label><input type="radio" name="concern_q1" value="5">Enormément</label><br>
+            </td>
+            <td>
+              <label><input type="radio" name="wear_time_q1" value="0">Sans objet</label><br>
+              <label><input type="radio" name="wear_time_q1" value="1">Jamais/pas du tout</label><br>
+              <label><input type="radio" name="wear_time_q1" value="2">Environ ¼ du temps</label><br>
+              <label><input type="radio" name="wear_time_q1" value="3">Environ la ½ du temps</label><br>
+              <label><input type="radio" name="wear_time_q1" value="4">Environ les ¾ du temps</label><br>
+              <label><input type="radio" name="wear_time_q1" value="5">Tout le temps</label><br>
+            </td>
+            <td>
+              <label><input type="radio" name="aid_help_q1" value="0">Sans objet</label><br>
+              <label><input type="radio" name="aid_help_q1" value="1">Prothèse inutile</label><br>
+              <label><input type="radio" name="aid_help_q1" value="2">Prothèse assez utile</label><br>
+              <label><input type="radio" name="aid_help_q1" value="3">Prothèse assez utile</label><br>
+              <label><input type="radio" name="aid_help_q1" value="4">Prothèse très utile</label><br>
+              <label><input type="radio" name="aid_help_q1" value="5">Audition parfaite avec prothèse</label><br>
+            </td>
+            <td>
+              <label><input type="radio" name="difficulty_with_aid_q1" value="0">Sans objet</label><br>
+              <label><input type="radio" name="difficulty_with_aid_q1" value="1">Aucune</label><br>
+              <label><input type="radio" name="difficulty_with_aid_q1" value="2">Faible</label><br>
+              <label><input type="radio" name="difficulty_with_aid_q1" value="3">Moyenne</label><br>
+              <label><input type="radio" name="difficulty_with_aid_q1" value="4">Grande</label><br>
+              <label><input type="radio" name="difficulty_with_aid_q1" value="5">Insurmontable</label><br>
+            </td>
+            <td>
+              <label><input type="radio" name="satisfaction_q1" value="0">Sans objet</label><br>
+              <label><input type="radio" name="satisfaction_q1" value="1">Pas satisfait(e) du tout</label><br>
+              <label><input type="radio" name="satisfaction_q1" value="2">Assez satisfait(e)</label><br>
+              <label><input type="radio" name="satisfaction_q1" value="3">Satisfait(e)</label><br>
+              <label><input type="radio" name="satisfaction_q1" value="4">Très satisfait(e)</label><br>
+              <label><input type="radio" name="satisfaction_q1" value="5">Parfaitement satisfait(e) de la prothèse</label><br>
+            </td>
+          </tr>
+          <tr class="empty-row">
+            <td colspan="6"> </td>
+          </tr>
+          <tr>
+            <td class="question" colspan="6">
+              Cette situation se produit-elle dans votre vie?<br>
+              <b>Suivre une conversation avec une autre personne sans bruit de fond</b> <br>
+              <label><input type="checkbox" name="q2_applies" value="0" onclick="toggleRadios('q2', false)">Non</label>
+              <label><input type="checkbox" name="q2_applies" value="1" onclick="toggleRadios('q2', true)">Oui</label>
+            </td>
+          </tr>
+          <tr>
+            <td class="reponse">Quel degré de difficulté éprouvez-vous dans cette situation?</td>
+            <td class="reponse">Les difficultés liées à cette situation vous causent-elles de l’inquiétude, de
+              la colère ou de la contrariété?</td>
+            <td class="reponse">Dans cette situation, combien de temps portez-vous votre prothèse auditive?</td>
+            <td class="reponse">Dans cette situation,votre prothèse auditive vous aide-t-elle?</td>
+            <td class="reponse">Dans cette situation,quels degrés de difficulté éprouvez-vous lorsque vous portez votre appareil auditif ?</td>
+            <td class="reponse">Dans cette situation, êtes-vous satisfait(e) de votre prothèse auditive?</td>
+          </tr>
+          <tr>
+            <td>
+              <label><input type="radio" name="difficulty_q2" value="0">Sans objet</label><br>
+              <label><input type="radio" name="difficulty_q2" value="1">Aucune</label><br>
+              <label><input type="radio" name="difficulty_q2" value="2">Faible</label><br>
+              <label><input type="radio" name="difficulty_q2" value="3">Moyenne</label><br>
+              <label><input type="radio" name="difficulty_q2" value="4">Grande</label><br>
+              <label><input type="radio" name="difficulty_q2" value="5">Insurmontable</label><br>
+            </td>
+            <td>
+              <label><input type="radio" name="concern_q2" value="0">Sans objet</label><br>
+              <label><input type="radio" name="concern_q2" value="1">Nullement</label><br>
+              <label><input type="radio" name="concern_q2" value="2">Très peu</label><br>
+              <label><input type="radio" name="concern_q2" value="3">Peu</label><br>
+              <label><input type="radio" name="concern_q2" value="4">Beaucoup</label><br>
+              <label><input type="radio" name="concern_q2" value="5">Enormément</label><br>
+            </td>
+            <td>
+              <label><input type="radio" name="wear_time_q2" value="0">Sans objet</label><br>
+              <label><input type="radio" name="wear_time_q2" value="1">Jamais/pas du tout</label><br>
+              <label><input type="radio" name="wear_time_q2" value="2">Environ ¼ du temps</label><br>
+              <label><input type="radio" name="wear_time_q2" value="3">Environ la ½ du temps</label><br>
+              <label><input type="radio" name="wear_time_q2" value="4">Environ les ¾ du temps</label><br>
+              <label><input type="radio" name="wear_time_q2" value="5">Tout le temps</label><br>
+            </td>
+            <td>
+              <label><input type="radio" name="aid_help_q2" value="0">Sans objet</label><br>
+              <label><input type="radio" name="aid_help_q2" value="1">Prothèse inutile</label><br>
+              <label><input type="radio" name="aid_help_q2" value="2">Prothèse assez utile</label><br>
+              <label><input type="radio" name="aid_help_q2" value="3">Prothèse assez utile</label><br>
+              <label><input type="radio" name="aid_help_q2" value="4">Prothèse très utile</label><br>
+              <label><input type="radio" name="aid_help_q2" value="5">Audition parfaite avec prothèse</label><br>
+            </td>
+            <td>
+              <label><input type="radio" name="difficulty_with_aid_q2" value="0">Sans objet</label><br>
+              <label><input type="radio" name="difficulty_with_aid_q2" value="1">Aucune</label><br>
+              <label><input type="radio" name="difficulty_with_aid_q2" value="2">Faible</label><br>
+              <label><input type="radio" name="difficulty_with_aid_q2" value="3">Moyenne</label><br>
+              <label><input type="radio" name="difficulty_with_aid_q2" value="4">Grande</label><br>
+              <label><input type="radio" name="difficulty_with_aid_q2" value="5">Insurmontable</label><br>
+            </td>
+            <td>
+              <label><input type="radio" name="satisfaction_q2" value="0">Sans objet</label><br>
+              <label><input type="radio" name="satisfaction_q2" value="1">Pas satisfait(e) du tout</label><br>
+              <label><input type="radio" name="satisfaction_q2" value="2">Assez satisfait(e)</label><br>
+              <label><input type="radio" name="satisfaction_q2" value="3">Satisfait(e)</label><br>
+              <label><input type="radio" name="satisfaction_q2" value="4">Très satisfait(e)</label><br>
+              <label><input type="radio" name="satisfaction_q2" value="5">Parfaitement satisfait(e) de la prothèse</label><br>
+            </td>
+          </tr>
+
+          <tr class="empty-row">
+            <td colspan="6"> </td>
+          </tr>
+
+          <tr>
+            <td class="question" colspan="6">
+              Cette situation se produit-elle dans votre vie?<br>
+              <b>Suivre une conversation dans une rue ou une boutique animée</b> <br>
+              <label><input type="checkbox" name="q3_applies" value="0" onclick="toggleRadios('q3', false)">Non</label>
+              <label><input type="checkbox" name="q3_applies" value="1" onclick="toggleRadios('q3', true)">Oui</label>
+            </td>
+          </tr>
+          <tr>
+            <td class="reponse">Quel degré de difficulté éprouvez-vous dans cette situation?</td>
+            <td class="reponse">Les difficultés liées à cette situation vous causent-elles de l’inquiétude, de
+              la colère ou de la contrariété?</td>
+            <td class="reponse">Dans cette situation, combien de temps portez-vous votre prothèse auditive?</td>
+            <td class="reponse">Dans cette situation,votre prothèse auditive vous aide-t-elle?</td>
+            <td class="reponse">Dans cette situation,quels degrés de difficulté éprouvez-vous lorsque vous portez votre appareil auditif ?</td>
+            <td class="reponse">Dans cette situation, êtes-vous satisfait(e) de votre prothèse auditive?</td>
+          </tr>
+          <tr>
+            <td>
+              <label><input type="radio" name="difficulty_q3" value="0">Sans objet</label><br>
+              <label><input type="radio" name="difficulty_q3" value="1">Aucune</label><br>
+              <label><input type="radio" name="difficulty_q3" value="2">Faible</label><br>
+              <label><input type="radio" name="difficulty_q3" value="3">Moyenne</label><br>
+              <label><input type="radio" name="difficulty_q3" value="4">Grande</label><br>
+              <label><input type="radio" name="difficulty_q3" value="5">Insurmontable</label><br>
+            </td>
+            <td>
+              <label><input type="radio" name="concern_q3" value="0">Sans objet</label><br>
+              <label><input type="radio" name="concern_q3" value="1">Nullement</label><br>
+              <label><input type="radio" name="concern_q3" value="2">Très peu</label><br>
+              <label><input type="radio" name="concern_q3" value="3">Peu</label><br>
+              <label><input type="radio" name="concern_q3" value="4">Beaucoup</label><br>
+              <label><input type="radio" name="concern_q3" value="5">Enormément</label><br>
+            </td>
+            <td>
+              <label><input type="radio" name="wear_time_q3" value="0">Sans objet</label><br>
+              <label><input type="radio" name="wear_time_q3" value="1">Jamais/pas du tout</label><br>
+              <label><input type="radio" name="wear_time_q3" value="2">Environ ¼ du temps</label><br>
+              <label><input type="radio" name="wear_time_q3" value="3">Environ la ½ du temps</label><br>
+              <label><input type="radio" name="wear_time_q3" value="4">Environ les ¾ du temps</label><br>
+              <label><input type="radio" name="wear_time_q3" value="5">Tout le temps</label><br>
+            </td>
+            <td>
+              <label><input type="radio" name="aid_help_q3" value="0">Sans objet</label><br>
+              <label><input type="radio" name="aid_help_q3" value="1">Prothèse inutile</label><br>
+              <label><input type="radio" name="aid_help_q3" value="2">Prothèse assez utile</label><br>
+              <label><input type="radio" name="aid_help_q3" value="3">Prothèse assez utile</label><br>
+              <label><input type="radio" name="aid_help_q3" value="4">Prothèse très utile</label><br>
+              <label><input type="radio" name="aid_help_q3" value="5">Audition parfaite avec prothèse</label><br>
+            </td>
+            <td>
+              <label><input type="radio" name="difficulty_with_aid_q3" value="0">Sans objet</label><br>
+              <label><input type="radio" name="difficulty_with_aid_q3" value="1">Aucune</label><br>
+              <label><input type="radio" name="difficulty_with_aid_q3" value="2">Faible</label><br>
+              <label><input type="radio" name="difficulty_with_aid_q3" value="3">Moyenne</label><br>
+              <label><input type="radio" name="difficulty_with_aid_q3" value="4">Grande</label><br>
+              <label><input type="radio" name="difficulty_with_aid_q3" value="5">Insurmontable</label><br>
+            </td>
+            <td>
+              <label><input type="radio" name="satisfaction_q3" value="0">Sans objet</label><br>
+              <label><input type="radio" name="satisfaction_q3" value="1">Pas satisfait(e) du tout</label><br>
+              <label><input type="radio" name="satisfaction_q3" value="2">Assez satisfait(e)</label><br>
+              <label><input type="radio" name="satisfaction_q3" value="3">Satisfait(e)</label><br>
+              <label><input type="radio" name="satisfaction_q3" value="4">Très satisfait(e)</label><br>
+              <label><input type="radio" name="satisfaction_q3" value="5">Parfaitement satisfait(e) de la prothèse</label><br>
+            </td>
+          </tr>
+
+          <tr class="empty-row">
+            <td colspan="6"> </td>
+          </tr>
+
+
+          <tr>
+            <td class="question" colspan="6">
+              Cette situation se produit-elle dans votre vie?<br>
+              <b>Suivre une conversation avec plusieurs personnes dans un groupe</b> <br>
+              <label><input type="checkbox" name="q4_applies" value="0" onclick="toggleRadios('q4', false)">Non</label>
+              <label><input type="checkbox" name="q4_applies" value="1" onclick="toggleRadios('q4', true)">Oui</label>
+            </td>
+          </tr>
+          <tr>
+            <td class="reponse">Quel degré de difficulté éprouvez-vous dans cette situation?</td>
+            <td class="reponse">Les difficultés liées à cette situation vous causent-elles de l’inquiétude, de
+              la colère ou de la contrariété?</td>
+            <td class="reponse">Dans cette situation, combien de temps portez-vous votre prothèse auditive?</td>
+            <td class="reponse">Dans cette situation,votre prothèse auditive vous aide-t-elle?</td>
+            <td class="reponse">Dans cette situation,quels degrés de difficulté éprouvez-vous lorsque vous portez votre appareil auditif ?</td>
+            <td class="reponse">Dans cette situation, êtes-vous satisfait(e) de votre prothèse auditive?</td>
+          </tr>
+          <tr>
+            <td>
+              <label><input type="radio" name="difficulty_q4" value="0">Sans objet</label><br>
+              <label><input type="radio" name="difficulty_q4" value="1">Aucune</label><br>
+              <label><input type="radio" name="difficulty_q4" value="2">Faible</label><br>
+              <label><input type="radio" name="difficulty_q4" value="3">Moyenne</label><br>
+              <label><input type="radio" name="difficulty_q4" value="4">Grande</label><br>
+              <label><input type="radio" name="difficulty_q4" value="5">Insurmontable</label><br>
+            </td>
+            <td>
+              <label><input type="radio" name="concern_q4" value="0">Sans objet</label><br>
+              <label><input type="radio" name="concern_q4" value="1">Nullement</label><br>
+              <label><input type="radio" name="concern_q4" value="2">Très peu</label><br>
+              <label><input type="radio" name="concern_q4" value="3">Peu</label><br>
+              <label><input type="radio" name="concern_q4" value="4">Beaucoup</label><br>
+              <label><input type="radio" name="concern_q4" value="5">Enormément</label><br>
+            </td>
+            <td>
+              <label><input type="radio" name="wear_time_q4" value="0">Sans objet</label><br>
+              <label><input type="radio" name="wear_time_q4" value="1">Jamais/pas du tout</label><br>
+              <label><input type="radio" name="wear_time_q4" value="2">Environ ¼ du temps</label><br>
+              <label><input type="radio" name="wear_time_q4" value="3">Environ la ½ du temps</label><br>
+              <label><input type="radio" name="wear_time_q4" value="4">Environ les ¾ du temps</label><br>
+              <label><input type="radio" name="wear_time_q4" value="5">Tout le temps</label><br>
+            </td>
+            <td>
+              <label><input type="radio" name="aid_help_q4" value="0">Sans objet</label><br>
+              <label><input type="radio" name="aid_help_q4" value="1">Prothèse inutile</label><br>
+              <label><input type="radio" name="aid_help_q4" value="2">Prothèse assez utile</label><br>
+              <label><input type="radio" name="aid_help_q4" value="3">Prothèse assez utile</label><br>
+              <label><input type="radio" name="aid_help_q4" value="4">Prothèse très utile</label><br>
+              <label><input type="radio" name="aid_help_q4" value="5">Audition parfaite avec prothèse</label><br>
+            </td>
+            <td>
+              <label><input type="radio" name="difficulty_with_aid_q4" value="0">Sans objet</label><br>
+              <label><input type="radio" name="difficulty_with_aid_q4" value="1">Aucune</label><br>
+              <label><input type="radio" name="difficulty_with_aid_q4" value="2">Faible</label><br>
+              <label><input type="radio" name="difficulty_with_aid_q4" value="3">Moyenne</label><br>
+              <label><input type="radio" name="difficulty_with_aid_q4" value="4">Grande</label><br>
+              <label><input type="radio" name="difficulty_with_aid_q4" value="5">Insurmontable</label><br>
+            </td>
+            <td>
+              <label><input type="radio" name="satisfaction_q4" value="0">Sans objet</label><br>
+              <label><input type="radio" name="satisfaction_q4" value="1">Pas satisfait(e) du tout</label><br>
+              <label><input type="radio" name="satisfaction_q4" value="2">Assez satisfait(e)</label><br>
+              <label><input type="radio" name="satisfaction_q4" value="3">Satisfait(e)</label><br>
+              <label><input type="radio" name="satisfaction_q4" value="4">Très satisfait(e)</label><br>
+              <label><input type="radio" name="satisfaction_q4" value="5">Parfaitement satisfait(e) de la prothèse</label><br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+
+      <p style="text-align: center;"><b>Nous nous sommes intéressés à des situations qui, d’après notre expérience, peuvent créer des difficultés auditives. À présent, nous aimerions que vous citiez jusqu’à quatre situations dans lesquelles il est important que vous entendiez le mieux possible.</b><p>
+
+      <div class="container_sup">
+        <div class="question_sup">
+          <label for="numPrompts">Nombre de situation(s) possible(s) entre 1 et 4?</label><br>
+          <input type="number" id="numPrompts" name="numPrompts" min="1" max="4" value="1" onchange="generatePrompts()">
+        </div>
+        <div id="promptContainer"></div>
+      </div>
+      <br>
+
+      <div class="buttons-container">
+        <button type="button" onclick="calculateScore()">Calculer le Score</button>
+        <button type="reset" onclick="resetForm()">Réinitialiser</button>
+      </div>
+      <br>
+      <div id="result"></div>
+    </form>
+
+    <script>
+      // Function to generate dynamic prompt sections based on user input
+      function generatePrompts() {
+        const numPrompts = document.getElementById('numPrompts').value;
+        const promptContainer = document.getElementById('promptContainer');
+        promptContainer.innerHTML = ''; // Clear existing prompts
+
+        for (let i = 1; i <= numPrompts; i++) {
+          const promptSection = document.createElement('div');
+          promptSection.classList.add('prompt-section');
+          // Dynamically create the table structure for each extra situation
+          promptSection.innerHTML = `
+<table>
+<tbody>
+<tr>
+<td class="question" colspan="6" style="text-align: center;">
+<label for="situation_extra_${i}">Situation ${i}:</label>
+<input type="text" id="situation_extra_${i}" name="situation_extra_${i}"><br>
+      </td>
+      </tr>
+<tr>
+<td class="reponse">Quel degré de difficulté éprouvez-vous dans cette situation?</td>
+<td class="reponse">Les difficultés liées à cette situation vous causent-elles de l’inquiétude, de la colère ou de la contrariété?</td>
+<td class="reponse">Dans cette situation, combien de temps portez-vous votre prothèse auditive?</td>
+<td class="reponse">Dans cette situation,votre prothèse auditive vous aide-t-elle?</td>
+<td class="reponse">Dans cette situation,quels degrés de difficulté éprouvez-vous lorsque vous portez votre appareil auditif ?</td>
+<td class="reponse">Dans cette situation, êtes-vous satisfait(e) de votre prothèse auditive?</td>
+      </tr>
+<tr>
+<td>
+<label><input type="radio" name="difficulty_extra_${i}" value="0">Sans objet</label><br>
+<label><input type="radio" name="difficulty_extra_${i}" value="1">Aucune</label><br>
+<label><input type="radio" name="difficulty_extra_${i}" value="2">Faible</label><br>
+<label><input type="radio" name="difficulty_extra_${i}" value="3">Moyenne</label><br>
+<label><input type="radio" name="difficulty_extra_${i}" value="4">Grande</label><br>
+<label><input type="radio" name="difficulty_extra_${i}" value="5">Insurmontable</label><br>
+      </td>
+<td>
+<label><input type="radio" name="concern_extra_${i}" value="0">Sans objet</label><br>
+<label><input type="radio" name="concern_extra_${i}" value="1">Nullement</label><br>
+<label><input type="radio" name="concern_extra_${i}" value="2">Très peu</label><br>
+<label><input type="radio" name="concern_extra_${i}" value="3">Peu</label><br>
+<label><input type="radio" name="concern_extra_${i}" value="4">Beaucoup</label><br>
+<label><input type="radio" name="concern_extra_${i}" value="5">Enormément</label><br>
+      </td>
+<td>
+<label><input type="radio" name="wear_time_extra_${i}" value="0">Sans objet</label><br>
+<label><input type="radio" name="wear_time_extra_${i}" value="1">Jamais/pas du tout</label><br>
+<label><input type="radio" name="wear_time_extra_${i}" value="2">Environ ¼ du temps</label><br>
+<label><input type="radio" name="wear_time_extra_${i}" value="3">Environ la ½ du temps</label><br>
+<label><input type="radio" name="wear_time_extra_${i}" value="4">Environ les ¾ du temps</label><br>
+<label><input type="radio" name="wear_time_extra_${i}" value="5">Tout le temps</label><br>
+      </td>
+<td>
+<label><input type="radio" name="aid_help_extra_${i}" value="0">Sans objet</label><br>
+<label><input type="radio" name="aid_help_extra_${i}" value="1">Prothèse inutile</label><br>
+<label><input type="radio" name="aid_help_extra_${i}" value="2">Prothèse assez utile</label><br>
+<label><input type="radio" name="aid_help_extra_${i}" value="3">Prothèse assez utile</label><br>
+<label><input type="radio" name="aid_help_extra_${i}" value="4">Prothèse très utile</label><br>
+<label><input type="radio" name="aid_help_extra_${i}" value="5">Audition parfaite avec prothèse</label><br>
+      </td>
+<td>
+<label><input type="radio" name="difficulty_with_aid_extra_${i}" value="0">Sans objet</label><br>
+<label><input type="radio" name="difficulty_with_aid_extra_${i}" value="1">Aucune</label><br>
+<label><input type="radio" name="difficulty_with_aid_extra_${i}" value="2">Faible</label><br>
+<label><input type="radio" name="difficulty_with_aid_extra_${i}" value="3">Moyenne</label><br>
+<label><input type="radio" name="difficulty_with_aid_extra_${i}" value="4">Grande</label><br>
+<label><input type="radio" name="difficulty_with_aid_extra_${i}" value="5">Insurmontable</label><br>
+      </td>
+<td>
+<label><input type="radio" name="satisfaction_extra_${i}" value="0">Sans objet</label><br>
+<label><input type="radio" name="satisfaction_extra_${i}" value="1">Pas satisfait(e) du tout</label><br>
+<label><input type="radio" name="satisfaction_extra_${i}" value="2">Assez satisfait(e)</label><br>
+<label><input type="radio" name="satisfaction_extra_${i}" value="3">Satisfait(e)</label><br>
+<label><input type="radio" name="satisfaction_extra_${i}" value="4">Très satisfait(e)</label><br>
+<label><input type="radio" name="satisfaction_extra_${i}" value="5">Parfaitement satisfait(e) de la prothèse</label><br>
+      </td>
+      </tr>
+      </tbody>
+      </table>
+`;
+          promptContainer.appendChild(promptSection);
+        }
+        // Initialize radio button states for newly generated prompts
+        initializeRadioStates(numPrompts);
+      }
+
+      // Function to enable/disable radio buttons based on "Oui/Non" checkbox
+      function toggleRadios(questionPrefix, enable) {
+        const radioGroups = [
+          `difficulty_${questionPrefix}`, `concern_${questionPrefix}`, `wear_time_${questionPrefix}`,
+          `aid_help_${questionPrefix}`, `difficulty_with_aid_${questionPrefix}`, `satisfaction_${questionPrefix}`
+        ];
+
+        radioGroups.forEach(groupName => {
+          const radios = document.querySelectorAll(`input[name="${groupName}"]`);
+          radios.forEach(radio => {
+            radio.disabled = !enable;
+            // If disabling, check "Sans objet" (value 0) and uncheck others
+            if (!enable) {
+              if (radio.value === "0") {
+                radio.checked = true;
+              } else {
+                radio.checked = false;
+              }
+            } else {
+              // If enabling, ensure "Sans objet" is unchecked unless it was explicitly selected
+              // This logic might need refinement if "Sans objet" is a valid selection when enabled.
+              // For now, it will uncheck "Sans objet" if it was checked due to disabling and then re-enabled.
+              if (radio.value === "0" && radio.checked) {
+                radio.checked = false; 
+              }
+            }
+          });
+        });
+      }
+
+      // New helper function to handle the Yes/No logic when a radio button changes
+      function handleYesNoChange(questionPrefix) {
+        const yesCheckbox = document.querySelector(`input[name="${questionPrefix}_applies"][value="1"]`);
+        const noCheckbox = document.querySelector(`input[name="${questionPrefix}_applies"][value="0"]`);
+
+        if (noCheckbox.checked) {
+          toggleRadios(questionPrefix, false); 
+          yesCheckbox.checked = false;
+        } else if (yesCheckbox.checked) {
+          toggleRadios(questionPrefix, true); 
+          noCheckbox.checked = false;
+        } else {
+          toggleRadios(questionPrefix, true);
+        }
+      }
+
+
+      // Function to initialize the state of radio buttons on page load or after generating prompts
+      function initializeRadioStates(numExtraPrompts = 0) {
+        // For the 4 predefined questions (q1 to q4)
+        for (let i = 1; i <= 4; i++) {
+          const yesCheckbox = document.querySelector(`input[name="q${i}_applies"][value="1"]`);
+          const noCheckbox = document.querySelector(`input[name="q${i}_applies"][value="0"]`);
+
+          // Ensure the elements exist before proceeding
+          if (yesCheckbox && noCheckbox) {
+            // Initial state application based on existing checks
+            if (noCheckbox.checked) {
+              toggleRadios(`q${i}`, false);
+            } else if (yesCheckbox.checked) {
+              toggleRadios(`q${i}`, true);
+            } else {
+              // yesCheckbox.checked = true;
+              toggleRadios(`q${i}`, true);
+            }
+
+            // Attach event listeners for real-time changes
+            yesCheckbox.addEventListener('change', () => handleYesNoChange(`q${i}`));
+            noCheckbox.addEventListener('change', () => handleYesNoChange(`q${i}`));
+          }
+        }
+
+        // For dynamically generated questions (extra_1 to extra_numPrompts)
+        for (let i = 1; i <= numExtraPrompts; i++) {
+          // For extra prompts, assume they apply and enable radios by default.
+          // There are no "Oui/Non" checkboxes for these dynamic questions in the current HTML.
+          const radioGroupsExtra = [
+            `difficulty_extra_${i}`, `concern_extra_${i}`, `wear_time_extra_${i}`,
+            `aid_help_extra_${i}`, `difficulty_with_aid_extra_${i}`, `satisfaction_extra_${i}`
+          ];
+          radioGroupsExtra.forEach(groupName => {
+            const radios = document.querySelectorAll(`input[name="${groupName}"]`);
+            radios.forEach(radio => radio.disabled = false); // Ensure they are enabled by default
+          });
+        }
+      }
+
+      // Helper function to get the value of a selected radio button, excluding "Sans objet" (value 0)
+      function getRadioValue(name) {
+        const selected = document.querySelector(`input[name="${name}"]:checked`);
+        if (selected && selected.value !== "0") {
+          return parseInt(selected.value);
+        }
+        return null; // Return null if not selected or "Sans objet" is selected
+      }
+
+      // Main function to calculate all GHABP scores
+      function calculateScore() {
+        const allDifficultyScores = [];
+        const allConcernScores = [];
+        const allWearTimeScores = [];
+        const allAidHelpScores = [];
+        const allDifficultyWithAidScores = [];
+        const allSatisfactionScores = [];
+
+        let allApplicableAnswered = true;
+
+        // Process predefined questions (q1 to q4)
+        for (let i = 1; i <= 4; i++) {
+          const appliesCheckbox = document.querySelector(`input[name="q${i}_applies"]:checked`);
+
+          if (!appliesCheckbox) {
+            allApplicableAnswered = false;
+            break; // A "Oui/Non" checkbox is not selected
+          }
+
+          if (parseInt(appliesCheckbox.value) === 1) { // If the situation applies ("Oui" is checked)
+            const difficulty = getRadioValue(`difficulty_q${i}`);
+            const concern = getRadioValue(`concern_q${i}`);
+            const wear_time = getRadioValue(`wear_time_q${i}`);
+            const aid_help = getRadioValue(`aid_help_q${i}`);
+            const difficulty_with_aid = getRadioValue(`difficulty_with_aid_q${i}`);
+            const satisfaction = getRadioValue(`satisfaction_q${i}`);
+
+            // Check if all relevant sub-questions are answered for this applicable situation
+            if (difficulty === null || concern === null || wear_time === null ||
+                aid_help === null || difficulty_with_aid === null || satisfaction === null) {
+              allApplicableAnswered = false;
+              break;
+            }
+
+            allDifficultyScores.push(difficulty);
+            allConcernScores.push(concern); 
+            allWearTimeScores.push(wear_time);
+            allAidHelpScores.push(aid_help);
+            allDifficultyWithAidScores.push(difficulty_with_aid);
+            allSatisfactionScores.push(satisfaction);
+          }
+        }
+
+        // Process dynamically generated questions (extra_1 to extra_numPrompts)
+        const numExtraPrompts = document.getElementById('numPrompts').value;
+        for (let i = 1; i <= numExtraPrompts; i++) {
+          // For dynamic questions, we assume they always apply as there's no "Oui/Non" checkbox
+          const difficulty = getRadioValue(`difficulty_extra_${i}`);
+          const concern = getRadioValue(`concern_extra_${i}`);
+          const wear_time = getRadioValue(`wear_time_extra_${i}`);
+          const aid_help = getRadioValue(`aid_help_extra_${i}`);
+          const difficulty_with_aid = getRadioValue(`difficulty_with_aid_extra_${i}`);
+          const satisfaction = getRadioValue(`satisfaction_extra_${i}`);
+
+          if (difficulty === null || concern === null || wear_time === null ||
+              aid_help === null || difficulty_with_aid === null || satisfaction === null) {
+            allApplicableAnswered = false;
+            break;
+          }
+
+          allDifficultyScores.push(difficulty);
+          allConcernScores.push(concern);
+          allWearTimeScores.push(wear_time);
+          allAidHelpScores.push(aid_help);
+          allDifficultyWithAidScores.push(difficulty_with_aid);
+          allSatisfactionScores.push(satisfaction);
+        }
+
+
+
+        // Function to calculate average of a list of numbers
+        const calculateAverage = (arr) => {
+          if (arr.length === 0) return null;
+          const sum = arr.reduce((a, b) => a + b, 0);
+          return sum / arr.length;
+        };
+
+        // Function to normalize score to 0-100 scale
+        const normalizeScore = (avg) => {
+          if (avg === null) return "N/A"; // Not applicable if no valid responses
+          return ((avg - 1) / 4) * 100; // (value - min) / (max - min) * 100, where min=1, max=5
+        };
+
+        // Calculate GHABP Scores
+        const avgDifficulty = calculateAverage(allDifficultyScores);
+        const avgDifficultyWithAid = calculateAverage(allDifficultyWithAidScores);
+        const avgAidHelp = calculateAverage(allAidHelpScores);
+        const avgSatisfaction = calculateAverage(allSatisfactionScores);
+        const avgWearTime = calculateAverage(allWearTimeScores);
+
+        // Original Disability (OD) Score: Higher value means less disability
+        const odScore = normalizeScore(avgDifficulty);
+
+        // Reduced Disability (RD) Score: (Difficulty before - Difficulty with aid) 
+        // This is a more complex calculation. The GHABP uses a specific formula for RD:
+        // RD = (Avg Difficulty - Avg Difficulty with Aid) / 4 * 100
+        let rdScore = "N/A";
+        if (avgDifficulty !== null && avgDifficultyWithAid !== null) {
+          rdScore = ((avgDifficulty - avgDifficultyWithAid) / 4) * 100;
+        }
+
+        // Benefit (B) Score: Based on 'aid_help'
+        const benefitScore = normalizeScore(avgAidHelp);
+
+        // Satisfaction (S) Score: Based on 'satisfaction'
+        const satisfactionScore = normalizeScore(avgSatisfaction);
+
+        // Usage (U) Score: Based on 'wear_time'
+        const usageScore = normalizeScore(avgWearTime);
+
+
+        displayResults(odScore, rdScore, benefitScore, satisfactionScore, usageScore);
+      } // end calculateScore function
+
+
+
+      function displayResults(odScore, rdScore, benefitScore, satisfactionScore, usageScore) {
+        let display = "<p style='text-align: center;'>Résultats</p>";
+        display += "<br>"; 
+        display += "<ul class='myList'>"; 
+        display += "<li>Incapacité auditive initiale : " + odScore.toFixed(2) + "</li>";
+        display += "<li>Handicap : " + rdScore.toFixed(2) + "</li>";
+        display += "<li>Utilisation de l’appareillage auditif : " + usageScore.toFixed(2) + "</li>";
+        display += "<li>Bénéfice de l’appareillage auditif : " + benefitScore.toFixed(2) + "</li>";
+        display += "<li>Incapacité auditive résiduelle : " + rdScore.toFixed(2) + "</li>";
+        display += "<li>Satisfaction : " + satisfactionScore.toFixed(2) + "</li>";
+        display += "</ul>";
+        document.getElementById("result").innerHTML = display;
+        document.getElementById("result").style.display = "block";
+      } // end display
+
+      // Function to reset the form and hide results
+      function resetForm() {
+        document.getElementById("GHABP").reset();
+        document.getElementById("result").innerHTML = "";
+        document.getElementById("result").style.display = "none"; 
+        initializeRadioStates();
+        // Clear dynamically generated prompts
+        document.getElementById('promptContainer').innerHTML = '';
+        document.getElementById('numPrompts').value = 1; // Reset prompt count
+      }
+
+      // Initialize the form state on page load
+      window.onload = function() {
+        initializeRadioStates();
+        generatePrompts(); // Generate initial dynamic prompts (default 1)
+      };
+    </script>
+  </body>
+</html>
+<!--
+// Function to display the calculated scores
+//function displayResults(od, rdScore, benefit, satisfaction, usage) {
+//const resultsDiv = document.getElementById('results');
+//resultsDiv.innerHTML = `
+<h3>Résultats du GHABP:</h3>
+<p><b>Incapacité auditive initiale</b>: ${benefit}</p>
+<p><b>Handicap</b>: ${benefit}</p>
+<p><b>Utilisation de l’appareillage auditif</b>: ${usage}</p>
+<p><b>Bénéfice de l’appareillage auditif</b>: ${benefit}</p>
+<p><b>Incapacité auditive résiduelle</b>: ${rdScore}</p>
+<p><b>Satisfaction</b>: ${satisfaction}</p>
+`;
+resultsDiv.style.display = 'block';
+
+
+
+} // end displayResults function
