@@ -1,10 +1,10 @@
 # Questionnaires
+Licence EUPL
 
-Ce repo contient tous les fichiers .html des questionnaires présent sur MEMMAUDATA (https://data.memau.eu).
-
-Licence EUPL.
+Ce repo contient tous les fichiers .html des questionnaires présent sur MEMAUDATA (https://data.memau.eu).
+Le .css est contenu dans chaque fichier .html.
 
 Contact (site parent de data.memau.eu):
 hello@memau.eu 
 
-NV, Toulouse, Mai, 2025
+NV, Toulouse, Juin, 2025
