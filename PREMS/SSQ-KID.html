@@ -3,38 +3,32 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SSQ15</title>
+    <title>Kid-SSQ</title>
     <style>
       body {
         font-family: Montserrat, sans-serif;
         color: black;
-
       }
-      
-      p,
-      h1 {
-        text-align:center;}
 
-
-     table {
+      table {
         width: 100%;
         border-collapse: collapse;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
         margin-left: auto;
         margin-right: auto;
-
       }
 
-       th,
+      th,
       td {
-        border-top: 1px solid black !important;
-        border-left: 1px solid black !important;
-        border-right: 1px solid black !important;
-        border-bottom: 1px solid black !important;;
+        border-top: 1px solid #808080 !important; /* !important should be used cautiously */
+        border-left: 1px solid #808080;
+        border-right: 1px solid #808080;
+        border-bottom: 1px solid #808080;
         padding: 8px;
         text-align: left;
       }
 
+      
 
       .na-checkbox {
         text-align: center;
@@ -63,8 +57,11 @@
         margin-bottom: 20px;
         font-size: 6px;
       }
-
-
+      
+      .help {
+      text-align: center;
+      }
+      
       .buttons-container {
         text-align: center;
         margin-top: 40px;
@@ -103,44 +100,55 @@
         text-align: left;
       }
 
-
-
+      
+      
+      
     </style>
   </head>
-
   <body>
-    <h1>SSQ15</h1>
-    <p>Moulin et Richard, 2016</p>
-    <p><b>Conseil pour répondre aux questions</b></p>
-    <p>Les questions suivantes concernent votre capacité et votre expérience en matière d’audition et d’écoute dans le cadre de
-      situations diverses.<br><br>
-      Déplacez le curseur (ou slider) situé à droite de chacune des questions, à l’endroit adéquat entre le 0 et le 10. Si le curseur se trouve au niveau de la valeur 10, cela signifie que vous êtes parfaitement capable de faire ou d’expérimenter ce qui est décrit dans la question correspondante. Si le curseur se trouve sur le 0, cela indique que vous n’êtes pratiquement pas en mesure de faire
-      ni d’expérimenter ce qui est décrit.<br><br>
+    <h1 style="text-align:center;">Kid-SSQ</h1>
+    <p style="text-align: center;">(version courte - 12 items) </p>
+    <p style="text-align: center;">Coudert et al., 2023 </p>
+    <br>
 
-      <b>Nous espérons que toutes les questions sont pertinentes au regard de votre vie quotidienne.</b> Si ce n’est pas le cas
-      pour certaines questions, veuillez cocher la case « non applicable » (NA).</p>
+     <!-- add images to help children answering -->
+    <div class="help">
+	<p> Echelles visuelles pour aider l'enfant à répondre, si besoin. <br>
+Pour un enfant entre 7 et 9 ans, d'après les auteurs, l'échelle B est a privilégier. </p> <br>
+    <img src="https://data.memau.eu/wp-content/uploads/2025/05/KID-SSQ-VISUAL_SCALE_A.png" alt="VSA" width="519" height="233">
+    <img src="https://data.memau.eu/wp-content/uploads/2025/05/KID-SSQ-VISUAL_SCALE_B.png" alt="VSB" width="508" height="238"> 
+    </div> 
+      
 
     <br>
 
-    <form id="ssq15-form">
+    <form id="ssqkid">
 
-      <h3> 1ère partie : Audition de la parole </h3>
+      <h3> Section A – Audition de la parole</h3>
+      <br>
 
       <table>
-        <thead>
-        </thead>
+        <thead></thead>
         <tbody>
           <tr>
             <td style="text-align:left; width:400px;">
-              1. Pouvez-vous avoir une conversation avec une personne si une autre personne ayant la voix aussi aigue ou grave
-              que celle de votre interlocuteur parle en même temps ?
+              A1. Tu discutes avec quelqu’un, la TV est allumée dans la même pièce.<br>
+<b>Peux-tu comprendre ce qu’il te dit sans baisser le son ?</b>
             </td>
             <td style="text-align:center; width:400px;">
               <div style="display:flex; justify-content:space-between;">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
-              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q1">
+              <input
+                     type="range"
+                     min="0"
+                     max="10"
+                     step="0.1"
+                     value="5"
+                     class="slider"
+                     id="q1"
+                     />
               <div style="display:flex; justify-content:space-between;">
                 <span>0</span>
                 <span>1</span>
@@ -156,21 +164,34 @@
               </div>
             </td>
             <td class="na-checkbox">
-              <input type="checkbox" id="q1_na">
+              <input type="checkbox" id="na1" />
               <span style="float: right;">Non appliquable</span>
             </td>
           </tr>
+
+          
+          
+
           <tr>
             <td style="text-align:left; width:400px;">
-              2. Vous êtes assis entre deux personnes. L’une d’elles commence à parler. Pouvez-vous dire immédiatement sans
-              regarder s’il s’agit de la personne assise à votre gauche ou à votre droite ?
+              A2. Tu es assis autour d’une table avec un groupe de 5 personnes environ. L’endroit est bruyant, comme une salle de classe où les élèves se déplacent et discutent. Tu peux voir toutes les personnes autour de
+la table.<br>
+<b>Peux-tu comprendre ce que les personnes du groupe disent ?</b>
             </td>
             <td style="text-align:center; width:400px;">
               <div style="display:flex; justify-content:space-between;">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
-              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q2">
+              <input
+                     type="range"
+                     min="0"
+                     max="10"
+                     step="0.1"
+                     value="5"
+                     class="slider"
+                     id="q2"
+                     />
               <div style="display:flex; justify-content:space-between;">
                 <span>0</span>
                 <span>1</span>
@@ -186,21 +207,29 @@
               </div>
             </td>
             <td class="na-checkbox">
-              <input type="checkbox" id="q2_na">
+              <input type="checkbox" id="na2" />
               <span style="float: right;">Non appliquable</span>
             </td>
           </tr>
           <tr>
             <td style="text-align:left; width:400px;">
-              3. Pouvez-vous indiquer immédiatement à quelle distance se trouve un bus ou un camion, juste en entendant le
-              bruit qu’il fait ?
+              A3. Tu es assis autour d’une table avec un groupe de 5 personnes environ. L’endroit est bruyant, comme une salle de classe où les élèves se déplacent et discutent. Tu ne peux pas voir toutes les personnes autour de la table.<br>
+<b>Peux-tu comprendre ce que les personnes du groupe disent ?</b>
             </td>
             <td style="text-align:center; width:400px;">
               <div style="display:flex; justify-content:space-between;">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
-              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q3">
+              <input
+                     type="range"
+                     min="0"
+                     max="10"
+                     step="0.1"
+                     value="5"
+                     class="slider"
+                     id="q3"
+                     />
               <div style="display:flex; justify-content:space-between;">
                 <span>0</span>
                 <span>1</span>
@@ -216,20 +245,30 @@
               </div>
             </td>
             <td class="na-checkbox">
-              <input type="checkbox" id="q3_na">
+              <input type="checkbox" id="na3" />
               <span style="float: right;">Non appliquable</span>
             </td>
           </tr>
+
           <tr>
             <td style="text-align:left; width:400px;">
-              4. Les bruits quotidiens que vous entendez facilement sont-ils distincts (non brouillés)?
+              A4. Tu discutes avec quelqu’un dans une pièce où beaucoup d’autres personnes parlent.<br>
+<b>Peux-tu comprendre ce qu’il te dit ?</b>
             </td>
             <td style="text-align:center; width:400px;">
               <div style="display:flex; justify-content:space-between;">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
-              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q4">
+              <input
+                     type="range"
+                     min="0"
+                     max="10"
+                     step="0.1"
+                     value="5"
+                     class="slider"
+                     id="q4"
+                     />
               <div style="display:flex; justify-content:space-between;">
                 <span>0</span>
                 <span>1</span>
@@ -245,59 +284,39 @@
               </div>
             </td>
             <td class="na-checkbox">
-              <input type="checkbox" id="q4_na">
+              <input type="checkbox" id="na4" />
               <span style="float: right;">Non appliquable</span>
             </td>
           </tr>
-          <tr>
-            <td style="text-align:left; width:400px;">
-              5. Devez-vous vous concentrer intensément lorsque vous écoutez quelqu’un ou quelque chose ?
-            </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
-                <span>Concentration intense</span>
-                <span>Pas de concentration</span>
-              </div>
-              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q5">
-              <div style="display:flex; justify-content:space-between;">
-                <span>0</span>
-                <span>1</span>
-                <span>2</span>
-                <span>3</span>
-                <span>4</span>
-                <span>5</span>
-                <span>6</span>
-                <span>7</span>
-                <span>8</span>
-                <span>9</span>
-                <span>10</span>
-              </div>
-            </td>
-            <td class="na-checkbox">
-              <input type="checkbox" id="q5_na">
-              <span style="float: right;">Non appliquable</span>
-            </td>
-          </tr>
+
+          
         </tbody>
       </table>
 
-      <h3> 2e partie : Audition spatiale </h3>
-
+      <br>
+      <h3> Section B – Audition spatiale </h3>  
+      <br>
       <table>
-        <thead>
-        </thead>
+        <thead></thead>
         <tbody>
           <tr>
             <td style="text-align:left; width:400px;">
-              6. Pouvez-vous avoir une conversation avec une personne si une autre personne ayant la voix aussi aigue ou grave
-              que celle de votre interlocuteur parle en même temps ?
+              B1. Tu es à la maison et tu entends un bruit fort (une porte qui claque ou l’aspirateur).<br><b>Peux-tu dire immédiatement d’où vient le bruit ? </b>
             </td>
             <td style="text-align:center; width:400px;">
               <div style="display:flex; justify-content:space-between;">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
-              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q6">
+              <input
+                     type="range"
+                     min="0"
+                     max="10"
+                     step="0.1"
+                     value="5"
+                     class="slider"
+                     id="q5"
+                     />
               <div style="display:flex; justify-content:space-between;">
                 <span>0</span>
                 <span>1</span>
@@ -313,21 +332,30 @@
               </div>
             </td>
             <td class="na-checkbox">
-              <input type="checkbox" id="q6_na">
+              <input type="checkbox" id="na5" />
               <span style="float: right;">Non appliquable</span>
             </td>
           </tr>
+
           <tr>
             <td style="text-align:left; width:400px;">
-              7. Vous êtes assis entre deux personnes. L’une d’elles commence à parler. Pouvez-vous dire immédiatement sans
-              regarder s’il s’agit de la personne assise à votre gauche ou à votre droite ?
+             B2. Tu es dehors. Un chien aboie très fort.<br>
+<b>Peux-tu dire immédiatement où il se trouve, sans le voir ?</b>
             </td>
             <td style="text-align:center; width:400px;">
               <div style="display:flex; justify-content:space-between;">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
-              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q7">
+              <input
+                     type="range"
+                     min="0"
+                     max="10"
+                     step="0.1"
+                     value="5"
+                     class="slider"
+                     id="q6"
+                     />
               <div style="display:flex; justify-content:space-between;">
                 <span>0</span>
                 <span>1</span>
@@ -343,21 +371,30 @@
               </div>
             </td>
             <td class="na-checkbox">
-              <input type="checkbox" id="q7_na">
+              <input type="checkbox" id="na6" />
               <span style="float: right;">Non appliquable</span>
             </td>
           </tr>
+
           <tr>
             <td style="text-align:left; width:400px;">
-              8. Pouvez-vous indiquer immédiatement à quelle distance se trouve un bus ou un camion, juste en entendant le
-              bruit qu’il fait ?
+              B3. Tu es sur le trottoir d’une rue où il y a beaucoup de bruit. Tu entends un bus ou un camion.<br>
+<b>Peux-tu dire immédiatement d’où il vient avant de le voir ?</b>
             </td>
             <td style="text-align:center; width:400px;">
               <div style="display:flex; justify-content:space-between;">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
-              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q8">
+              <input
+                     type="range"
+                     min="0"
+                     max="10"
+                     step="0.1"
+                     value="5"
+                     class="slider"
+                     id="q7"
+                     />
               <div style="display:flex; justify-content:space-between;">
                 <span>0</span>
                 <span>1</span>
@@ -373,20 +410,31 @@
               </div>
             </td>
             <td class="na-checkbox">
-              <input type="checkbox" id="q8_na">
+              <input type="checkbox" id="na7" />
               <span style="float: right;">Non appliquable</span>
             </td>
           </tr>
+
           <tr>
             <td style="text-align:left; width:400px;">
-              9. Les bruits quotidiens que vous entendez facilement sont-ils distincts (non brouillés)?
+              B4. Tu entends des voix ou des bruits de pas.<br>
+<b>Juste en écoutant, peux-tu dire où la personne va ? (par exemple, est-ce que la personne se
+rapproche de toi ou se déplace de ta gauche vers ta droite ?)</b>
             </td>
             <td style="text-align:center; width:400px;">
               <div style="display:flex; justify-content:space-between;">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
-              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q9">
+              <input
+                     type="range"
+                     min="0"
+                     max="10"
+                     step="0.1"
+                     value="5"
+                     class="slider"
+                     id="q8"
+                     />
               <div style="display:flex; justify-content:space-between;">
                 <span>0</span>
                 <span>1</span>
@@ -402,59 +450,42 @@
               </div>
             </td>
             <td class="na-checkbox">
-              <input type="checkbox" id="q9_na">
+              <input type="checkbox" id="na8" />
               <span style="float: right;">Non appliquable</span>
             </td>
           </tr>
-          <tr>
-            <td style="text-align:left; width:400px;">
-              10. Devez-vous vous concentrer intensément lorsque vous écoutez quelqu’un ou quelque chose ?
-            </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
-                <span>Concentration intense</span>
-                <span>Pas de concentration</span>
-              </div>
-              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q10">
-              <div style="display:flex; justify-content:space-between;">
-                <span>0</span>
-                <span>1</span>
-                <span>2</span>
-                <span>3</span>
-                <span>4</span>
-                <span>5</span>
-                <span>6</span>
-                <span>7</span>
-                <span>8</span>
-                <span>9</span>
-                <span>10</span>
-              </div>
-            </td>
-            <td class="na-checkbox">
-              <input type="checkbox" id="q10_na">
-              <span style="float: right;">Non appliquable</span>
-            </td>
-          </tr>
+
+        
+
         </tbody>
       </table>
 
-      <h3> 3e partie : Qualité d’audition </h3>
+
+      <br>
+      <h3> Section C – Qualité d’audition </h3>  
+      <br>
 
       <table>
-        <thead>
-        </thead>
+        <thead></thead>
         <tbody>
           <tr>
             <td style="text-align:left; width:400px;">
-              11. Pouvez-vous avoir une conversation avec une personne si une autre personne ayant la voix aussi aigue ou grave
-              que celle de votre interlocuteur parle en même temps ?
+              <b>C1. Peux-tu reconnaître facilement la voix des personnes de ta famille, de tes amis, quand tu les entends arriver sans les voir ? </b>
             </td>
             <td style="text-align:center; width:400px;">
               <div style="display:flex; justify-content:space-between;">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
-              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q11">
+              <input
+                     type="range"
+                     min="0"
+                     max="10"
+                     step="0.1"
+                     value="5"
+                     class="slider"
+                     id="q9"
+                     />
               <div style="display:flex; justify-content:space-between;">
                 <span>0</span>
                 <span>1</span>
@@ -470,82 +501,30 @@
               </div>
             </td>
             <td class="na-checkbox">
-              <input type="checkbox" id="q11_na">
+              <input type="checkbox" id="na9" />
               <span style="float: right;">Non appliquable</span>
             </td>
           </tr>
-          <tr>
-            <td style="text-align:left; width:400px;">
-              12. Vous êtes assis entre deux personnes. L’une d’elles commence à parler. Pouvez-vous dire immédiatement sans
-              regarder s’il s’agit de la personne assise à votre gauche ou à votre droite ?
-            </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
-                <span>Pas du tout</span>
-                <span>Parfaitement</span>
-              </div>
-              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q12">
-              <div style="display:flex; justify-content:space-between;">
-                <span>0</span>
-                <span>1</span>
-                <span>2</span>
-                <span>3</span>
-                <span>4</span>
-                <span>5</span>
-                <span>6</span>
-                <span>7</span>
-                <span>8</span>
-                <span>9</span>
-                <span>10</span>
-              </div>
-            </td>
-            <td class="na-checkbox">
-              <input type="checkbox" id="q12_na">
-              <span style="float: right;">Non appliquable</span>
-            </td>
-          </tr>
-          <tr>
-            <td style="text-align:left; width:400px;">
-              13. Pouvez-vous indiquer immédiatement à quelle distance se trouve un bus ou un camion, juste en entendant le
-              bruit qu’il fait ?
-            </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
-                <span>Pas du tout</span>
-                <span>Parfaitement</span>
-              </div>
-              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q13">
-              <div style="display:flex; justify-content:space-between;">
-                <span>0</span>
-                <span>1</span>
-                <span>2</span>
-                <span>3</span>
-                <span>4</span>
-                <span>5</span>
-                <span>6</span>
-                <span>7</span>
-                <span>8</span>
-                <span>9</span>
-                <span>10</span>
-              </div>
-            </td>
-            <td class="na-checkbox">
-              <input type="checkbox" id="q13_na">
-              <span style="float: right;">Non appliquable</span>
-            </td>
-          </tr>
-          <tr>
 
           <tr>
             <td style="text-align:left; width:400px;">
-              14. Les bruits quotidiens que vous entendez facilement sont-ils distincts (non brouillés)?
+             C2. Tu entends une chanson ou une musique que tu connais bien.<br>
+<b>Arrives-tu facilement à la reconnaître ?</b>
             </td>
             <td style="text-align:center; width:400px;">
               <div style="display:flex; justify-content:space-between;">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
-              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q14">
+              <input
+                     type="range"
+                     min="0"
+                     max="10"
+                     step="0.1"
+                     value="5"
+                     class="slider"
+                     id="q10"
+                     />
               <div style="display:flex; justify-content:space-between;">
                 <span>0</span>
                 <span>1</span>
@@ -561,22 +540,29 @@
               </div>
             </td>
             <td class="na-checkbox">
-              <input type="checkbox" id="q14_na">
+              <input type="checkbox" id="na10" />
               <span style="float: right;">Non appliquable</span>
             </td>
           </tr>
-          <tr>
 
           <tr>
             <td style="text-align:left; width:400px;">
-              15. Devez-vous vous concentrer intensément lorsque vous écoutez quelqu’un ou quelque chose ?
+              <b>C3. Peux-tu faire la différence entre deux sons qui se ressemblent, comme par exemple un robinet qui coule et un ventilateur ?</b>
             </td>
             <td style="text-align:center; width:400px;">
               <div style="display:flex; justify-content:space-between;">
-                <span>Concentration intense</span>
-                <span>Pas de concentration</span>
+                <span>Pas du tout</span>
+                <span>Parfaitement</span>
               </div>
-              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q15">
+              <input
+                     type="range"
+                     min="0"
+                     max="10"
+                     step="0.1"
+                     value="5"
+                     class="slider"
+                     id="q11"
+                     />
               <div style="display:flex; justify-content:space-between;">
                 <span>0</span>
                 <span>1</span>
@@ -592,14 +578,54 @@
               </div>
             </td>
             <td class="na-checkbox">
-              <input type="checkbox" id="q15_na">
+              <input type="checkbox" id="na11" />
               <span style="float: right;">Non appliquable</span>
             </td>
           </tr>
+
           <tr>
+            <td style="text-align:left; width:400px;">
+              C4. Tous les jours, tu entends les mêmes bruits à la maison.<br>
+<b>Est-ce que tu peux les reconnaître facilement ? (par exemple, le bruit de la cafetière, la sonnerie du téléphone, l’eau qui coule…)</b>
+            </td>
+            <td style="text-align:center; width:400px;">
+              <div style="display:flex; justify-content:space-between;">
+                <span>Pas du tout</span>
+                <span>Parfaitement</span>
+              </div>
+              <input
+                     type="range"
+                     min="0"
+                     max="10"
+                     step="0.1"
+                     value="5"
+                     class="slider"
+                     id="q12"
+                     />
+              <div style="display:flex; justify-content:space-between;">
+                <span>0</span>
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+                <span>6</span>
+                <span>7</span>
+                <span>8</span>
+                <span>9</span>
+                <span>10</span>
+              </div>
+            </td>
+            <td class="na-checkbox">
+              <input type="checkbox" id="na12" />
+              <span style="float: right;">Non appliquable</span>
+            </td>
+          </tr>
+
 
         </tbody>
       </table>
+      
 
       <div class="buttons-container">
         <button type="button" onclick="calculerScores()">Calculer les scores</button>
@@ -607,88 +633,83 @@
       </div>
 
     </form>
+    
 
+    
     <div id="result"></div>
+    
+	<script>
+    function calculerScores() {
+    
+          let total     			= 0;
+          let parole    			= 0;
+          let spatial 				= 0;
+          let qualite 				= 0;
 
-    <script>
-      function calculerScores() {
-        let total     	= 0;
-        let parole    	= 0;
-        let spatial 	= 0;
-        let qualite 	= 0;
+          let count_Na_parole    	= 0;
+          let count_Na_spatial    	= 0;
+          let count_Na_qualite    	= 0;
+          
+          
+          
+           const sliderIds = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10', 'q11', 'q12'];
+           
+        const naCheckboxIds = ['na1', 'na2', 'na3', 'na4', 'na5', 'na6', 'na7', 'na8', 'na9', 'na10', 'na11', 'na12'];
 
-        let count_Na_total      = 0;
-        let count_Na_parole    	= 0;
-        let count_Na_spatial    = 0;
-        let count_Na_qualite    = 0
-
-
-        // Slider and Na id
-        const sliderIds = ["q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9", "q10", "q11", "q12","q13","q14","q15"];
-        const naCheckboxIds = ["q1_na", "q2_na", "q3_na", "q4_na", "q5_na", "q6_na", "q7_na", "q8_na", "q9_na", "q10_na", "q11_na", "q12_na","q13_na","q14_na","q15_na"];
-
-
-
-        // Boucle total
-        for (let i = 0; i < sliderIds.length; i++) {
-          const sliderId = sliderIds[i];
-          const naCheckboxId = naCheckboxIds[i];
-          const slider = document.getElementById(sliderId);
-          const naCheckbox = document.getElementById(naCheckboxId);
-          if (naCheckbox.checked) {
-            count_Na_total++;
-          } else {
-            total += parseFloat(slider.value, 10);
-          }
-        } // end total loop
-
-
+		
+       
         // Boucle parole
-        for (let i = 0; i < 5; i++) {
-          const slider = document.getElementById(sliderIds[i]);
-          const naCheckbox = document.getElementById(naCheckboxIds[i]);
-          if (naCheckbox.checked) {
-            count_Na_parole++;
-          } else {
-            parole += parseFloat(slider.value, 10);
-          }
+        for (let i = 0; i < 4; i++) {
+            const slider = document.getElementById(sliderIds[i]);
+            const naCheckbox = document.getElementById(naCheckboxIds[i]);
+            if (slider && naCheckbox) {
+                if (!naCheckbox.checked) { // Only add if NOT checked
+                    parole += parseFloat(slider.value, 10);
+                } else {
+                    count_Na_parole++; // Still count the N/A for parole
+                }
+            }
         } // end parole loop
-
-
+        
         // Boucle spatial
-        for (let i = 5; i < 10; i++) {
+      for (let i = 4; i < 8; i++) {
           const slider = document.getElementById(sliderIds[i]);
           const naCheckbox = document.getElementById(naCheckboxIds[i]);
-          if (naCheckbox.checked) {
-            count_Na_spatial++;
-          } else {
-            spatial += parseFloat(slider.value, 10);
+          if (slider && naCheckbox) {
+              if (!naCheckbox.checked) { // Only add if NOT checked
+                  spatial += parseFloat(slider.value, 10);
+              } else {
+                  count_Na_spatial++; // Still count the N/A for spatial
+              }
           }
-        } // end spatial loop
-
-
+      }// end
+        
         // Boucle qualite
-        for (let i = 10; i < 15; i++) {
-          const slider = document.getElementById(sliderIds[i]);
-          const naCheckbox = document.getElementById(naCheckboxIds[i]);
-          if (naCheckbox.checked) {
-            count_Na_qualite++;
-          } else {
-            qualite += parseFloat(slider.value, 10);
-          }
+        for (let i = 8; i < 12; i++) {
+            const slider = document.getElementById(sliderIds[i]);
+            const naCheckbox = document.getElementById(naCheckboxIds[i]);
+            if (slider && naCheckbox) {
+                if (!naCheckbox.checked) { // Only add if NOT checked
+                    qualite += parseFloat(slider.value, 10);
+                } else {
+                    count_Na_qualite++; // Still count the N/A for qualite
+                }
+            }
         } // end qualite loop
-
-
+        
         // Compute average scores
-        total = total / (15 - count_Na_total);
-        parole = parole / (5 - count_Na_parole);
-        spatial = spatial / (5 - count_Na_spatial);
-        qualite = qualite / (5 - count_Na_qualite);
+        parole = parole / (4- count_Na_parole);
+        spatial = spatial /(4 - count_Na_spatial);
+        qualite = qualite / (4 - count_Na_qualite);
 
-        displayscores(total, parole, spatial,qualite);}
+		total = (parole + spatial + qualite )/3;
 
 
-      function displayscores(total, parole, spatial,qualite) {
+          displayscores(total, parole, spatial,qualite);
+         } // end function
+
+
+         function displayscores(total, parole, spatial,qualite) {
 
 
         let display = "<p style='text-align: center;'>Résultats</p>";
@@ -708,11 +729,12 @@
 
 
       function resetForm() {
-        document.getElementById("ssq15-form").reset();
+        document.getElementById("ssqkid").reset();
         document.getElementById("result").innerHTML = "";
         document.getElementById("result").style.display = "none";
       } // end function
-    </script>
+      </script>
+ 
   </body>
-
 </html>
+

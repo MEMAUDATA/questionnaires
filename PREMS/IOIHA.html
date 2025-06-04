@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>IIPBAA</title>
+    <style>
+      body {
+        font-family:Montserrat, sans-serif;
+      }
+      table {
+        width: 90%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        margin-left: auto;
+        margin-right: auto;"
+        width:950px;
+
+      }
+      th, td {
+        border-top: 1px solid #808080 !important; /* !important should be used cautiously */
+        border-left: 1px solid #808080;
+        border-right: 1px solid #808080;
+        border-bottom: 1px solid #808080;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #f0f0f0;
+      }
+      .options {
+        display: flex;
+        flex-direction: column;
+      }
+      .option-label {
+        margin-right: 20px;
+      }
+
+      .scale {
+        display: flex;
+        justify-content: space-between;
+        width: 750px;
+        margin: auto;
+      }
+
+      .scale label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 70px;
+      }
+
+      .buttons-container {
+        text-align: center;
+        margin-top: 40px;
+      }
+
+      .buttons-container button {
+        padding: 12px 25px;
+        margin: 0 10px;
+        font-size: 17px;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        background-color: #eeeeee;
+
+      }
+
+      .buttons-container button:hover {
+        background-color: #0056b3;
+        color : white;
+      }
+
+      #result { /* Correction ici : cibler l'ID directement */
+        text-align: center;
+        font-size: 20px;
+        margin-top: 30px;
+        border: 1px solid #eeeeee;
+        background-color: #eeeeee;
+        padding: 15px;
+        display: none;
+        border-radius: 5px;
+        padding: 15px;
+        display:none;
+      }
+
+      ul.myList {
+        display: inline-block;
+        text-align: left;
+      }
+
+
+    </style>
+  </head>
+  <body>
+    <h1 style="text-align: center;">Inventaire international portant sur les bénéfices des aides auditives (IIPBAA ou IOI-HA en anglais)</h1>
+    <p style="text-align: center;">Cox et al., 2002</p>
+
+    <br>
+    <form id="IIPBAA">
+      <table>
+        <tbody>
+
+          <tr>
+            <td>
+              <div class="question">
+                <p>1. Durant les deux dernières semaines, si vous avez utilisé votre(vos) appareil(s) auditif(s), indiquez combien d’heures par jour en moyenne</p>
+
+                <div class="scale">
+                  <span >jamais </span>
+                  <span >moins d’une 1 heure/jour</span>
+                  <span > 1 à 4 hr/jour</span>
+                  <span > 4 à 8hr/jour</span>
+                  <span >plus de 8 hr/jour</span>
+                </div>
+
+                <div class="scale">
+                  <label><input type="radio" name="q1" value="1"></label>
+                  <label><input type="radio" name="q1" value="2"></label>
+                  <label><input type="radio" name="q1" value="3"></label>
+                  <label><input type="radio" name="q1" value="4"></label>
+                  <label><input type="radio" name="q1" value="5"></label>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <div class="question">
+                <p>2. Souvenez-vous des situations dans lesquelles vous aviez le plus envie d’entendre mieux avant d’avoir votre appareillage auditif. Durant les deux dernières semaines, votre appareillage vous a-t-il aidé dans
+                  ces situations?</p>
+
+                <div class="scale">
+                  <span >Jamais aidé </span>
+                  <span >Légèrement aidé </span>
+                  <span >Modérément aidé </span>
+                  <span >Nettement aidé </span>
+                  <span >Beaucoup aidé </span>
+                </div>
+
+                <div class="scale">
+                  <label><input type="radio" name="q2" value="1"></label>
+                  <label><input type="radio" name="q2" value="2"></label>
+                  <label><input type="radio" name="q2" value="3"></label>
+                  <label><input type="radio" name="q2" value="4"></label>
+                  <label><input type="radio" name="q2" value="5"></label>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <div class="question">
+                <p>3. Souvenez-vous des situations dans lesquelles vous aviez le plus envie d’entendre mieux. Quand vous utilisez maintenant votre appareillage auditif, avez-vous ENCORE des difficultés ?</p>
+
+                <div class="scale">
+                  <span >Beaucoup difficultés </span>
+                  <span >Nettes difficultés </span>
+                  <span >Difficultés modérées </span>
+                  <span >Légères difficultés </span>
+                  <span >aucune difficulté </span>
+                </div>
+
+                <div class="scale">
+                  <label><input type="radio" name="q3" value="1"></label>
+                  <label><input type="radio" name="q3" value="2"></label>
+                  <label><input type="radio" name="q3" value="3"></label>
+                  <label><input type="radio" name="q3" value="4"></label>
+                  <label><input type="radio" name="q3" value="5"></label>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <div class="question">
+                <p>4. Tout compte fait, pensez-vous que votre appareillage auditif actuel présente un intérêt?</p>
+
+                <div class="scale">
+                  <span >Aucun intérêt </span>
+                  <span >Un léger intérêt </span>
+                  <span >Un intérêt modéré </span>
+                  <span >Un net intérêt </span>
+                  <span >Un grand intérêt </span>
+                </div>
+
+                <div class="scale">
+                  <label><input type="radio" name="q4" value="1"></label>
+                  <label><input type="radio" name="q4" value="2"></label>
+                  <label><input type="radio" name="q4" value="3"></label>
+                  <label><input type="radio" name="q4" value="4"></label>
+                  <label><input type="radio" name="q4" value="5"></label>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <div class="question">
+                <p>5. Durant les deux dernières semaines, avec votre appareillage auditif actuel, à quel point vos difficultés auditives ont-elles gêné ou affecté les choses que vous pouvez faire?</p>
+
+                <div class="scale">
+                  <span >Beaucoup gêné </span>
+                  <span >Nettement gêné </span>
+                  <span >Modérément gêné </span>
+                  <span >Légèrement gêné </span>
+                  <span >Pas du tout gêné </span>
+                </div>
+
+                <div class="scale">
+                  <label><input type="radio" name="q5" value="1"></label>
+                  <label><input type="radio" name="q5" value="2"></label>
+                  <label><input type="radio" name="q5" value="3"></label>
+                  <label><input type="radio" name="q5" value="4"></label>
+                  <label><input type="radio" name="q5" value="5"></label>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+
+
+          <tr>
+            <td>
+              <div class="question">
+                <p>6. Durant les deux dernières semaines, avec votre appareillage auditif actuel, à quel point pensez-vous que vos difficultés auditives ont ennuyé les autres?</p>
+
+                <div class="scale">
+                  <span >Beaucoup ennuyé </span>
+                  <span >Nettement ennuyé </span>
+                  <span >Modérément ennuyé </span>
+                  <span >Beaucoup ennuyé </span>
+                  <span >Pas du tout ennuyé </span>
+                </div>
+
+                <div class="scale">
+                  <label><input type="radio" name="q6" value="1"></label>
+                  <label><input type="radio" name="q6" value="2"></label>
+                  <label><input type="radio" name="q6" value="3"></label>
+                  <label><input type="radio" name="q6" value="4"></label>
+                  <label><input type="radio" name="q6" value="5"></label>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+
+
+          <tr>
+            <td>
+              <div class="question">
+                <p>7. Tout compte fait, votre vie et ses plaisisrs ont-ils changé depuis votre appareillage auditif ?</p>
+
+                <div class="scale">
+                  <span >Pire qu’avant </span>
+                  <span >Pas de changement </span>
+                  <span >Légèrement mieux </span>
+                  <span >Nettement mieux </span>
+                  <span >Beaucoup mieux </span>
+                </div>
+
+                <div class="scale">
+                  <label><input type="radio" name="q7" value="1"></label>
+                  <label><input type="radio" name="q7" value="2"></label>
+                  <label><input type="radio" name="q7" value="3"></label>
+                  <label><input type="radio" name="q7" value="4"></label>
+                  <label><input type="radio" name="q7" value="5"></label>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <div class="question">
+                <p>8. Quel est votre niveau de perte auditive lorsque vous <b>ne</b> portez <b>pas</b> votre appareillage auditif ?</p>
+
+                <div class="scale">
+                  <span >Profonde</span>
+                  <span >Sévère</span>
+                  <span >Moyenne</span>
+                  <span >Légère </span>
+                  <span >Aucune</span>
+                </div>
+
+                <div class="scale">
+                  <label><input type="radio" name="q8" value="1"></label>
+                  <label><input type="radio" name="q8" value="2"></label>
+                  <label><input type="radio" name="q8" value="3"></label>
+                  <label><input type="radio" name="q8" value="4"></label>
+                  <label><input type="radio" name="q8" value="5"></label>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+
+
+        </tbody>
+      </table>
+      <div class="buttons-container">
+        <button type="button" onclick="calculerScores()">Calculer les scores</button>
+        <button type="reset" onclick="resetForm()">Réinitialiser</button>
+      </div>
+    </form>
+    <div id="result"></div>
+    <script>
+      function calculerScores() {
+        let use = 0;
+        let ben = 0;
+        let ral = 0;
+        let sat = 0;
+        let rpr = 0;
+        let iot = 0;
+        let qol = 0;
+        let perte = 0;
+        let n_use = 0;
+        let n_ben = 0;
+        let n_ral = 0;
+        let n_sat = 0;
+        let n_rpr = 0;
+        let n_iot = 0;
+        let n_qol = 0;
+
+
+        const resp = document.getElementById("IIPBAA");
+
+        use = parseInt(resp.elements["q1"].value);
+        ben = parseInt(resp.elements["q2"].value);
+        ral = parseInt(resp.elements["q3"].value);
+        sat = parseInt(resp.elements["q4"].value);
+        rpr = parseInt(resp.elements["q5"].value);
+        iot = parseInt(resp.elements["q6"].value);
+        qol = parseInt(resp.elements["q7"].value);
+        perte = parseInt(resp.elements["q8"].value);
+
+        // Calculate n_use based on perte
+        if (perte >= 3) {
+          n_use = 3;
+          n_ben = 3;
+          n_ral = 3;
+          n_sat = 2;
+          n_rpr = 3;
+          n_iot = 3;
+          n_qol = 3;
+
+
+        } else {
+          n_use = 4;
+          n_ben = 3;
+          n_ral = 2;
+          n_sat = 3;
+          n_rpr = 3;
+          n_iot = 2;
+          n_qol = 3;
+
+        }
+
+        displayscores(use, ben, ral, sat, rpr, iot, qol, n_use,n_ben,n_ral,n_sat,n_rpr,n_iot,n_qol); 
+      }
+
+      function displayscores(use, ben, ral, sat, rpr, iot, qol, n_use,n_ben,n_ral,n_sat,n_rpr,n_iot,n_qol){
+
+        let display = "<p style='text-align: center;'>Résultats</p>";
+        display += "<br>"; 
+        display += "<ul class='myList'>"; 
+        display += "<li>Temps de port : " + use + " (norme: " + n_use + ")" +  "</li>";
+        display += "<li>Bénéfice de l’appareillage auditif : " + ben + " (norme: " + n_ben + ")" + "</li>";
+        display += "<li>Limitations résiduelles : " + ral + " (norme: " + n_ral + ")" + "</li>";
+        display += "<li>Niveau de satisfaction : " + sat + " (norme: " + n_sat + ")" + "</li>";
+        display += "<li>Restrictions résiduelles : " + rpr + " (norme: " + n_rpr + ")" +"</li>";
+        display += "<li>Impact de l’appareillage sur les autres : " + iot + " (norme: " + n_iot + ")" + "</li>";
+        display += "<li>Niveau de qualité de vie : " + qol + " (norme: " + n_qol + ")" + "</li>";
+        display += "</ul>";
+
+        document.getElementById("result").innerHTML = display;
+        document.getElementById("result").style.display = "block";
+      }
+
+      function resetForm() {
+        document.getElementById("IIPBAA").reset();
+        document.getElementById("result").innerHTML = "";
+        document.getElementById("result").style.display = "none";
+      }
+    </script>
+  </body>
+</html>
+
