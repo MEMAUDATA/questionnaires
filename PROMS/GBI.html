@@ -17,7 +17,7 @@
         margin-bottom: 20px;
         margin-left: auto;
         margin-right: auto;
-        border: 1px solid #ddd;
+        border: 1px solid #eeeeee;
       }
 
 
@@ -28,18 +28,11 @@
       }
 
 
-      .buttons {
-        text-align: center;
-        margin-top: 30px;
-        margin-left: 10px;
-
-      }
-
       #gbi input[type="radio"] {
         margin: 5px; 
       }
 
-      
+
       #answers th {
         font-weight:bold;
         color: black;
@@ -48,7 +41,47 @@
       }
 
       #gbi td:nth-child(even) {
-        background-color: #ddd;
+        background-color: #eeeeee;
+      }
+
+
+
+      .buttons-container {
+        text-align: center;
+        margin-top: 30px;
+      }
+      .buttons-container button {
+        padding: 12px 25px;
+        margin: 0 10px;
+        font-size: 17px;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        background-color: #eeeeee;
+
+      }
+
+      .buttons-container button:hover {
+        background-color: #0056b3;
+        color : white;
+      }
+
+      #result { /* Correction ici : cibler l'ID directement */
+        text-align: center;
+        font-size: 20px;
+        margin-top: 30px;
+        border: 1px solid #eeeeee;
+        background-color: #eeeeee;
+        padding: 15px;
+        display: none;
+        border-radius: 5px;
+        padding: 15px;
+        display:none;
+      }
+
+      ul.myList {
+        display: inline-block;
+        text-align: left;
       }
 
 
@@ -106,6 +139,7 @@
                 <th >Beaucoup moins</th> 
               </tr>
             </thead>
+
 
             <tr>
               <td style="text-align: left;">3. Depuis votre intervention, vous sentez-vous plus (ou moins) optimiste face à l’avenir ? </td>
@@ -250,7 +284,7 @@
         </table>
       </div> <!--id headers -->
 
-      <div class="buttons">
+      <div class="buttons-container">
         <button type="button" onclick="calculateScore()">Calculer le Score</button>
         <button type="reset" onclick="resetForm()">Réinitialiser</button>
       </div>
@@ -260,27 +294,25 @@
     <div id="result"></div>
 
     <script>
-
-      function calculateScore() {
+        // This function is responsible for calculating the GBI and subscale scores.
+        function calculateScore() {
         let totalScore = 0;
         let answeredQuestions = 0;
 
-        // Questions for the General Benefit subscale (Q1, Q2, Q3, Q5, Q6, Q7, Q14, Q15, Q17)
+        // Define questions for each subscale
         const generalBenefitQuestions = ['q1', 'q2', 'q3', 'q5', 'q6', 'q7', 'q14', 'q15', 'q17'];
         let generalBenefitScore = 0;
         let generalBenefitAnswered = 0;
 
-        // Questions for the Social Support subscale (Q4, Q10, Q11, Q18)
         const socialSupportQuestions = ['q4', 'q10', 'q11', 'q18'];
         let socialSupportScore = 0;
         let socialSupportAnswered = 0;
 
-        // Questions for the Physical Health subscale (Q8, Q9, Q12, Q13, Q16)
         const physicalHealthQuestions = ['q8', 'q9', 'q12', 'q13', 'q16'];
         let physicalHealthScore = 0;
         let physicalHealthAnswered = 0;
 
-
+        // Loop through all 18 questions to collect scores
         for (let i = 1; i <= 18; i++) {
           const qName = 'q' + i;
           const selectedOption = document.querySelector(`input[name="${qName}"]:checked`);
@@ -290,6 +322,7 @@
             totalScore += value;
             answeredQuestions++;
 
+            // Assign scores to respective subscales
             if (generalBenefitQuestions.includes(qName)) {
               generalBenefitScore += value;
               generalBenefitAnswered++;
@@ -303,58 +336,59 @@
           }
         }
 
-
-        // Calculate the GBI score based on the formula: (sum of scores - number of questions) / (number of questions * 4) * 100
-        // The scores are 1-5, so 'no change' is 3. We normalize around 0.
-        // Formula: ((Sum of scores - (3 * Number of questions)) / (2 * Number of questions)) * 100
-        // Or, as per the original GBI scoring: ((Sum of scores - number of questions) / (number of questions * 4)) * 100
-        // With the values 1-5, a neutral score is 3. So, values -3. Then divide by range (2, since max is 5 (2 above 3) and min is 1 (2 below 3)).
-        // And then scale to 100.
-        // The original formula: ((Total Score - (3 * Number of questions)) / (2 * Number of questions)) * 100
-        // For the GBI, scores range from -100 to +100.
-        // A score of 5 gives +2, a score of 4 gives +1, a score of 3 gives 0, a score of 2 gives -1, a score of 1 gives -2.
-        // So we need to normalize the values first: (value - 3)
-        // Then sum these normalized values, divide by the max possible sum of positive changes, and multiply by 100.
-        // Max positive change for one question is 2 (5-3).
-        // Max total positive change for 18 questions = 18 * 2 = 36.
-
-        const normalizedTotalScore = totalScore - (3 * answeredQuestions);
-        const gbiScore = (normalizedTotalScore / (2 * answeredQuestions)) * 100;
+        // Handle cases where not all questions are answered for a subscale
+        if (answeredQuestions < 18) {
+          document.getElementById("result").innerHTML = "<p style='text-align: center; color: red;'>Veuillez répondre à toutes les questions!</p>";
+          document.getElementById("result").style.display = "block";
+          return; // Exit if no questions are answered
+        }
 
 
-        // Subscale calculations
-        const normalizedGeneralBenefitScore = generalBenefitScore - (3 * generalBenefitAnswered);
-        const generalBenefitSubscale = (normalizedGeneralBenefitScore / (2 * generalBenefitAnswered)) * 100;
+        // --- Score Calculation ---
+        // The GBI uses a specific normalization.
+        // Each question score (1-5) is normalized around 0 (3 = 0, 5 = +2, 1 = -2).
+        // Then, the normalized sum is divided by the maximum possible positive sum
+        // (number of questions * 2, since max positive for one question is 2),
+        // and multiplied by 100 to scale to a -100 to +100 range.
 
-        const normalizedSocialSupportScore = socialSupportScore - (3 * socialSupportAnswered);
-        const socialSupportSubscale = (normalizedSocialSupportScore / (2 * socialSupportAnswered)) * 100;
+        const calculateSubscaleScore = (scoreSum, answeredCount) => {
+          if (answeredCount === 0) {
+            return 0; // Avoid division by zero if no questions were answered for this subscale
+          }
+          const normalizedSum = scoreSum - (3 * answeredCount);
+          return (normalizedSum / (2 * answeredCount)) * 100;
+        };
 
-        const normalizedPhysicalHealthScore = physicalHealthScore - (3 * physicalHealthAnswered);
-        const physicalHealthSubscale = (normalizedPhysicalHealthScore / (2 * physicalHealthAnswered)) * 100;
+        const gbiScore = calculateSubscaleScore(totalScore, answeredQuestions);
+        const generalBenefitSubscale = calculateSubscaleScore(generalBenefitScore, generalBenefitAnswered);
+        const socialSupportSubscale = calculateSubscaleScore(socialSupportScore, socialSupportAnswered);
+        const physicalHealthSubscale = calculateSubscaleScore(physicalHealthScore, physicalHealthAnswered);
 
-		displayscores(gbiScore,generalBenefitSubscale,socialSupportSubscale,physicalHealthSubscale);
-        
+        // Display the calculated scores
+        displayResults(gbiScore, generalBenefitSubscale, socialSupportSubscale, physicalHealthSubscale);
       }
 
+      // This function is purely for displaying the scores in the designated HTML element.
+      function displayResults(gbiScore, generalBenefitSubscale, socialSupportSubscale, physicalHealthSubscale) {
+        let display = "<p style='text-align: center;'>Résultats</p>";
+        display += "<br>";
+        display += "<ul class='myList'>";
+        display += "<li>Score Total GBI : " + gbiScore.toFixed(2) + "</li>";
+        display += "<li>Bénéfice Général : " + generalBenefitSubscale.toFixed(2) + "</li>";
+        display += "<li>Soutien Social : " + socialSupportSubscale.toFixed(2) + "</li>";
+        display += "<li>Santé Physique : " + physicalHealthSubscale.toFixed(2) + "</li>";
+        display += "</ul>";
+        display += "<p> Les scores vont de -100 (bénéfices négatifs) à +100 (bénéfices positifs). </p>";
 
-	function displayscores(gbiScore,generalBenefitSubscale,socialSupportSubscale,physicalHealthSubscale) {
-    
-    
+        document.getElementById("result").innerHTML = display;
+        document.getElementById("result").style.display = "block";
+      }
 
-      const resultDiv = document.getElementById("result");
-          resultDiv.innerHTML = `
-          Score Total GBI :  ${gbiScore.toFixed(2)}<br>
-          Bénéfice Général : ${generalBenefitSubscale.toFixed(2)}<br>
-          Soutien Social : ${socialSupportSubscale.toFixed(2)}<br>
-          Santé Physique : ${physicalHealthSubscale.toFixed(2)}<br>
-          Les scores vont de -100 (bénéfices négatifs) à +100 (bénéfices positifs)
-
-        `;}
-
-
+      // This function resets the form and clears the displayed results.
       function resetForm() {
-        document.getElementById("gbi").reset();
+        document.getElementById("gbi").reset(); // Assuming 'gbi' is the ID of your form
         document.getElementById("result").innerHTML = "";
+        document.getElementById("result").style.display = "none"; // Hide the result div
       }
     </script>
   </body>
