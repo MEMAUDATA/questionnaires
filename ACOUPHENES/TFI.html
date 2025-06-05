@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TFI</title>
+    <style>
+      body {
+        font-family: Montserrat, sans-serif;
+      }
+
+      .container {
+        /* max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;*/
+      }
+
+      .question {
+        margin-bottom: 20px;
+        background-color: #eeeeee;
+        width: 100%;
+        margin: 10px auto;
+        padding: 6px;
+        border-radius: 4px;
+      }
+
+      .small_question {
+        width: 100%;
+        margin: 10px auto;
+        padding: 6px;
+        text-align: left;
+        font-weight: bold;
+      }
+
+
+
+      .answer {
+        width: 95%;
+        margin: 20px auto;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .answer label {
+        margin-right: 15px;
+        white-space: nowrap;
+        display: inline-block;
+        cursor: pointer;
+        padding: 5px 0;
+      }
+
+      .answer input[type="radio"] {
+        margin-right: 5px;
+        transform: scale(1.2);
+        vertical-align: middle;
+      }
+
+
+      .buttons-container {
+        text-align: center;
+        margin-top: 30px;
+      }
+
+      .buttons-container button {
+        padding: 12px 25px;
+        margin: 0 10px;
+        font-size: 17px;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        background-color: #eeeeee;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      .buttons-container button:hover {
+        background-color: #0056b3;
+        color: white;
+      }
+
+      #result {
+        text-align: center;
+        font-size: 20px;
+        margin-top: 30px;
+        border: 1px solid #eeeeee;
+        background-color: #eeeeee;
+        padding: 15px;
+        display: none;
+        border-radius: 5px;
+      }
+
+      #result ul {
+        list-style: none;
+        padding: 0;
+        text-align: left;
+        display: inline-block;
+        margin-top: 10px;
+      }
+
+      #result ul li {
+        margin-bottom: 8px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1 style="text-align: center;">Tinnitus Functional Index (TFI)</h1>
+      <p style="text-align: center;">Meikle et al., 2011</p>
+      <p style="text-align: center;"><b>Consignes:</b></p>
+      <p style="text-align: center;">Veuillez lire attentivement chaque question ci-dessous. Pour répondre à une question,
+        sélectionnez UN des chiffres listés pour cette question, puis cliquez sur le bouton associé.</p>
+      <br>
+
+      <form id="TFI">
+
+        <p class="question">I. Au cours de la SEMAINE DERNIÈRE ...</p>
+        <p class="small_question">1. Quel est le pourcentage de votre temps éveillé où vous êtes <b>conscient(e)</b>
+          de vos acouphènes ?</p>
+        <div class="answer">
+          <label>Jamais<input type="radio" name="question1" value="0"> 0%</label>
+          <label><input type="radio" name="question1" value="10"> 10%</label>
+          <label><input type="radio" name="question1" value="20"> 20%</label>
+          <label><input type="radio" name="question1" value="30"> 30%</label>
+          <label><input type="radio" name="question1" value="40"> 40%</label>
+          <label><input type="radio" name="question1" value="50"> 50%</label>
+          <label><input type="radio" name="question1" value="60"> 60%</label>
+          <label><input type="radio" name="question1" value="70"> 70%</label>
+          <label><input type="radio" name="question1" value="80"> 80%</label>
+          <label><input type="radio" name="question1" value="90"> 90%</label>
+          <label><input type="radio" name="question1" value="100"> 100% Toujours</label>
+        </div>
+
+        <p class="small_question">2. Quelle <b>était</b> la <b>force ou l'intensité</b> de vos acouphènes ?</p>
+        <div class="answer">
+          <label>Pas forts du tout <input type="radio" name="question2" value="0"> 0</label>
+          <label><input type="radio" name="question2" value="1"> 1</label>
+          <label><input type="radio" name="question2" value="2"> 2</label>
+          <label><input type="radio" name="question2" value="3"> 3</label>
+          <label><input type="radio" name="question2" value="4"> 4</label>
+          <label><input type="radio" name="question2" value="5"> 5</label>
+          <label><input type="radio" name="question2" value="6"> 6</label>
+          <label><input type="radio" name="question2" value="7"> 7</label>
+          <label><input type="radio" name="question2" value="8"> 8</label>
+          <label><input type="radio" name="question2" value="9"> 9</label>
+          <label><input type="radio" name="question2" value="10"> 10 Extrêmement forts</label>
+        </div>
+        <p class="small_question">3. Quel est le pourcentage de votre temps éveillé où vous êtes <b>gêné(e)</b> par
+          vos acouphènes ?</p>
+        <div class="answer">
+          <label>Jamais<input type="radio" name="question3" value="0"> 0%</label>
+          <label><input type="radio" name="question3" value="10"> 10%</label>
+          <label><input type="radio" name="question3" value="20"> 20%</label>
+          <label><input type="radio" name="question3" value="30"> 30%</label>
+          <label><input type="radio" name="question3" value="40"> 40%</label>
+          <label><input type="radio" name="question3" value="50"> 50%</label>
+          <label><input type="radio" name="question3" value="60"> 60%</label>
+          <label><input type="radio" name="question3" value="70"> 70%</label>
+          <label><input type="radio" name="question3" value="80"> 80%</label>
+          <label><input type="radio" name="question3" value="90"> 90%</label>
+          <label><input type="radio" name="question3" value="100"> 100% Tout le temps</label>
+        </div>
+
+        <p class="question">SC. Au cours de la SEMAINE DERNIÈRE ...</p>
+
+        <p class="small_question">4. Pensiez-vous avoir <b>le contrôle</b> de vos acouphènes ?</p>
+        <div class="answer">
+          <label> Très bon contrôle <input type="radio" name="question4" value="0"> 0</label>
+          <label><input type="radio" name="question4" value="1"> 1</label>
+          <label><input type="radio" name="question4" value="2"> 2</label>
+          <label><input type="radio" name="question4" value="3"> 3</label>
+          <label><input type="radio" name="question4" value="4"> 4</label>
+          <label><input type="radio" name="question4" value="5"> 5</label>
+          <label><input type="radio" name="question4" value="6"> 6</label>
+          <label><input type="radio" name="question4" value="7"> 7</label>
+          <label><input type="radio" name="question4" value="8"> 8</label>
+          <label><input type="radio" name="question4" value="9"> 9</label>
+          <label><input type="radio" name="question4" value="10"> 10 Jamais de contrôle</label>
+        </div>
+        <p class="small_question">5. Était-ce facile pour vous <b>de faire face</b> à vos acouphènes ?</p>
+        <div class="answer">
+          <label>Très facile de faire face<input type="radio" name="question5" value="0"> 0</label>
+          <label><input type="radio" name="question5" value="1"> 1</label>
+          <label><input type="radio" name="question5" value="2"> 2</label>
+          <label><input type="radio" name="question5" value="3"> 3</label>
+          <label><input type="radio" name="question5" value="4"> 4</label>
+          <label><input type="radio" name="question5" value="5"> 5</label>
+          <label><input type="radio" name="question5" value="6"> 6</label>
+          <label><input type="radio" name="question5" value="7"> 7</label>
+          <label><input type="radio" name="question5" value="8"> 8</label>
+          <label><input type="radio" name="question5" value="9"> 9</label>
+          <label><input type="radio" name="question5" value="10"> 10 Impossible de faire face</label>
+        </div>
+        <p class="small_question">6. Était-ce facile pour vous <b>d'ignorer</b> vos acouphènes ?</p>
+        <div class="answer">
+          <label>Très facile à ignorer<input type="radio" name="question6" value="0"> 0</label>
+          <label><input type="radio" name="question6" value="1"> 1</label>
+          <label><input type="radio" name="question6" value="2"> 2</label>
+          <label><input type="radio" name="question6" value="3"> 3</label>
+          <label><input type="radio" name="question6" value="4"> 4</label>
+          <label><input type="radio" name="question6" value="5"> 5</label>
+          <label><input type="radio" name="question6" value="6"> 6</label>
+          <label><input type="radio" name="question6" value="7"> 7</label>
+          <label><input type="radio" name="question6" value="8"> 8</label>
+          <label><input type="radio" name="question6" value="9"> 9</label>
+          <label><input type="radio" name="question6" value="10"> 10 Impossible à ignorer</label>
+        </div>
+
+
+        <p class="question">C. Au cours de la SEMAINE DERNIÈRE ...</p>
+
+        <p class="small_question">7. Votre capacité à <b>vous concentrer</b> ?</p>
+        <div class="answer">
+          <label>Aucune interférence<input type="radio" name="question7" value="0"> 0</label>
+          <label><input type="radio" name="question7" value="1"> 1</label>
+          <label><input type="radio" name="question7" value="2"> 2</label>
+          <label><input type="radio" name="question7" value="3"> 3</label>
+          <label><input type="radio" name="question7" value="4"> 4</label>
+          <label><input type="radio" name="question7" value="5"> 5</label>
+          <label><input type="radio" name="question7" value="6"> 6</label>
+          <label><input type="radio" name="question7" value="7"> 7</label>
+          <label><input type="radio" name="question7" value="8"> 8</label>
+          <label><input type="radio" name="question7" value="9"> 9</label>
+          <label><input type="radio" name="question7" value="10"> 10 Interférence totale</label>
+        </div>
+        <p class="small_question">8. Votre capacité à <b>penser clairement</b> ?</p>
+        <div class="answer">
+          <label>Aucune interférence<input type="radio" name="question8" value="0"> 0</label>
+          <label><input type="radio" name="question8" value="1"> 1</label>
+          <label><input type="radio" name="question8" value="2"> 2</label>
+          <label><input type="radio" name="question8" value="3"> 3</label>
+          <label><input type="radio" name="question8" value="4"> 4</label>
+          <label><input type="radio" name="question8" value="5"> 5</label>
+          <label><input type="radio" name="question8" value="6"> 6</label>
+          <label><input type="radio" name="question8" value="7"> 7</label>
+          <label><input type="radio" name="question8" value="8"> 8</label>
+          <label><input type="radio" name="question8" value="9"> 9</label>
+          <label><input type="radio" name="question8" value="10"> 10 Interférence totale</label>
+        </div>
+        <p class="small_question">9. Votre capacité à <b>prêter attention</b> à d'autres choses que vos acouphènes
+          ?</p>
+        <div class="answer">
+          <label>Aucune interférence<input type="radio" name="question9" value="0"> 0</label>
+          <label><input type="radio" name="question9" value="1"> 1</label>
+          <label><input type="radio" name="question9" value="2"> 2</label>
+          <label><input type="radio" name="question9" value="3"> 3</label>
+          <label><input type="radio" name="question9" value="4"> 4</label>
+          <label><input type="radio" name="question9" value="5"> 5</label>
+          <label><input type="radio" name="question9" value="6"> 6</label>
+          <label><input type="radio" name="question9" value="7"> 7</label>
+          <label><input type="radio" name="question9" value="8"> 8</label>
+          <label><input type="radio" name="question9" value="9"> 9</label>
+          <label><input type="radio" name="question9" value="10"> 10 Interférence totale</label>
+        </div>
+
+
+
+        <p class="question">SM. Au cours de la SEMAINE DERNIÈRE ...</p>
+
+        <p class="small_question">10. À quelle fréquence vos acouphènes vous ont-ils empêché de <b>vous endormir</b>
+          ou de rester <b>endormi(e)</b> ?</p>
+        <div class="answer">
+          <label>N'ai jamais eu de difficultés<input type="radio" name="question10" value="0"> 0</label>
+          <label><input type="radio" name="question10" value="1"> 1</label>
+          <label><input type="radio" name="question10" value="2"> 2</label>
+          <label><input type="radio" name="question10" value="3"> 3</label>
+          <label><input type="radio" name="question10" value="4"> 4</label>
+          <label><input type="radio" name="question10" value="5"> 5</label>
+          <label><input type="radio" name="question10" value="6"> 6</label>
+          <label><input type="radio" name="question10" value="7"> 7</label>
+          <label><input type="radio" name="question10" value="8"> 8</label>
+          <label><input type="radio" name="question10" value="9"> 9</label>
+          <label><input type="radio" name="question10" value="10"> 10 Toujours eu des difficultés</label>
+        </div>
+        <p class="small_question">11. À quelle fréquence vos acouphènes vous ont-ils posé problème <b>pour dormir
+          autant que</b> vous en aviez besoin ?</p>
+        <div class="answer">
+          <label>N'ai jamais eu de difficultés<input type="radio" name="question11" value="0"> 0</label>
+          <label><input type="radio" name="question11" value="1"> 1</label>
+          <label><input type="radio" name="question11" value="2"> 2</label>
+          <label><input type="radio" name="question11" value="3"> 3</label>
+          <label><input type="radio" name="question11" value="4"> 4</label>
+          <label><input type="radio" name="question11" value="5"> 5</label>
+          <label><input type="radio" name="question11" value="6"> 6</label>
+          <label><input type="radio" name="question11" value="7"> 7</label>
+          <label><input type="radio" name="question11" value="8"> 8</label>
+          <label><input type="radio" name="question11" value="9"> 9</label>
+          <label><input type="radio" name="question11" value="10"> 10 Toujours eu des difficultés</label>
+        </div>
+        <p class="small_question">12. Combien de temps vos acouphènes vous ont-ils empêché de <b>dormir</b> aussi
+          <b>profondément</b> ou aussi <b>paisiblement</b> que vous l'auriez souhaité ?</p>
+        <div class="answer">
+          <label>Jamais<input type="radio" name="question12" value="0"> 0</label>
+          <label><input type="radio" name="question12" value="1"> 1</label>
+          <label><input type="radio" name="question12" value="2"> 2</label>
+          <label><input type="radio" name="question12" value="3"> 3</label>
+          <label><input type="radio" name="question12" value="4"> 4</label>
+          <label><input type="radio" name="question12" value="5"> 5</label>
+          <label><input type="radio" name="question12" value="6"> 6</label>
+          <label><input type="radio" name="question12" value="7"> 7</label>
+          <label><input type="radio" name="question12" value="8"> 8</label>
+          <label><input type="radio" name="question12" value="9"> 9</label>
+          <label><input type="radio" name="question12" value="10"> 10 Tout le temps</label>
+        </div>
+
+
+        <p class="question">A. Au cours de la SEMAINE DERNIÈRE, dans quel mesure vos acouphènes ont-ils interférés
+          avec ...</p>
+
+        <p class="small_question">13. Votre capacité à <b>entendre clairement</b> ?</p>
+        <div class="answer">
+          <label>Aucune interférence<input type="radio" name="question13" value="0"> 0</label>
+          <label><input type="radio" name="question13" value="1"> 1</label>
+          <label><input type="radio" name="question13" value="2"> 2</label>
+          <label><input type="radio" name="question13" value="3"> 3</label>
+          <label><input type="radio" name="question13" value="4"> 4</label>
+          <label><input type="radio" name="question13" value="5"> 5</label>
+          <label><input type="radio" name="question13" value="6"> 6</label>
+          <label><input type="radio" name="question13" value="7"> 7</label>
+          <label><input type="radio" name="question13" value="8"> 8</label>
+          <label><input type="radio" name="question13" value="9"> 9</label>
+          <label><input type="radio" name="question13" value="10"> 10 Interférence totale</label>
+        </div>
+        <p class="small_question">14. Votre capacité à <b>comprendre les personnes</b> qui parlent ?</p>
+        <div class="answer">
+          <label>Aucune interférence<input type="radio" name="question14" value="0"> 0</label>
+          <label><input type="radio" name="question14" value="1"> 1</label>
+          <label><input type="radio" name="question14" value="2"> 2</label>
+          <label><input type="radio" name="question14" value="3"> 3</label>
+          <label><input type="radio" name="question14" value="4"> 4</label>
+          <label><input type="radio" name="question14" value="5"> 5</label>
+          <label><input type="radio" name="question14" value="6"> 6</label>
+          <label><input type="radio" name="question14" value="7"> 7</label>
+          <label><input type="radio" name="question14" value="8"> 8</label>
+          <label><input type="radio" name="question14" value="9"> 9</label>
+          <label><input type="radio" name="question14" value="10"> 10 Interférence totale</label>
+        </div>
+        <p class="small_question">15. Votre capacité à <b>suivre des conversations</b> dans un groupe ou lors de
+          réunions ?</p>
+        <div class="answer">
+          <label>Aucune interférence<input type="radio" name="question15" value="0"> 0</label>
+          <label><input type="radio" name="question15" value="1"> 1</label>
+          <label><input type="radio" name="question15" value="2"> 2</label>
+          <label><input type="radio" name="question15" value="3"> 3</label>
+          <label><input type="radio" name="question15" value="4"> 4</label>
+          <label><input type="radio" name="question15" value="5"> 5</label>
+          <label><input type="radio" name="question15" value="6"> 6</label>
+          <label><input type="radio" name="question15" value="7"> 7</label>
+          <label><input type="radio" name="question15" value="8"> 8</label>
+          <label><input type="radio" name="question15" value="9"> 9</label>
+          <label><input type="radio" name="question15" value="10"> 10 Interférence totale</label>
+        </div>
+
+        <p class="question">R. Au cours de la SEMAINE DERNIÈRE, dans quel mesure vos acouphènes ont-ils interférés
+          avec ...</p>
+
+        <p class="small_question">16. Vos <b>activités calmes et reposantes </b> ?</p>
+        <div class="answer">
+          <label>Aucune interférence<input type="radio" name="question16" value="0"> 0</label>
+          <label><input type="radio" name="question16" value="1"> 1</label>
+          <label><input type="radio" name="question16" value="2"> 2</label>
+          <label><input type="radio" name="question16" value="3"> 3</label>
+          <label><input type="radio" name="question16" value="4"> 4</label>
+          <label><input type="radio" name="question16" value="5"> 5</label>
+          <label><input type="radio" name="question16" value="6"> 6</label>
+          <label><input type="radio" name="question16" value="7"> 7</label>
+          <label><input type="radio" name="question16" value="8"> 8</label>
+          <label><input type="radio" name="question16" value="9"> 9</label>
+          <label><input type="radio" name="question16" value="10"> 10 Interférence totale</label>
+        </div>
+        <p class="small_question">17. Votre capacité à <b>vous relaxer</b> ?</p>
+        <div class="answer">
+          <label>Aucune interférence<input type="radio" name="question17" value="0"> 0</label>
+          <label><input type="radio" name="question17" value="1"> 1</label>
+          <label><input type="radio" name="question17" value="2"> 2</label>
+          <label><input type="radio" name="question17" value="3"> 3</label>
+          <label><input type="radio" name="question17" value="4"> 4</label>
+          <label><input type="radio" name="question17" value="5"> 5</label>
+          <label><input type="radio" name="question17" value="6"> 6</label>
+          <label><input type="radio" name="question17" value="7"> 7</label>
+          <label><input type="radio" name="question17" value="8"> 8</label>
+          <label><input type="radio" name="question17" value="9"> 9</label>
+          <label><input type="radio" name="question17" value="10"> 10 Interférence totale</label>
+        </div>
+        <p class="small_question">18. Votre capacité à apprécier <b>« le calme et la tranquillité »</b> ?</p>
+        <div class="answer">
+          <label>Aucune interférence<input type="radio" name="question18" value="0"> 0</label>
+          <label><input type="radio" name="question18" value="1"> 1</label>
+          <label><input type="radio" name="question18" value="2"> 2</label>
+          <label><input type="radio" name="question18" value="3"> 3</label>
+          <label><input type="radio" name="question18" value="4"> 4</label>
+          <label><input type="radio" name="question18" value="5"> 5</label>
+          <label><input type="radio" name="question18" value="6"> 6</label>
+          <label><input type="radio" name="question18" value="7"> 7</label>
+          <label><input type="radio" name="question18" value="8"> 8</label>
+          <label><input type="radio" name="question18" value="9"> 9</label>
+          <label><input type="radio" name="question18" value="10"> 10 Interférence totale</label>
+        </div>
+
+
+        <p class="question">Q. Au cours de la SEMAINE DERNIÈRE, dans quel mesure vos acouphènes ont-ils interférés
+          avec ...</p>
+
+        <p class="small_question">19. Votre capacité à apprécier <b>les activités sociales</b> ?</p>
+        <div class="answer">
+          <label>Aucune interférence<input type="radio" name="question19" value="0"> 0</label>
+          <label><input type="radio" name="question19" value="1"> 1</label>
+          <label><input type="radio" name="question19" value="2"> 2</label>
+          <label><input type="radio" name="question19" value="3"> 3</label>
+          <label><input type="radio" name="question19" value="4"> 4</label>
+          <label><input type="radio" name="question19" value="5"> 5</label>
+          <label><input type="radio" name="question19" value="6"> 6</label>
+          <label><input type="radio" name="question19" value="7"> 7</label>
+          <label><input type="radio" name="question19" value="8"> 8</label>
+          <label><input type="radio" name="question19" value="9"> 9</label>
+          <label><input type="radio" name="question19" value="10"> 10 Interférence totale</label>
+        </div>
+        <p class="small_question">20. Votre <b>capacité à profiter de la vie ?</b></p>
+        <div class="answer">
+          <label>Aucune interférence<input type="radio" name="question20" value="0"> 0</label>
+          <label><input type="radio" name="question20" value="1"> 1</label>
+          <label><input type="radio" name="question20" value="2"> 2</label>
+          <label><input type="radio" name="question20" value="3"> 3</label>
+          <label><input type="radio" name="question20" value="4"> 4</label>
+          <label><input type="radio" name="question20" value="5"> 5</label>
+          <label><input type="radio" name="question20" value="6"> 6</label>
+          <label><input type="radio" name="question20" value="7"> 7</label>
+          <label><input type="radio" name="question20" value="8"> 8</label>
+          <label><input type="radio" name="question20" value="9"> 9</label>
+          <label><input type="radio" name="question20" value="10"> 10 Interférence totale</label>
+        </div>
+        <p class="small_question">21. Vos <b>rapports</b> avec vos proches, vos amis et d'autres personnes ?</p>
+        <div class="answer">
+          <label>Aucune interférence<input type="radio" name="question21" value="0"> 0</label>
+          <label><input type="radio" name="question21" value="1"> 1</label>
+          <label><input type="radio" name="question21" value="2"> 2</label>
+          <label><input type="radio" name="question21" value="3"> 3</label>
+          <label><input type="radio" name="question21" value="4"> 4</label>
+          <label><input type="radio" name="question21" value="5"> 5</label>
+          <label><input type="radio" name="question21" value="6"> 6</label>
+          <label><input type="radio" name="question21" value="7"> 7</label>
+          <label><input type="radio" name="question21" value="8"> 8</label>
+          <label><input type="radio" name="question21" value="9"> 9</label>
+          <label><input type="radio" name="question21" value="10"> 10 Interférence totale</label>
+        </div>
+        <p class="small_question">22. À quelle fréquence vos acouphènes vous ont-ils empêché d'effectuer
+          <b>votre travail ou d'autres tâches</b>, comme le ménage, votre travail scolaire, garder des enfants ou
+          autres ?</p>
+        <div class="answer">
+          <label>N'ai jamais eu de difficultés<input type="radio" name="question22" value="0"> 0</label>
+          <label><input type="radio" name="question22" value="1"> 1</label>
+          <label><input type="radio" name="question22" value="2"> 2</label>
+          <label><input type="radio" name="question22" value="3"> 3</label>
+          <label><input type="radio" name="question22" value="4"> 4</label>
+          <label><input type="radio" name="question22" value="5"> 5</label>
+          <label><input type="radio" name="question22" value="6"> 6</label>
+          <label><input type="radio" name="question22" value="7"> 7</label>
+          <label><input type="radio" name="question22" value="8"> 8</label>
+          <label><input type="radio" name="question22" value="9"> 9</label>
+          <label><input type="radio" name="question22" value="10"> 10 Toujours eu des difficultés</label>
+        </div>
+
+
+        <p class="question">E. Au cours de la SEMAINE DERNIÈRE ...</p>
+
+
+        <p class="small_question">23. Vos acouphènes <b>vous ont-ils</b> inquiété <b>ou</b> angoissé ?</p>
+        <div class="answer">
+          <label>Ni inquiété, ni angoissé<input type="radio" name="question23" value="0"> 0</label>
+          <label><input type="radio" name="question23" value="1"> 1</label>
+          <label><input type="radio" name="question23" value="2"> 2</label>
+          <label><input type="radio" name="question23" value="3"> 3</label>
+          <label><input type="radio" name="question23" value="4"> 4</label>
+          <label><input type="radio" name="question23" value="5"> 5</label>
+          <label><input type="radio" name="question23" value="6"> 6</label>
+          <label><input type="radio" name="question23" value="7"> 7</label>
+          <label><input type="radio" name="question23" value="8"> 8</label>
+          <label><input type="radio" name="question23" value="9"> 9</label>
+          <label><input type="radio" name="question23" value="10"> 10 Fortement inquiété ou angoissé</label>
+        </div>
+        <p class="small_question">24. Dans quelle mesure avez-vous été <b>gêné(e)</b> ou <b>contrarié(e)</b> par
+          vos acouphènes ?</p>
+        <div class="answer">
+          <label>Ni gêné(e), ni contrarié(e)<input type="radio" name="question24" value="0"> 0</label>
+          <label><input type="radio" name="question24" value="1"> 1</label>
+          <label><input type="radio" name="question24" value="2"> 2</label>
+          <label><input type="radio" name="question24" value="3"> 3</label>
+          <label><input type="radio" name="question24" value="4"> 4</label>
+          <label><input type="radio" name="question24" value="5"> 5</label>
+          <label><input type="radio" name="question24" value="6"> 6</label>
+          <label><input type="radio" name="question24" value="7"> 7</label>
+          <label><input type="radio" name="question24" value="8"> 8</label>
+          <label><input type="radio" name="question24" value="9"> 9</label>
+          <label><input type="radio" name="question24" value="10"> 10 Fortement gêné(e) ou contrarié(e)</label>
+        </div>
+        <p class="small_question">25. Avez-vous été <b>déprimé(e)</b> à cause de vos acouphènes ?</p>
+        <div class="answer">
+          <label>Pas du tout déprimé(e)<input type="radio" name="question25" value="0"> 0</label>
+          <label><input type="radio" name="question25" value="1"> 1</label>
+          <label><input type="radio" name="question25" value="2"> 2</label>
+          <label><input type="radio" name="question25" value="3"> 3</label>
+          <label><input type="radio" name="question25" value="4"> 4</label>
+          <label><input type="radio" name="question25" value="5"> 5</label>
+          <label><input type="radio" name="question25" value="6"> 6</label>
+          <label><input type="radio" name="question25" value="7"> 7</label>
+          <label><input type="radio" name="question25" value="8"> 8</label>
+          <label><input type="radio" name="question25" value="9"> 9</label>
+          <label><input type="radio" name="question25" value="10"> 10 Fortement déprimé(e)</label>
+        </div>
+
+        <div class="buttons-container">
+          <button type="button" onclick="calculateScore()">Calculer le score</button>
+          <button type="reset" onclick="resetForm()">Réinitialiser</button>
+        </div>
+
+      </form>
+
+
+      <div id="result"></div>
+
+      <script>
+        function calculateScore() {
+          let total = 0;
+          let subscores = {
+            "Intrusive": 0, // Questions 1, 2, 3
+            "Sense of Control": 0, // Questions 4, 5, 6
+            "Cognitive": 0, // Questions 7, 8, 9
+            "Sleep": 0, // Questions 10, 11, 12
+            "Auditory": 0, // Questions 13, 14, 15
+            "Relaxation": 0, // Questions 16, 17, 18
+            "Quality of Life": 0, // Questions 19, 20, 21,22
+            "Emotional": 0 // Questions 23, 24, 25
+          };
+
+          // Get all radio buttons
+          const form = document.getElementById("TFI");
+          const radioButtons = form.querySelectorAll('input[type="radio"]:checked');
+
+          // Handle cases where not all questions are answered for a subscale
+        if (radioButtons.length < 25) {
+          document.getElementById("result").innerHTML = "<p style='text-align: center; color: red;'>Veuillez répondre à toutes les questions!</p>";
+          document.getElementById("result").style.display = "block";
+          return; // Exit if no questions are answered
+        }
+        
+
+
+          //if (radioButtons.length < 25) {
+            //alert("Veuillez répondre à toutes les questions avant de calculer le score.");
+            //return;
+          //}
+
+          radioButtons.forEach(radio => {
+            const questionName = radio.name;
+            const value = parseInt(radio.value);
+
+            // Add to total score (Q1 and Q3 are percentage, need to divide by 10)
+            if (questionName === "question1" || questionName === "question3") {
+              total += (value / 10);
+            } else {
+              total += value;
+            }
+
+            // Calculate subscores
+            if (['question1', 'question2', 'question3'].includes(questionName)) {
+              subscores["Intrusive"] += (questionName === "question1" || questionName === "question3") ? (value / 10) : value;
+            } else if (['question4', 'question5', 'question6'].includes(questionName)) {
+              subscores["Sense of Control"] += value;
+            } else if (['question7', 'question8', 'question9'].includes(questionName)) {
+              subscores["Cognitive"] += value;
+            } else if (['question10', 'question11', 'question12'].includes(questionName)) {
+              subscores["Sleep"] += value;
+            } else if (['question13', 'question14', 'question15'].includes(questionName)) {
+              subscores["Auditory"] += value;
+            } else if (['question16', 'question17', 'question18'].includes(questionName)) {
+              subscores["Relaxation"] += value;
+            } else if (['question19', 'question20', 'question21', 'question22'].includes(questionName)) {
+              subscores["Quality of Life"] += value;
+            } else if (['question23', 'question24', 'question25'].includes(questionName)) {
+              subscores["Emotional"] += value;
+            }
+          });
+
+          // Normalize scores to a scale of 0-100
+          // Total score is sum of 25 questions. Q1 and Q3 are 0-100%, others are 0-10.
+          // For Q1 and Q3, the values are 0, 10, 20...100. So we divide them by 10 to make them 0-10 scale.
+          // The maximum possible score is 25 * 10 = 250.
+          // To normalize to 0-100, divide by 2.5 (250 / 100).
+          total = (total / 2.5);
+
+          // Subscores (each subscale has 3 questions except Quality of Life with 4, and Intrusive with 3 where 2 are percentages)
+          // Intrusive (Q1, Q2, Q3): Max score (100/10 + 10 + 100/10) = 10 + 10 + 10 = 30. Normalized to 100: (score / 30) * 100
+          let intrusiveScore = (subscores["Intrusive"] / 30) * 100;
+          // Sense of Control (Q4, Q5, Q6): Max score 3 * 10 = 30. Normalized to 100: (score / 30) * 100
+          let senseOfControlScore = (subscores["Sense of Control"] / 30) * 100;
+          // Cognitive (Q7, Q8, Q9): Max score 3 * 10 = 30. Normalized to 100: (score / 30) * 100
+          let cognitiveScore = (subscores["Cognitive"] / 30) * 100;
+          // Sleep (Q10, Q11, Q12): Max score 3 * 10 = 30. Normalized to 100: (score / 30) * 100
+          let sleepScore = (subscores["Sleep"] / 30) * 100;
+          // Auditory (Q13, Q14, Q15): Max score 3 * 10 = 30. Normalized to 100: (score / 30) * 100
+          let auditoryScore = (subscores["Auditory"] / 30) * 100;
+          // Relaxation (Q16, Q17, Q18): Max score 3 * 10 = 30. Normalized to 100: (score / 30) * 100
+          let relaxationScore = (subscores["Relaxation"] / 30) * 100;
+          // Quality of Life (Q19, Q20, Q21, Q22): Max score 4 * 10 = 40. Normalized to 100: (score / 40) * 100
+          let qualityOfLifeScore = (subscores["Quality of Life"] / 40) * 100;
+          // Emotional (Q23, Q24, Q25): Max score 3 * 10 = 30. Normalized to 100: (score / 30) * 100
+          let emotionalScore = (subscores["Emotional"] / 30) * 100;
+
+
+          display(total, intrusiveScore, senseOfControlScore, cognitiveScore, sleepScore, auditoryScore, relaxationScore, qualityOfLifeScore, emotionalScore);
+        }
+
+        function display(total, intrusive, senseOfControl, cognitive, sleep, auditory, relaxation, qualityOfLife, emotional) {
+          let displayHtml = "<p style='text-align: center;'>Résultats</p>";
+          displayHtml += "<br>";
+          displayHtml += "<ul class='myList'>";
+          displayHtml += "<li>Le score total (0-100) : <b>" + total.toFixed(2) + "</b></li>";
+          displayHtml += "<br>";
+          displayHtml += "<li><b>Scores des sous-échelles (0-100) :</b></li>";
+          displayHtml += "<li>Intensité et Caractère Intrusif : " + intrusive.toFixed(2) + "</li>";
+          displayHtml += "<li>Sentiment de Contrôle : " + senseOfControl.toFixed(2) + "</li>";
+          displayHtml += "<li>Impact Cognitif : " + cognitive.toFixed(2) + "</li>";
+          displayHtml += "<li>Impact sur le Sommeil : " + sleep.toFixed(2) + "</li>";
+          displayHtml += "<li>Impact Auditif : " + auditory.toFixed(2) + "</li>";
+          displayHtml += "<li>Impact sur la Relaxation : " + relaxation.toFixed(2) + "</li>";
+          displayHtml += "<li>Impact sur la Qualité de Vie : " + qualityOfLife.toFixed(2) + "</li>";
+          displayHtml += "<li>Impact Émotionnel : " + emotional.toFixed(2) + "</li>";
+          displayHtml += "<p><b>Indication des scores</b> </p>";
+          displayHtml += "<li><b>0-17 :</b> Acouphènes non significatifs</li>";
+          displayHtml += "<li><b>18-30 :</b> Acouphènes légers</li>";
+          displayHtml += "<li><b>31-53 :</b> Acouphènes modérés</li>";
+          displayHtml += "<li><b>54-72 :</b> Acouphènes sévères</li>";
+          displayHtml += "<li><b>73-100 :</b> Acouphènes très sévères/catastrophiques</li>";
+          displayHtml += "</ul>";
+
+          document.getElementById("result").innerHTML = displayHtml;
+          document.getElementById("result").style.display = "block";
+        }
+
+        function resetForm() {
+          document.getElementById("TFI").reset();
+          document.getElementById("result").innerHTML = "";
+          document.getElementById("result").style.display = "none";
+        }
+      </script>
+    </div>
+  </body>
+
+</html>
