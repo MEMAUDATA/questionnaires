@@ -10,16 +10,7 @@
         font-family: Montserrat, sans-serif;
       }
 
-      .container {
-        /* max-width: 800px;
-        margin: 20px auto;
-        padding: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;*/
-      }
-
       .question {
-        margin-bottom: 20px;
         background-color: #eeeeee;
         width: 100%;
         margin: 10px auto;
@@ -32,31 +23,26 @@
         margin: 10px auto;
         padding: 6px;
         text-align: left;
-        font-weight: bold;
       }
 
-
-
       .answer {
-        width: 95%;
-        margin: 20px auto;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
+        width: 100%;
+        margin: 5px auto;
+        text-align: center;
+  
       }
 
       .answer label {
-        margin-right: 15px;
         white-space: nowrap;
         display: inline-block;
         cursor: pointer;
         padding: 5px 0;
+        text-align: center;
+        font-style:italic;
       }
 
       .answer input[type="radio"] {
         margin-right: 5px;
-        transform: scale(1.2);
-        vertical-align: middle;
       }
 
 
@@ -73,7 +59,6 @@
         border: none;
         border-radius: 5px;
         background-color: #eeeeee;
-        transition: background-color 0.3s ease, color 0.3s ease;
       }
 
       .buttons-container button:hover {
@@ -83,7 +68,7 @@
 
       #result {
         text-align: center;
-        font-size: 20px;
+        font-size: 17px;
         margin-top: 30px;
         border: 1px solid #eeeeee;
         background-color: #eeeeee;
@@ -107,10 +92,10 @@
   </head>
 
   <body>
-    <div class="container">
+
       <h1 style="text-align: center;">Tinnitus Functional Index (TFI)</h1>
       <p style="text-align: center;">Meikle et al., 2011</p>
-      <p style="text-align: center;"><b>Consignes:</b></p>
+      <p style="text-align: center;"><b>Consignes</b></p>
       <p style="text-align: center;">Veuillez lire attentivement chaque question ci-dessous. Pour répondre à une question,
         sélectionnez UN des chiffres listés pour cette question, puis cliquez sur le bouton associé.</p>
       <br>
@@ -494,7 +479,7 @@
           <label><input type="radio" name="question24" value="7"> 7</label>
           <label><input type="radio" name="question24" value="8"> 8</label>
           <label><input type="radio" name="question24" value="9"> 9</label>
-          <label><input type="radio" name="question24" value="10"> 10 Fortement gêné(e) ou contrarié(e)</label>
+          <label><input type="radio" name="question24" value="10"> 10 Fortement gêné(e) ou contrarié(e) </label>
         </div>
         <p class="small_question">25. Avez-vous été <b>déprimé(e)</b> à cause de vos acouphènes ?</p>
         <div class="answer">
@@ -528,6 +513,7 @@
             "Intrusive": 0, // Questions 1, 2, 3
             "Sense of Control": 0, // Questions 4, 5, 6
             "Cognitive": 0, // Questions 7, 8, 9
+
             "Sleep": 0, // Questions 10, 11, 12
             "Auditory": 0, // Questions 13, 14, 15
             "Relaxation": 0, // Questions 16, 17, 18
@@ -628,7 +614,9 @@
           displayHtml += "<li>Impact sur la Relaxation : " + relaxation.toFixed(2) + "</li>";
           displayHtml += "<li>Impact sur la Qualité de Vie : " + qualityOfLife.toFixed(2) + "</li>";
           displayHtml += "<li>Impact Émotionnel : " + emotional.toFixed(2) + "</li>";
+          displayHtml += "<br>";
           displayHtml += "<p><b>Indication des scores</b> </p>";
+          displayHtml += "<br>";
           displayHtml += "<li><b>0-17 :</b> Acouphènes non significatifs</li>";
           displayHtml += "<li><b>18-30 :</b> Acouphènes légers</li>";
           displayHtml += "<li><b>31-53 :</b> Acouphènes modérés</li>";

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>miniHQ9</title>
+    <style>
+
+      body {
+        font-family: Montserrat, sans-serif;
+        color :black;
+
+      }
+
+
+      .question {
+        margin-bottom: 15px;
+      }
+
+
+      table {
+        width: 90% !important;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+
+      th, td {
+        border: 1px solid black !important;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #eeeeee;
+        color: black !important;
+        text-align: center;
+      }
+
+
+      input[type="radio"] {
+        display: flex;
+        align-items: center; 
+        justify-content: center; 
+        margin: 0 auto; 
+      }
+
+     .buttons-container {
+        text-align: center;
+        margin-top: 30px;
+      }
+      .buttons-container button {
+        padding: 12px 25px;
+        margin: 0 10px;
+        font-size: 17px;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        background-color: #eeeeee;
+
+      }
+
+      .buttons-container button:hover {
+        background-color: #0056b3;
+        color : white;
+      }
+
+      #result { /* Correction ici : cibler l'ID directement */
+        text-align: center;
+        font-size: 20px;
+        margin-top: 30px;
+        border: 1px solid #eeeeee;
+        background-color: #eeeeee;
+        padding: 15px;
+        display: none;
+        border-radius: 5px;
+        padding: 15px;
+        display:none;
+      }
+
+    </style>
+  </head>
+  <body>
+    <h1 style="text-align: center;">mini HQ9 (hyperacousie)</h1>
+    <p style="text-align: center;">Goebel et al., 2024</p>
+    <br>
+
+    <form id="MHQ9">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 400px;">Questions</th>
+            <th style="text-align: center; width: 70px;">Toujours vrai</th>
+            <th style="text-align: center; width: 70px;">Souvent vrai</th>
+            <th style="text-align: center; width: 70px;">Parfois vrai</th>
+            <th style="text-align: center; width: 70px;">Pas vrai</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1) Je dois éviter certains bruits</td>
+            <td><input type="radio" name="hq1" value="3"></td>
+            <td><input type="radio" name="hq1" value="2"></td>
+            <td><input type="radio" name="hq1" value="1"></td>
+            <td><input type="radio" name="hq1" value="0"></td>
+          </tr>
+          <tr>
+            <td>2) J'ai peur du bruit </td>
+            <td><input type="radio" name="hq2" value="3"></td>
+            <td><input type="radio" name="hq2" value="2"></td>
+            <td><input type="radio" name="hq2" value="1"></td>
+            <td><input type="radio" name="hq2" value="0"></td>
+          </tr>
+          <tr>
+            <td>3) Les sons forts ou désagréables me mettent en colère </td>
+            <td><input type="radio" name="hq3" value="3"></td>
+            <td><input type="radio" name="hq3" value="2"></td>
+            <td><input type="radio" name="hq3" value="1"></td>
+            <td><input type="radio" name="hq3" value="0"></td>
+          </tr>
+          <tr>
+            <td>4) Je pense que je ne pourrai plus faire face si mon hypersensiblité se maintient </td>
+            <td><input type="radio" name="hq4" value="3"></td>
+            <td><input type="radio" name="hq4" value="2"></td>
+            <td><input type="radio" name="hq4" value="1"></td>
+            <td><input type="radio" name="hq4" value="0"></td>
+          </tr>
+          <tr>
+            <td>5) Lorsque j'entends un bruit fort je me retire tout de suite ? </td>
+            <td><input type="radio" name="hq5" value="3"></td>
+            <td><input type="radio" name="hq5" value="2"></td>
+            <td><input type="radio" name="hq5" value="1"></td>
+            <td><input type="radio" name="hq5" value="0"></td>
+          </tr>
+          <tr>
+            <td>6) Eprouvez-vous des difficultés pour entendre une conversation au milieu d'un envrironnement bruyant? </td>
+            <td><input type="radio" name="hq6" value="3"></td>
+            <td><input type="radio" name="hq6" value="2"></td>
+            <td><input type="radio" name="hq6" value="1"></td>
+            <td><input type="radio" name="hq6" value="0"></td>
+          </tr>
+          <tr>
+            <td>7) Le bruit dans certaines situations sociales (restaurants, concerts, feu d'artifice) vous est-il pénible ?</td>
+            <td><input type="radio" name="hq7" value="3"></td>
+            <td><input type="radio" name="hq7" value="2"></td>
+            <td><input type="radio" name="hq7" value="1"></td>
+            <td><input type="radio" name="hq7" value="0"></td>
+          </tr>
+          <tr>
+            <td>8) Si l'on vous propose une activité ( sortie,cinéma, concert) pensez-vous tout de suite au bruit que vous aurez à supporter ?</td>
+            <td><input type="radio" name="hq8" value="3"></td>
+            <td><input type="radio" name="hq8" value="2"></td>
+            <td><input type="radio" name="hq8" value="1"></td>
+            <td><input type="radio" name="hq8" value="0"></td>
+          </tr>
+          <tr>
+            <td>9) Votre capacité de concentration dans le bruit est-elle diminuée par le stress ou la fatigue ?</td>
+            <td><input type="radio" name="hq9" value="3"></td>
+            <td><input type="radio" name="hq9" value="2"></td>
+            <td><input type="radio" name="hq9" value="1"></td>
+            <td><input type="radio" name="hq9" value="0"></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="buttons-container">
+        <button type="button" onclick="calculateScore()">Calculer le score</button>
+        <button type="reset" onclick="resetForm()">Réinitialiser</button>
+      </div>
+
+
+      <div id="result"></div>
+
+    </form>
+
+    <script>
+      function calculateScore() {
+        const form = document.getElementById("MHQ9");
+        let score_hyperacousie = 0;
+
+        for (let i = 1; i <= 9; i++) {
+          const question = form.elements["hq" + i];
+          for (let j = 0; j < question.length; j++) {
+            if (question[j].checked) {
+              score_hyperacousie += parseInt(question[j].value);
+              break;
+            }
+          }
+        }
+
+        displayResult_hyperacousie(score_hyperacousie);
+      }
+
+      function displayResult_hyperacousie(score_hyperacousie) {
+        const resultsDiv = document.getElementById("result");
+        let displayHtml = "<p style='text-align: center;'>Résultats</p>";
+        displayHtml += "<p>Le score est : " + score_hyperacousie + "<p>";
+
+        if (score_hyperacousie >= 0 && score_hyperacousie <= 8) {
+            displayHtml += "Cela indique un grade 1 (score compris entre 0-8)";
+        } else if (score_hyperacousie >= 9 && score_hyperacousie <= 13) {
+            displayHtml += "Cela indique un grade 2 (score compris entre 9-13)";
+        } else if (score_hyperacousie >= 14 && score_hyperacousie <= 18) {
+            displayHtml += "Cela indique un grade 3 (score compris entre 14-18)";
+        }
+        else if (score_hyperacousie >= 19 && score_hyperacousie <= 27) {
+            displayHtml += " Cela indique un grade 4 (score compris entre 19-27)";
+        }
+
+        displayHtml += "<p> Seuil hypercousie : 11/27 </p>"; 
+        resultsDiv.innerHTML = displayHtml;
+        resultsDiv.style.display = "block";
+
+        
+       
+      }
+
+      function resetForm() {
+        document.getElementById("MHQ9").reset();
+        document.getElementById("result").innerHTML = "";
+        document.getElementById("result").style.display = "none";
+      }
+    </script>
+
+  </body>
+</html>
+
