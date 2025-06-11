@@ -90,7 +90,7 @@
 
       #result { /* Correction ici : cibler l'ID directement */
         text-align: center;
-        font-size: 20px;
+        font-size: 17px;
         margin-top: 30px;
         border: 1px solid #eeeeee;
         background-color: #eeeeee;
@@ -1057,14 +1057,14 @@
         display += "<br>"; 
         display += "<ul class='myList'>"; 
 
-        display += "<li> Domaine : Audition de la parole (voix masculine) : " + male_voice.toFixed(2) + "</li>" ;
-        display += "<li> Domaine : Audition de la parole (voix féminine) : " + female_voice.toFixed(2) + "</li>" ;
-        display += "<li> Domaine : Audition de la parole (voix d'enfant) : " + children_voice.toFixed(2) + "</li>"; 
-        display += "<li> Domaine : Audition de la musique : " + music.toFixed(2)+ "</li>" ;
-        display += "<li> Domaine : Localisation sonore : " + sound_localization.toFixed(2) + "</li>" ;
-        display += "<li> Domaine : Compréhension de la parole dans le calme : " + speech_quiet.toFixed(2) + "</li>" ;
-        display += "<li> Domaine : Compréhension de la parole dans le bruit (bruit et cible mélangés) : " + speech_noise_target_noise_mixed.toFixed(2) + "</li>" ;
-        display += "<li> Domaine : Compréhension de la parole dans le bruit (bruit et cible séparés) : " + speech_noise_target_noise_separated.toFixed(2) + "</li>" ;
+        display += "<li> Audition de la parole (voix masculine) : " + male_voice.toFixed(2) + "</li>" ;
+        display += "<li> Audition de la parole (voix féminine) : " + female_voice.toFixed(2) + "</li>" ;
+        display += "<li> Audition de la parole (voix d'enfant) : " + children_voice.toFixed(2) + "</li>"; 
+        display += "<li> Audition de la musique : " + music.toFixed(2)+ "</li>" ;
+        display += "<li> Localisation sonore : " + sound_localization.toFixed(2) + "</li>" ;
+        display += "<li> Compréhension de la parole dans le calme : " + speech_quiet.toFixed(2) + "</li>" ;
+        display += "<li> Compréhension de la parole dans le bruit (bruit et cible mélangés) : " + speech_noise_target_noise_mixed.toFixed(2) + "</li>" ;
+        display += "<li> Compréhension de la parole dans le bruit (bruit et cible séparés) : " + speech_noise_target_noise_separated.toFixed(2) + "</li>" ;
 
         display += "</ul>";
         document.getElementById("result").innerHTML = display;
