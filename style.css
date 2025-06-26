@@ -44,88 +44,18 @@ th {
     color: black;
   }
 
-/* Questions style for each questionnaires */
 
-/* --- ACOUPHENES --- */
-/* BAHIA */
-.Question_Bahia{
-    text-align: left; 
+tr:hover {
+    background-color: #e0f2f1; /* Light hover effect */
 }
-.Réponses_Bahia {
+
+.Error_message_not_all_answered {
+    color: #2B176C; 
     text-align: center;
-    margin-top: 5px;
-    margin-bottom: 25px;
-}
-
-.bahia_small_table {
-    width: 30%;
-    border-collapse: collapse;
-    margin: auto;
-    border: 1px solid #eeeeee;
-}
-
-/* KHALFA */
-.Question_Khalfa {
-    text-align: left; 
-}
-/* MASH */
-.situation {
-    text-align: left; 
   }
-/* miniHQ9 */
-.Question_miniHQ9{
-    text-align: left; 
-}
 
-/* Nelting */
-.Question_Nelting {
-    text-align: left; 
-}
-
-/* THI */
-.options {
-    display: flex;
-    align-items: center;
-}
-
-.option {
-    margin-right: 10px;
-    color: black !important;
-}
-
-.Question_THI {
-    text-align: left; 
-}
-
-
-
-/* --- AUTRES --- */
-/* EHI */
-.EHI_menu{
-    width:250px;
-    padding:5px;
-    border: 1px solid #eeeeee;
-    background-color: #eeeeee;
-    color: black !important;
-    font-size: 15px !important;
-    font-family: 'Montserrat', sans-serif, !important;
-}
-
-
-/* --- PREMS --- */
-/* --- PROMS --- */
-
-
-
-
-.question-main {
-    background-color: #eeeeee;
-    font-weight: bold;
-    color:black !important;
-}
 
 /* Inputs */
-
 input[type="radio"],
 input[type='range'],
 input[type='checkbox'] {
@@ -196,7 +126,6 @@ input[type="radio"] {
     color : white;
 }
 
-
 /* results section */
 #results { 
     text-align: center;
@@ -213,3 +142,96 @@ ul.myList {
     display: inline-block;
     text-align: left;
 }
+
+/* Specific style for each questionnaires */
+/* --- ACOUPHENES --- */
+/* BAHIA */
+.Question_Bahia{
+    text-align: left; 
+}
+.Réponses_Bahia {
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 25px;
+}
+
+.bahia_small_table {
+    width: 30%;
+    border-collapse: collapse;
+    margin: auto;
+    border: 1px solid #eeeeee;
+}
+
+/* KHALFA */
+.Question_Khalfa {
+    text-align: left; 
+}
+/* MASH */
+.situation {
+    text-align: left; 
+  }
+  
+/* miniHQ9 */
+.Question_miniHQ9{
+    text-align: left; 
+}
+
+/* Nelting */
+.Question_Nelting {
+    text-align: left; 
+}
+
+/* THI */
+.options {
+    display: flex;
+    align-items: center;
+}
+
+.option {
+    margin-right: 10px;
+    color: black !important;
+}
+
+.Question_THI {
+    text-align: left; 
+}
+
+
+
+/* --- AUTRES --- */
+/* EHI */
+.EHI_menu{
+    width:250px;
+    padding:5px;
+    border: 1px solid #eeeeee;
+    background-color: #eeeeee;
+    color: black !important;
+    font-size: 15px !important;
+}
+.Question_EHI {
+    text-align: left; 
+}
+
+
+/* HHIE-S */
+.Question_HHIES {
+    text-align: left; 
+}
+
+#HHIE-S tr:nth-child(odd) {
+    background-color: #eeeeee;
+  }
+
+
+/* --- PREMS --- */
+/* --- PROMS --- */
+
+
+
+
+.question-main {
+    background-color: #eeeeee;
+    font-weight: bold;
+    color:black !important;
+}
+
