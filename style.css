@@ -1,0 +1,215 @@
+/* 
+    file:  style.css
+    author: Nicolas VANNSON (hello@memau.eu)
+    author: Paul APTEL (hello@memau.eu)
+    version: 1.0
+    date: 25-06-2025
+    Licence: EUPL v1.2
+    détails: Fichier style.css pour l'ensemble des questionnaires .html qui sont présent sur 
+    MEMAUDATA.
+*/
+
+
+/* Body */
+body {
+    font-family: Rethink Regular, sans-serif;
+    color: black;
+}
+
+
+h1,h2,h3,p {
+    text-align: center;
+}
+
+/* table*/
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid #eeeeee;
+}
+
+th, td {
+    padding: 5px;
+    text-align: center;
+    border: 1px solid #eeeeee;
+    color:black !important;
+}
+
+th {
+    background-color: #eeeeee;
+    color: black;
+  }
+
+/* Questions style for each questionnaires */
+
+/* --- ACOUPHENES --- */
+/* BAHIA */
+.Question_Bahia{
+    text-align: left; 
+}
+.Réponses_Bahia {
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 25px;
+}
+
+.bahia_small_table {
+    width: 30%;
+    border-collapse: collapse;
+    margin: auto;
+    border: 1px solid #eeeeee;
+}
+
+/* KHALFA */
+.Question_Khalfa {
+    text-align: left; 
+}
+/* MASH */
+.situation {
+    text-align: left; 
+  }
+/* miniHQ9 */
+.Question_miniHQ9{
+    text-align: left; 
+}
+
+/* Nelting */
+.Question_Nelting {
+    text-align: left; 
+}
+
+/* THI */
+.options {
+    display: flex;
+    align-items: center;
+}
+
+.option {
+    margin-right: 10px;
+    color: black !important;
+}
+
+.Question_THI {
+    text-align: left; 
+}
+
+
+
+/* --- AUTRES --- */
+/* EHI */
+.EHI_menu{
+    width:250px;
+    padding:5px;
+    border: 1px solid #eeeeee;
+    background-color: #eeeeee;
+    color: black !important;
+    font-size: 15px !important;
+    font-family: 'Montserrat', sans-serif, !important;
+}
+
+
+/* --- PREMS --- */
+/* --- PROMS --- */
+
+
+
+
+.question-main {
+    background-color: #eeeeee;
+    font-weight: bold;
+    color:black !important;
+}
+
+/* Inputs */
+
+input[type="radio"],
+input[type='range'],
+input[type='checkbox'] {
+    accent-color: #2B176C;
+}
+
+input[type="radio"] {
+    margin: 5px;
+}
+
+/*input[type="radio"] {
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    margin: 0 auto; 
+  }*/
+
+
+/* Sliders options */
+.slider {
+    width: 100%;
+    background: #ddd;
+    height: 10px;
+    border-radius:5px; 
+    outline: 0; 
+
+}
+
+.slider:hover {
+    opacity: 2;
+}
+
+.slider-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 110px;
+    margin-bottom: 20px;
+    font-size: 6px;
+}
+
+/* NaN question for SSQ...*/
+.na-checkbox {
+    text-align: center;
+    width: 110px;
+
+  }
+
+
+/* buttons */
+.buttons-container {
+    text-align: center;
+    margin-top: 30px;
+}
+.buttons-container button {
+    padding: 12px 25px;
+    margin: 0 10px;
+    font-size: 17px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #eeeeee;
+
+}
+
+.buttons-container button:hover {
+    background-color: #2B176C; /* MEMAUDATA color theme*/
+    color : white;
+}
+
+
+/* results section */
+#results { 
+    text-align: center;
+    font-size: 20px;
+    margin-top: 40px;
+    border: 1px solid #eeeeee;
+    background-color: #eeeeee;
+    display: none;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+ul.myList {
+    display: inline-block;
+    text-align: left;
+}
