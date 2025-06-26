@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSQ5</title>
+    <style>
+      body {
+        font-family: Montserrat, sans-serif;
+        color: black;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      th,
+      td {
+        border-top: 1px solid #808080 !important; /* !important should be used cautiously */
+        border-left: 1px solid #808080;
+        border-right: 1px solid #808080;
+        border-bottom: 1px solid #808080;
+        padding: 8px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f0f0f0;
+      }
+
+      input[type="radio"] {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+      }
+
+      .buttons-container {
+        text-align: center;
+        margin-top: 30px;
+      }
+      .buttons-container button {
+        padding: 12px 25px;
+        margin: 0 10px;
+        font-size: 17px;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        background-color: #eeeeee;
+
+      }
+      .buttons-container button:hover {
+        background-color: #0056b3;
+        color : white;
+      }
+
+      #result {
+        text-align: center;
+        font-size: 20px;
+        margin-top: 30px;
+        padding: 15px;
+        border: 1px solid #eeeeee;
+        background-color: #eeeeee;
+        display: none;
+        border-radius: 5px;
+      }
+
+      .na-checkbox {
+        text-align: center;
+        width: 110px;
+
+      }
+
+      .slider {
+        width: 100%;
+        background: #ddd;
+        height: 10px;
+        border-radius:5px; 
+        outline: 0; 
+
+      }
+
+      .slider:hover {
+        opacity: 2;
+      }
+
+      .slider-label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 110px;
+        margin-bottom: 20px;
+        font-size: 6px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1 style="text-align:center;">SSQ5</h1>
+    <p style="text-align: center;">Moulin et Richard, 2016</p>
+    <p style="text-align: center;"><b>Conseil pour répondre aux questions</b></p>
+    <p style="text-align: center;">Les questions suivantes concernent votre capacité et votre expérience en matière d’audition et d’écoute dans le cadre de
+      situations diverses.<br><br>
+      Déplacez le curseur (ou slider) situé à droite de chacune des questions, à l’endroit adéquat entre le 0 et le 10. Si le curseur se trouve au niveau de la valeur 10, cela signifie que vous êtes parfaitement capable de faire ou d’expérimenter ce qui est décrit dans la question correspondante. Si le curseur se trouve sur le 0, cela indique que vous n’êtes pratiquement pas en mesure de faire
+      ni d’expérimenter ce qui est décrit.<br><br>
+
+      <b>Nous espérons que toutes les questions sont pertinentes au regard de votre vie quotidienne.</b> Si ce n’est pas le cas
+      pour certaines questions, veuillez cocher la case « non applicable » (NA).</p>
+
+    <br>
+
+    <form id="ssq5-form">
+
+
+      <table>
+        <thead>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align:left; width:400px;">
+              1. Pouvez-vous avoir une conversation avec une personne si une autre personne ayant la voix aussi aigue ou grave
+              que celle de votre interlocuteur parle en même temps ?
+            </td>
+
+            <td style="text-align:center; width:400px;">
+              <div style="display:flex; justify-content:space-between;">
+                <span>Pas du tout</span>
+                <span>Parfaitement</span>
+              </div>
+              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q1">
+              <div style="display:flex; justify-content:space-between;">
+                <span>0</span>
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+                <span>6</span>
+                <span>7</span>
+                <span>8</span>
+                <span>9</span>
+                <span>10</span>
+              </div>
+            </td>
+
+            <td class="na-checkbox">
+              <input type="checkbox" id="q1_na">
+              <span style="float: right;">Non appliquable</span>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="text-align:left; width:400px;">
+              2. Vous êtes assis entre deux personnes. L’une d’elles commence à parler. Pouvez-vous dire immédiatement sans
+              regarder s’il s’agit de la personne assise à votre gauche ou à votre droite ?
+            </td>
+
+            <td style="text-align:center; width:400px;">
+              <div style="display:flex; justify-content:space-between;">
+                <span>Pas du tout</span>
+                <span>Parfaitement</span>
+              </div>
+              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q2">
+              <div style="display:flex; justify-content:space-between;">
+                <span>0</span>
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+                <span>6</span>
+                <span>7</span>
+                <span>8</span>
+                <span>9</span>
+                <span>10</span>
+              </div>
+            </td>
+
+            <td class="na-checkbox">
+              <input type="checkbox" id="q2_na">
+              <span style="float: right;">Non appliquable</span>
+            </td>
+          </tr>
+          <tr>
+            <td style="text-align:left; width:400px;">
+              3. Pouvez-vous indiquer immédiatement à quelle distance se trouve un bus ou un camion, juste en entendant le
+              bruit qu’il fait ?
+            </td>
+
+            <td style="text-align:center; width:400px;">
+              <div style="display:flex; justify-content:space-between;">
+                <span>Pas du tout</span>
+                <span>Parfaitement</span>
+              </div>
+              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q3">
+              <div style="display:flex; justify-content:space-between;">
+                <span>0</span>
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+                <span>6</span>
+                <span>7</span>
+                <span>8</span>
+                <span>9</span>
+                <span>10</span>
+              </div>
+            </td>
+
+            <td class="na-checkbox">
+              <input type="checkbox" id="q3_na">
+              <span style="float: right;">Non appliquable</span>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="text-align:left; width:400px;">
+              4. Les bruits quotidiens que vous entendez facilement sont-ils distincts (non brouillés)?
+            </td>
+
+            <td style="text-align:center; width:400px;">
+              <div style="display:flex; justify-content:space-between;">
+                <span>Pas du tout</span>
+                <span>Parfaitement</span>
+              </div>
+              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q4">
+              <div style="display:flex; justify-content:space-between;">
+                <span>0</span>
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+                <span>6</span>
+                <span>7</span>
+                <span>8</span>
+                <span>9</span>
+                <span>10</span>
+              </div>
+            </td>
+
+            <td class="na-checkbox">
+              <input type="checkbox" id="q4_na">
+              <span style="float: right;">Non appliquable</span>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="text-align:left; width:400px;">
+              5. Devez-vous vous concentrer intensément lorsque vous écoutez quelqu’un ou quelque chose ?
+            </td>
+
+            <td style="text-align:center; width:400px;">
+              <div style="display:flex; justify-content:space-between;">
+                <span>Concentration intense</span>
+                <span>Pas de concentration</span>
+              </div>
+              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q5">
+              <div style="display:flex; justify-content:space-between;">
+                <span>0</span>
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+                <span>6</span>
+                <span>7</span>
+                <span>8</span>
+                <span>9</span>
+                <span>10</span>
+              </div>
+            </td>
+
+            <td class="na-checkbox">
+              <input type="checkbox" id="q5_na">
+              <span style="float: right;">Non appliquable</span>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+
+
+
+      <div class="buttons-container ">
+        <button type="button" onclick="calculerScores()">Calculer les scores</button>
+        <button type="reset" onclick="resetForm()">Réinitialiser</button>
+      </div>
+
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+      function calculerScores() {
+        let score = 0;
+        let countNa = 0;
+
+        // Slider and Na id
+        const sliderIds = ["q1", "q2", "q3", "q4", "q5"];
+        const naCheckboxIds = ["q1_na", "q2_na", "q3_na", "q4_na", "q5_na"];
+
+
+        // Loop
+        for (let i = 0; i < sliderIds.length; i++) {
+          const slider = document.getElementById(sliderIds[i]);
+          const naCheckbox = document.getElementById(naCheckboxIds[i]);
+
+          if (naCheckbox.checked) {
+            countNa++; // Increment countNa, not add countNa to itself
+          } else {
+            score += parseFloat(slider.value, 10);
+          }
+        } // end loop
+
+        score = score / (5 - countNa);
+
+
+        displayscores(score);
+      } // end function
+
+
+
+      function displayscores(score) {
+        document.getElementById("result").textContent = "Le score total est " + score.toFixed(2);
+        document.getElementById('result').style.display = 'block';
+      } // end function
+
+
+      function resetForm() {
+        document.getElementById("ssq5-form").reset();
+        document.getElementById("result").innerHTML = "";
+        document.getElementById('result').style.display = 'none';
+      } // end function
+    </script>
+  </body>
+
+</html>

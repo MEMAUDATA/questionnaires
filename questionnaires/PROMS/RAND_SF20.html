@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SF20</title>
+    <style>
+     body {
+    font-family: Montserrat, sans-serif;
+    color:black;
+    }
+
+    table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid #eeeeee;
+    }
+
+
+    th, td {
+    padding: 5px;
+    text-align: center;
+    border: 1px solid #eeeeee;
+    color:black !important;
+    }
+
+    .question-main {
+    background-color: #eeeeee;
+    font-weight: bold;
+    color:black !important;
+    }
+
+
+    input[type="radio"] {
+    margin: 5px;
+    }
+
+
+    .buttons-container {
+    text-align: center;
+    margin-top: 30px;
+    }
+    .buttons-container button {
+    padding: 12px 25px;
+    margin: 0 10px;
+    font-size: 17px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #eeeeee;
+
+    }
+
+    .buttons-container button:hover {
+    background-color: #0056b3;
+    color : white;
+    }
+
+    #result { /* Correction ici : cibler l'ID directement */
+    text-align: center;
+    font-size: 20px;
+    margin-top: 30px;
+    border: 1px solid #eeeeee;
+    background-color: #eeeeee;
+    padding: 15px;
+    display: none;
+    border-radius: 5px;
+    padding: 15px;
+    }
+
+    ul.myList {
+    display: inline-block;
+    text-align: left;
+    }
+
+     
+    </style>
+  </head>
+  <body>
+    <h1 style="text-align: center;">Questionnaire d'état de santé SF20 (version 1.0)</h1>
+    <p style="text-align: center;">Stewart et al., 1988</p>
+    <p style="text-align: center;"><b>COMMENT REPONDRE</b></p>
+    <p style="text-align: center;">Les questions, qui suivent, portent sur votre état de santé tel que vous le ressentez. Ces informations nous permettront de mieux savoir comment vous vous sentez dans la vie de tous les jours. <b>Veuillez répondre à toutes les questions</b> en cochant la case correspondant à la réponse choisie. Si vous ne savez pas très bien comment répondre, choisissez la réponse la plus adaptée à votre situation.</p>
+    <br>
+
+    <form id="SF20">
+
+      <table>
+        <tbody>
+          <tr>
+            <td colspan="5" class="question-main">
+              1. Dans l'ensemble, pensez-vous que votre santé est :
+            </td>
+          </tr>
+          <tr>
+            <td class="flex-center"><label><input type="radio" name="q1" value="5"> Excellente</label></td>
+            <td class="flex-center"><label><input type="radio" name="q1" value="4"> Très bonne</label></td>
+            <td class="flex-center"><label><input type="radio" name="q1" value="3"> Bonne</label></td>
+            <td class="flex-center"><label><input type="radio" name="q1" value="2"> Médiocre</label></td>
+            <td class="flex-center"><label><input type="radio" name="q1" value="1"> Mauvaise</label></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table>
+        <thead>
+          <tr>
+            <th colspan="4" class="question-main">
+              2. Voici une liste d'activités que vous pouvez avoir à faire dans votre vie de tous les jours. Pour chacune d'entre elles indiquez si vous êtes limité(e) en raison de votre état de santé actuel.
+            </th>
+          </tr>
+          <tr>
+            <th style="text-align:center;color: black !important;">Listes d'activités</th>
+            <th class="response-options">Oui, depuis<br> plus de 3 mois</th>
+            <th class="response-options">Oui, depuis<br> moins de 3 mois</th>
+            <th class="response-options">Non</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="question-sub">a. Efforts physiques importants tels que courir, soulever un objet lourd, faire du sport</td>
+            <td class="flex-center"><label><input type="radio" name="q2a" value="1"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q2a" value="2"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q2a" value="3"></label></td>
+          </tr>
+          <tr>
+            <td class="question-sub">b. Efforts physiques modérés tels que déplacer une table, passer l'aspirateur, jouer aux boules</td>
+            <td class="flex-center"><label><input type="radio" name="q2b" value="1"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q2b" value="2"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q2b" value="3"></label></td>
+          </tr>
+          <tr>
+            <td class="question-sub">c. Monter plusieurs étages par l'escalier</td>
+            <td class="flex-center"><label><input type="radio" name="q2c" value="1"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q2c" value="2"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q2c" value="3"></label></td>
+          </tr>
+          <tr>
+            <td class="question-sub">d. Se pencher en avant, se mettre à genoux, s'accroupir</td>
+            <td class="flex-center"><label><input type="radio" name="q2d" value="1"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q2d" value="2"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q2d" value="3"></label></td>
+          </tr>
+          <tr>
+            <td class="question-sub">e. Marcher une centaine de mètres</td>
+            <td class="flex-center"><label><input type="radio" name="q2e" value="1"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q2e" value="2"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q2e" value="3"></label></td>
+          </tr>
+          <tr>
+            <td class="question-sub">f. Prendre un bain, une douche ou s'habiller</td>
+            <td class="flex-center"><label><input type="radio" name="q2f" value="1"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q2f" value="2"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q2f" value="3"></label></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table>
+        <tbody>
+          <tr>
+            <td colspan="6" class="question-main">
+              3. Au cours de ces 4 dernières semaines, quelle a été l'intensité de vos douleurs physiques ?
+            </td>
+          </tr>
+          <tr>
+            <td><label><input type="radio" name="q3" value="6"> Nulle</label></td>
+            <td><label><input type="radio" name="q3" value="5"> Très faible</label></td>
+            <td><label><input type="radio" name="q3" value="4"> Faible</label></td>
+            <td><label><input type="radio" name="q3" value="3"> Moyenne</label></td>
+            <td><label><input type="radio" name="q3" value="2"> Grande</label></td>
+            <td><label><input type="radio" name="q3" value="1"> Très grande</label></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table>
+        <tbody>
+          <tr>
+            <td colspan="3" class="question-main">
+              4. En raison de votre état de santé, avez-vous réduit le temps passé à votre travail ou à vos activités habituelles ?
+            </td>
+          </tr>
+          <tr>
+            <td ><label><input type="radio" name="q4" value="1"> Oui depuis plus de 3 mois</label></td>
+            <td><label><input type="radio" name="q4" value="2"> Oui depuis moins de 3 mois</label></td>
+            <td><label><input type="radio" name="q4" value="3"> Non</label></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table>
+        <tbody>
+          <tr>
+            <td colspan="3" class="question-main">
+              5. En raison de votre état de santé, Avez-vous eu des difficultés à faire votre travail ou toute autre activité ?
+            </td>
+          </tr>
+          <tr>
+            <td><label><input type="radio" name="q5" value="1"> Oui depuis plus de 3 mois</label></td>
+            <td><label><input type="radio" name="q5" value="2"> Oui depuis moins de 3 mois</label></td>
+            <td><label><input type="radio" name="q5" value="3"> Non</label></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table>
+        <thead>
+          <tr>
+            <th colspan="7" class="question-main">
+              6. Pour chaque question, veuillez indiquer la réponse qui vous semble la plus appropriée. Au cours de ces 4 dernières semaines, y a-t-il eu des moments où :
+            </th>
+          </tr>
+          <tr>
+            <th></th>
+            <th class="response-options">En permanence</th>
+            <th class="response-options">Très souvent</th>
+            <th class="response-options">Souvent</th>
+            <th class="response-options">Quelquefois</th>
+            <th class="response-options">Rarement</th>
+            <th class="response-options">Jamais</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="question-sub">a. Votre état de santé, vous a gêné(e) dans votre vie sociale et vos relations avec les autres, votre famille, vos amis, vos connaissances?</td>
+            <td class="flex-center"><label><input type="radio" name="q6a" value="1"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6a" value="2"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6a" value="3"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6a" value="4"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6a" value="5"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6a" value="6"></label></td>
+          </tr>
+          <tr>
+            <td class="question-sub">b. Vous vous êtes senti(e) très nerveux (se)?</td>
+            <td class="flex-center"><label><input type="radio" name="q6b" value="1"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6b" value="2"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6b" value="3"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6b" value="4"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6b" value="5"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6b" value="6"></label></td>
+          </tr>
+          <tr>
+            <td class="question-sub">c. Vous vous êtes senti(e) calme et détendu(e)?</td>
+            <td class="flex-center"><label><input type="radio" name="q6c" value="6"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6c" value="5"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6c" value="4"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6c" value="3"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6c" value="2"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6c" value="1"></label></td>
+          </tr>
+          <tr>
+            <td class="question-sub">d. Vous vous êtes senti(e) triste et abattu(e)?</td>
+            <td class="flex-center"><label><input type="radio" name="q6d" value="1"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6d" value="2"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6d" value="3"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6d" value="4"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6d" value="5"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6d" value="6"></label></td>
+          </tr>
+          <tr>
+            <td class="question-sub">e. Vous vous êtes senti(e) heureux (se)?</td>
+            <td class="flex-center"><label><input type="radio" name="q6e" value="6"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6e" value="5"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6e" value="4"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6e" value="3"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6e" value="2"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6e" value="1"></label></td>
+          </tr>
+          <tr>
+            <td class="question-sub">f. Vous vous êtes senti(e) si découragé(e) que rien ne pouvait vous remonter le moral?</td>
+            <td class="flex-center"><label><input type="radio" name="q6f" value="1"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6f" value="2"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6f" value="3"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6f" value="4"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6f" value="5"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q6f" value="6"></label></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table>
+        <thead>
+          <tr>
+            <th colspan="6" class="question-main">
+              7. Indiquez, pour chacune des phrases suivantes, dans quelle mesure elles sont vraies ou fausses dans votre cas:
+            </th>
+          </tr>
+          <tr>
+            <th></th>
+            <th class="response-options">Totalement vrai</th>
+            <th class="response-options">Plutôt vrai</th>
+            <th class="response-options">Je ne sais pas</th>
+            <th class="response-options">Plutôt faux</th>
+            <th class="response-options">Totalement faux</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="question-sub">a. Je tombe plus facilement malade que les autres</td>
+            <td class="flex-center"><label><input type="radio" name="q7a" value="1"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q7a" value="2"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q7a" value="3"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q7a" value="4"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q7a" value="5"></label></td>
+          </tr>
+          <tr>
+            <td class="question-sub">b. Je me porte aussi bien que n'importe qui</td>
+            <td class="flex-center"><label><input type="radio" name="q7b" value="5"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q7b" value="4"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q7b" value="3"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q7b" value="2"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q7b" value="1"></label></td>
+          </tr>
+          <tr>
+            <td class="question-sub">c. Je suis en excellente santé</td>
+            <td class="flex-center"><label><input type="radio" name="q7c" value="5"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q7c" value="4"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q7c" value="3"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q7c" value="2"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q7c" value="1"></label></td>
+          </tr>
+          <tr>
+            <td class="question-sub">d. Je m'attends à ce que ma santé se dégrade</td>
+            <td class="flex-center"><label><input type="radio" name="q7d" value="1"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q7d" value="2"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q7d" value="3"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q7d" value="4"></label></td>
+            <td class="flex-center"><label><input type="radio" name="q7d" value="5"></label></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="buttons-container">
+        <button type="button" onclick="calculateScore()">Calculer le score</button>
+        <button type="reset" onclick="resetForm()">Réinitialiser</button>
+        </div>
+
+      <div id="result"> </div>
+
+    </form>
+
+    <script>
+    function calculateScore() {
+    const form = document.getElementById('SF20');
+    let answeredQuestionsCount = 0;
+    const totalQuestions = 20; // 1 (Q1) + 6 (Q2a-f) + 1 (Q3) + 1 (Q4) + 1 (Q5) + 6 (Q6a-f) + 4 (Q7a-d)
+
+    const getRadioValue = (name) => {
+      const radios = form.elements[name];
+      if (radios) {
+        for (let i = 0; i < radios.length; i++) {
+          if (radios[i].checked) {
+            answeredQuestionsCount++;
+            return parseInt(radios[i].value);
+          }
+        }
+      }
+      return NaN; // Return NaN to indicate not answered
+    };
+
+    // Retrieve scores for each question/sub-question group
+    let scoreQ1 = getRadioValue('q1');
+
+    let scoreQ2_sub = [];
+    for (let i = 0; i < 6; i++) {
+      const charCode = 'a'.charCodeAt(0) + i;
+      scoreQ2_sub.push(getRadioValue(`q2${String.fromCharCode(charCode)}`));
+    }
+
+    let scoreQ3 = getRadioValue('q3');
+    let scoreQ4 = getRadioValue('q4');
+    let scoreQ5 = getRadioValue('q5');
+
+    let scoreQ6_sub = [];
+    for (let i = 0; i < 6; i++) {
+      const charCode = 'a'.charCodeAt(0) + i;
+      scoreQ6_sub.push(getRadioValue(`q6${String.fromCharCode(charCode)}`));
+    }
+
+    let scoreQ7_sub = [];
+    for (let i = 0; i < 4; i++) {
+      const charCode = 'a'.charCodeAt(0) + i;
+      scoreQ7_sub.push(getRadioValue(`q7${String.fromCharCode(charCode)}`));
+    }
+
+    // Check if all questions are answered
+  
+    if (answeredQuestionsCount <20) {
+        document.getElementById("result").innerHTML = "<p style='text-align: center; color: red;'>Veuillez répondre à toutes les questions!</p>";
+        document.getElementById("result").style.display = "block";
+      return;
+    }
+
+    // Initialize domain scores
+    let scorePF = 0; // Physical Functioning
+    let scoreRP = 0; // Role Physical
+    let scoreBP = 0; // Bodily Pain
+    let scoreSF = 0; // Social Functioning
+    let scoreMH = 0; // Mental Health
+    let scoreHT = 0; // Health Transition / General Health
+
+    // Physical Functioning (PF) - Q2a-f (6 items)
+    // Each item 1=Yes, much; 2=Yes, a little; 3=No, not at all
+    // Max score if all 'No, not at all' (3*6 = 18)
+    // Min score if all 'Yes, much' (1*6 = 6)
+    scorePF = scoreQ2_sub.reduce((sum, current) => sum + current, 0);
+
+    // Role Physical (RP) - Q4 & Q5 (2 items)
+    // Assuming 0=Yes, 1=No. Max score if both 'No' (1*2 = 2), Min score if both 'Yes' (0*2 = 0)
+    scoreRP = scoreQ4 + scoreQ5;
+
+    // Bodily Pain (BP) - Q3 (1 item)
+    // 1=Très grande to 6=Nulle. Max score is 6 (Nulle/no pain). Min score is 1 (Très grande/much pain).
+    scoreBP = scoreQ3;
+
+    // Custom raw score for BP (if needed for other purposes, not used in normalization below)
+    let scoreBPraw = 0;
+    if (scoreBP === 6) scoreBPraw = 1;
+    else if (scoreBP === 5) scoreBPraw = 2;
+    else if (scoreBP === 4) scoreBPraw = 3;
+    else if (scoreBP === 3) scoreBPraw = 4;
+    else if (scoreBP === 2) scoreBPraw = 5;
+    else if (scoreBP === 1) scoreBPraw = 6;
+
+
+    // Social Functioning (SF) - Q6a (1 item)
+    // 1=En permanence to 6=Jamais. Max score is 6 (Jamais/Never). Min score is 1 (En permanence/Always).
+    scoreSF = scoreQ6_sub[0];
+
+    // Mental Health (MH) - Q6b, c, d, e, f (5 items)
+    // Q6b (nervous): 1=En permanence to 6=Jamais (reverse scored for MH). Raw values: 1(worst) to 6(best)
+    // Q6c (calm): 6=En permanence to 1=Jamais. Raw values: 6(best) to 1(worst)
+    // Q6d (sad): 1=En permanence to 6=Jamais (reverse scored for MH). Raw values: 1(worst) to 6(best)
+    // Q6e (happy): 6=En permanence to 1=Jamais. Raw values: 6(best) to 1(worst)
+    // Q6f (discouraged): 1=En permanence to 6=Jamais (reverse scored for MH). Raw values: 1(worst) to 6(best)
+    // To get a coherent MH score where higher is better:
+    // Q6c and Q6e already align (6 is best).
+    // Q6b, Q6d, Q6f need to be reversed: (7 - raw_score) if 1-6 scale.
+    // Example: If Q6b value is 1 (En permanence), reversed is 6 (best). If Q6b value is 6 (Jamais), reversed is 1 (worst).
+    // It seems your form's values for Q6b,d,f might already be set up so that higher value means better mental health
+    // (e.g., 6 for "Jamais" is good for nervous/sad/discouraged). If so, no reversal needed here.
+    // Assuming your values are: 1 (worst) to 6 (best) for all Q6 items for mental health:
+    // Min score for MH (5 items): 5 * 1 = 5
+    // Max score for MH (5 items): 5 * 6 = 30
+    scoreMH = scoreQ6_sub[1] + scoreQ6_sub[2] + scoreQ6_sub[3] + scoreQ6_sub[4] + scoreQ6_sub[5];
+
+
+    // General Health (HT) - Q7a-d (4 items) + Q1 (Overall health)
+    // Q7a (sick): 1=T. vrai to 5=T. faux. If 1 is worst, 5 is best, then this is ok.
+    // Q7b (as well as anyone): 5=T. vrai to 1=T. faux. If 5 is best, 1 is worst, then this is ok.
+    // Q7c (excellent health): 5=T. vrai to 1=T. faux. If 5 is best, 1 is worst, then this is ok.
+    // Q7d (health worse): 1=T. vrai to 5=T. faux. If 1 is worst, 5 is best, then this is ok.
+    // Q1 (overall health): 1=Mauvaise to 5=Excellente. If 1 is worst, 5 is best, then this is ok.
+    // Min for Q7 is 4 (all 1s), Max for Q7 is 20 (all 5s).
+    // Q1 min 1, max 5. So, total HT min = 1+4 = 5. Max = 5+20 = 25.
+    scoreHT = scoreQ1 + scoreQ7_sub.reduce((sum, current) => sum + current, 0);
+
+
+    // Normalize scores to a 0-100 scale
+    // Normalization formula: ((Raw Score - Min Possible Raw Score) / (Max Possible Raw Score - Min Possible Raw Score)) * 100
+
+    // PF: Min=6 (all 1s), Max=18 (all 3s)
+    let nscorePF = ((scorePF - 6) / (18 - 6)) * 100;
+
+    // RP: Min=0 (both 0s), Max=2 (both 1s). Assumes Q4/Q5 values are 0 or 1.
+    let nscoreRP = ((scoreRP - 0) / (2 - 0)) * 100;
+
+    // BP: Min=1 (Très grande), Max=6 (Nulle). Higher score means less pain (better).
+    let nscoreBP = ((scoreBP - 1) / (6 - 1)) * 100;
+
+    // SF: Min=1 (En permanence), Max=6 (Jamais). Higher score means better social functioning.
+    let nscoreSF = ((scoreSF - 1) / (6 - 1)) * 100;
+
+    // MH: Min=5 (all 1s, worst mental health), Max=30 (all 6s, best mental health)
+    let nscoreMH = ((scoreMH - 5) / (30 - 5)) * 100;
+
+    // HT: Min = 5, Max = 25
+    let nscoreHT = ((scoreHT - 5) / (25 - 5)) * 100;
+
+    // The checks for isNaN are mostly redundant due to the allAnswered check, but harmless.
+    // You can remove them if you are confident allAnswered works perfectly.
+    if (isNaN(nscorePF)) nscorePF = 0;
+    if (isNaN(nscoreRP)) nscoreRP = 0;
+    if (isNaN(nscoreBP)) nscoreBP = 0;
+    if (isNaN(nscoreSF)) nscoreSF = 0;
+    if (isNaN(nscoreMH)) nscoreMH = 0;
+    if (isNaN(nscoreHT)) nscoreHT = 0;
+
+
+    display(nscorePF, nscoreBP, nscoreRP, nscoreSF, nscoreMH, nscoreHT);
+}
+
+function display(nscorePF, nscoreBP, nscoreRP, nscoreSF, nscoreMH, nscoreHT) {
+    const resultsDiv = document.getElementById("result");
+    let displayHtml = "<p style='text-align: center;'>Résultats</p>";
+    displayHtml += "<br>";
+    displayHtml += "<p> Les scores vont de 0 (faible niveau qualité de vie) à 100 (niveau très élevé).</p>";
+    displayHtml += "<ul class='myList'>";
+    displayHtml += "<li>Activité physique (PF) : " + nscorePF.toFixed(2) + "</li>";
+    displayHtml += "<li>Limitations dues à l’état physique (RP) : " + nscoreRP.toFixed(2) + "</li>";
+    displayHtml += "<li>Douleurs physiques (BP) : " + nscoreBP.toFixed(2) + "</li>";
+    displayHtml += "<li>Vie et relation avec les autres (SF) : " + nscoreSF.toFixed(2) + "</li>";
+    displayHtml += "<li>Santé psychique (MH) : " + nscoreMH.toFixed(2) + "</li>";
+    displayHtml += "<li>Évolution de la santé perçue (HT) : " + nscoreHT.toFixed(2) + "</li>";
+    displayHtml += "</ul>";
+
+    resultsDiv.innerHTML = displayHtml;
+    resultsDiv.style.display = "block";
+}
+
+function resetForm() {
+    document.getElementById("SF20").reset();
+    const resultsDiv = document.getElementById("result");
+    resultsDiv.innerHTML = "";
+    resultsDiv.style.display = "none";
+}
+    
+    </script>
+  </body>
+</html>
+
+
+

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EHI</title>
+    <style>
+      body {
+        font-family: Montserrat, sans-serif;
+
+      }
+      p,h1 {
+        text-align: center;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 15px;
+      }
+      th, td {
+        border: 1px solid #eeeeee;
+        padding: 8px;
+        text-align: left;
+        color: black !important;
+      }
+      th {
+        background-color: #eeeeee;
+      }
+
+      /*tr:hover {
+      background-color: #e0f2f1;
+      }*/
+
+      .buttons-container {
+        text-align: center;
+        margin-top: 30px;
+      }
+      .buttons-container button {
+        padding: 12px 25px;
+        margin: 0 10px;
+        font-size: 17px;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        background-color: #eeeeee;
+
+      }
+
+      .buttons-container button:hover {
+        background-color: #0056b3;
+        color : white;
+      }
+
+      #result { /* Correction ici : cibler l'ID directement */
+        text-align: center;
+        font-size: 20px;
+        margin-top: 30px;
+        border: 1px solid #eeeeee;
+        background-color: #eeeeee;
+        padding: 15px;
+        display: none;
+        border-radius: 5px;
+        padding: 15px;
+        display:none;
+      }
+
+      .menu{
+        width:250px;
+        padding:5px;
+        border: 1px solid #eeeeee;
+        background-color: #eeeeee;
+        color: black !important;
+        font-size: 15px !important;
+        font-family: 'Montserrat', sans-serif, !important;
+      }
+
+    </style>
+  </head>
+  <body>
+    <h1>Edinburgh Handedness Inventory (EHI)</h1>
+    <p>Oldfield, 1971 </p>
+    <p><b>Consignes</b></p>
+    <p>Veuillez sélectionner dans le menu déroulant, la façon dont
+      vous vous servez de vos mains. Si votre préférence est tellement forte que vous ne
+      considéreriez jamais votre autre main à moins d’y être forcé, veuillez l’indiquer en sélectionnant "Uniquement Main droite (ou gauche)". Si vous êtes indifférent, veuillez le préciser en choisissant "Pas de préférence".<br>
+      Certaines activités nécessitent deux mains, c’est pourquoi la main la plus importante des
+      deux est indiquée entre parenthèses.<br>
+      Essayer de répondre à toutes les questions. Si vous n’avez aucune expérience de
+      l’objet ou de la tâche mentionnée veuillez laisser la case vide.</p>
+    <br>
+    <form id="ehiForm">
+      <table>
+        <thead>
+          <tr>
+            <th>Question</th>
+            <th>Réponse</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1. Avec quelle main écrivez-vous ?</td>
+            <td>
+              <select id="q1" class="menu">
+                <option value="">Faire un choix</option>
+                <option value="+2">Uniquement main droite</option>
+                <option value="+1">Main droite </option>
+                <option value="0"> Pas de préférence</option>
+                <option value="-1">Main gauche</option>
+                <option value="-2">Uniquement main gauche</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>2. Avec quelle main dessinez-vous ?</td>
+            <td>
+              <select id="q2" class="menu">
+                <option value="">Faire un choix</option>
+                <option value="+2">Uniquement main droite</option>
+                <option value="+1">Main droite </option>
+                <option value="0"> Pas de préférence</option>
+                <option value="-1">Main gauche</option>
+                <option value="-2">Uniquement main gauche</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>3. Avec quelle main lancez-vous une balle pour viser un objectif ?</td>
+            <td>
+              <select id="q3" class="menu">
+                <option value="">Faire un choix</option>
+                <option value="+2">Uniquement main droite</option>
+                <option value="+1">Main droite </option>
+                <option value="0"> Pas de préférence</option>
+                <option value="-1">Main gauche</option>
+                <option value="-2">Uniquement main gauche</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>4. Avec quelle main tenez-vous une paire de ciseaux ?</td>
+            <td>
+              <select id="q4" class="menu">
+                <option value="">Faire un choix</option>
+                <option value="+2">Uniquement main droite</option>
+                <option value="+1">Main droite </option>
+                <option value="0"> Pas de préférence</option>
+                <option value="-1">Main gauche</option>
+                <option value="-2">Uniquement main gauche</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>5. Avec quelle main utilisez-vous une brosse à dents ?</td>
+            <td>
+              <select id="q5" class="menu">
+                <option value="">Faire un choix</option>
+                <option value="+2">Uniquement main droite</option>
+                <option value="+1">Main droite </option>
+                <option value="0"> Pas de préférence</option>
+                <option value="-1">Main gauche</option>
+                <option value="-2">Uniquement main gauche</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>6. Avec quelle main tenez-vous un couteau pour couper (sans fourchette) ?</td>
+            <td>
+              <select id="q6" class="menu">
+                <option value="">Faire un choix</option>
+                <option value="+2">Uniquement main droite</option>
+                <option value="+1">Main droite </option>
+                <option value="0"> Pas de préférence</option>
+                <option value="-1">Main gauche</option>
+                <option value="-2">Uniquement main gauche</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>7. Avec quelle main tenez-vous une cuillère ?</td>
+            <td>
+              <select id="q7" class="menu">
+                <option value="">Faire un choix</option>
+                <option value="+2">Uniquement main droite</option>
+                <option value="+1">Main droite </option>
+                <option value="0"> Pas de préférence</option>
+                <option value="-1">Main gauche</option>
+                <option value="-2">Uniquement main gauche</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>8. Avec quelle main tenez-vous un marteau ?</td>
+            <td>
+              <select id="q8" class="menu">
+                <option value="">Faire un choix</option>
+                <option value="+2">Uniquement main droite</option>
+                <option value="+1">Main droite </option>
+                <option value="0"> Pas de préférence</option>
+                <option value="-1">Main gauche</option>
+                <option value="-2">Uniquement main gauche</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>9. Avec quelle main tenez-vous une raquette de tennis ?</td>
+            <td>
+              <select id="q9" class="menu">
+                <option value="">Faire un choix</option>
+                <option value="+2">Uniquement main droite</option>
+                <option value="+1">Main droite </option>
+                <option value="0"> Pas de préférence</option>
+                <option value="-1">Main gauche</option>
+                <option value="-2">Uniquement main gauche</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>10. Avec quelle main allumez-vous une allumette ?</td>
+            <td>
+              <select id="q10" class="menu">
+                <option value="">Faire un choix</option>
+                <option value="+2">Uniquement main droite</option>
+                <option value="+1">Main droite </option>
+                <option value="0"> Pas de préférence</option>
+                <option value="-1">Main gauche</option>
+                <option value="-2">Uniquement main gauche</option>
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="buttons-container">
+        <button type="button" onclick="calculateScore()">Calculer le score</button>
+        <button type="reset" onclick="resetForm()">Réinitialiser</button>
+      </div>
+
+    </form>
+
+    <div id="result" style="text-align: center;"></div>
+
+    <script>
+      function calculateScore() {
+        let score = 0;
+        let countR = 0
+        let countL = 0;
+        const form = document.getElementById('ehiForm');
+        const dropdowns = form.querySelectorAll('select.menu');
+
+        dropdowns.forEach((selectElement) => {
+          const selectedValue = selectElement.value;
+          // Check if a value is selected (not the empty "Faire un choix" option)
+          if (selectedValue !== "") {
+            const numericValue = parseInt(selectedValue);
+            if (numericValue > 0) { countR += numericValue;}
+            else if (numericValue < 0) {countL += Math.abs(numericValue);}
+          }
+        });
+
+        // Forumule
+        let denominateur= countL+countR;
+        if (denominateur > 0) { 
+          score = ((countR - countL) / denominateur) * 100;
+          score = score.toFixed(2);
+        } else {
+          score = 0;
+        }
+        displayResult(score);
+      }
+
+
+      function displayResult(score) {
+        let resultText = "Le quotient de latéralité est " + score + ", la main dominante est donc  ";
+
+        if (score <= -40) {
+          resultText += "la gauche";
+        } else if (score >= 40) {
+          resultText += "la droite";
+        } else {
+          resultText += "indéterminée";
+        }
+
+        document.getElementById("result").innerHTML = resultText;
+        document.getElementById("result").style.display = "block";
+      }
+
+
+      function resetForm() {
+        document.getElementById("ehiForm").reset();
+        document.getElementById("result").innerHTML = "";
+        document.getElementById("result").style.display = "none";
+      }
+    </script>
+  </body>
+</html>

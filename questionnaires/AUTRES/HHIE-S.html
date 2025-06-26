@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HHIE-S</title>
+    <style>
+
+      /* Container for the table to ensure centering */
+      .container {
+        max-width:1000px;
+        width:100%;
+        margin-left: auto;
+        margin-right: auto;
+      
+
+      }
+
+
+      body {
+        font-family: 'Montserrat', sans-serif;
+ 
+
+      }
+
+      table {
+        margin-bottom: 15px;
+        margin-top: 15px;
+        border-collapse: collapse;
+        width:90%;
+        margin-left: auto;
+        margin-right: auto;
+
+      }
+
+      th, td {
+        border: 1px solid #eeeeee !important;
+        padding: 8px;
+        text-align: left;
+      }
+
+
+      tr:nth-child(odd) {
+        background-color: #eeeeee;
+      }
+
+      tr:hover {
+        background-color: #e0f2f1; /* Light hover effect */
+      }
+
+      input[type="radio"] {
+        display: flex;
+        align-items: center; 
+        justify-content: center; 
+        margin: 5px; 
+      }
+
+
+      .options {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width:150px;}
+
+      .buttons-container {
+        text-align: center;
+        margin-top: 30px;
+      }
+      .buttons-container button {
+        padding: 12px 25px;
+        margin: 0 10px;
+        font-size: 17px;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        background-color: #eeeeee;
+
+      }
+
+      .buttons-container button:hover {
+        background-color: #0056b3;
+        color : white;
+      }
+
+      #result { /* Correction ici : cibler l'ID directement */
+        text-align: center;
+        font-size: 20px;
+        margin-top: 30px;
+        border: 1px solid #eeeeee;
+        background-color: #eeeeee;
+        padding: 15px;
+        display: none;
+        border-radius: 5px;
+        padding: 15px;
+        display:none;
+      }
+
+
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 style="text-align: center;">Hearing Handicap Inventory for the Elderly-Screening (HHIE-S)</h1>
+      <p style="text-align: center;">Duchêne et al., 2022</p>
+      <br>
+      <form id="HHIE-S">
+        <table>
+          <thead>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width:870px">Vous sentez-vous mal à l’aiseà cause d’un problème d’audition lorsque vous rencontrez de nouvelles
+                personnes ?</td>
+              <td>
+                <div class="options">
+                  <label><input type="radio" name="q1" value="oui"> oui</label>
+                  <label><input type="radio" name="q1" value="parfois"> parfois</label>
+                  <label><input type="radio" name="q1" value="non"> non</label>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Vous sentez-vous frustré(e) par un problème d’audition lorsque vous parlez aux membres de votre famille ?</td>
+              <td>
+                <div class="options">
+                  <label><input type="radio" name="q2" value="oui"> oui</label>
+                  <label><input type="radio" name="q2" value="parfois"> parfois</label>
+                  <label><input type="radio" name="q2" value="non"> non</label>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Avez‐vous des difficultés pour entendre quand quelqu’un parle à voix basse ?</td>
+              <td>
+                <div class="options">
+                  <label><input type="radio" name="q3" value="oui"> oui</label>
+                  <label><input type="radio" name="q3" value="parfois"> parfois</label>
+                  <label><input type="radio" name="q3" value="non"> non</label>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Vous sentez‐vous handicapé(e) par un problème d’audition ?</td>
+              <td>
+                <div class="options">
+                  <label><input type="radio" name="q4" value="oui"> oui</label>
+                  <label><input type="radio" name="q4" value="parfois"> parfois</label>
+                  <label><input type="radio" name="q4" value="non"> non</label>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Est-ce qu’un problème d’audition vous met en difficulté lorsque vous rendez visite à des amis, parents,
+                voisins ?</td>
+              <td>
+                <div class="options">
+                  <label><input type="radio" name="q5" value="oui"> oui</label>
+                  <label><input type="radio" name="q5" value="parfois"> parfois</label>
+                  <label><input type="radio" name="q5" value="non"> non</label>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Assistez-vous moins souvent que vous le voudriez à certains évènements (spectacles, concerts, cérémonies
+                religieuses) à cause d’un problème d’audition ?</td>
+              <td>
+                <div class="options">
+                  <label><input type="radio" name="q6" value="oui"> oui</label>
+                  <label><input type="radio" name="q6" value="parfois"> parfois</label>
+                  <label><input type="radio" name="q6" value="non"> non</label>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Est-ce qu’un problème d’audition est à l’origine de disputes avec les membres de votre famille ?</td>
+              <td>
+                <div class="options">
+                  <label><input type="radio" name="q7" value="oui"> oui</label>
+                  <label><input type="radio" name="q7" value="parfois"> parfois</label>
+                  <label><input type="radio" name="q7" value="non"> non</label>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Est-ce qu’un problème d’audition vous met en difficulté pour écouter la TV ou la radio ?<td>
+              <div class="options">
+                <label><input type="radio" name="q8" value="oui"> oui</label>
+                <label><input type="radio" name="q8" value="parfois"> parfois</label>
+                <label><input type="radio" name="q8" value="non"> non</label>
+              </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Avez-vous l’impression qu’une quelconque difficulté d’audition limite ou gêne votre vie personnelle ou
+                sociale ?</td>
+              <td>
+                <div class="options">
+                  <label><input type="radio" name="q9" value="oui"> oui</label>
+                  <label><input type="radio" name="q9" value="parfois"> parfois</label>
+                  <label><input type="radio" name="q9" value="non"> non</label>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Est-ce qu’un problème d’audition vous met en difficulté lorsque vous êtes au restaurant avec des parents ou
+                des amis ?</td>
+              <td>
+                <div class="options">
+                  <label><input type="radio" name="q10" value="oui"> oui</label>
+                  <label><input type="radio" name="q10" value="parfois"> parfois</label>
+                  <label><input type="radio" name="q10" value="non"> non</label>
+                </div>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+
+        <div class="buttons-container">
+          <button type="button" onclick="calculateScoreHyperacousie()">Calculer le Score</button>
+          <button type="reset" onclick="resetFormHyperacousie()">Réinitialiser</button>
+        </div>
+
+
+        <div id="result"></div>
+
+
+      </form>
+    </div>
+    <script>
+      function calculateScoreHyperacousie() {
+        let score = 0;
+        let allAnswered = true; // Flag to track if all questions have been answered
+
+        for (let i = 1; i <= 10; i++) {
+          let q = document.querySelector(`input[name="q${i}"]:checked`);
+          if (!q) { // Check if a radio button for the current question is not checked
+            allAnswered = false;
+            break; // Exit the loop early if a question is unanswered
+          }
+
+
+          let value = q.value;
+          if (value === "oui") {
+            score += 4;
+          } else if (value === "parfois") {
+            score += 2;
+          } else if (value === "non") {
+            score += 0;
+          }
+        }
+        
+
+        if (allAnswered) {
+          displayResult(score); // Call your existing function to display the result
+        } else {
+          // Display a message to the user that not all questions have been answered
+          const resultDiv = document.getElementById("result"); // Assuming you have a div with id="result"
+          resultDiv.innerHTML = "<p style='color: red; font-weight: bold;text-align: center;'>Veuillez répondre à toutes les questions avant de calculer le score</p>";
+          resultDiv.style.display = "block"; // Make sure the result div is visible
+        }
+
+      }
+      function displayResult(score) {
+
+
+        let resultat = "Le score est " + score + " indique " ;
+
+        if (score  <= 8) {
+          resultat += "une probabilité de 11% d’avoir une perte auditive";
+        } else if (score >= 10 && score <= 16) {
+          resultat += "une probabilité de 74,5% d’avoir une perte auditive";
+        } else if (score >= 18 && score <= 40) {
+          resultat += "une probabilité de 94% d’avoir une perte auditive";
+        }
+
+        document.getElementById("result").innerHTML = resultat;
+        document.getElementById("result").style.display = "block";
+      }
+
+      function resetFormHyperacousie() {
+        document.getElementById("HHIE-S").reset();
+        document.getElementById("result").innerHTML = "";
+        document.getElementById("result").style.display = "none";
+      }
+    </script>
+
+  </body>
+</html>
