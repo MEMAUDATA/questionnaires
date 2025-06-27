@@ -1,108 +1,20 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
+    <meta name="author" content="Nicolas Vannson">
+    <meta name="contact" content="hello@memau.eu">
+    <meta name="license" content="EUPLv1.2">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HHIE-S</title>
     <style>
-
-      /* Container for the table to ensure centering */
-      .container {
-        max-width:1000px;
-        width:100%;
-        margin-left: auto;
-        margin-right: auto;
-      
-
-      }
-
-
-      body {
-        font-family: 'Montserrat', sans-serif;
- 
-
-      }
-
-      table {
-        margin-bottom: 15px;
-        margin-top: 15px;
-        border-collapse: collapse;
-        width:90%;
-        margin-left: auto;
-        margin-right: auto;
-
-      }
-
-      th, td {
-        border: 1px solid #eeeeee !important;
-        padding: 8px;
-        text-align: left;
-      }
-
-
-      tr:nth-child(odd) {
-        background-color: #eeeeee;
-      }
-
-      tr:hover {
-        background-color: #e0f2f1; /* Light hover effect */
-      }
-
-      input[type="radio"] {
-        display: flex;
-        align-items: center; 
-        justify-content: center; 
-        margin: 5px; 
-      }
-
-
-      .options {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width:150px;}
-
-      .buttons-container {
-        text-align: center;
-        margin-top: 30px;
-      }
-      .buttons-container button {
-        padding: 12px 25px;
-        margin: 0 10px;
-        font-size: 17px;
-        cursor: pointer;
-        border: none;
-        border-radius: 5px;
-        background-color: #eeeeee;
-
-      }
-
-      .buttons-container button:hover {
-        background-color: #0056b3;
-        color : white;
-      }
-
-      #result { /* Correction ici : cibler l'ID directement */
-        text-align: center;
-        font-size: 20px;
-        margin-top: 30px;
-        border: 1px solid #eeeeee;
-        background-color: #eeeeee;
-        padding: 15px;
-        display: none;
-        border-radius: 5px;
-        padding: 15px;
-        display:none;
-      }
-
-
-
+      /* style is within the style.css sheet */
     </style>
+    <title>HHIE-S</title>
   </head>
   <body>
-    <div class="container">
-      <h1 style="text-align: center;">Hearing Handicap Inventory for the Elderly-Screening (HHIE-S)</h1>
-      <p style="text-align: center;">Duchêne et al., 2022</p>
+
+      <h1>Hearing Handicap Inventory for the Elderly-Screening (HHIE-S)</h1>
+      <p>Duchêne et al., 2022</p>
       <br>
       <form id="HHIE-S">
         <table>
@@ -110,7 +22,7 @@
           </thead>
           <tbody>
             <tr>
-              <td style="width:870px">Vous sentez-vous mal à l’aiseà cause d’un problème d’audition lorsque vous rencontrez de nouvelles
+              <td class="Question_HHIES">Vous sentez-vous mal à l’aiseà cause d’un problème d’audition lorsque vous rencontrez de nouvelles
                 personnes ?</td>
               <td>
                 <div class="options">
@@ -121,7 +33,7 @@
               </td>
             </tr>
             <tr>
-              <td>Vous sentez-vous frustré(e) par un problème d’audition lorsque vous parlez aux membres de votre famille ?</td>
+              <td class="Question_HHIES">Vous sentez-vous frustré(e) par un problème d’audition lorsque vous parlez aux membres de votre famille ?</td>
               <td>
                 <div class="options">
                   <label><input type="radio" name="q2" value="oui"> oui</label>
@@ -131,7 +43,7 @@
               </td>
             </tr>
             <tr>
-              <td>Avez‐vous des difficultés pour entendre quand quelqu’un parle à voix basse ?</td>
+              <td class="Question_HHIES">Avez‐vous des difficultés pour entendre quand quelqu’un parle à voix basse ?</td>
               <td>
                 <div class="options">
                   <label><input type="radio" name="q3" value="oui"> oui</label>
@@ -141,7 +53,7 @@
               </td>
             </tr>
             <tr>
-              <td>Vous sentez‐vous handicapé(e) par un problème d’audition ?</td>
+              <td class="Question_HHIES">Vous sentez‐vous handicapé(e) par un problème d’audition ?</td>
               <td>
                 <div class="options">
                   <label><input type="radio" name="q4" value="oui"> oui</label>
@@ -151,7 +63,7 @@
               </td>
             </tr>
             <tr>
-              <td>Est-ce qu’un problème d’audition vous met en difficulté lorsque vous rendez visite à des amis, parents,
+              <td class="Question_HHIES">Est-ce qu’un problème d’audition vous met en difficulté lorsque vous rendez visite à des amis, parents,
                 voisins ?</td>
               <td>
                 <div class="options">
@@ -162,7 +74,7 @@
               </td>
             </tr>
             <tr>
-              <td>Assistez-vous moins souvent que vous le voudriez à certains évènements (spectacles, concerts, cérémonies
+              <td class="Question_HHIES">Assistez-vous moins souvent que vous le voudriez à certains évènements (spectacles, concerts, cérémonies
                 religieuses) à cause d’un problème d’audition ?</td>
               <td>
                 <div class="options">
@@ -173,7 +85,7 @@
               </td>
             </tr>
             <tr>
-              <td>Est-ce qu’un problème d’audition est à l’origine de disputes avec les membres de votre famille ?</td>
+              <td class="Question_HHIES">Est-ce qu’un problème d’audition est à l’origine de disputes avec les membres de votre famille ?</td>
               <td>
                 <div class="options">
                   <label><input type="radio" name="q7" value="oui"> oui</label>
@@ -183,7 +95,7 @@
               </td>
             </tr>
             <tr>
-              <td>Est-ce qu’un problème d’audition vous met en difficulté pour écouter la TV ou la radio ?<td>
+              <td class="Question_HHIES">Est-ce qu’un problème d’audition vous met en difficulté pour écouter la TV ou la radio ?<td>
               <div class="options">
                 <label><input type="radio" name="q8" value="oui"> oui</label>
                 <label><input type="radio" name="q8" value="parfois"> parfois</label>
@@ -192,7 +104,7 @@
               </td>
             </tr>
             <tr>
-              <td>Avez-vous l’impression qu’une quelconque difficulté d’audition limite ou gêne votre vie personnelle ou
+              <td class="Question_HHIES">Avez-vous l’impression qu’une quelconque difficulté d’audition limite ou gêne votre vie personnelle ou
                 sociale ?</td>
               <td>
                 <div class="options">
@@ -203,7 +115,7 @@
               </td>
             </tr>
             <tr>
-              <td>Est-ce qu’un problème d’audition vous met en difficulté lorsque vous êtes au restaurant avec des parents ou
+              <td class="Question_HHIES">Est-ce qu’un problème d’audition vous met en difficulté lorsque vous êtes au restaurant avec des parents ou
                 des amis ?</td>
               <td>
                 <div class="options">
@@ -223,11 +135,9 @@
         </div>
 
 
-        <div id="result"></div>
-
-
+        <div id="results"></div>
       </form>
-    </div>
+
     <script>
       function calculateScoreHyperacousie() {
         let score = 0;
@@ -256,8 +166,8 @@
           displayResult(score); // Call your existing function to display the result
         } else {
           // Display a message to the user that not all questions have been answered
-          const resultDiv = document.getElementById("result"); // Assuming you have a div with id="result"
-          resultDiv.innerHTML = "<p style='color: red; font-weight: bold;text-align: center;'>Veuillez répondre à toutes les questions avant de calculer le score</p>";
+          const resultDiv = document.getElementById("results"); // Assuming you have a div with id="result"
+          resultDiv.innerHTML = "<p class=Error_message_not_all_answered>Veuillez répondre svp à toutes les questions avant de calculer le score!</p>";
           resultDiv.style.display = "block"; // Make sure the result div is visible
         }
 
@@ -275,14 +185,14 @@
           resultat += "une probabilité de 94% d’avoir une perte auditive";
         }
 
-        document.getElementById("result").innerHTML = resultat;
-        document.getElementById("result").style.display = "block";
+        document.getElementById("results").innerHTML = resultat;
+        document.getElementById("results").style.display = "block";
       }
 
       function resetFormHyperacousie() {
         document.getElementById("HHIE-S").reset();
-        document.getElementById("result").innerHTML = "";
-        document.getElementById("result").style.display = "none";
+        document.getElementById("results").innerHTML = "";
+        document.getElementById("results").style.display = "none";
       }
     </script>
 

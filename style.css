@@ -212,7 +212,6 @@ ul.myList {
     text-align: left; 
 }
 
-
 /* HHIE-S */
 .Question_HHIES {
     text-align: left; 
@@ -222,7 +221,16 @@ ul.myList {
     background-color: #eeeeee;
   }
 
-
+/* HADS */
+.HADS_groupe_question {
+    display: flex;
+    flex-direction: column;
+  }
+#HADS input[type="radio"] {
+    margin-right: 5px;
+    margin-left: 40px;
+  }
+ 
 /* --- PREMS --- */
 /* --- PROMS --- */
 
