@@ -222,14 +222,21 @@ ul.myList {
   }
 
 /* HADS */
-.HADS_groupe_question {
+.HADS_question_reponses {
     display: flex;
     flex-direction: column;
+    text-align: left;
   }
+
+.HADS_question  {
+    text-align: left; 
+}
+  
 #HADS input[type="radio"] {
     margin-right: 5px;
     margin-left: 40px;
-  }
+    margin-top:10px;
+}
  
 /* --- PREMS --- */
 /* --- PROMS --- */

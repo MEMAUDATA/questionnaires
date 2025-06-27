@@ -1,92 +1,22 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GAI</title>
-    <style>
-
-      /* Container for the table to ensure centering */
-      .container {
-        max-width:1000px;
-        width:100%;
-        margin-left: auto;
-        margin-right: auto;
-
-
-      }
-
-      body {
-        font-family: Montserrat, sans-serif;
-      }
-      table {
-        border-collapse: collapse;
-        margin-bottom: 20px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-      th, td {
-        border: 1px solid #eeeeee;
-        padding: 8px;
-        text-align: left;
-        color: black !important;
-      }
-
-      tr:hover {
-        background-color: #e0f2f1; /* Light hover effect */
-      }
-
-      th {
-        background-color: #eeeeee;
-        text-align: center;
-      }
-      input[type="radio"] {
-        /*margin-left: 15px;*/
-        text-align: center;
-      }
-      .buttons-container {
-        text-align: center;
-        margin-top: 30px;
-      }
-      .buttons-container button {
-        padding: 12px 25px;
-        margin: 0 10px;
-        font-size: 17px;
-        cursor: pointer;
-        border: none;
-        border-radius: 5px;
-        background-color: #eeeeee;
-
-      }
-
-      .buttons-container button:hover {
-        background-color: #0056b3;
-        color : white;
-      }
-
-      #result { /* Correction ici : cibler l'ID directement */
-        text-align: center;
-        font-size: 20px;
-        margin-top: 30px;
-        border: 1px solid #eeeeee;
-        background-color: #eeeeee;
-        padding: 15px;
-        display: none;
-        border-radius: 5px;
-        padding: 15px;
-        display:none;
-      }
-
-
-
-    </style>
+     <!-- Author's details-->
+     <meta name="author" content="Nicolas Vannson">
+     <meta name="contact" content="hello@memau.eu">
+     <meta name="license" content="EUPLv1.2">
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <style>
+       /* style is within the style.css sheet */
+     </style>
+     <title>GAI</title>
   </head>
   <body>
-    <div class="container">
-      <h1 style="text-align:center;">Geriatric Anxiety Inventory (GAI)</h1>
-      <p style="text-align: center;">Champagne et al., 2018 </p>
+      <h1>Geriatric Anxiety Inventory (GAI)</h1>
+      <p>Champagne et al., 2018 </p>
       <br>
-      <form id="gai-form">
+      <form id="GAI">
         <table>
           <thead>
             <tr>
@@ -97,102 +27,102 @@
           </thead>
           <tbody>
             <tr>
-              <td>1. Vous sentez-vous plus anxieux que la plupart des gens de votre âge ?</td>
+              <td class="Question_GAI">1. Vous sentez-vous plus anxieux que la plupart des gens de votre âge ?</td>
               <td><input type="radio" name="q1" value="0"></td>
               <td><input type="radio" name="q1" value="1"></td>
             </tr>
             <tr>
-              <td>2. Êtes-vous dérangé par des sentiments de nervosité ?</td>
+              <td class="Question_GAI">2. Êtes-vous dérangé par des sentiments de nervosité ?</td>
               <td><input type="radio" name="q2" value="0"></td>
               <td><input type="radio" name="q2" value="1"></td>
             </tr>
             <tr>
-              <td>3. Vous inquiétez-vous beaucoup de choses qui pourraient arriver ?</td>
+              <td class="Question_GAI">3. Vous inquiétez-vous beaucoup de choses qui pourraient arriver ?</td>
               <td><input type="radio" name="q3" value="0"></td>
               <td><input type="radio" name="q3" value="1"></td>
             </tr>
             <tr>
-              <td>4. Avez-vous peur d'être seul ?</td>
+              <td class="Question_GAI">4. Avez-vous peur d'être seul ?</td>
               <td><input type="radio" name="q4" value="0"></td>
               <td><input type="radio" name="q4" value="1"></td>
             </tr>
             <tr>
-              <td>5. Êtes-vous facilement agacé ou irrité ?</td>
+              <td class="Question_GAI">5. Êtes-vous facilement agacé ou irrité ?</td>
               <td><input type="radio" name="q5" value="0"></td>
               <td><input type="radio" name="q5" value="1"></td>
             </tr>
             <tr>
-              <td>6. Avez-vous du mal à vous détendre ?</td>
+              <td class="Question_GAI">6. Avez-vous du mal à vous détendre ?</td>
               <td><input type="radio" name="q6" value="0"></td>
               <td><input type="radio" name="q6" value="1"></td>
             </tr>
             <tr>
-              <td>7. Avez-vous de la difficulté à vous endormir ou à rester endormi ?</td>
+              <td class="Question_GAI">7. Avez-vous de la difficulté à vous endormir ou à rester endormi ?</td>
               <td><input type="radio" name="q7" value="0"></td>
               <td><input type="radio" name="q7" value="1"></td>
             </tr>
             <tr>
-              <td>8. Vous sentez-vous agité ?</td>
+              <td class="Question_GAI">8. Vous sentez-vous agité ?</td>
               <td><input type="radio" name="q8" value="0"></td>
               <td><input type="radio" name="q8" value="1"></td>
             </tr>
             <tr>
-              <td>9. Avez-vous les mains tremblantes ?</td>
+              <td class="Question_GAI">9. Avez-vous les mains tremblantes ?</td>
               <td><input type="radio" name="q9" value="0"></td>
               <td><input type="radio" name="q9" value="1"></td>
             </tr>
             <tr>
-              <td>10. Transpirez-vous beaucoup ?</td>
+              <td class="Question_GAI">10. Transpirez-vous beaucoup ?</td>
               <td><input type="radio" name="q10" value="0"></td>
               <td><input type="radio" name="q10" value="1"></td>
             </tr>
             <tr>
-              <td>11. Vous sentez-vous faible ou étourdi ?</td>
+              <td class="Question_GAI">11. Vous sentez-vous faible ou étourdi ?</td>
               <td><input type="radio" name="q11" value="0"></td>
               <td><input type="radio" name="q11" value="1"></td>
             </tr>
             <tr>
-              <td>12. Votre cœur bat-il rapidement ?</td>
+              <td class="Question_GAI">12. Votre cœur bat-il rapidement ?</td>
               <td><input type="radio" name="q12" value="0"></td>
               <td><input type="radio" name="q12" value="1"></td>
             </tr>
             <tr>
-              <td>13. Avez-vous des maux d'estomac ?</td>
+              <td class="Question_GAI">13. Avez-vous des maux d'estomac ?</td>
               <td><input type="radio" name="q13" value="0"></td>
               <td><input type="radio" name="q13" value="1"></td>
             </tr>
             <tr>
-              <td>14. Devez-vous aller fréquemment à la salle de bain ?</td>
+              <td class="Question_GAI">14. Devez-vous aller fréquemment à la salle de bain ?</td>
               <td><input type="radio" name="q14" value="0"></td>
               <td><input type="radio" name="q14" value="1"></td>
             </tr>
             <tr>
-              <td>15. Vous sentez-vous surexcité ou à cran ?</td>
+              <td class="Question_GAI">15. Vous sentez-vous surexcité ou à cran ?</td>
               <td><input type="radio" name="q15" value="0"></td>
               <td><input type="radio" name="q15" value="1"></td>
             </tr>
             <tr>
-              <td>16. Avez-vous peur sans raison apparente ?</td>
+              <td class="Question_GAI">16. Avez-vous peur sans raison apparente ?</td>
               <td><input type="radio" name="q16" value="0"></td>
               <td><input type="radio" name="q16" value="1"></td>
             </tr>
             <tr>
-              <td>17. Avez-vous peur de mourir ?</td>
+              <td class="Question_GAI">17. Avez-vous peur de mourir ?</td>
               <td><input type="radio" name="q17" value="0"></td>
               <td><input type="radio" name="q17" value="1"></td>
             </tr>
             <tr>
-              <td>18. Avez-vous peur d'être dans la foule ?</td>
+              <td class="Question_GAI">18. Avez-vous peur d'être dans la foule ?</td>
               <td><input type="radio" name="q18" value="0"></td>
               <td><input type="radio" name="q18" value="1"></td>
             </tr>
             <tr>
-              <td>19. Évitez-vous d'aller dans certains endroits par peur ?</td>
+              <td class="Question_GAI">19. Évitez-vous d'aller dans certains endroits par peur ?</td>
               <td><input type="radio" name="q19" value="0"></td>
               <td><input type="radio" name="q19" value="1"></td>
             </tr>
             <tr>
-              <td>20. Êtes-vous confiné à la maison ?</td>
+              <td class="Question_GAI">20. Êtes-vous confiné à la maison ?</td>
               <td><input type="radio" name="q20" value="0"></td>
               <td><input type="radio" name="q20" value="1"></td>
             </tr>
@@ -205,52 +135,60 @@
         </div>
 
       </form>
-      <div id="result"></div>
+      <div id="results"></div>
 
-    </div>
     <script>
-
       function calculerScores() {
         let score = 0;
+        let allAnswered = true; 
         for (let i = 1; i <= 20; i++) {
-          let question = document.querySelector(`input[name="q${i}"]:checked`);
-          if (question) {
-            score += parseInt(question.value);
-          } else {
-            alert("Veuillez répondre à toutes les questions.");
-            return;
+          let question= document.querySelector(`input[name="q${i}"]:checked`);
+          if (!question) { 
+            allAnswered = false;
+            break; 
           }
+          score += parseInt(question.value);
         }
-        displayscores(score);
-        document.getElementById("result").style.display = "block";
-      }
+        
+        if (allAnswered) {
+          displayscores(score); // Call your existing function to display the result
+        } else {
+          // Display a message to the user that not all questions have been answered
+          const resultDiv = document.getElementById("results"); // Assuming you have a div with id="result"
+          resultDiv.innerHTML = "<p class=Error_message_not_all_answered>Veuillez répondre svp à toutes les questions avant de calculer le score!</p>";
+          resultDiv.style.display = "block"; // Make sure the result div is visible
+        }
 
+      }
 
 
       function displayscores(score) {  
 
-        document.getElementById("result").innerHTML = "Votre score est " + score + ". Ceci indique une ";
+        document.getElementById("results").innerHTML = "Votre score est " + score + ". Ceci indique une ";
 
         if (score <= 10) {
-          document.getElementById("result").innerHTML += "anxiété minimale.";
+          document.getElementById("results").innerHTML += "anxiété minimale.";
         }
         else if (score >= 11 && score <= 20){
-          document.getElementById("result").innerHTML += "anxiété légère.";
+          document.getElementById("results").innerHTML += "anxiété légère.";
         }
         else if (score >= 21 && score <= 30){
-          document.getElementById("result").innerHTML += "anxiété modérée.";
+          document.getElementById("results").innerHTML += "anxiété modérée.";
         }
         else if (score > 30){
-          document.getElementById("result").innerHTML += "anxiété sévère.";
+          document.getElementById("results").innerHTML += "anxiété sévère.";
         }
+
+        document.getElementById("results").style.display = "block";
+
       }
 
 
 
       function resetForm() {
-        document.getElementById("gai-form").reset();
-        document.getElementById("result").innerHTML = "";
-        document.getElementById("result").style.display = "none"; } 
+        document.getElementById("GAI").reset();
+        document.getElementById("results").innerHTML = "";
+        document.getElementById("results").style.display = "none"; } 
 
 
     </script>
