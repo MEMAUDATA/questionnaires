@@ -1,95 +1,40 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <!-- Author's details-->
+     <meta name="author" content="Nicolas Vannson">
+     <meta name="contact" content="hello@memau.eu">
+     <meta name="license" content="EUPLv1.2">
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <style>
+       /* style is within the style.css sheet */
+     </style>
     <title>ZARIT</title>
-    <style>
-      body {
-        font-family: Montserrat, sans-serif;
-        color:black;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
-        margin-left: auto;
-        margin-right: auto;
-        
-
-      }
-      th, td {
-        border: 1px solid #eeeeee;/*#ddd : light grey*/
-        padding: 8px;
-        text-align: left;
-        color: black ! important;
-      }
-      th {
-        background-color: #eeeeee;
-      }
-      input[type="radio"] {
-        display: flex;
-        align-items: center; 
-        justify-content: center; 
-        margin: 0 auto;
-        transform: scale(1.2)
-      }
-      .buttons-container {
-        text-align: center;
-        margin-top: 30px;
-      }
-      .buttons-container button {
-        padding: 12px 25px;
-        margin: 0 10px;
-        font-size: 17px;
-        cursor: pointer;
-        border: none;
-        border-radius: 5px;
-        background-color: #eeeeee;
-
-      }
-
-      .buttons-container button:hover {
-        background-color: #0056b3;
-        color : white;
-      }
-
-      #result { /* Correction ici : cibler l'ID directement */
-        text-align: center;
-        font-size: 20px;
-        margin-top: 30px;
-        border: 1px solid #eeeeee;
-        background-color: #eeeeee;
-        padding: 15px;
-        display: none;
-        border-radius: 5px;
-        padding: 15px;
-        display:none;
-      }
-    </style>
   </head>
   <body>
     <h1 style="text-align:center;">Échelle de Zarit</h1>
     <p style="text-align: center;">Revel et al., 2002</p>
+    <p ><b>Consignes</b></p> 
     <p style="text-align: center;">Veuillez indiquer à quelle fréquence vous vous sentez de la manière décrite ci-dessous :</p>
 
     <br>
-    <form id="zarit-form">
+    <form id="ZARIT">
 
       <table>
         <thead>
           <tr>
-            <th style="text-align:center;">Question</th>
-            <th style="text-align:center;">Jamais</th>
-            <th style="text-align:center;">Rarement</th>
-            <th style="text-align:center;">Parfois</th>
-            <th style="text-align:center;">Assez Souvent</th>
-            <th style="text-align:center;">Très Souvent</th>
+            <th >Question</th>
+            <th >Jamais</th>
+            <th >Rarement</th>
+            <th >Parfois</th>
+            <th >Assez Souvent</th>
+            <th >Très Souvent</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>1. Pensez-vous que la personne dont vous vous occupez demande plus d’aide qu’elle n’en a réellement besoin ?</td>
+            <td class="ZARIT_question">1. Pensez-vous que la personne dont vous vous occupez demande plus d’aide qu’elle n’en a réellement besoin ?</td>
             <td><input type="radio" name="q1" value="0"></td>
             <td><input type="radio" name="q1" value="1"></td>
             <td><input type="radio" name="q1" value="2"></td>
@@ -97,7 +42,7 @@
             <td><input type="radio" name="q1" value="4"></td>
           </tr>
           <tr>
-            <td>2. Pensez-vous que, du fait du temps que vous consacrez à la personne dont vous vous occupez, vous n’avez pas assez de temps pour vous-même ?</td>
+            <td class="ZARIT_question">2. Pensez-vous que, du fait du temps que vous consacrez à la personne dont vous vous occupez, vous n’avez pas assez de temps pour vous-même ?</td>
             <td><input type="radio" name="q2" value="0"></td>
             <td><input type="radio" name="q2" value="1"></td>
             <td><input type="radio" name="q2" value="2"></td>
@@ -105,7 +50,7 @@
             <td><input type="radio" name="q2" value="4"></td>
           </tr>
           <tr>
-            <td>3. Vous sentez-vous contrarié(e) par votre relation avec la personne dont vous vous occupez ?</td>
+            <td class="ZARIT_question">3. Vous sentez-vous contrarié(e) par votre relation avec la personne dont vous vous occupez ?</td>
             <td><input type="radio" name="q3" value="0"></td>
             <td><input type="radio" name="q3" value="1"></td>
             <td><input type="radio" name="q3" value="2"></td>
@@ -113,7 +58,7 @@
             <td><input type="radio" name="q3" value="4"></td>
           </tr>
           <tr>
-            <td>4. Avez-vous peur de ce que l’avenir réserve à la personne dont vous vous occupez ?</td>
+            <td class="ZARIT_question">4. Avez-vous peur de ce que l’avenir réserve à la personne dont vous vous occupez ?</td>
             <td><input type="radio" name="q4" value="0"></td>
             <td><input type="radio" name="q4" value="1"></td>
             <td><input type="radio" name="q4" value="2"></td>
@@ -121,7 +66,7 @@
             <td><input type="radio" name="q4" value="4"></td>
           </tr>
           <tr>
-            <td>5. Avez-vous l’impression que la personne dont vous vous occupez dépend de vous ?</td>
+            <td class="ZARIT_question">5. Avez-vous l’impression que la personne dont vous vous occupez dépend de vous ?</td>
             <td><input type="radio" name="q5" value="0"></td>
             <td><input type="radio" name="q5" value="1"></td>
             <td><input type="radio" name="q5" value="2"></td>
@@ -129,7 +74,7 @@
             <td><input type="radio" name="q5" value="4"></td>
           </tr>
           <tr>
-            <td>6. Avez-vous l’impression que du fait de la personne dont vous vous occupez, votre vie sociale est restreinte ?</td>
+            <td class="ZARIT_question">6. Avez-vous l’impression que du fait de la personne dont vous vous occupez, votre vie sociale est restreinte ?</td>
             <td><input type="radio" name="q6" value="0"></td>
             <td><input type="radio" name="q6" value="1"></td>
             <td><input type="radio" name="q6" value="2"></td>
@@ -137,7 +82,7 @@
             <td><input type="radio" name="q6" value="4"></td>
           </tr>
           <tr>
-            <td>7. Vous sentez-vous mal à l’aise d’être avec la personne dont vous vous occupez ?</td>
+            <td class="ZARIT_question">7. Vous sentez-vous mal à l’aise d’être avec la personne dont vous vous occupez ?</td>
             <td><input type="radio" name="q7" value="0"></td>
             <td><input type="radio" name="q7" value="1"></td>
             <td><input type="radio" name="q7" value="2"></td>
@@ -145,7 +90,7 @@
             <td><input type="radio" name="q7" value="4"></td>
           </tr>
           <tr>
-            <td>8. Avez-vous l’impression que votre santé s’est altérée du fait de votre implication auprès de la personne dont vous vous occupez ?</td>
+            <td class="ZARIT_question">8. Avez-vous l’impression que votre santé s’est altérée du fait de votre implication auprès de la personne dont vous vous occupez ?</td>
             <td><input type="radio" name="q8" value="0"></td>
             <td><input type="radio" name="q8" value="1"></td>
             <td><input type="radio" name="q8" value="2"></td>
@@ -153,7 +98,7 @@
             <td><input type="radio" name="q8" value="4"></td>
           </tr>
           <tr>
-            <td>9. Avez-vous l’impression que vous n’avez pas autant d’intimité que vous le souhaiteriez ?</td>
+            <td class="ZARIT_question">9. Avez-vous l’impression que vous n’avez pas autant d’intimité que vous le souhaiteriez ?</td>
             <td><input type="radio" name="q9" value="0"></td>
             <td><input type="radio" name="q9" value="1"></td>
             <td><input type="radio" name="q9" value="2"></td>
@@ -161,7 +106,7 @@
             <td><input type="radio" name="q9" value="4"></td>
           </tr>
           <tr>
-            <td>10. Avez-vous l’impression que votre vie sociale s’est détériorée du fait de votre implication auprès de la personne dont vous vous occupez ?</td>
+            <td class="ZARIT_question">10. Avez-vous l’impression que votre vie sociale s’est détériorée du fait de votre implication auprès de la personne dont vous vous occupez ?</td>
             <td><input type="radio" name="q10" value="0"></td>
             <td><input type="radio" name="q10" value="1"></td>
             <td><input type="radio" name="q10" value="2"></td>
@@ -169,7 +114,7 @@
             <td><input type="radio" name="q10" value="4"></td>
           </tr>
           <tr>
-            <td>11. Avez-vous le sentiment que vous êtes accablé(e) par les responsabilités que vous avez envers la personne dont vous vous occupez ?</td>
+            <td class="ZARIT_question">11. Avez-vous le sentiment que vous êtes accablé(e) par les responsabilités que vous avez envers la personne dont vous vous occupez ?</td>
             <td><input type="radio" name="q11" value="0"></td>
             <td><input type="radio" name="q11" value="1"></td>
             <td><input type="radio" name="q11" value="2"></td>
@@ -177,7 +122,7 @@
             <td><input type="radio" name="q11" value="4"></td>
           </tr>
           <tr>
-            <td>12. Avez-vous l’impression que vous n’avez plus la maîtrise de votre vie depuis que la personne dont vous vous occupez a eu besoin de vous ?</td>
+            <td class="ZARIT_question">12. Avez-vous l’impression que vous n’avez plus la maîtrise de votre vie depuis que la personne dont vous vous occupez a eu besoin de vous ?</td>
             <td><input type="radio" name="q12" value="0"></td>
             <td><input type="radio" name="q12" value="1"></td>
             <td><input type="radio" name="q12" value="2"></td>
@@ -185,7 +130,7 @@
             <td><input type="radio" name="q12" value="4"></td>
           </tr>
           <tr>
-            <td>13. Souhaitez-vous pouvoir confier la personne dont vous vous occupez à quelqu’un d’autre ?</td>
+            <td class="ZARIT_question">13. Souhaitez-vous pouvoir confier la personne dont vous vous occupez à quelqu’un d’autre ?</td>
             <td><input type="radio" name="q13" value="0"></td>
             <td><input type="radio" name="q13" value="1"></td>
             <td><input type="radio" name="q13" value="2"></td>
@@ -193,7 +138,7 @@
             <td><input type="radio" name="q13" value="4"></td>
           </tr>
           <tr>
-            <td>14. Avez-vous l’impression qu’il est difficile de concilier votre rôle d’aidant et vos autres responsabilités ?</td>
+            <td class="ZARIT_question">14. Avez-vous l’impression qu’il est difficile de concilier votre rôle d’aidant et vos autres responsabilités ?</td>
             <td><input type="radio" name="q14" value="0"></td>
             <td><input type="radio" name="q14" value="1"></td>
             <td><input type="radio" name="q14" value="2"></td>
@@ -201,7 +146,7 @@
             <td><input type="radio" name="q14" value="4"></td>
           </tr>
           <tr>
-            <td>15. Avez-vous l’impression que vous n’êtes pas reconnu(e) pour les sacrifices que vous faites pour la personne dont vous vous occupez ?</td>
+            <td class="ZARIT_question">15. Avez-vous l’impression que vous n’êtes pas reconnu(e) pour les sacrifices que vous faites pour la personne dont vous vous occupez ?</td>
             <td><input type="radio" name="q15" value="0"></td>
             <td><input type="radio" name="q15" value="1"></td>
             <td><input type="radio" name="q15" value="2"></td>
@@ -209,7 +154,7 @@
             <td><input type="radio" name="q15" value="4"></td>
           </tr>
           <tr>
-            <td>16. Avez-vous l’impression que si vous aviez de meilleurs moyens de prendre soin de la personne dont vous vous occupez, votre situation serait différente ?</td>
+            <td class="ZARIT_question">16. Avez-vous l’impression que si vous aviez de meilleurs moyens de prendre soin de la personne dont vous vous occupez, votre situation serait différente ?</td>
             <td><input type="radio" name="q16" value="0"></td>
             <td><input type="radio" name="q16" value="1"></td>
             <td><input type="radio" name="q16" value="2"></td>
@@ -217,7 +162,7 @@
             <td><input type="radio" name="q16" value="4"></td>
           </tr>
           <tr>
-            <td>17. Sentez-vous que vous devriez faire plus pour la personne dont vous vous occupez ?</td>
+            <td class="ZARIT_question">17. Sentez-vous que vous devriez faire plus pour la personne dont vous vous occupez ?</td>
             <td><input type="radio" name="q17" value="0"></td>
             <td><input type="radio" name="q17" value="1"></td>
             <td><input type="radio" name="q17" value="2"></td>
@@ -225,7 +170,7 @@
             <td><input type="radio" name="q17" value="4"></td>
           </tr>
           <tr>
-            <td>18. Pensez-vous que vous pourriez prendre soin de la personne dont vous vous occupez mieux que la plupart des gens ?</td>
+            <td class="ZARIT_question">18. Pensez-vous que vous pourriez prendre soin de la personne dont vous vous occupez mieux que la plupart des gens ?</td>
             <td><input type="radio" name="q18" value="0"></td>
             <td><input type="radio" name="q18" value="1"></td>
             <td><input type="radio" name="q18" value="2"></td>
@@ -233,7 +178,7 @@
             <td><input type="radio" name="q18" value="4"></td>
           </tr>
           <tr>
-            <td>19. Avez-vous l’impression que vous avez changé en tant que personne depuis que vous vous occupez de la personne dont vous vous occupez ?</td>
+            <td class="ZARIT_question">19. Avez-vous l’impression que vous avez changé en tant que personne depuis que vous vous occupez de la personne dont vous vous occupez ?</td>
             <td><input type="radio" name="q19" value="0"></td>
             <td><input type="radio" name="q19" value="1"></td>
             <td><input type="radio" name="q19" value="2"></td>
@@ -241,7 +186,7 @@
             <td><input type="radio" name="q19" value="4"></td>
           </tr>
           <tr>
-            <td>20. Êtes-vous satisfait(e) de ce que vous faites pour la personne dont vous vous occupez ?</td>
+            <td class="ZARIT_question">20. Êtes-vous satisfait(e) de ce que vous faites pour la personne dont vous vous occupez ?</td>
             <td><input type="radio" name="q20" value="0"></td>
             <td><input type="radio" name="q20" value="1"></td>
             <td><input type="radio" name="q20" value="2"></td>
@@ -249,7 +194,7 @@
             <td><input type="radio" name="q20" value="4"></td>
           </tr>
           <tr>
-            <td>21. Avez-vous l’impression que la personne dont vous vous occupez vous apprécie ?</td>
+            <td class="ZARIT_question">21. Avez-vous l’impression que la personne dont vous vous occupez vous apprécie ?</td>
             <td><input type="radio" name="q21" value="0"></td>
             <td><input type="radio" name="q21" value="1"></td>
             <td><input type="radio" name="q21" value="2"></td>
@@ -257,7 +202,7 @@
             <td><input type="radio" name="q21" value="4"></td>
           </tr>
           <tr>
-            <td>22. Avez-vous l’impression que la personne dont vous vous occupez vous considère comme la seule personne qui puisse s’occuper d’elle ?</td>
+            <td class="ZARIT_question">22. Avez-vous l’impression que la personne dont vous vous occupez vous considère comme la seule personne qui puisse s’occuper d’elle ?</td>
             <td><input type="radio" name="q22" value="0"></td>
             <td><input type="radio" name="q22" value="1"></td>
             <td><input type="radio" name="q22" value="2"></td>
@@ -273,49 +218,55 @@
       </div>
 
     </form>
-    <div id="result"></div>
+    <div id="results"></div>
 
     <script>
 
-      function calculerScores() {
+  function calculerScores() {
 
         let score = 0;
-
+        let allAnswered = true; 
         for (let i = 1; i <= 22; i++) {
-          let question = document.querySelector(`input[name="q${i}"]:checked`);
-          if (question) {score += parseInt(question.value);} 
-          else {
-            alert("Veuillez répondre à toutes les questions.");
-            return;}
-
-        } // end for loop
-
-
-
-        displayscores(score);} // end function
-
-
-      function displayscores(score) { 
-        document.getElementById("result").textContent = "Votre score est " + score + ".";
-
-        if (score <= 21) {
-          document.getElementById("result").textContent += "  Fardeau absent ou léger.";
-        } else if (score >= 22 && score <= 40) {
-          document.getElementById("result").textContent += "  Fardeau léger à modéré.";
-        } else if (score >= 41 && score <= 60) {
-          document.getElementById("result").textContent += "  Fardeau modéré à sévère.";
+          let question= document.querySelector(`input[name="q${i}"]:checked`);
+          if (!question) { 
+            allAnswered = false;
+            break; 
+          }
+          score += parseInt(question.value);
+        }
+        
+        if (allAnswered) {
+          displayscores(score); // Call your existing function to display the result
         } else {
-          document.getElementById("result").textContent += "  Fardeau sévère.";
+          // Display a message to the user that not all questions have been answered
+          const resultDiv = document.getElementById("results"); // Assuming you have a div with id="result"
+          resultDiv.innerHTML = "<p class=Error_message_not_all_answered>Veuillez répondre svp à toutes les questions avant de calculer le score!</p>";
+          resultDiv.style.display = "block"; // Make sure the result div is visible
         }
 
-        document.getElementById("result").style.display = "block";
+      }
+
+      function displayscores(score) { 
+        document.getElementById("results").textContent = "Votre score est " + score + ".";
+
+        if (score <= 21) {
+          document.getElementById("results").textContent += "  Fardeau absent ou léger.";
+        } else if (score >= 22 && score <= 40) {
+          document.getElementById("results").textContent += "  Fardeau léger à modéré.";
+        } else if (score >= 41 && score <= 60) {
+          document.getElementById("results").textContent += "  Fardeau modéré à sévère.";
+        } else {
+          document.getElementById("results").textContent += "  Fardeau sévère.";
+        }
+
+        document.getElementById("results").style.display = "block";
       }// end function
 
 
       function resetForm() {
-        document.getElementById("zarit-form").reset();
-        document.getElementById("result").innerHTML = "";
-        document.getElementById("result").style.display = "none";} // end function
+        document.getElementById("ZARIT").reset();
+        document.getElementById("results").innerHTML = "";
+        document.getElementById("results").style.display = "none";} // end function
 
     </script>
   </body>

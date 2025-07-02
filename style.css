@@ -197,7 +197,6 @@ ul.myList {
 }
 
 
-
 /* --- AUTRES --- */
 /* EHI */
 .EHI_menu{
@@ -209,6 +208,11 @@ ul.myList {
     font-size: 15px !important;
 }
 .Question_EHI {
+    text-align: left; 
+}
+
+/* GAI */
+.Question_GAI {
     text-align: left; 
 }
 
@@ -238,9 +242,58 @@ ul.myList {
     margin-top:10px;
 }
  
+/* QSCPGS */
+.consignes_QSCPGS {
+    text-align: center;
+    list-style-position: inside;
+
+  }
+ol.my_QSCPGS {
+    display: inline-block;
+    text-align: left;
+  }
+
+#QSCPGS_radio-col {
+    width: 15px;
+    text-align: center;
+    padding: 2px
+}  
+
+#QSCPGS td input[type="radio"] {
+    margin: 0 auto; /* Center the radio button */
+    display: block; /* Make it a block element to allow margin auto */
+    width: 16px; /* Standard size, you can make it smaller if needed */
+    height: 16px;
+  }
+
+/* RSES */
+.RSES_answers {
+    display: flex;
+    justify-content: space-around;
+}
+#RSES tr:nth-child(odd) {
+    background-color:#eeeeee;
+  }
+
+
+/* SADL */
+
+.SADL_question {
+    text-align: left;
+}
+
+.SADL_scale{
+    display:flex; 
+    justify-content:space-between;
+}
+
+/* ZARIT */
+.ZARIT_question {
+    text-align: left;
+}
+
 /* --- PREMS --- */
 /* --- PROMS --- */
-
 
 
 

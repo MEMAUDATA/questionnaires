@@ -1,108 +1,24 @@
 <!DOCTYPE html>
 <html lang="fr">
-
   <head>
+    <!-- Author's details-->
+    <meta name="author" content="Nicolas Vannson">
+    <meta name="contact" content="hello@memau.eu">
+    <meta name="license" content="EUPLv1.2">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RSES</title>
     <style>
-      body {
-        font-family: Montserrat,sans-serif;
-      }
-
-      table {
-        margin-bottom: 15px;
-        margin-top: 15px;
-        border-collapse: collapse;
-        width:90%;
-        margin-left: auto;
-        margin-right: auto;
-        border-radius:10px;
-
-      }
-      th,td {
-        border: 1px solid #eeeeee;
-        padding: 8px;
-        text-align: center;
-        color: black !important;
-        border-radius: 10px;
-      }
-
-
-      tr:nth-child(odd) {
-        background-color:#eeeeee;
-      }
-
- tr:hover {
-        background-color: #e0f2f1; /* Light hover effect */
-      }
-
-      .question {
-        margin-bottom: 15px;
-      }
-
-      label {
-        display: block;
-        margin-bottom: 5px;
-      }
-
-      .options {
-        display: flex;
-        justify-content: space-around;
-      }
-
-      .options label {
-        display: inline;
-      }
-
-      .buttons-container {
-        text-align: center;
-        margin-top: 30px;
-      }
-      .buttons-container button {
-        padding: 12px 25px;
-        margin: 0 10px;
-        font-size: 17px;
-        cursor: pointer;
-        border: none;
-        border-radius: 5px;
-        background-color: #eeeeee;
-
-      }
-
-      .buttons-container button:hover {
-        background-color: #0056b3;
-        color : white;
-      }
-
-      #result { /* Correction ici : cibler l'ID directement */
-        text-align: center;
-        font-size: 20px;
-        margin-top: 30px;
-        border: 1px solid #eeeeee;
-        background-color: #eeeeee;
-        padding: 15px;
-        display: none;
-        border-radius: 5px;
-        padding: 15px;
-        display:none;
-      }
-
-
-
+      /* style is within the style.css sheet */
     </style>
+    <title>RSES</title>
   </head>
-
   <body>
-
-    <h1 style="text-align: center;">Échelle d'Estime de Soi de Rosenberg</h1>
-    <p style="text-align: center;">Rosenberg, 1979 ; Vallieres and Vallerand, 1990 (validation en français)</p>
-    <p style="text-align: center;"><b>Consignes </b> </p> 
-    <p style="text-align: center;"> Pour chacune des caractéristiques ou des descriptions suivantes, indiquez à quel point chacune est vraie pour vous en sélectionnant le chiffre approprié. Veuillez bien remplir toutes les propositions.</p>
+    <h1>Échelle d'Estime de Soi de Rosenberg</h1>
+    <p>Rosenberg, 1979 (version originale)<br> Vallieres and Vallerand, 1990 (validation en français)</p>
+    <p><b>Consignes </b> </p> 
+    <p> Pour chacune des caractéristiques ou des descriptions suivantes, indiquez à quel point chacune est vraie pour vous en sélectionnant le chiffre approprié. Veuillez bien remplir toutes les propositions.</p>
     <br>
-
-    <form id="rses-form">
-
+    <form id="RSES">
       <table>
         <thead>
         </thead>    
@@ -115,7 +31,7 @@
           </tr>    
           <tr>
             <td>
-              <div class="options">
+              <div class="RSES_answers">
                 <label><input type="radio" name="q1" value="1">1 - Tout à fait en désaccord</label>
                 <label><input type="radio" name="q1" value="2">2 - Plutôt en désaccord</label>
                 <label><input type="radio" name="q1" value="3">3 - Plutôt en accord</label>
@@ -133,7 +49,7 @@
 
           <tr>
             <td>
-              <div class="options">
+              <div class="RSES_answers">
                 <label><input type="radio" name="q2" value="1">1 - Tout à fait en désaccord</label>
                 <label><input type="radio" name="q2" value="2">2 - Plutôt en désaccord</label>
                 <label><input type="radio" name="q2" value="3">3 - Plutôt en accord</label>
@@ -150,7 +66,7 @@
           </tr>
           <tr>
             <td>
-              <div class="options">
+              <div class="RSES_answers">
                 <label><input type="radio" name="q3" value="1">1 - Tout à fait en désaccord</label>
                 <label><input type="radio" name="q3" value="2">2 - Plutôt en désaccord</label>
                 <label><input type="radio" name="q3" value="3">3 - Plutôt en accord</label>
@@ -167,7 +83,7 @@
           </tr>
           <tr>
             <td>
-              <div class="options">
+              <div class="RSES_answers">
                 <label><input type="radio" name="q4" value="1">1 - Tout à fait en désaccord</label>
                 <label><input type="radio" name="q4" value="2">2 - Plutôt en désaccord</label>
                 <label><input type="radio" name="q4" value="3">3 - Plutôt en accord</label>
@@ -183,7 +99,7 @@
           </tr>
           <tr>
             <td>
-              <div class="options">
+              <div class="RSES_answers">
                 <label><input type="radio" name="q5" value="1">1 - Tout à fait en désaccord</label>
                 <label><input type="radio" name="q5" value="2">2 - Plutôt en désaccord</label>
                 <label><input type="radio" name="q5" value="3">3 - Plutôt en accord</label>
@@ -199,7 +115,7 @@
           </tr>
           <tr>
             <td>
-              <div class="options">
+              <div class="RSES_answers">
                 <label><input type="radio" name="q6" value="1">1 - Tout à fait en désaccord</label>
                 <label><input type="radio" name="q6" value="2">2 - Plutôt en désaccord</label>
                 <label><input type="radio" name="q6" value="3">3 - Plutôt en accord</label>
@@ -215,7 +131,7 @@
           </tr>
           <tr>
             <td>
-              <div class="options">
+              <div class="RSES_answers">
                 <label><input type="radio" name="q7" value="1">1 - Tout à fait en désaccord</label>
                 <label><input type="radio" name="q7" value="2">2 - Plutôt en désaccord</label>
                 <label><input type="radio" name="q7" value="3">3 - Plutôt en accord</label>
@@ -231,7 +147,7 @@
 
           <tr>
             <td>
-              <div class="options">
+              <div class="RSES_answers">
                 <label><input type="radio" name="q8" value="1">1 - Tout à fait en désaccord</label>
                 <label><input type="radio" name="q8" value="2">2 - Plutôt en désaccord</label>
                 <label><input type="radio" name="q8" value="3">3 - Plutôt en accord</label>
@@ -247,7 +163,7 @@
 
           <tr>
             <td>
-              <div class="options">
+              <div class="RSES_answers">
                 <label><input type="radio" name="q9" value="1">1 - Tout à fait en désaccord</label>
                 <label><input type="radio" name="q9" value="2">2 - Plutôt en désaccord</label>
                 <label><input type="radio" name="q9" value="3">3 - Plutôt en accord</label>
@@ -263,7 +179,7 @@
 
           <tr>
             <td>
-              <div class="options">
+              <div class="RSES_answers">
                 <label><input type="radio" name="q10" value="1">1 - Tout à fait en désaccord</label>
                 <label><input type="radio" name="q10" value="2">2 - Plutôt en désaccord</label>
                 <label><input type="radio" name="q10" value="3">3 - Plutôt en accord</label>
@@ -282,7 +198,7 @@
 
     </form>
 
-    <div id="result"></div>
+    <div id="results"></div>
 
     <script>
 
@@ -312,8 +228,8 @@
           afficherResultat(score); // Call your existing function to display the result
         } else {
           // Display a message to the user that not all questions have been answered
-          const resultDiv = document.getElementById("result"); // Assuming you have a div with id="result"
-          resultDiv.innerHTML = "<p style='color: red; font-weight: bold;text-align: center;'>Veuillez répondre à toutes les questions avant de calculer le score</p>";
+          const resultDiv = document.getElementById("results"); // Assuming you have a div with id="result"
+          resultDiv.innerHTML = "<p class=Error_message_not_all_answered>Veuillez répondre svp à toutes les questions avant de calculer le score!</p>";
           resultDiv.style.display = "block"; // Make sure the result div is visible
         }
       } // end function
@@ -337,17 +253,17 @@
           display += "<p>Votre score suggère une estime de soi très forte.</p>";}
 
 
-        document.getElementById("result").innerHTML = display;
-        document.getElementById("result").style.display = "block";
+        document.getElementById("results").innerHTML = display;
+        document.getElementById("results").style.display = "block";
 
       }// end function
 
 
 
       function resetForm() {
-        document.getElementById("rses-form").reset();
-        document.getElementById("result").innerHTML = "";
-        document.getElementById("result").style.display = "none"; }// end function
+        document.getElementById("RSES").reset();
+        document.getElementById("results").innerHTML = "";
+        document.getElementById("results").style.display = "none"; }// end function
 
     </script>
 
