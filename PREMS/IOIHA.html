@@ -1,118 +1,179 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+     <!-- Author's details-->
+     <meta name="author" content="Nicolas Vannson">
+     <meta name="contact" content="hello@memau.eu">
+     <meta name="license" content="EUPLv1.2">
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <style>
+       /* style is within the style.css sheet */
+     </style>
     <title>IIPBAA</title>
-    <style>
-      body {
-        font-family:Montserrat, sans-serif;
-      }
-      table {
-        width: 90%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
-        margin-left: auto;
-        margin-right: auto;
-        width:950px;
-
-      }
-      th, td {
-        border-top: 1px solid #808080 !important; /* !important should be used cautiously */
-        border-left: 1px solid #808080;
-        border-right: 1px solid #808080;
-        border-bottom: 1px solid #808080;
-        padding: 8px;
-        text-align: left;
-      }
-      th {
-        background-color: #f0f0f0;
-      }
-      
-      tr:hover {
-        background-color: #e0f2f1; /* Light hover effect */
-      }
-      
-      .options {
-        display: flex;
-        flex-direction: column;
-      }
-      .option-label {
-        margin-right: 20px;
-      }
-
-      .scale {
-        display: flex;
-        justify-content: space-between;
-        width: 750px;
-        margin: auto;
-      }
-
-      .scale label {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 70px;
-      }
-
-      .buttons-container {
-        text-align: center;
-        margin-top: 40px;
-      }
-
-      .buttons-container button {
-        padding: 12px 25px;
-        margin: 0 10px;
-        font-size: 17px;
-        cursor: pointer;
-        border: none;
-        border-radius: 5px;
-        background-color: #eeeeee;
-
-      }
-
-      .buttons-container button:hover {
-        background-color: #0056b3;
-        color : white;
-      }
-
-      #result { /* Correction ici : cibler l'ID directement */
-        text-align: center;
-        font-size: 20px;
-        margin-top: 30px;
-        border: 1px solid #eeeeee;
-        background-color: #eeeeee;
-        padding: 15px;
-        display: none;
-        border-radius: 5px;
-        padding: 15px;
-        display:none;
-      }
-
-      ul.myList {
-        display: inline-block;
-        text-align: left;
-      }
-
-
-    </style>
   </head>
   <body>
-    <h1 style="text-align: center;">Inventaire international portant sur les bénéfices des aides auditives (IIPBAA ou IOI-HA en anglais)</h1>
-    <p style="text-align: center;">Cox et al., 2002</p>
+    <h1>Inventaire international portant sur les bénéfices des aides auditives <br> (IIPBAA ou IOI-HA en anglais)</h1>
+    <p >Cox et al., 2000 (version originale)<br>
+    Cox,Stephens & Kramer 2002 (version traduite en français)</p>
 
     <br>
     <form id="IIPBAA">
       <table>
         <tbody>
+          <fieldset class="question">
+          <legend>1. Durant les deux dernières semaines... en moyenne</legend>
+          <div class="scale-text">
+            <span>jamais</span>
+            <span>moins d’une 1 heure/jour</span>
+            <span>1 à 4 hr/jour</span>
+            <span>4 à 8hr/jour</span>
+            <span>plus de 8 hr/jour</span>
+          </div>
+          <div class="scale-inputs">
+            <label><input type="radio" name="q1" value="1"></label>
+            <label><input type="radio" name="q1" value="2"></label>
+            <label><input type="radio" name="q1" value="3"></label>
+            <label><input type="radio" name="q1" value="4"></label>
+            <label><input type="radio" name="q1" value="5"></label>
+          </div>
+        </fieldset>
+  
+        <fieldset class="question">
+          <legend>1. Durant les deux dernières semaines... en moyenne</legend>
+          <div class="scale-text">
+            <span>jamais</span>
+            <span>moins d’une 1 heure/jour</span>
+            <span>1 à 4 hr/jour</span>
+            <span>4 à 8hr/jour</span>
+            <span>plus de 8 hr/jour</span>
+          </div>
+          <div class="scale-inputs">
+            <label><input type="radio" name="q1" value="1"></label>
+            <label><input type="radio" name="q1" value="2"></label>
+            <label><input type="radio" name="q1" value="3"></label>
+            <label><input type="radio" name="q1" value="4"></label>
+            <label><input type="radio" name="q1" value="5"></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="question">
+          <legend>1. Durant les deux dernières semaines... en moyenne</legend>
+          <div class="scale-text">
+            <span>jamais</span>
+            <span>moins d’une 1 heure/jour</span>
+            <span>1 à 4 hr/jour</span>
+            <span>4 à 8hr/jour</span>
+            <span>plus de 8 hr/jour</span>
+          </div>
+          <div class="scale-inputs">
+            <label><input type="radio" name="q1" value="1"></label>
+            <label><input type="radio" name="q1" value="2"></label>
+            <label><input type="radio" name="q1" value="3"></label>
+            <label><input type="radio" name="q1" value="4"></label>
+            <label><input type="radio" name="q1" value="5"></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="question">
+          <legend>1. Durant les deux dernières semaines... en moyenne</legend>
+          <div class="scale-text">
+            <span>jamais</span>
+            <span>moins d’une 1 heure/jour</span>
+            <span>1 à 4 hr/jour</span>
+            <span>4 à 8hr/jour</span>
+            <span>plus de 8 hr/jour</span>
+          </div>
+          <div class="scale-inputs">
+            <label><input type="radio" name="q1" value="1"></label>
+            <label><input type="radio" name="q1" value="2"></label>
+            <label><input type="radio" name="q1" value="3"></label>
+            <label><input type="radio" name="q1" value="4"></label>
+            <label><input type="radio" name="q1" value="5"></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="question">
+          <legend>1. Durant les deux dernières semaines... en moyenne</legend>
+          <div class="scale-text">
+            <span>jamais</span>
+            <span>moins d’une 1 heure/jour</span>
+            <span>1 à 4 hr/jour</span>
+            <span>4 à 8hr/jour</span>
+            <span>plus de 8 hr/jour</span>
+          </div>
+          <div class="scale-inputs">
+            <label><input type="radio" name="q1" value="1"></label>
+            <label><input type="radio" name="q1" value="2"></label>
+            <label><input type="radio" name="q1" value="3"></label>
+            <label><input type="radio" name="q1" value="4"></label>
+            <label><input type="radio" name="q1" value="5"></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="question">
+          <legend>1. Durant les deux dernières semaines... en moyenne</legend>
+          <div class="scale-text">
+            <span>jamais</span>
+            <span>moins d’une 1 heure/jour</span>
+            <span>1 à 4 hr/jour</span>
+            <span>4 à 8hr/jour</span>
+            <span>plus de 8 hr/jour</span>
+          </div>
+          <div class="scale-inputs">
+            <label><input type="radio" name="q1" value="1"></label>
+            <label><input type="radio" name="q1" value="2"></label>
+            <label><input type="radio" name="q1" value="3"></label>
+            <label><input type="radio" name="q1" value="4"></label>
+            <label><input type="radio" name="q1" value="5"></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="question">
+          <legend>1. Durant les deux dernières semaines... en moyenne</legend>
+          <div class="scale-text">
+            <span>jamais</span>
+            <span>moins d’une 1 heure/jour</span>
+            <span>1 à 4 hr/jour</span>
+            <span>4 à 8hr/jour</span>
+            <span>plus de 8 hr/jour</span>
+          </div>
+          <div class="scale-inputs">
+            <label><input type="radio" name="q1" value="1"></label>
+            <label><input type="radio" name="q1" value="2"></label>
+            <label><input type="radio" name="q1" value="3"></label>
+            <label><input type="radio" name="q1" value="4"></label>
+            <label><input type="radio" name="q1" value="5"></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="question">
+          <legend>1. Durant les deux dernières semaines... en moyenne</legend>
+          <div class="scale-text">
+            <span>jamais</span>
+            <span>moins d’une 1 heure/jour</span>
+            <span>1 à 4 hr/jour</span>
+            <span>4 à 8hr/jour</span>
+            <span>plus de 8 hr/jour</span>
+          </div>
+          <div class="scale-inputs">
+            <label><input type="radio" name="q1" value="1"></label>
+            <label><input type="radio" name="q1" value="2"></label>
+            <label><input type="radio" name="q1" value="3"></label>
+            <label><input type="radio" name="q1" value="4"></label>
+            <label><input type="radio" name="q1" value="5"></label>
+          </div>
+        </fieldset>
+
+
+
 
           <tr>
             <td>
-              <div class="question">
+              <div class="IIPBAA_question">
                 <p>1. Durant les deux dernières semaines, si vous avez utilisé votre(vos) appareil(s) auditif(s), indiquez combien d’heures par jour en moyenne</p>
-
-                <div class="scale">
+                 <br> 
+                <div class="IIPBAA_scale">
                   <span >jamais </span>
                   <span >moins d’une 1 heure/jour</span>
                   <span > 1 à 4 hr/jour</span>
@@ -120,7 +181,7 @@
                   <span >plus de 8 hr/jour</span>
                 </div>
 
-                <div class="scale">
+                <div class="IIPBAA_scale">
                   <label><input type="radio" name="q1" value="1"></label>
                   <label><input type="radio" name="q1" value="2"></label>
                   <label><input type="radio" name="q1" value="3"></label>
@@ -134,11 +195,11 @@
 
           <tr>
             <td>
-              <div class="question">
+              <div class="IIPBAA_question">
                 <p>2. Souvenez-vous des situations dans lesquelles vous aviez le plus envie d’entendre mieux avant d’avoir votre appareillage auditif. Durant les deux dernières semaines, votre appareillage vous a-t-il aidé dans
                   ces situations?</p>
-
-                <div class="scale">
+                <br> 
+                <div class="IIPBAA_scale">
                   <span >Jamais aidé </span>
                   <span >Légèrement aidé </span>
                   <span >Modérément aidé </span>
@@ -146,7 +207,7 @@
                   <span >Beaucoup aidé </span>
                 </div>
 
-                <div class="scale">
+                <div class="IIPBAA_scale">
                   <label><input type="radio" name="q2" value="1"></label>
                   <label><input type="radio" name="q2" value="2"></label>
                   <label><input type="radio" name="q2" value="3"></label>
@@ -160,10 +221,10 @@
 
           <tr>
             <td>
-              <div class="question">
+              <div class="IIPBAA_question">
                 <p>3. Souvenez-vous des situations dans lesquelles vous aviez le plus envie d’entendre mieux. Quand vous utilisez maintenant votre appareillage auditif, avez-vous ENCORE des difficultés ?</p>
 
-                <div class="scale">
+                <div class="IIPBAA_scale">
                   <span >Beaucoup difficultés </span>
                   <span >Nettes difficultés </span>
                   <span >Difficultés modérées </span>
@@ -171,7 +232,7 @@
                   <span >aucune difficulté </span>
                 </div>
 
-                <div class="scale">
+                <div class="IIPBAA_scale">
                   <label><input type="radio" name="q3" value="1"></label>
                   <label><input type="radio" name="q3" value="2"></label>
                   <label><input type="radio" name="q3" value="3"></label>
@@ -185,10 +246,10 @@
 
           <tr>
             <td>
-              <div class="question">
+              <div class="IIPBAA_question">
                 <p>4. Tout compte fait, pensez-vous que votre appareillage auditif actuel présente un intérêt?</p>
 
-                <div class="scale">
+                <div class="IIPBAA_scale">
                   <span >Aucun intérêt </span>
                   <span >Un léger intérêt </span>
                   <span >Un intérêt modéré </span>
@@ -196,7 +257,7 @@
                   <span >Un grand intérêt </span>
                 </div>
 
-                <div class="scale">
+                <div class="IIPBAA_scale">
                   <label><input type="radio" name="q4" value="1"></label>
                   <label><input type="radio" name="q4" value="2"></label>
                   <label><input type="radio" name="q4" value="3"></label>
@@ -210,10 +271,10 @@
 
           <tr>
             <td>
-              <div class="question">
+              <div class="IIPBAA_question">
                 <p>5. Durant les deux dernières semaines, avec votre appareillage auditif actuel, à quel point vos difficultés auditives ont-elles gêné ou affecté les choses que vous pouvez faire?</p>
 
-                <div class="scale">
+                <div class="IIPBAA_scale">
                   <span >Beaucoup gêné </span>
                   <span >Nettement gêné </span>
                   <span >Modérément gêné </span>
@@ -221,7 +282,7 @@
                   <span >Pas du tout gêné </span>
                 </div>
 
-                <div class="scale">
+                <div class="IIPBAA_scale">
                   <label><input type="radio" name="q5" value="1"></label>
                   <label><input type="radio" name="q5" value="2"></label>
                   <label><input type="radio" name="q5" value="3"></label>
@@ -236,10 +297,10 @@
 
           <tr>
             <td>
-              <div class="question">
+              <div class="IIPBAA_question">
                 <p>6. Durant les deux dernières semaines, avec votre appareillage auditif actuel, à quel point pensez-vous que vos difficultés auditives ont ennuyé les autres?</p>
 
-                <div class="scale">
+                <div class="IIPBAA_scale">
                   <span >Beaucoup ennuyé </span>
                   <span >Nettement ennuyé </span>
                   <span >Modérément ennuyé </span>
@@ -247,7 +308,7 @@
                   <span >Pas du tout ennuyé </span>
                 </div>
 
-                <div class="scale">
+                <div class="IIPBAA_scale">
                   <label><input type="radio" name="q6" value="1"></label>
                   <label><input type="radio" name="q6" value="2"></label>
                   <label><input type="radio" name="q6" value="3"></label>
@@ -262,10 +323,10 @@
 
           <tr>
             <td>
-              <div class="question">
+              <div class="IIPBAA_question">
                 <p>7. Tout compte fait, votre vie et ses plaisisrs ont-ils changé depuis votre appareillage auditif ?</p>
 
-                <div class="scale">
+                <div class="IIPBAA_scale">
                   <span >Pire qu’avant </span>
                   <span >Pas de changement </span>
                   <span >Légèrement mieux </span>
@@ -273,7 +334,7 @@
                   <span >Beaucoup mieux </span>
                 </div>
 
-                <div class="scale">
+                <div class="IIPBAA_scale">
                   <label><input type="radio" name="q7" value="1"></label>
                   <label><input type="radio" name="q7" value="2"></label>
                   <label><input type="radio" name="q7" value="3"></label>
@@ -287,10 +348,10 @@
 
           <tr>
             <td>
-              <div class="question">
+              <div class="IIPBAA_question">
                 <p>8. Quel est votre niveau de perte auditive lorsque vous <b>ne</b> portez <b>pas</b> votre appareillage auditif ?</p>
 
-                <div class="scale">
+                <div class="IIPBAA_scale">
                   <span >Profonde</span>
                   <span >Sévère</span>
                   <span >Moyenne</span>
@@ -298,7 +359,7 @@
                   <span >Aucune</span>
                 </div>
 
-                <div class="scale">
+                <div class="IIPBAA_scale">
                   <label><input type="radio" name="q8" value="1"></label>
                   <label><input type="radio" name="q8" value="2"></label>
                   <label><input type="radio" name="q8" value="3"></label>
@@ -318,7 +379,7 @@
         <button type="reset" onclick="resetForm()">Réinitialiser</button>
       </div>
     </form>
-    <div id="result"></div>
+    <div id="results"></div>
     <script>
       function calculerScores() {
         let use = 0;
@@ -388,14 +449,14 @@
         display += "<li>Niveau de qualité de vie : " + qol + " (norme: " + n_qol + ")" + "</li>";
         display += "</ul>";
 
-        document.getElementById("result").innerHTML = display;
-        document.getElementById("result").style.display = "block";
+        document.getElementById("results").innerHTML = display;
+        document.getElementById("results").style.display = "block";
       }
 
       function resetForm() {
         document.getElementById("IIPBAA").reset();
-        document.getElementById("result").innerHTML = "";
-        document.getElementById("result").style.display = "none";
+        document.getElementById("results").innerHTML = "";
+        document.getElementById("results").style.display = "none";
       }
     </script>
   </body>
