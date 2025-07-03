@@ -439,6 +439,7 @@
                   <p class="SADL_question">Quel est le niveau de votre gêne auditive en l’absence d’appareils auditifs ?</p>
                 </div>
                 <div class="SADL_small_radio_input">  
+
                     <label><input type="radio" name="anx4" value="1">Aucune</label>
                     <label><input type="radio" name="anx4" value="2">Légère</label>
                     <label><input type="radio" name="anx4" value="3">Moyenne</label>
@@ -459,6 +460,20 @@
       <div id="results"></div>
 
     <script>
+
+      // Sliders colors
+      const sliders = document.querySelectorAll(".slider");
+      sliders.forEach(function(slider) {
+      slider.addEventListener("input", function () {
+      const value = (this.value - this.min) / (this.max - this.min) * 100;
+      this.style.background = `linear-gradient(to right, #2B176C ${value}%,  #eeeeee ${value}%)`;
+      });
+
+      // Appliquer le dégradé à l’état initial
+      const initialValue = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+      slider.style.background = `linear-gradient(to right, #2B176C ${initialValue}%, #eeeeee ${initialValue}%)`;
+    });
+
 
       function calculateScore() {
         let effet       = 0;
