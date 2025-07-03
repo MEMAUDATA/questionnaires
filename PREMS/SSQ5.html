@@ -10,57 +10,39 @@
     <style>
       /* style is within the style.css sheet */
     </style>
-
-    <style>
-     
-     
-      input[type="radio"] {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto;
-      }
-
-     
-    
-      
-    </style>
+    <title>SSQ5</title>
   </head>
 
   <body>
-    <h1 style="text-align:center;">SSQ5</h1>
-    <p style="text-align: center;">Moulin et Richard, 2016</p>
-    <p style="text-align: center;"><b>Conseil pour répondre aux questions</b></p>
-    <p style="text-align: center;">Les questions suivantes concernent votre capacité et votre expérience en matière d’audition et d’écoute dans le cadre de
+    <h1>SSQ5</h1>
+    <p> Gatehouse & Noble,2004 (version originale à 49 items)<br>
+    Moulin et Richard, 2016 (version simplifiée et validée en français)<p>
+    <p><b>Conseil pour répondre aux questions</b></p>
+    <p >Les questions suivantes concernent votre capacité et votre expérience en matière d’audition et d’écoute dans le cadre de
       situations diverses.<br><br>
       Déplacez le curseur (ou slider) situé à droite de chacune des questions, à l’endroit adéquat entre le 0 et le 10. Si le curseur se trouve au niveau de la valeur 10, cela signifie que vous êtes parfaitement capable de faire ou d’expérimenter ce qui est décrit dans la question correspondante. Si le curseur se trouve sur le 0, cela indique que vous n’êtes pratiquement pas en mesure de faire
       ni d’expérimenter ce qui est décrit.<br><br>
-
       <b>Nous espérons que toutes les questions sont pertinentes au regard de votre vie quotidienne.</b> Si ce n’est pas le cas
       pour certaines questions, veuillez cocher la case « non applicable » (NA).</p>
 
     <br>
-
-    <form id="ssq5-form">
-
-
+    <form id="SSQ5">
       <table>
         <thead>
         </thead>
         <tbody>
           <tr>
-            <td style="text-align:left; width:400px;">
-              1. Pouvez-vous avoir une conversation avec une personne si une autre personne ayant la voix aussi aigue ou grave
-              que celle de votre interlocuteur parle en même temps ?
+            <td class="Question_SSQ">
+                1. Pouvez-vous avoir une conversation avec une personne si une autre personne ayant la voix aussi aigue ou grave
+                que celle de votre interlocuteur parle en même temps ?
             </td>
-
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q1">
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -82,18 +64,18 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               2. Vous êtes assis entre deux personnes. L’une d’elles commence à parler. Pouvez-vous dire immédiatement sans
               regarder s’il s’agit de la personne assise à votre gauche ou à votre droite ?
             </td>
 
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q2">
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -114,18 +96,18 @@
             </td>
           </tr>
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               3. Pouvez-vous indiquer immédiatement à quelle distance se trouve un bus ou un camion, juste en entendant le
               bruit qu’il fait ?
             </td>
 
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q3">
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -147,17 +129,17 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               4. Les bruits quotidiens que vous entendez facilement sont-ils distincts (non brouillés)?
             </td>
 
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q4">
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -179,17 +161,17 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               5. Devez-vous vous concentrer intensément lorsque vous écoutez quelqu’un ou quelque chose ?
             </td>
 
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Concentration intense</span>
                 <span>Pas de concentration</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q5">
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -209,11 +191,8 @@
               <span style="float: right;">Non appliquable</span>
             </td>
           </tr>
-
         </tbody>
       </table>
-
-
 
       <div class="buttons-container ">
         <button type="button" onclick="calculerScores()">Calculer les scores</button>
@@ -225,6 +204,20 @@
     <div id="results"></div>
 
     <script>
+
+      // Sliders colors
+      const sliders = document.querySelectorAll(".slider");
+      sliders.forEach(function(slider) {
+      slider.addEventListener("input", function () {
+      const value = (this.value - this.min) / (this.max - this.min) * 100;
+      this.style.background = `linear-gradient(to right, #2B176C ${value}%,  #eeeeee ${value}%)`;
+      });
+
+      // Appliquer le dégradé à l’état initial
+      const initialValue = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+      slider.style.background = `linear-gradient(to right, #2B176C ${initialValue}%, #eeeeee ${initialValue}%)`;
+    });
+
       function calculerScores() {
         let score = 0;
         let countNa = 0;
@@ -246,24 +239,28 @@
           }
         } // end loop
 
-        score = score / (5 - countNa);
-
-
-        displayscores(score);
+        if (countNa === sliderIds.length) {
+            score = NaN;
+            displayscores(score);
+        } else {
+          score = score / (sliderIds.length - countNa);
+          displayscores(score);
+        }
       } // end function
-
-
 
       function displayscores(score) {
-        document.getElementById("result").textContent = "Le score total est " + score.toFixed(2);
-        document.getElementById('result').style.display = 'block';
-      } // end function
-
-
+      const results = document.getElementById("results");
+      if (isNaN(score)) {
+        results.textContent = "Score incalculable : toutes les cases Non applicable ont été cochées.";
+      } else {
+        results.textContent = "Le score total est " + score.toFixed(2);
+      }
+      results.style.display = "block";
+    }// end function
       function resetForm() {
-        document.getElementById("ssq5-form").reset();
-        document.getElementById("result").innerHTML = "";
-        document.getElementById('result').style.display = 'none';
+        document.getElementById("SSQ5").reset();
+        document.getElementById("results").innerHTML = "";
+        document.getElementById('results').style.display = 'none';
       } // end function
     </script>
   </body>

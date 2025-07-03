@@ -300,11 +300,21 @@ ol.my_QSCPGS {
 
 
 /* --- PREMS --- */
-
-
-
-
-
+/* For all SSQ versions */ 
+.Consignes_SSQ {
+    text-align: center;
+}
+.Question_SSQ {
+    text-align: left;
+    max-width: 400px;
+    width: 400px;
+    word-break: break-word;
+    vertical-align: top; 
+}
+.SSQ_answer {
+    display:flex; 
+    justify-content:space-between;
+}
 
 /* IOIHA  */
 form#IIPBAA {
