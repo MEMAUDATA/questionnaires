@@ -1,34 +1,18 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
+    <!-- Author's details-->
+    <meta name="author" content="Nicolas Vannson">
+    <meta name="contact" content="hello@memau.eu">
+    <meta name="license" content="EUPLv1.2">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      /* style is within the style.css sheet */
+    </style>
     <title>SSQ49</title>
     <style>
-      body {
-        font-family: Montserrat, sans-serif;
-        color: black;
-      }
-
-      p,
-      h1 {
-        text-align:center;}
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      th,
-      td {
-        border: 1px solid black !important; 
-        padding: 8px;
-        text-align: left;
-      }
-
+     
       
       .na-checkbox {
         text-align: center;
@@ -115,7 +99,7 @@
 
     <br>
 
-    <form id="ssq49-form">
+    <form id="SSQ49">
 
       <h3> 1ère partie : Audition de la parole </h3>
       <br>
@@ -2041,7 +2025,7 @@
 
     </form>
 
-    <div id="result"></div>
+    <div id="results"></div>
 
     <script>
       function calculerScores() {
@@ -2125,8 +2109,8 @@
         display += "<li>Audition spatiale : " + spatial.toFixed(2) + "</li>";
         display += "<li>Qualité d’audition : " + qualite.toFixed(2) + "</li>";
         display += "</ul>";
-        document.getElementById("result").innerHTML = display;
-        document.getElementById("result").style.display = "block";
+        document.getElementById("results").innerHTML = display;
+        document.getElementById("results").style.display = "block";
 
 
 
@@ -2145,8 +2129,8 @@
           checkbox.checked = false; // Uncheck all "Non applicable" boxes
         });
 
-        document.getElementById("result").innerHTML = "";
-        document.getElementById("result").style.display = "none";
+        document.getElementById("results").innerHTML = "";
+        document.getElementById("results").style.display = "none";
       }
 
     </script>

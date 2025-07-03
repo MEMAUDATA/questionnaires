@@ -17,7 +17,7 @@ body {
 }
 
 
-h1,h2,h3,p {
+h1,h2,h3,h4,p {
     text-align: center;
 }
 
@@ -77,7 +77,6 @@ input[type="radio"] {
 /* Sliders options */
 .slider {
     width: 100%;
-    background: #ddd;
     height: 10px;
     border-radius:5px; 
     outline: 0; 
@@ -145,10 +144,17 @@ ul.myList {
 
 /* Specific style for each questionnaires */
 /* --- ACOUPHENES --- */
-/* BAHIA */
-.Question_Bahia{
+
+.Question_Bahia,
+.Question_Khalfa,
+.Question_miniHQ9,
+.Question_Nelting,
+.Question_THI,
+.Question_MASH{
     text-align: left; 
 }
+
+/* BAHIA */
 .Réponses_Bahia {
     text-align: center;
     margin-top: 5px;
@@ -162,24 +168,6 @@ ul.myList {
     border: 1px solid #eeeeee;
 }
 
-/* KHALFA */
-.Question_Khalfa {
-    text-align: left; 
-}
-/* MASH */
-.situation {
-    text-align: left; 
-  }
-  
-/* miniHQ9 */
-.Question_miniHQ9{
-    text-align: left; 
-}
-
-/* Nelting */
-.Question_Nelting {
-    text-align: left; 
-}
 
 /* THI */
 .options {
@@ -192,12 +180,26 @@ ul.myList {
     color: black !important;
 }
 
-.Question_THI {
-    text-align: left; 
+/* M.A.S.H. */
+.MASH_scale {
+    display:flex; 
+    justify-content:space-between;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
 
 /* --- AUTRES --- */
+.Question_EHI,
+.Question_GAI,
+.Question_HHIE,
+.HADS_question,
+.ZARIT_question {
+    text-align: left; 
+}
+
+
+
 /* EHI */
 .EHI_menu{
     width:250px;
@@ -207,20 +209,8 @@ ul.myList {
     color: black !important;
     font-size: 15px !important;
 }
-.Question_EHI {
-    text-align: left; 
-}
-
-/* GAI */
-.Question_GAI {
-    text-align: left; 
-}
 
 /* HHIE-S */
-.Question_HHIES {
-    text-align: left; 
-}
-
 #HHIE-S tr:nth-child(odd) {
     background-color: #eeeeee;
   }
@@ -232,10 +222,6 @@ ul.myList {
     text-align: left;
   }
 
-.HADS_question  {
-    text-align: left; 
-}
-  
 #HADS input[type="radio"] {
     margin-right: 5px;
     margin-left: 40px;
@@ -275,24 +261,46 @@ ol.my_QSCPGS {
     background-color:#eeeeee;
   }
 
-
 /* SADL */
-
+#SADL {
+    max-width: 950px;
+    margin: 0 auto; 
+  }
+  
 .SADL_question {
     text-align: left;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
-
-.SADL_scale{
+.SADL_scale {
     display:flex; 
     justify-content:space-between;
 }
 
-/* ZARIT */
-.ZARIT_question {
-    text-align: left;
+.SADL_words {
+    display:flex; 
+    justify-content:space-between;
+    margin-bottom: 15px;
 }
 
+.SADL_small_radio_input {
+
+
+}
+
+#SADL input[type="radio"] {
+    margin-right: 5px;
+    margin-left: 40px;
+    margin-top:10px;
+}
+
+
 /* --- PREMS --- */
+
+
+
+
+
 
 /* IOIHA  */
 form#IIPBAA {
