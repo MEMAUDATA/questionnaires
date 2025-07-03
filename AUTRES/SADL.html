@@ -429,7 +429,7 @@
                       <label><input type="radio" name="anx3" value="0">Jamais</label>
                       <label><input type="radio" name="anx3" value="1">Moins d’1h par jour</label>
                       <label><input type="radio" name="anx3" value="2">Entre 1 et 4h par jour</label>
-                      <label><input type="radio" name="anx3" value="3">Entre 4 et 8h par jour</label>
+                      <label><input type="radio" name="anx3" value="3">Entre 4 et 8h par jour</label> 
                       <label><input type="radio" name="anx3" value="4">Entre 8 et 12h par jour</label>
                       <label><input type="radio" name="anx3" value="5">Plus de 12h par jour</label>
                   </div>
@@ -575,6 +575,13 @@
         document.getElementById("SADL").reset();
         document.getElementById("results").innerHTML = "";
         document.getElementById("results").style.display = "none";
+
+         // Réinitialise le fond des sliders
+         const sliders = document.querySelectorAll(".slider");
+        sliders.forEach(function (slider) {
+        const initialValue = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+        slider.style.background = `linear-gradient(to right, #2B176C ${initialValue}%, #eeeeee ${initialValue}%)`;
+      });
       }
     </script>
   </body>

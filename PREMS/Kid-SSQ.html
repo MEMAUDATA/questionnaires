@@ -1,155 +1,50 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
+    <!-- Author's details-->
+    <meta name="author" content="Nicolas Vannson">
+    <meta name="contact" content="hello@memau.eu">
+    <meta name="license" content="EUPLv1.2">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kid-SSQ</title>
     <style>
-      body {
-        font-family: Montserrat, sans-serif;
-        color: black;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      th,
-      td {
-        border-top: 1px solid #808080 !important; /* !important should be used cautiously */
-        border-left: 1px solid #808080;
-        border-right: 1px solid #808080;
-        border-bottom: 1px solid #808080;
-        padding: 8px;
-        text-align: left;
-      }
-
-      
-
-      .na-checkbox {
-        text-align: center;
-        width: 110px;
-
-      }
-
-      .slider {
-        width: 100%;
-        background: #ddd;
-        height: 10px;
-        border-radius:5px; 
-        outline: 0; 
-
-      }
-
-      .slider:hover {
-        opacity: 2;
-      }
-
-      .slider-label {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 110px;
-        margin-bottom: 20px;
-        font-size: 6px;
-      }
-      
-      .help {
-      text-align: center;
-      }
-      
-      .buttons-container {
-        text-align: center;
-        margin-top: 40px;
-      }
-      .buttons-container button {
-        padding: 12px 25px;
-        margin: 0 10px;
-        font-size: 17px;
-        cursor: pointer;
-        border: none;
-        border-radius: 5px;
-        background-color: #eeeeee;
-
-      }
-
-      .buttons-container button:hover {
-        background-color: #0056b3;
-        color : white;
-      }
-
-      #result { /* Correction ici : cibler l'ID directement */
-        text-align: center;
-        font-size: 20px;
-        margin-top: 30px;
-        border: 1px solid #eeeeee;
-        background-color: #eeeeee;
-        padding: 15px;
-        display: none;
-        border-radius: 5px;
-        padding: 15px;
-        display:none;
-      }
-
-      ul.myList {
-        display: inline-block;
-        text-align: left;
-      }
-
-      
-      
-      
+      /* style is within the style.css sheet */
     </style>
   </head>
   <body>
-    <h1 style="text-align:center;">Kid-SSQ</h1>
-    <p style="text-align: center;">(version courte - 12 items) </p>
-    <p style="text-align: center;">Coudert et al., 2023 </p>
+    <h1>Kid-SSQ</h1>
+    <p >(version courte - 12 items) </p>
+    <p>Coudert et al., 2023 </p>
     <br>
-
-     <!-- add images to help children answering -->
-    <div class="help">
-	<p> Echelles visuelles pour aider l'enfant à répondre, si besoin. <br>
+    <!-- add images to help children answering 
+<div style="text-align: center;">
+<p> Echelles visuelles pour aider l'enfant à répondre, si besoin. <br>
 Pour un enfant entre 7 et 9 ans, d'après les auteurs, l'échelle B est a privilégier. </p> <br>
-    <img src="https://data.memau.eu/wp-content/uploads/2025/05/KID-SSQ-VISUAL_SCALE_A.png" alt="VSA" width="519" height="233">
-    <img src="https://data.memau.eu/wp-content/uploads/2025/05/KID-SSQ-VISUAL_SCALE_B.png" alt="VSB" width="508" height="238"> 
-    </div> 
-      
+<img src="https://data.memau.eu/wp-content/uploads/2025/05/KID-SSQ-VISUAL_SCALE_A.png" alt="VSA" width="519" height="233">
+<img src="https://data.memau.eu/wp-content/uploads/2025/05/KID-SSQ-VISUAL_SCALE_B.png" alt="VSB" width="508" height="238"> 
+</div> 
+-->
 
-    <br>
+    <form id="SSQKID">
 
-    <form id="ssqkid">
-
-      <h3> Section A – Audition de la parole</h3>
+      <h3 class="Question_SSQ"> Section A – Audition de la parole</h3>
       <br>
 
       <table>
         <thead></thead>
         <tbody>
           <tr>
-            <td style="text-align:left; width:400px;">
-              A1. Tu discutes avec quelqu’un, la TV est allumée dans la même pièce.<br>
-<b>Peux-tu comprendre ce qu’il te dit sans baisser le son ?</b>
+            <td class="Question_SSQ">
+              A1. Tu discutes avec quelqu’un, la TV est allumée dans la même pièce.
+              <b>Peux-tu comprendre ce qu’il te dit sans baisser le son ?</b>
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
-              <input
-                     type="range"
-                     min="0"
-                     max="10"
-                     step="0.1"
-                     value="5"
-                     class="slider"
-                     id="q1"
-                     />
-              <div style="display:flex; justify-content:space-between;">
+              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q1">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -169,30 +64,21 @@ Pour un enfant entre 7 et 9 ans, d'après les auteurs, l'échelle B est a privil
             </td>
           </tr>
 
-          
-          
 
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               A2. Tu es assis autour d’une table avec un groupe de 5 personnes environ. L’endroit est bruyant, comme une salle de classe où les élèves se déplacent et discutent. Tu peux voir toutes les personnes autour de
-la table.<br>
-<b>Peux-tu comprendre ce que les personnes du groupe disent ?</b>
+              la table.
+              <b>Peux-tu comprendre ce que les personnes du groupe disent ?</b>
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
-              <input
-                     type="range"
-                     min="0"
-                     max="10"
-                     step="0.1"
-                     value="5"
-                     class="slider"
-                     id="q2"
-                     />
-              <div style="display:flex; justify-content:space-between;">
+              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q2">
+             
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -212,25 +98,18 @@ la table.<br>
             </td>
           </tr>
           <tr>
-            <td style="text-align:left; width:400px;">
-              A3. Tu es assis autour d’une table avec un groupe de 5 personnes environ. L’endroit est bruyant, comme une salle de classe où les élèves se déplacent et discutent. Tu ne peux pas voir toutes les personnes autour de la table.<br>
-<b>Peux-tu comprendre ce que les personnes du groupe disent ?</b>
+            <td class="Question_SSQ">
+              A3. Tu es assis autour d’une table avec un groupe de 5 personnes environ. L’endroit est bruyant, comme une salle de classe où les élèves se déplacent et discutent. Tu ne peux pas voir toutes les personnes autour de la table.
+              <b>Peux-tu comprendre ce que les personnes du groupe disent ?</b>
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
-              <input
-                     type="range"
-                     min="0"
-                     max="10"
-                     step="0.1"
-                     value="5"
-                     class="slider"
-                     id="q3"
-                     />
-              <div style="display:flex; justify-content:space-between;">
+              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q3">
+             
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -251,12 +130,12 @@ la table.<br>
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               A4. Tu discutes avec quelqu’un dans une pièce où beaucoup d’autres personnes parlent.<br>
-<b>Peux-tu comprendre ce qu’il te dit ?</b>
+              <b>Peux-tu comprendre ce qu’il te dit ?</b>
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -269,7 +148,7 @@ la table.<br>
                      class="slider"
                      id="q4"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -289,22 +168,22 @@ la table.<br>
             </td>
           </tr>
 
-          
+
         </tbody>
       </table>
 
       <br>
-      <h3> Section B – Audition spatiale </h3>  
+      <h3 class="Question_SSQ"> Section B – Audition spatiale </h3>  
       <br>
       <table>
         <thead></thead>
         <tbody>
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               B1. Tu es à la maison et tu entends un bruit fort (une porte qui claque ou l’aspirateur).<br><b>Peux-tu dire immédiatement d’où vient le bruit ? </b>
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -317,7 +196,7 @@ la table.<br>
                      class="slider"
                      id="q5"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -338,12 +217,12 @@ la table.<br>
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
-             B2. Tu es dehors. Un chien aboie très fort.<br>
-<b>Peux-tu dire immédiatement où il se trouve, sans le voir ?</b>
+            <td class="Question_SSQ">
+              B2. Tu es dehors. Un chien aboie très fort.<br>
+              <b>Peux-tu dire immédiatement où il se trouve, sans le voir ?</b>
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -356,7 +235,7 @@ la table.<br>
                      class="slider"
                      id="q6"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -377,12 +256,12 @@ la table.<br>
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               B3. Tu es sur le trottoir d’une rue où il y a beaucoup de bruit. Tu entends un bus ou un camion.<br>
-<b>Peux-tu dire immédiatement d’où il vient avant de le voir ?</b>
+              <b>Peux-tu dire immédiatement d’où il vient avant de le voir ?</b>
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -395,7 +274,7 @@ la table.<br>
                      class="slider"
                      id="q7"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -416,13 +295,13 @@ la table.<br>
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               B4. Tu entends des voix ou des bruits de pas.<br>
-<b>Juste en écoutant, peux-tu dire où la personne va ? (par exemple, est-ce que la personne se
-rapproche de toi ou se déplace de ta gauche vers ta droite ?)</b>
+              <b>Juste en écoutant, peux-tu dire où la personne va ? (par exemple, est-ce que la personne se
+                rapproche de toi ou se déplace de ta gauche vers ta droite ?)</b>
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -435,7 +314,7 @@ rapproche de toi ou se déplace de ta gauche vers ta droite ?)</b>
                      class="slider"
                      id="q8"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -455,25 +334,25 @@ rapproche de toi ou se déplace de ta gauche vers ta droite ?)</b>
             </td>
           </tr>
 
-        
+
 
         </tbody>
       </table>
 
 
       <br>
-      <h3> Section C – Qualité d’audition </h3>  
+      <h3 class="Question_SSQ"> Section C – Qualité d’audition </h3>  
       <br>
 
       <table>
         <thead></thead>
         <tbody>
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               <b>C1. Peux-tu reconnaître facilement la voix des personnes de ta famille, de tes amis, quand tu les entends arriver sans les voir ? </b>
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -486,7 +365,7 @@ rapproche de toi ou se déplace de ta gauche vers ta droite ?)</b>
                      class="slider"
                      id="q9"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -507,12 +386,12 @@ rapproche de toi ou se déplace de ta gauche vers ta droite ?)</b>
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
-             C2. Tu entends une chanson ou une musique que tu connais bien.<br>
-<b>Arrives-tu facilement à la reconnaître ?</b>
+            <td class="Question_SSQ">
+              C2. Tu entends une chanson ou une musique que tu connais bien.<br>
+              <b>Arrives-tu facilement à la reconnaître ?</b>
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -525,7 +404,7 @@ rapproche de toi ou se déplace de ta gauche vers ta droite ?)</b>
                      class="slider"
                      id="q10"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -546,11 +425,11 @@ rapproche de toi ou se déplace de ta gauche vers ta droite ?)</b>
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               <b>C3. Peux-tu faire la différence entre deux sons qui se ressemblent, comme par exemple un robinet qui coule et un ventilateur ?</b>
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -563,7 +442,7 @@ rapproche de toi ou se déplace de ta gauche vers ta droite ?)</b>
                      class="slider"
                      id="q11"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -584,12 +463,12 @@ rapproche de toi ou se déplace de ta gauche vers ta droite ?)</b>
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               C4. Tous les jours, tu entends les mêmes bruits à la maison.<br>
-<b>Est-ce que tu peux les reconnaître facilement ? (par exemple, le bruit de la cafetière, la sonnerie du téléphone, l’eau qui coule…)</b>
+              <b>Est-ce que tu peux les reconnaître facilement ? (par exemple, le bruit de la cafetière, la sonnerie du téléphone, l’eau qui coule…)</b>
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -602,7 +481,7 @@ rapproche de toi ou se déplace de ta gauche vers ta droite ?)</b>
                      class="slider"
                      id="q12"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -625,7 +504,7 @@ rapproche de toi ou se déplace de ta gauche vers ta droite ?)</b>
 
         </tbody>
       </table>
-      
+
 
       <div class="buttons-container">
         <button type="button" onclick="calculerScores()">Calculer les scores</button>
@@ -633,86 +512,99 @@ rapproche de toi ou se déplace de ta gauche vers ta droite ?)</b>
       </div>
 
     </form>
-    
 
-    
-    <div id="result"></div>
-    
-	<script>
-    function calculerScores() {
-    
-          let total     			= 0;
-          let parole    			= 0;
-          let spatial 				= 0;
-          let qualite 				= 0;
 
-          let count_Na_parole    	= 0;
-          let count_Na_spatial    	= 0;
-          let count_Na_qualite    	= 0;
-          
-          
-          
-           const sliderIds = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10', 'q11', 'q12'];
-           
+
+    <div id="results"></div>
+
+    <script>
+      function calculerScores() {
+
+        // Sliders colors
+        const sliders = document.querySelectorAll(".slider");
+        sliders.forEach(function(slider) {
+          slider.addEventListener("input", function () {
+            const value = (this.value - this.min) / (this.max - this.min) * 100;
+            this.style.background = `linear-gradient(to right, #2B176C ${value}%,  #eeeeee ${value}%)`;
+          });
+
+          // Appliquer le dégradé à l’état initial
+          const initialValue = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+          slider.style.background = `linear-gradient(to right, #2B176C ${initialValue}%, #eeeeee ${initialValue}%)`;
+        });
+
+        let total     			= 0;
+        let parole    			= 0;
+        let spatial 				= 0;
+        let qualite 				= 0;
+
+        let count_Na_parole    	= 0;
+        let count_Na_spatial    	= 0;
+        let count_Na_qualite    	= 0;
+
+
+
+        const sliderIds = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10', 'q11', 'q12'];
+
         const naCheckboxIds = ['na1', 'na2', 'na3', 'na4', 'na5', 'na6', 'na7', 'na8', 'na9', 'na10', 'na11', 'na12'];
 
-		
-       
+
+
         // Boucle parole
         for (let i = 0; i < 4; i++) {
-            const slider = document.getElementById(sliderIds[i]);
-            const naCheckbox = document.getElementById(naCheckboxIds[i]);
-            if (slider && naCheckbox) {
-                if (!naCheckbox.checked) { // Only add if NOT checked
-                    parole += parseFloat(slider.value, 10);
-                } else {
-                    count_Na_parole++; // Still count the N/A for parole
-                }
-            }
-        } // end parole loop
-        
-        // Boucle spatial
-      for (let i = 4; i < 8; i++) {
           const slider = document.getElementById(sliderIds[i]);
           const naCheckbox = document.getElementById(naCheckboxIds[i]);
           if (slider && naCheckbox) {
-              if (!naCheckbox.checked) { // Only add if NOT checked
-                  spatial += parseFloat(slider.value, 10);
-              } else {
-                  count_Na_spatial++; // Still count the N/A for spatial
-              }
+            if (!naCheckbox.checked) { // Only add if NOT checked
+              parole += parseFloat(slider.value, 10);
+            } else {
+              count_Na_parole++; // Still count the N/A for parole
+            }
           }
-      }// end
-        
+        } // end parole loop
+
+        // Boucle spatial
+        for (let i = 4; i < 8; i++) {
+          const slider = document.getElementById(sliderIds[i]);
+          const naCheckbox = document.getElementById(naCheckboxIds[i]);
+          if (slider && naCheckbox) {
+            if (!naCheckbox.checked) { // Only add if NOT checked
+              spatial += parseFloat(slider.value, 10);
+            } else {
+              count_Na_spatial++; // Still count the N/A for spatial
+            }
+          }
+        }// end
+
         // Boucle qualite
         for (let i = 8; i < 12; i++) {
-            const slider = document.getElementById(sliderIds[i]);
-            const naCheckbox = document.getElementById(naCheckboxIds[i]);
-            if (slider && naCheckbox) {
-                if (!naCheckbox.checked) { // Only add if NOT checked
-                    qualite += parseFloat(slider.value, 10);
-                } else {
-                    count_Na_qualite++; // Still count the N/A for qualite
-                }
+          const slider = document.getElementById(sliderIds[i]);
+          const naCheckbox = document.getElementById(naCheckboxIds[i]);
+          if (slider && naCheckbox) {
+            if (!naCheckbox.checked) { // Only add if NOT checked
+              qualite += parseFloat(slider.value, 10);
+            } else {
+              count_Na_qualite++; // Still count the N/A for qualite
             }
+          }
         } // end qualite loop
-        
+
         // Compute average scores
         parole = parole / (4- count_Na_parole);
         spatial = spatial /(4 - count_Na_spatial);
         qualite = qualite / (4 - count_Na_qualite);
 
-		total = (parole + spatial + qualite )/3;
+        total = (parole + spatial + qualite )/3;
 
 
-          displayscores(total, parole, spatial,qualite);
-         } // end function
+        displayscores(total, parole, spatial,qualite);
+      } // end function
 
 
-         function displayscores(total, parole, spatial,qualite) {
+      function displayscores(total, parole, spatial,qualite) {
 
 
-        let display = "<p style='text-align: center;'>Résultats</p>";
+        let display = "<p>Résultats</p>";
         display += "<br>"; 
         display += "<ul class='myList'>"; 
         display += "<li>Score total : " + total.toFixed(2) + "</li>";
@@ -720,21 +612,27 @@ rapproche de toi ou se déplace de ta gauche vers ta droite ?)</b>
         display += "<li>Audition spatiale : " + spatial.toFixed(2) + "</li>";
         display += "<li>Qualité d’audition : " + qualite.toFixed(2) + "</li>";
         display += "</ul>";
-        document.getElementById("result").innerHTML = display;
-        document.getElementById("result").style.display = "block";
+        document.getElementById("results").innerHTML = display;
+        document.getElementById("results").style.display = "block";
 
 
 
       } // end function
-
-
       function resetForm() {
-        document.getElementById("ssqkid").reset();
-        document.getElementById("result").innerHTML = "";
-        document.getElementById("result").style.display = "none";
+        document.getElementById("SSQKID").reset();
+        document.getElementById("results").innerHTML = "";
+        document.getElementById("results").style.display = "none";
+
+        // Réinitialise le fond des sliders
+        const sliders = document.querySelectorAll(".slider");
+        sliders.forEach(function (slider) {
+          const initialValue = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+          slider.style.background = `linear-gradient(to right, #2B176C ${initialValue}%, #eeeeee ${initialValue}%)`;
+        });
+
       } // end function
-      </script>
- 
+    </script>
+
   </body>
 </html>
 

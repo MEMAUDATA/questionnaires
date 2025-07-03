@@ -284,7 +284,6 @@ ol.my_QSCPGS {
 }
 
 .SADL_small_radio_input {
-    display:flex;
     display: flex;
     flex-direction: column;
     text-align: left;
@@ -302,12 +301,11 @@ ol.my_QSCPGS {
 /* --- PREMS --- */
 /* For all SSQ versions */ 
 .Consignes_SSQ_box{
-    border: 1px solid #eeeeee;
+    border: 1px solid black !important;
 
 }
-
 .Consignes_SSQ {
-    text-align: center;
+    text-align: left;
 }
 .Question_SSQ {
     text-align: left;
@@ -319,6 +317,32 @@ ol.my_QSCPGS {
 .SSQ_answer {
     display:flex; 
     justify-content:space-between;
+}
+
+/* GHABP */
+.Question_GHABP {
+    max-width: 950px;
+    text-align: left;
+    background-color: #eeeeee;
+}
+
+.Small_question_GHABP {
+    word-break: break-word;
+    vertical-align: top; 
+}
+
+.GHABP_answer {
+    width: 150px;  
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    word-break: break-word;
+    vertical-align: top; 
+    font-size: 12px;
+}
+
+#GHABP input[type="radio"] {
+    margin-left: 5px;
 }
 
 /* IOIHA  */
