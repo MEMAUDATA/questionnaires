@@ -299,9 +299,18 @@
       results.style.display = "block";
     }// end function
       function resetForm() {
+        document.getElementById("DEMO").reset();
         document.getElementById("SSQ5").reset();
         document.getElementById("results").innerHTML = "";
         document.getElementById('results').style.display = 'none';
+
+      // Réinitialise le fond des sliders
+      const sliders = document.querySelectorAll(".slider");
+      sliders.forEach(function (slider) {
+        const initialValue = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+        slider.style.background = `linear-gradient(to right, #2B176C ${initialValue}%, #eeeeee ${initialValue}%)`;
+      });
+
       } // end function
     </script>
   </body>

@@ -14,63 +14,61 @@
   </head>
 
   <body>
-    <h1>15iSSQ</h1>
-    <p> Gatehouse & Noble,2004 (version originale à 49 items)<br>
-    Moulin et al., 2015 (création du 15iSSQ en français)<br>
-    Moulin et al., 2019 (validation du 15iSSQ en français) </p>
-
+    <h1>Questionnaire d'habilités auditives 15iSSQ</h1>
+    <h2>(parole, audition spatiale et qualité de l'audition)</h2>
+    <br>
+    <p> Gatehouse & Noble, 2004 (version originale à 49 items)<br>
+      Moulin et al., 2015 (création du 15iSSQ en français)<br>
+      Moulin et al., 2019 (validation du 15iSSQ en français) </p>
     <p><i> Questionnaire sous licence CC BY-NC-SA 4.0 </i></p>
     <p><b>Conseil pour répondre aux questions</b></p>
     <p class="Consignes_SSQ">Les questions suivantes concernent votre capacité et votre expérience en matière d’audition et d’écoute dans le cadre de
       situations diverses.<br>
       Déplacez le curseur (ou slider) situé à droite de chacune des questions, à l’endroit adéquat entre le 0 et le 10. Si le curseur se trouve au niveau de la valeur 10, cela signifie que vous êtes parfaitement capable de faire ou d’expérimenter ce qui est décrit dans la question correspondante. Si le curseur se trouve sur le 0, cela indique que vous n’êtes pratiquement pas en mesure de faire
       ni d’expérimenter ce qui est décrit.<br>
-      <p style="text-align: left;"><b>Exemple</b></p> 
-      <br>
-      <form id="DEMO">   
-        <table>
-          <thead>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="Question_SSQ">
-                0. Vous pouvez suivre une conversation avec une personne en face de vous, dans le calme ?
-              </td>
-              <td class="Question_SSQ">
-                <div class="SSQ_answer">
-                  <span>Non, pas du tout</span>
-                  <span>Oui, parfaitement</span>
-                </div>
-                <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q1">
-                <div class="SSQ_answer">
-                  <span>0</span>
-                  <span>1</span>
-                  <span>2</span>
-                  <span>3</span>
-                  <span>4</span>
-                  <span>5</span>
-                  <span>6</span>
-                  <span>7</span>
-                  <span>8</span>
-                  <span>9</span>
-                  <span>10</span>
-                </div>
-              </td>
-              <td class="na-checkbox">
-                <input type="checkbox" id="q1_na">
-                <span style="float: right;">Non appliquable</span>
-              </td>
-            </tr>
-  
-          </tbody>
-        </table>
-      </form>
-      <p class="Consignes_SSQ"> La question 0 se rapporte à votre capacité de suivre une conversation. Si vous êtes tout à fait capable de le faire, placez le curseur sur l’extrémité droite de l’échelle. Si vous êtes capable de suivre environ
+    <p style="text-align: left;"><b>Exemple</b></p> 
+    <form id="DEMO">   
+      <table>
+        <thead>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="Question_SSQ">
+              0. Vous pouvez suivre une conversation avec une personne en face de vous, dans le calme ?
+            </td>
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
+                <span>Non, pas du tout</span>
+                <span>Oui, parfaitement</span>
+              </div>
+              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q1">
+              <div class="SSQ_answer">
+                <span>0</span>
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+                <span>6</span>
+                <span>7</span>
+                <span>8</span>
+                <span>9</span>
+                <span>10</span>
+              </div>
+            </td>
+            <td class="na-checkbox">
+              <input type="checkbox" id="q1_na">
+              <span style="float: right;">Non appliquable</span>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </form>
+    <p class="Consignes_SSQ"> La question 0 se rapporte à votre capacité de suivre une conversation. Si vous êtes tout à fait capable de le faire, placez le curseur sur l’extrémité droite de l’échelle. Si vous êtes capable de suivre environ
       la moitié de la conversation dans une telle situation, placez le curseur  vers le milieu de l’échelle et ainsi de suite. <br>
       Nous espérons que toutes les questions sont pertinentes au regard de votre vie quotidienne. Si ce n’est pas le cas
       pour certaines questions, veuillez cocher la case « non applicable » (NA).</p>
-  
-
     <br>
 
     <form id="15iSSQ">
@@ -563,18 +561,18 @@
 
     <script>
 
-       // Sliders colors
-       const sliders = document.querySelectorAll(".slider");
+      // Sliders colors
+      const sliders = document.querySelectorAll(".slider");
       sliders.forEach(function(slider) {
-      slider.addEventListener("input", function () {
-      const value = (this.value - this.min) / (this.max - this.min) * 100;
-      this.style.background = `linear-gradient(to right, #2B176C ${value}%,  #eeeeee ${value}%)`;
-      });
+        slider.addEventListener("input", function () {
+          const value = (this.value - this.min) / (this.max - this.min) * 100;
+          this.style.background = `linear-gradient(to right, #2B176C ${value}%,  #eeeeee ${value}%)`;
+        });
 
-      // Appliquer le dégradé à l’état initial
-      const initialValue = (slider.value - slider.min) / (slider.max - slider.min) * 100;
-      slider.style.background = `linear-gradient(to right, #2B176C ${initialValue}%, #eeeeee ${initialValue}%)`;
-    });
+        // Appliquer le dégradé à l’état initial
+        const initialValue = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+        slider.style.background = `linear-gradient(to right, #2B176C ${initialValue}%, #eeeeee ${initialValue}%)`;
+      });
 
       function calculerScores() {
         let total     	= 0;
@@ -646,7 +644,7 @@
 
         // Compute average scores
         if (count_Na_total === sliderIds.length) {
-        total = parole = spatial = qualite = NaN;
+          total = parole = spatial = qualite = NaN;
         }
         else {
           total   = total   / (sliderIds.length - count_Na_total);
@@ -656,28 +654,28 @@
         }
 
         displayscores(total, parole, spatial,qualite);
-      
+
       } // end calculerScores function
 
 
       function displayscores(total, parole, spatial, qualite) {
-  let display = ""; 
+        let display = ""; 
 
-  if (isNaN(total)) {
-    display += "<p>Score incalculable : toutes les cases Non applicable ont été cochées.</p>";
-  } else {
-    display += "<p>Résultats</p><br>";
-    display += "<ul class='myList'>";
-    display += "<li>Score total : " + total.toFixed(2) + "</li>";
-    display += "<li>Audition de la parole : " + parole.toFixed(2) + "</li>";
-    display += "<li>Audition spatiale : " + spatial.toFixed(2) + "</li>";
-    display += "<li>Qualité d’audition : " + qualite.toFixed(2) + "</li>";
-    display += "</ul>";
-  }
+        if (isNaN(total)) {
+          display += "<p>Score incalculable : toutes les cases Non applicable ont été cochées.</p>";
+        } else {
+          display += "<p>Résultats</p><br>";
+          display += "<ul class='myList'>";
+          display += "<li>Score total : " + total.toFixed(2) + "</li>";
+          display += "<li>Audition de la parole : " + parole.toFixed(2) + "</li>";
+          display += "<li>Audition spatiale : " + spatial.toFixed(2) + "</li>";
+          display += "<li>Qualité d’audition : " + qualite.toFixed(2) + "</li>";
+          display += "</ul>";
+        }
 
-  document.getElementById("results").innerHTML = display;
-  document.getElementById("results").style.display = "block";
-}
+        document.getElementById("results").innerHTML = display;
+        document.getElementById("results").style.display = "block";
+      }
 
 
       function resetForm() {
@@ -685,6 +683,15 @@
         document.getElementById("15iSSQ").reset();
         document.getElementById("results").innerHTML = "";
         document.getElementById('results').style.display = 'none';
+
+        // Réinitialise le fond des sliders
+        const sliders = document.querySelectorAll(".slider");
+        sliders.forEach(function (slider) {
+        const initialValue = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+        slider.style.background = `linear-gradient(to right, #2B176C ${initialValue}%, #eeeeee ${initialValue}%)`;
+      });
+
+
       } // end function
     </script>
   </body>
