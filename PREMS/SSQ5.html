@@ -18,13 +18,54 @@
     <p> Gatehouse & Noble,2004 (version originale à 49 items)<br>
     Moulin et Richard, 2016 (version simplifiée et validée en français)<p>
     <p><b>Conseil pour répondre aux questions</b></p>
-    <p >Les questions suivantes concernent votre capacité et votre expérience en matière d’audition et d’écoute dans le cadre de
-      situations diverses.<br><br>
+    <p class="Consignes_SSQ">Les questions suivantes concernent votre capacité et votre expérience en matière d’audition et d’écoute dans le cadre de
+      situations diverses.<br>
       Déplacez le curseur (ou slider) situé à droite de chacune des questions, à l’endroit adéquat entre le 0 et le 10. Si le curseur se trouve au niveau de la valeur 10, cela signifie que vous êtes parfaitement capable de faire ou d’expérimenter ce qui est décrit dans la question correspondante. Si le curseur se trouve sur le 0, cela indique que vous n’êtes pratiquement pas en mesure de faire
-      ni d’expérimenter ce qui est décrit.<br><br>
-      <b>Nous espérons que toutes les questions sont pertinentes au regard de votre vie quotidienne.</b> Si ce n’est pas le cas
-      pour certaines questions, veuillez cocher la case « non applicable » (NA).</p>
+      ni d’expérimenter ce qui est décrit.<br>
+    <p style="text-align: left;"><b>Exemple</b></p> 
+    <form id="DEMO">   
+      <table>
+        <thead>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="Question_SSQ">
+              0. Vous pouvez suivre une conversation avec une personne en face de vous, dans le calme ?
+            </td>
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
+                <span>Non, pas du tout</span>
+                <span>Oui, parfaitement</span>
+              </div>
+              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q1">
+              <div class="SSQ_answer">
+                <span>0</span>
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+                <span>6</span>
+                <span>7</span>
+                <span>8</span>
+                <span>9</span>
+                <span>10</span>
+              </div>
+            </td>
+            <td class="na-checkbox">
+              <input type="checkbox" id="q1_na">
+              <span style="float: right;">Non appliquable</span>
+            </td>
+          </tr>
 
+        </tbody>
+      </table>
+    </form>
+    <p class="Consignes_SSQ"> La question 0 se rapporte à votre capacité de suivre une conversation. Si vous êtes tout à fait capable de le faire, placez le curseur sur l’extrémité droite de l’échelle. Si vous êtes capable de suivre environ
+      la moitié de la conversation dans une telle situation, placez le curseur  vers le milieu de l’échelle et ainsi de suite. <br>
+      Nous espérons que toutes les questions sont pertinentes au regard de votre vie quotidienne. Si ce n’est pas le cas
+      pour certaines questions, veuillez cocher la case « non applicable » (NA).</p>
+    <br>
     <br>
     <form id="SSQ5">
       <table>
