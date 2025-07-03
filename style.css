@@ -301,6 +301,11 @@ ol.my_QSCPGS {
 
 /* --- PREMS --- */
 /* For all SSQ versions */ 
+.Consignes_SSQ_box{
+    border: 1px solid #eeeeee;
+
+}
+
 .Consignes_SSQ {
     text-align: center;
 }

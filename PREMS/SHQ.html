@@ -1,139 +1,44 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
+    <!-- Author's details-->
+    <meta name="author" content="Nicolas Vannson">
+    <meta name="contact" content="hello@memau.eu">
+    <meta name="license" content="EUPLv1.2">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHQ</title>
     <style>
-      body {
-        font-family: Montserrat, sans-serif;
-        color: black;
-
-      }
-
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .myT {
-
-        border: 1px solid black !important;
-        border-top: 1px solid black !important;
-
-      }
-
-      th,td {
-        border-top: 1px solid black !important; /* !important should be used cautiously */
-        border-left: 1px solid black;
-        border-right: 1px solid black;
-        border-bottom: 1px solid black !important;
-        padding: 8px;
-        text-align: left;
-      }
-
-
-
-      .na-checkbox {
-        text-align: center;
-        width: 110px;
-
-      }
-
-      .slider {
-        width: 100%;
-        background: #ddd;
-        height: 10px;
-        border-radius:5px; 
-        outline: 0; 
-
-      }
-
-      .slider:hover {
-        opacity: 2;
-      }
-
-      .slider-label {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 110px;
-        margin-bottom: 20px;
-        font-size: 6px;
-      }
-
-      .buttons-container {
-        text-align: center;
-        margin-top: 40px;
-      }
-
-      .buttons-container button {
-        padding: 12px 25px;
-        margin: 0 10px;
-        font-size: 17px;
-        cursor: pointer;
-        border: none;
-        border-radius: 5px;
-        background-color: #eeeeee;
-
-      }
-
-      .buttons-container button:hover {
-        background-color: #0056b3;
-        color : white;
-      }
-
-
-      #result { /* Correction ici : cibler l'ID directement */
-        text-align: center;
-        font-size: 17px;
-        margin-top: 30px;
-        border: 1px solid #eeeeee;
-        background-color: #eeeeee;
-        padding: 15px;
-        display: none;
-        border-radius: 5px;
-        padding: 15px;
-        display:none;
-      }
-
-      ul.myList {
-        display: inline-block;
-        text-align: left;
-      }
-
+       /* style is within the style.css sheet */
+       /* For the SHQ the SSQ style is used because the forms are very similar */
     </style>
+    <title>SHQ</title>
   </head>
 
   <body>
-    <h1 style="text-align:center;">Questionnaire d’écoute spatiale (SHQ)</h1>
-    <p style="text-align: center;">Moulin and Richard, 2016</p>
-    <p style="text-align: center;"><b>Conseil pour répondre aux questions</b></p>
-    <p style="text-align: center;">Les questions suivantes concernent votre capacité et votre expérience en matière d’audition et d’écoute dans le cadre de
-      situations diverses.<br><br>
+    <h1>Questionnaire d’écoute spatiale (SHQ)</h1>
+    <p>Moulin and Richard, 2016</p>
+    <p ><b>Conseil pour répondre aux questions</b></p>
+    <p class="Consignes_SSQ">Les questions suivantes concernent votre capacité et votre expérience en matière d’audition et d’écoute dans le cadre de
+      situations diverses.<br>
       Déplacez le curseur (ou slider) situé à droite de chacune des questions, à l’endroit adéquat entre le 0 et le 10. Si le curseur se trouve au niveau de la valeur 10, cela signifie que vous êtes parfaitement capable de faire ou d’expérimenter ce qui est décrit dans la question correspondante. Si le curseur se trouve sur le 0, cela indique que vous n’êtes pratiquement pas en mesure de faire
-      ni d’expérimenter ce qui est décrit.<br><br>
-
-    <form id="demo">   
-      <table class ="myT">
+      ni d’expérimenter ce qui est décrit.<br>
+    <p style="text-align: left;"><b>Exemple</b></p> 
+    <form id="DEMO">   
+      <table>
         <thead>
         </thead>
         <tbody>
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               0. Vous pouvez suivre une conversation avec une personne en face de vous, dans le calme ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+               <div class="SSQ_answer">
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q1">
-              <div style="display:flex; justify-content:space-between;">
+               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -152,37 +57,31 @@
               <span style="float: right;">Non appliquable</span>
             </td>
           </tr>
-
         </tbody>
       </table>
     </form>
 
-    À titre d’exemple, La question 0 se rapporte à votre capacité de suivre une conversation. Si vous êtes tout à fait capable de le faire, placez le curseur sur l’extrémité droite de l’échelle. Si vous êtes capable de suivre environ
-    la moitié de la conversation dans une telle situation, placez le curseur  vers le milieu de l’échelle et ainsi de suite. <br><br>
-
-    <p><b>Nous espérons que toutes les questions sont pertinentes au regard de votre vie quotidienne.</b> Si ce n’est pas le cas
-      pour certaines questions, veuillez cocher la case « non applicable » (NA).</p>
-
+    <p class="Consignes_SSQ">À titre d’exemple, La question 0 se rapporte à votre capacité de suivre une conversation. Si vous êtes tout à fait capable de le faire, placez le curseur sur l’extrémité droite de l’échelle. Si vous êtes capable de suivre environ
+    la moitié de la conversation dans une telle situation, placez le curseur  vers le milieu de l’échelle et ainsi de suite. 
+    Nous espérons que toutes les questions sont pertinentes au regard de votre vie quotidienne. Si ce n’est pas le cas
+    pour certaines questions, veuillez cocher la case « non applicable » (NA).</p>
     <br>
-
-    <form id="shq-form">
-
-
+    <form id="SHQ">
       <table>
         <tbody>
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               1.Un homme, face à vous, vous parle.La pièce dans laquelle vous êtes est
               très calme. Est-il facile de le
               comprendre ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+               <div class="SSQ_answer">
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q1">
-              <div style="display:flex; justify-content:space-between;">
+               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -202,19 +101,19 @@
             </td>
           </tr>
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               2. Une femme, face à vous, vous parle.
               La pièce dans laquelle vous êtes est
               très calme. Est-il facile de la
               comprendre ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+               <div class="SSQ_answer">
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q2">
-              <div style="display:flex; justify-content:space-between;">
+               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -234,19 +133,19 @@
             </td>
           </tr>
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               3. Un enfant, face à vous, vous parle.
               La pièce dans laquelle vous êtes est
               très calme. Est-il facile de le
               comprendre ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+               <div class="SSQ_answer">
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q3">
-              <div style="display:flex; justify-content:space-between;">
+               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -266,17 +165,17 @@
             </td>
           </tr>
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               4. Vous écoutez une musique d'intensité confortable, venant en face
               de vous. La pièce dans laquelle vous êtes, est très calme. Pouvez-vous entendre clairement la musique ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+               <div class="SSQ_answer">
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q4">
-              <div style="display:flex; justify-content:space-between;">
+               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -296,17 +195,17 @@
             </td>
           </tr>
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               5. Un homme, face à vous, vous parle. Il y a un ventilateur bruyant juste
               derrière lui. Est-il facile de le comprendre ? 
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+               <div class="SSQ_answer">
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q5">
-              <div style="display:flex; justify-content:space-between;">
+               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -326,17 +225,17 @@
             </td>
           </tr>
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               6. Une femme, face à vous, vous parle. Il y a un ventilateur bruyant juste
               derrière elle. Est-il facile de la comprendre ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+               <div class="SSQ_answer">
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q6">
-              <div style="display:flex; justify-content:space-between;">
+               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -356,17 +255,17 @@
             </td>
           </tr>
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               7. Un enfant, face à vous, vous parle. Il y a un ventilateur bruyant juste derrière
               lui. Est-il facile de le comprendre ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+               <div class="SSQ_answer">
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q7">
-              <div style="display:flex; justify-content:space-between;">
+               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -386,17 +285,17 @@
             </td>
           </tr>
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               8. Vous écoutez une musique d'intensité confortable, venant en face de vous. Il y a également un ventilateur bruyant en face de vous.Pouvez-vous entendre clairement la
               musique ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+               <div class="SSQ_answer">
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q8">
-              <div style="display:flex; justify-content:space-between;">
+               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -416,17 +315,17 @@
             </td>
           </tr>
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               9. Un homme, face à vous, vous parle. Il y a un ventilateur bruyant sur le côté.
               Est-il facile de le comprendre ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+               <div class="SSQ_answer">
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q9">
-              <div style="display:flex; justify-content:space-between;">
+               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -446,17 +345,17 @@
             </td>
           </tr>
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               10. Une femme, face à vous, vous parle. Il y a un ventilateur bruyant sur
               le côté. Est-il facile de la comprendre ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+               <div class="SSQ_answer">
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q10">
-              <div style="display:flex; justify-content:space-between;">
+               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -476,17 +375,17 @@
             </td>
           </tr>
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               11. Un enfant, face à vous, vous parle. Il y a un ventilateur bruyant sur le côté.
               Est-il facile de le comprendre ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+               <div class="SSQ_answer">
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q11">
-              <div style="display:flex; justify-content:space-between;">
+               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -506,17 +405,17 @@
             </td>
           </tr>
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               12. Vous écoutez une musiqued'intensité confortable, venant en face
               de vous. Il y a également un ventilateur bruyant de côté. Pouvez-vous entendre clairement la musique ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+               <div class="SSQ_answer">
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q12">
-              <div style="display:flex; justify-content:space-between;">
+               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -536,17 +435,17 @@
             </td>
           </tr>
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               13. Est-il facile de déterminer d'où vient la voix d'un homme si vous ne le voyez
               pas ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+               <div class="SSQ_answer">
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q13">
-              <div style="display:flex; justify-content:space-between;">
+               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -567,17 +466,17 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               14. Est-il facile de déterminer d'où vient la voix d'une femme si vous ne la
               voyez pas ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+               <div class="SSQ_answer">
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q14">
-              <div style="display:flex; justify-content:space-between;">
+               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -599,17 +498,17 @@
 
 
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               15.  Est-il facile de déterminer d'où vient la voix d'un enfant si vous ne le voyez
               pas ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+               <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q15">
-              <div style="display:flex; justify-content:space-between;">
+               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -631,17 +530,17 @@
 
 
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               16. Est-il facile de déterminer d'où vient une musique, si vous ne voyez pas le
               haut parleur ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+               <div class="SSQ_answer">
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q16">
-              <div style="display:flex; justify-content:space-between;">
+               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -664,17 +563,17 @@
 
 
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               17. Est-il facile de déterminer exactement d'où vient la voix d'un
               homme s'il est derrière vous ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+               <div class="SSQ_answer">
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q17">
-              <div style="display:flex; justify-content:space-between;">
+               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -697,17 +596,17 @@
 
 
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               18. Est-il facile de déterminer exactement d'où vient la voix d'une
               femme si elle est derrière vous ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+               <div class="SSQ_answer">
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q18">
-              <div style="display:flex; justify-content:space-between;">
+               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -729,17 +628,17 @@
 
 
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               19. Est-il facile de déterminerexactement d'où vient la voix d'un
               enfant s'il est derrière vous?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+               <div class="SSQ_answer">
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q19">
-              <div style="display:flex; justify-content:space-between;">
+               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -761,17 +660,17 @@
 
 
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               20. Est-il facile de déterminer exactement d'où vient une musique, si
               elle vient de derrière vous ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+               <div class="SSQ_answer">
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q20">
-              <div style="display:flex; justify-content:space-between;">
+               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -794,17 +693,17 @@
 
 
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               21. Est-il facile de déterminer où se trouve un avion dans le ciel si vous ne
               le voyez pas?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+               <div class="SSQ_answer">
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q21">
-              <div style="display:flex; justify-content:space-between;">
+               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -827,17 +726,17 @@
 
 
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               22. Vous entendez une voiture au loin mais vous ne la voyez pas. Est-il facile
               de dire précisément d'où elle vient?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+               <div class="SSQ_answer">
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q22">
-              <div style="display:flex; justify-content:space-between;">
+               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -859,17 +758,17 @@
 
 
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               23. Imaginez-vous au bord d'une route, les yeux fermés. Est-il facile de dire
               dans quel sens passe la voiture que vous entendez?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+               <div class="SSQ_answer">
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q23">
-              <div style="display:flex; justify-content:space-between;">
+               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -889,17 +788,17 @@
             </td>
           </tr>
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               24. Vous êtes dans une pièce d'une maison et vous entendez un grand
               bruit. Est-il facile de dire à quelle distance s'est produit le bruit?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+               <div class="SSQ_answer">
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q24">
-              <div style="display:flex; justify-content:space-between;">
+               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -919,16 +818,16 @@
             </td>
           </tr>
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               25. Dans l’ensemble, les questions vous ont–elles semblées faciles ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+               <div class="SSQ_answer">
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q25">
-              <div style="display:flex; justify-content:space-between;">
+               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -950,17 +849,17 @@
 
 
           <tr>
-            <td style="text-align:left; width:400px;">
+            <td class="Question_SSQ">
               26. Les questions reflètent-elles bien les situations rencontrées tous les
               jours ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+               <div class="SSQ_answer">
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q26">
-              <div style="display:flex; justify-content:space-between;">
+               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -990,13 +889,24 @@
 
     </form>
 
-    <div id="result"></div>
-
-
-
-
+    <div id="results"></div>
 
     <script>
+
+       // Sliders colors
+       const sliders = document.querySelectorAll(".slider");
+      sliders.forEach(function(slider) {
+      slider.addEventListener("input", function () {
+      const value = (this.value - this.min) / (this.max - this.min) * 100;
+      this.style.background = `linear-gradient(to right, #2B176C ${value}%,  #eeeeee ${value}%)`;
+      });
+
+      // Appliquer le dégradé à l’état initial
+      const initialValue = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+      slider.style.background = `linear-gradient(to right, #2B176C ${initialValue}%, #eeeeee ${initialValue}%)`;
+    });
+
+
 
       function calculerScores() {
         let male_voice = 0;
@@ -1048,15 +958,11 @@
       }
 
 
-
-
       function displayscores(male_voice, female_voice, children_voice, music, sound_localization, speech_quiet, speech_noise_target_noise_mixed, speech_noise_target_noise_separated) {
-
-
-        let display = "<p style='text-align: center;'>Résultats</p>";
+        
+        let display = "<p >Résultats</p>";
         display += "<br>"; 
         display += "<ul class='myList'>"; 
-
         display += "<li> Audition de la parole (voix masculine) : " + male_voice.toFixed(2) + "</li>" ;
         display += "<li> Audition de la parole (voix féminine) : " + female_voice.toFixed(2) + "</li>" ;
         display += "<li> Audition de la parole (voix d'enfant) : " + children_voice.toFixed(2) + "</li>"; 
@@ -1065,19 +971,18 @@
         display += "<li> Compréhension de la parole dans le calme : " + speech_quiet.toFixed(2) + "</li>" ;
         display += "<li> Compréhension de la parole dans le bruit (bruit et cible mélangés) : " + speech_noise_target_noise_mixed.toFixed(2) + "</li>" ;
         display += "<li> Compréhension de la parole dans le bruit (bruit et cible séparés) : " + speech_noise_target_noise_separated.toFixed(2) + "</li>" ;
-
         display += "</ul>";
-        document.getElementById("result").innerHTML = display;
-        document.getElementById("result").style.display = "block";
-
+      
+        document.getElementById("results").innerHTML = display;
+        document.getElementById("results").style.display = "block";
 
       } // end function
 
 
       function resetForm() {
-        document.getElementById("shq-form").reset();
-        document.getElementById("demo").reset();
-        document.getElementById("result").style.display = "none";
+        document.getElementById("SHQ").reset();
+        document.getElementById("DEMO").reset();
+        document.getElementById("results").style.display = "none";
       } // end function
 
 

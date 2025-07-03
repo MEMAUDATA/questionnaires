@@ -11,81 +11,11 @@
       /* style is within the style.css sheet */
     </style>
     <title>SSQ49</title>
-    <style>
-     
-      
-      .na-checkbox {
-        text-align: center;
-        width: 110px;
-
-      }
-
-      .slider {
-        width: 100%;
-        background: #ddd;
-        height: 10px;
-        border-radius:5px; 
-        outline: 0; 
-
-      }
-
-      .slider:hover {
-        opacity: 2;
-      }
-
-      .slider-label {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 110px;
-        margin-bottom: 20px;
-        font-size: 6px;
-      }
-
-      .buttons-container {
-        text-align: center;
-        margin-top: 30px;
-      }
-      .buttons-container button {
-        padding: 12px 25px;
-        margin: 0 10px;
-        font-size: 17px;
-        cursor: pointer;
-        border: none;
-        border-radius: 5px;
-        background-color: #eeeeee;
-
-      }
-
-      .buttons-container button:hover {
-        background-color: #0056b3;
-        color : white;
-      }
-
-      #result { /* Correction ici : cibler l'ID directement */
-        text-align: center;
-        font-size: 20px;
-        margin-top: 30px;
-        border: 1px solid #eeeeee;
-        background-color: #eeeeee;
-        padding: 15px;
-        display: none;
-        border-radius: 5px;
-        padding: 15px;
-        display:none;
-      }
-
-      ul.myList {
-        display: inline-block;
-        text-align: left;
-      }
-
-
-    </style>
   </head>
   <body>
     <h1>SSQ49</h1>
-    <p>Moulin et al., 2015</p>
+    <p> Gatehouse & Noble,2004 (version originale à 49 items)<br>
+    Moulin et al., 2015 (version validée en français)</p>
     <p><b>Conseil pour répondre aux questions</b></p>  
     <p>Les questions suivantes concernent votre capacité et votre expérience en matière d’audition et d’écoute dans le cadre de
       situations diverses.<br><br>   Déplacez le curseur (ou slider) situé à droite de chacune des questions, à l’endroit adéquat entre le 0 et le 10. Si le curseur se trouve au niveau de la valeur 10, cela signifie que vous êtes parfaitement capable de faire ou d’expérimenter ce qui est décrit dans la question correspondante. Si le curseur se trouve sur le 0, cela indique que vous n’êtes pratiquement pas en mesure de faire
@@ -93,28 +23,26 @@
       À titre d’exemple, la question 1 se rapporte à votre capacité de converser avec un interlocuteur alors que la télévision est
       allumée. Si vous êtes tout à fait capable de le faire, placez le curseur sur l’extrémité droite de l’échelle. Si vous êtes capable de
       suivre environ la moitié de la conversation dans une telle situation, placez le curseur vers le milieu de l’échelle et ainsi de suite.<br><br>
-      <b>Nous espérons que toutes les questions sont pertinentes au regard de votre vie quotidienne.</b> Si ce n’est pas le cas
+      Nous espérons que toutes les questions sont pertinentes au regard de votre vie quotidienne. Si ce n’est pas le cas
       pour certaines questions, veuillez cocher la case « non applicable » (NA).</p>
-
-
     <br>
 
     <form id="SSQ49">
 
-      <h3> 1ère partie : Audition de la parole </h3>
+      <h3 class="Question_SSQ"> 1ère partie : Audition de la parole </h3>
       <br>
 
       <table>
         <thead></thead>
         <tbody>
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               1.  Vous discutez avec une autre personne dans une pièce dans laquelle un téléviseur
               est allumé. Pouvez-vous suivre les propos de votre interlocuteur sans baisser le
               son du téléviseur ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -127,7 +55,7 @@
                      class="slider"
                      id="q1"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -153,7 +81,7 @@
               moquette. Pouvez-vous suivre ce que dit cette personne ?
             </td>
             <td>
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -166,7 +94,7 @@
                      class="slider"
                      id="q2"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -187,13 +115,13 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               3.  Vous êtes assis autour d'une table avec un groupe de cinq personnes environ. L'endroit
               est calme. Vous pouvez voir toutes les personnes du groupe. Pouvez-vous suivre
               la conversation?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -206,7 +134,7 @@
                      class="slider"
                      id="q3"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -227,13 +155,13 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               4.  Vous êtes assis autour d'une table avec un groupe de cinq personnes environ, dans
               un restaurant animé. Vous pouvez voir toutes les personnes du groupe. Pouvez-vous
               suivre la conversation?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -246,7 +174,7 @@
                      class="slider"
                      id="q4"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -267,12 +195,12 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               5.  Vous discutez avec une autre personne. Il y a un bruit de fond continu (ventilateur
               ou eau qui coule par exemple). Pouvez-vous suivre ce que dit l'autre personne ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -285,7 +213,7 @@
                      class="slider"
                      id="q5"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -306,13 +234,13 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               6.  Vous êtes assis autour d'une table avec un groupe de cinq personnes environ, dans
               un restaurant animé. Vous NE pouvez PAS voir toutes les personnes du groupe.
               Pouvez-vous suivre la conversation?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -325,7 +253,7 @@
                      class="slider"
                      id="q6"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -346,13 +274,13 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               7.  Vous discutez avec quelqu'un dans un endroit dans lequel l'écho est important,
               comme une église ou un hall de gare. Pouvez-vous suivre ce que dit cette personne
               ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -365,7 +293,7 @@
                      class="slider"
                      id="q7"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -386,13 +314,13 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               8.  Pouvez vous avoir une conversation avec une personne si une autre personne ayant
               la voix aussi aigue ou grave que celle de votre interlocuteur parle en même temps
               ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -405,7 +333,7 @@
                      class="slider"
                      id="q8"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -426,13 +354,13 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               9.  Pouvez vous avoir une conversation avec une personne si une autre personne ayant
               la voix plus aigue ou plus grave que celle de votre interlocuteur parle en même
               temps ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -445,7 +373,7 @@
                      class="slider"
                      id="q9"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -466,13 +394,13 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               10. Vous écoutez la personne qui vous parle tout en essayant simultanément de suivre
               les informations à la télévision. Pouvez-vous suivre ce que disent les deux personnes
               ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -485,7 +413,7 @@
                      class="slider"
                      id="q10"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -506,12 +434,12 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               11. Vous discutez avec quelqu'un dans une pièce dans laquelle beaucoup d'autres personnes
               s'entretiennent. Pouvez-vous suivre ce que vous dit votre interlocuteur ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -524,7 +452,7 @@
                      class="slider"
                      id="q11"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -545,13 +473,13 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               12. Vous êtes dans un groupe de personnes qui parlent les unes après les autres de
               façon improvisée. Pouvez-vous suivre la conversation entre ces personnes sans
               perdre le début des propos de chaque personne ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -564,7 +492,7 @@
                      class="slider"
                      id="q12"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -585,12 +513,12 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               13. Pouvez-vous converser facilement par téléphone ? [à l'aide d'une prothèse,
               des deux prothèses, ou d'aucune prothèse]
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -603,7 +531,7 @@
                      class="slider"
                      id="q13"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -624,11 +552,11 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               14. Vous écoutez quelqu'un au téléphone et une autre personne se tenant près de vous commence à parler.  Pouvez- vous suivre ce que disent les deux personnes ?
             </td>
             <td style="text-align:center; width:420px;">
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -641,7 +569,7 @@
                      class="slider"
                      id="q14"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -665,17 +593,17 @@
       </table>
 
       <br>
-      <h3> 2e partie : Audition spatiale </h3>  
+      <h3 class="Question_SSQ"> 2e partie : Audition spatiale </h3>  
       <br>
       <table>
         <thead></thead>
         <tbody>
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               1.  Vous vous trouvez à l'extérieur, dans un endroit qui ne vous est pas familier.  Vous entendez le bruit d'une tondeuse à gazon.  Vous ne pouvez voir ni la tondeuse à gazon ni la personne qui l'utilise.  Pouvez-vous indiquer spontanément d'où vient le bruit?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -688,7 +616,7 @@
                      class="slider"
                      id="q15"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -709,11 +637,11 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               2.  Vous êtes assis autour d'une table ou participez à une réunion avec plusieurs personnes.  Vous ne pouvez pas voir toutes les personnes.  Pouvez-vous dire où se trouvent les différentes personnes dès qu'elles prennent la parole ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -726,7 +654,7 @@
                      class="slider"
                      id="q16"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -747,11 +675,11 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               3.  Vous êtes assis entre deux personnes.  L'une d'elles commence à parler.  Pouvez-vous dire immédiatement sans regarder s'il s'agit de la personne assise à votre gauche ou à votre droite ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -764,7 +692,7 @@
                      class="slider"
                      id="q17"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -785,11 +713,11 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               4.  Vous vous trouvez dans une maison inconnue.  Tout est calme.  Vous entendez une porte claquer.  Pouvez-vous indiquer immédiatement d'où vient le bruit ? 
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -802,7 +730,7 @@
                      class="slider"
                      id="q18"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -823,11 +751,11 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               5.  Vous vous tenez dans la cage d'escalier d'un bâtiment, il y a des étages au-dessus et en dessous de vous.  Vous entendez du bruit à un autre étage.  Pouvez-vous indiquer facilement d'où vient le bruit ? 
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -840,7 +768,7 @@
                      class="slider"
                      id="q19"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -861,11 +789,11 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               6.  Vous êtes à l'extérieur.  Un chien aboie bruyamment.  Pouvez-vous indiquer immédiatement où il se trouve, sans regarder ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -878,7 +806,7 @@
                      class="slider"
                      id="q20"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -899,11 +827,11 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               7.  Vous êtes sur le trottoir d'une rue animée.  Pouvez-vous entendre immédiatement de quelle direction un bus ou un camion arrive avant de l'avoir vu?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -916,7 +844,7 @@
                      class="slider"
                      id="q21"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -937,11 +865,11 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               8. Dans la rue, pouvez-vous dire à quelle distance se trouve une personne uniquement au son de sa voix ou de ses pas ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -954,7 +882,7 @@
                      class="slider"
                      id="q22"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -975,11 +903,11 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               9.  Pouvez-vous indiquer immédiatement à quelle distance se trouve un bus ou un camion, juste en entendant le bruit qu'il fait ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -992,7 +920,7 @@
                      class="slider"
                      id="q23"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -1013,11 +941,11 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               10. Lorsque vous entendez un bus ou un camion, pouvez-vous reconnaître son sens de déplacement, par exemple de votre gauche à votre droite ou inversement ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -1030,7 +958,7 @@
                      class="slider"
                      id="q24"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -1051,11 +979,11 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               11. Pouvez-vous indiquer dans quelle direction une personne se déplace, uniquement au son de sa voix ou de ses pas, par exemple de votre gauche à votre droite ou inversement ? 
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -1068,7 +996,7 @@
                      class="slider"
                      id="q25"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -1089,11 +1017,11 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               12. Quand vous entendez la voix ou les pas d'une personne, pouvez-vous dire si elle s'éloigne ou si elle se rapproche de vous ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -1106,7 +1034,7 @@
                      class="slider"
                      id="q26"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -1127,10 +1055,10 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               13. Lorsque vous entendez un bus ou un camion, pouvez-vous dire s'il s'éloigne ou s'il se rapproche de vous?
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -1143,7 +1071,7 @@
                      class="slider"
                      id="q27"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -1164,10 +1092,10 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               14. Avez-vous l'impression que les bruits et sons que vous entendez se trouvent plutôt à l'intérieur de votre tête ou plutôt dans le monde extérieur ? 
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>À l’intérieur de ma tête</span>
                 <span>Dans le monde extérieur</span>
               </div>
@@ -1180,7 +1108,7 @@
                      class="slider"
                      id="q28"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -1200,11 +1128,11 @@
             </td>
           </tr>
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               15. Les choses ou les personnes que vous entendez et que vous ne pouvez pas voir dans un premier temps sont-elles généralement plus près de vous que vous ne l'aviez imaginé avant de les voir ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Beaucoup plus près</span>
                 <span>Pas plus près</span>
               </div>
@@ -1217,7 +1145,7 @@
                      class="slider"
                      id="q29"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -1237,11 +1165,11 @@
             </td>
           </tr>
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               16. Les choses ou les personnes que vous entendez et que vous ne pouvez voir dans un premier temps sont-elles plus éloignées que vous ne vous l'aviez imaginé avant de les voir ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Beaucoup plus loin</span>
                 <span>Pas plus loin</span>
               </div>
@@ -1254,7 +1182,7 @@
                      class="slider"
                      id="q30"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -1274,11 +1202,11 @@
             </td>
           </tr>
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               17. Avez-vous l'impression de pouvoir déterminer avec précision d'où proviennent les bruits que vous entendez ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -1291,7 +1219,7 @@
                      class="slider"
                      id="q31"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -1316,20 +1244,20 @@
 
 
       <br>
-      <h3> 3e partie : Qualité d’audition </h3>  
+      <h3 class="Question_SSQ"> 3e partie : Qualité d’audition </h3>  
       <br>
 
       <table>
         <thead></thead>
         <tbody>
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               1.  Imaginez que vous entendez deux choses en même temps, par exemple de
               l’eau qui coule dans un lavabo et la radio. Avez-vous l’impression que ces deux
               bruits sont distincts l’un de l’autre ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -1342,7 +1270,7 @@
                      class="slider"
                      id="q32"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -1363,13 +1291,13 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               2.  Lorsque vous entendez plusieurs sons à la fois, pouvez-vous les distinguer
               clairement les uns des autres ou avez-vous l’impression qu’il s’agit d’un seul bruit
               confus ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Confus</span>
                 <span>Distinct</span>
               </div>
@@ -1382,7 +1310,7 @@
                      class="slider"
                      id="q33"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -1403,12 +1331,12 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               3.  Vous vous tenez dans une pièce et il y a de la musique à la radio. Une autre
               personne parle dans la pièce. Pouvez-vous différencier la voix de la musique?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -1421,7 +1349,7 @@
                      class="slider"
                      id="q34"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -1442,12 +1370,12 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               4.  Pouvez-vous reconnaître facilement les différentes personnes que
               vous connaissez au son de leur voix ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -1460,7 +1388,7 @@
                      class="slider"
                      id="q35"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -1481,12 +1409,12 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               5.  Pouvez-vous distinguer facilement les différents morceaux de musique que
               vous connaissez ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -1499,7 +1427,7 @@
                      class="slider"
                      id="q36"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -1520,12 +1448,12 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               6. Pouvez-vous différencier certains bruits, par exemple une voiture par rapport
               à un bus ou de l’eau qui bout par rapport à la nourriture qui frit dans une poêle ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -1538,7 +1466,7 @@
                      class="slider"
                      id="q37"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -1559,12 +1487,12 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               7.  Lorsque vous écoutez de la musique, pouvez-vous discerner les
               différents instruments ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -1577,7 +1505,7 @@
                      class="slider"
                      id="q38"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -1598,12 +1526,12 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               8. Lorsque vous écoutez de la musique, est-ce qu’elle retentit de manière
               distincte et naturelle ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -1616,7 +1544,7 @@
                      class="slider"
                      id="q39"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -1637,12 +1565,12 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               9.  Les bruits quotidiens que vous entendez facilement sont-ils distincts (non
               brouillés) ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -1655,7 +1583,7 @@
                      class="slider"
                      id="q40"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -1676,11 +1604,11 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               10. Les voix des autres personnes sont-elles distinctes et naturelles ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -1693,7 +1621,7 @@
                      class="slider"
                      id="q41"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -1714,12 +1642,12 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               11. Les bruits quotidiens que vous entendez vous paraissent-ils artificiels ou
               peu naturels ? 
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Artificiels</span>
                 <span>Naturels</span>
               </div>
@@ -1732,7 +1660,7 @@
                      class="slider"
                      id="q42"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -1753,11 +1681,11 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               12. Votre propre voix retentit-elle de manière naturelle à vos oreilles ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -1770,7 +1698,7 @@
                      class="slider"
                      id="q43"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -1791,10 +1719,10 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               13. Pouvez-vous facilement juger de l’humeur d’une personne au son de sa voix ?
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -1807,7 +1735,7 @@
                      class="slider"
                      id="q44"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -1828,10 +1756,10 @@
           </tr>
 
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               14. Devez-vous vous concentrer intensément lorsque vous écoutez quelqu’un ou quelque chose ?
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Concentration intense</span>
                 <span>Pas de concentration nécessaire</span>
               </div>
@@ -1844,7 +1772,7 @@
                      class="slider"
                      id="q45"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -1864,11 +1792,11 @@
             </td>
           </tr>
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               15. Devez-vous faire beaucoup d’efforts pour entendre ce qui se dit au cours d’une conversation avec d’autres personnes ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Beaucoup d’efforts</span>
                 <span>Aucun effort</span>
               </div>
@@ -1881,7 +1809,7 @@
                      class="slider"
                      id="q46"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -1901,12 +1829,12 @@
             </td>
           </tr>
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               16. Lorsque vous conduisez, pouvez-vous facilement entendre ce que dit la
               personne assise à côté de vous ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -1919,7 +1847,7 @@
                      class="slider"
                      id="q47"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -1939,12 +1867,12 @@
             </td>
           </tr>
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               17. Lorsque vous êtes passager d’une voiture, pouvez-vous facilement entendre
               ce que dit le conducteur assis à côté de vous ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Pas du tout</span>
                 <span>Parfaitement</span>
               </div>
@@ -1957,7 +1885,7 @@
                      class="slider"
                      id="q48"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -1977,12 +1905,12 @@
             </td>
           </tr>
           <tr>
-            <td style="text-align:left; width:400px;">
+          <td class="Question_SSQ">
               18. Pouvez-vous ignorer facilement les autres bruits lorsque vous essayez
               d’écouter quelque chose ?
             </td>
-            <td style="text-align:center; width:400px;">
-              <div style="display:flex; justify-content:space-between;">
+            <td class="Question_SSQ">
+              <div class="SSQ_answer">
                 <span>Ignorer difficilement</span>
                 <span>Ignorer facilement</span>
               </div>
@@ -1995,7 +1923,7 @@
                      class="slider"
                      id="q49"
                      />
-              <div style="display:flex; justify-content:space-between;">
+              <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
                 <span>2</span>
@@ -2028,25 +1956,31 @@
     <div id="results"></div>
 
     <script>
+
+      // Sliders colors
+      const sliders = document.querySelectorAll(".slider");
+      sliders.forEach(function(slider) {
+      slider.addEventListener("input", function () {
+      const value = (this.value - this.min) / (this.max - this.min) * 100;
+      this.style.background = `linear-gradient(to right, #2B176C ${value}%,  #eeeeee ${value}%)`;
+      });
+
+      // Appliquer le dégradé à l’état initial
+      const initialValue = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+      slider.style.background = `linear-gradient(to right, #2B176C ${initialValue}%, #eeeeee ${initialValue}%)`;
+      });
+
       function calculerScores() {
 
         let total     				= 0;
         let parole    				= 0;
         let spatial 				= 0;
         let qualite 				= 0;
-
         let count_Na_parole    		= 0;
         let count_Na_spatial    	= 0;
         let count_Na_qualite    	= 0;
-
-
-
         const sliderIds = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10', 'q11', 'q12', 'q13', 'q14', 'q15', 'q16', 'q17', 'q18', 'q19', 'q20', 'q21', 'q22', 'q23', 'q24', 'q25', 'q26', 'q27', 'q28', 'q29', 'q30', 'q31', 'q32', 'q33', 'q34', 'q35', 'q36', 'q37', 'q38', 'q39', 'q40', 'q41', 'q42', 'q43', 'q44', 'q45', 'q46', 'q47', 'q48', 'q49'];
-
         const naCheckboxIds = ['na1', 'na2', 'na3', 'na4', 'na5', 'na6', 'na7', 'na8', 'na9', 'na10', 'na11', 'na12', 'na13', 'na14', 'na15', 'na16', 'na17', 'na18', 'na19', 'na20', 'na21', 'na22', 'na23', 'na24', 'na25', 'na26', 'na27', 'na28', 'na29', 'na30', 'na31', 'na32', 'na33', 'na34', 'na35', 'na36', 'na37', 'na38', 'na39', 'na40', 'na41', 'na42', 'na43', 'na44', 'na45', 'na46', 'na47', 'na48', 'na49'];
-
-
-
         // Boucle parole
         for (let i = 0; i < 14; i++) {
           const slider = document.getElementById(sliderIds[i]);
@@ -2101,7 +2035,7 @@
       function displayscores(total, parole, spatial,qualite) {
 
 
-        let display = "<p style='text-align: center;'>Résultats</p>";
+        let display = "<p>Résultats</p>";
         display += "<br>"; 
         display += "<ul class='myList'>"; 
         display += "<li>Score total : " + total.toFixed(2) + "</li>";
@@ -2117,7 +2051,7 @@
       } // end function
 
       function resetForm() {
-        const form = document.getElementById("ssq49-form");
+        const form = document.getElementById("SSQ49");
         const sliders = form.querySelectorAll('input[type="range"].slider');
         const naCheckboxes = form.querySelectorAll('input[type="checkbox"]');
 
