@@ -256,9 +256,10 @@
 
         // Handle cases where not all questions are answered for a subscale
         if (answeredQuestions < 18) {
-          document.getElementById("results").innerHTML = "<p style='text-align: center; color: red;'>Veuillez répondre à toutes les questions!</p>";
-          document.getElementById("results").style.display = "block";
-          return; // Exit if no questions are answered
+          const resultDiv = document.getElementById("results"); // Assuming you have a div with id="result"
+          resultDiv.innerHTML = "<p class=Error_message_not_all_answered>Veuillez répondre svp à toutes les questions avant de calculer le score!</p>";
+          resultDiv.style.display = "block"; // Make sure the result div is visible
+        return; // Exit if no questions are answered
         }
 
 
