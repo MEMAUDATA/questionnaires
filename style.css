@@ -382,6 +382,22 @@ form#IIPBAA {
   
 
 /* --- PROMS --- */
+.Question_GBI {
+    text-align: left; 
+}
+
+.Question_GHSI {
+    max-width: 700px;
+    width: 700px; 
+    text-align: left;
+    background-color: #eeeeee;
+}
+
+.Answer_GHSI {
+    display: flex;
+    justify-content:space-between;
+
+}
 
 
 

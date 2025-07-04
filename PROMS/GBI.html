@@ -1,117 +1,40 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
+    <!-- Author's details-->
+    <meta name="author" content="Nicolas Vannson">
+    <meta name="contact" content="hello@memau.eu">
+    <meta name="license" content="EUPLv1.2">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GBI</title>
     <style>
-      body {
-        font-family: Montserrat, sans-serif;
-        color:black;
-      }
-
-      table {
-        width: 85%;
-        border-collapse: collapse;
-        margin-top: 20px;
-        margin-bottom: 20px;
-        margin-left: auto;
-        margin-right: auto;
-        border: 1px solid #eeeeee;
-      }
-
-
-
-      th, td {
-        padding: 5px;
-        text-align: center;
-      }
-
-
-      #gbi input[type="radio"] {
-        margin: 5px; 
-      }
-
-
-      #answers th {
-        font-weight:bold;
-        color: black;
-        text-align:center;
-        border-bottom: 2px solid black !important;
-      }
-
-      #gbi td:nth-child(even) {
-        background-color: #eeeeee;
-      }
-
-
-
-      .buttons-container {
-        text-align: center;
-        margin-top: 30px;
-      }
-      .buttons-container button {
-        padding: 12px 25px;
-        margin: 0 10px;
-        font-size: 17px;
-        cursor: pointer;
-        border: none;
-        border-radius: 5px;
-        background-color: #eeeeee;
-
-      }
-
-      .buttons-container button:hover {
-        background-color: #0056b3;
-        color : white;
-      }
-
-      #result { /* Correction ici : cibler l'ID directement */
-        text-align: center;
-        font-size: 20px;
-        margin-top: 30px;
-        border: 1px solid #eeeeee;
-        background-color: #eeeeee;
-        padding: 15px;
-        display: none;
-        border-radius: 5px;
-        padding: 15px;
-        display:none;
-      }
-
-      ul.myList {
-        display: inline-block;
-        text-align: left;
-      }
-
-
-
+      /* style is within the style.css sheet */
     </style>
+  <title>GBI</title>
   </head>
   <body>
-    <h1 style="text-align: center;">Glasgow Benefit Intervention (GBI)</h1>
-    <p style="text-align: center;"> Robinson et al., 1996 </p>
-    <p style="text-align: center;"> <b>Instructions : </b></p>
-    <p style="text-align: center;">Quel est l’impact de votre <b>intervention</b> (chirurgie, prothèse(s) auditive(s)) sur votre vie actuelle?<br>
+    <h1>Glasgow Benefit Intervention (GBI)</h1>
+    <p > Robinson et al., 1996 </p>
+    <p > <b>Instructions : </b></p>
+    <p >Quel est l’impact de votre <b>intervention</b> (chirurgie, prothèse(s) auditive(s)) sur votre vie actuelle?<br>
       Choisissez la réponse qui se rapproche le plus de votre expérience quotidienne.</p>
     <br>
 
-    <form id="gbi">
-      <div id ="answers">
+    <form id="GBI">
         <table>
           <thead>
             <tr>
-              <th style="width:900px;"></th>
-              <th style="width:10px;">Très nette amélioration</th>
-              <th style="width:10px;">Nette amélioration</th>
-              <th style="width:10px;">Pas de changement</th>
-              <th style="width:10px;">Légère déterioration</th>
-              <th style="width:10px;">Très forte déterioration</th> 
+              <th></th>
+              <th >Très nette amélioration</th>
+              <th >Nette amélioration</th>
+              <th >Pas de changement</th>
+              <th>Légère déterioration</th>
+              <th >Très forte déterioration</th> 
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td style="text-align: left;">1. Le résultat de l’intervention a-t-il affecté vos
+              <td class="Question_GBI">1. Le résultat de l’intervention a-t-il affecté vos
                 activités ? </td>
               <td><input type="radio" name="q1" value="5"></td>
               <td><input type="radio" name="q1" value="4"></td>
@@ -121,7 +44,7 @@
 
             </tr>
             <tr>
-              <td style="text-align: left;">2. Les résultats de l’intervention ont-ils rendu
+              <td class="Question_GBI">2. Les résultats de l’intervention ont-ils rendu
                 votre vie plus agréable ou plus désagréable ?</td>
               <td><input type="radio" name="q2" value="5"></td>
               <td><input type="radio" name="q2" value="4"></td>
@@ -142,7 +65,7 @@
 
 
             <tr>
-              <td style="text-align: left;">3. Depuis votre intervention, vous sentez-vous plus (ou moins) optimiste face à l’avenir ? </td>
+              <td class="Question_GBI">3. Depuis votre intervention, vous sentez-vous plus (ou moins) optimiste face à l’avenir ? </td>
               <td><input type="radio" name="q3" value="5"></td>
               <td><input type="radio" name="q3" value="4"></td>
               <td><input type="radio" name="q3" value="3"></td>
@@ -150,7 +73,7 @@
               <td><input type="radio" name="q3" value="1"></td>
             </tr>
             <tr>
-              <td style="text-align: left;">4. Depuis votre intervention, vous sentez-vous plus (ou moins) gêné(e) lorsque vous vous trouvez en groupe?</td>
+              <td class="Question_GBI">4. Depuis votre intervention, vous sentez-vous plus (ou moins) gêné(e) lorsque vous vous trouvez en groupe?</td>
               <td><input type="radio" name="q4" value="1"></td>
               <td><input type="radio" name="q4" value="2"></td>
               <td><input type="radio" name="q4" value="3"></td>
@@ -158,7 +81,7 @@
               <td><input type="radio" name="q4" value="5"></td>
             </tr>
             <tr>
-              <td style="text-align: left;">5. Depuis votre opération, avez-vous plus (ou
+              <td class="Question_GBI">5. Depuis votre opération, avez-vous plus (ou
                 moins) de confiance en vous ? </td>
               <td><input type="radio" name="q5" value="5"></td>
               <td><input type="radio" name="q5" value="4"></td>
@@ -167,7 +90,7 @@
               <td><input type="radio" name="q5" value="1"></td>
             </tr>
             <tr>
-              <td style="text-align: left;">6. Depuis votre intervention, vous est-il plus (ou
+              <td class="Question_GBI">6. Depuis votre intervention, vous est-il plus (ou
                 moins) facile d’avoir affaire à d’autres
                 personnes ?</td>
               <td><input type="radio" name="q6" value="5"></td>
@@ -177,7 +100,7 @@
               <td><input type="radio" name="q6" value="1"></td>
             </tr>
             <tr>
-              <td style="text-align: left;">7. Depuis votre intervention, avez-vous l’impression d’avoir plus (ou moins) de soutien de la part de vos amis ?</td>
+              <td class="Question_GBI">7. Depuis votre intervention, avez-vous l’impression d’avoir plus (ou moins) de soutien de la part de vos amis ?</td>
               <td><input type="radio" name="q7" value="5"></td>
               <td><input type="radio" name="q7" value="4"></td>
               <td><input type="radio" name="q7" value="3"></td>
@@ -185,7 +108,7 @@
               <td><input type="radio" name="q7" value="1"></td>
             </tr>
             <tr>
-              <td style="text-align: left;">8. Depuis votre intervention, êtes-vous allé(e)
+              <td class="Question_GBI">8. Depuis votre intervention, êtes-vous allé(e)
                 trouver votre médecin de famille plus (ou moins)
                 souvent ?</td>
               <td><input type="radio" name="q8" value="1"></td>
@@ -195,7 +118,7 @@
               <td><input type="radio" name="q8" value="5"></td>
             </tr>
             <tr>
-              <td style="text-align: left;">9. Depuis votre intervention, vous ressentez-vous
+              <td class="Question_GBI">9. Depuis votre intervention, vous ressentez-vous
                 plus (ou moins) de confiance face à des
                 occasions d’emploi?</td>
               <td><input type="radio" name="q9" value="1"></td>
@@ -205,7 +128,7 @@
               <td><input type="radio" name="q9" value="5"></td>
             </tr>
             <tr>
-              <td style="text-align: left;">10. Depuis votre intervention, vous sentez-vous
+              <td class="Question_GBI">10. Depuis votre intervention, vous sentez-vous
                 plus timide ou moins timide ? </td>
               <td><input type="radio" name="q10" value="1"></td>
               <td><input type="radio" name="q10" value="2"></td>
@@ -214,7 +137,7 @@
               <td><input type="radio" name="q10" value="5"></td>
             </tr>
             <tr>
-              <td style="text-align: left;">11. Depuis votre intervention, y a-t-il davantage ou moins de gens qui s’occupent vraiment de vous ?</td>
+              <td class="Question_GBI">11. Depuis votre intervention, y a-t-il davantage ou moins de gens qui s’occupent vraiment de vous ?</td>
               <td><input type="radio" name="q11" value="1"></td>
               <td><input type="radio" name="q11" value="2"></td>
               <td><input type="radio" name="q11" value="3"></td>
@@ -222,7 +145,7 @@
               <td><input type="radio" name="q11" value="5"></td>
             </tr>
             <tr>
-              <td style="text-align: left;">12. Depuis votre intervention, êtes-vous sujet(te) à des rhumes ou infections plus souvent ou moins souvent ?</td>
+              <td class="Question_GBI">12. Depuis votre intervention, êtes-vous sujet(te) à des rhumes ou infections plus souvent ou moins souvent ?</td>
               <td><input type="radio" name="q12" value="1"></td>
               <td><input type="radio" name="q12" value="2"></td>
               <td><input type="radio" name="q12" value="3"></td>
@@ -230,7 +153,7 @@
               <td><input type="radio" name="q12" value="5"></td>
             </tr>
             <tr>
-              <td style="text-align: left;">13. Depuis votre intervention, devez-vous prendre
+              <td class="Question_GBI">13. Depuis votre intervention, devez-vous prendre
                 plus (ou moins) de médicaments ?</td>
               <td><input type="radio" name="q13" value="1"></td>
               <td><input type="radio" name="q13" value="2"></td>
@@ -239,7 +162,7 @@
               <td><input type="radio" name="q13" value="5"></td>
             </tr>
             <tr>
-              <td style="text-align: left;">14. Depuis votre intervention, vous sentez-vous
+              <td class="Question_GBI">14. Depuis votre intervention, vous sentez-vous
                 plus (ou moins) en bonne santé? </td>
               <td><input type="radio" name="q14" value="5"></td>
               <td><input type="radio" name="q14" value="4"></td>
@@ -248,7 +171,7 @@
               <td><input type="radio" name="q14" value="1"></td>
             </tr>
             <tr>
-              <td style="text-align: left;">15. Depuis votre opération, avez-vous l’impression d’avoir été plus soutenu(e) ou moins soutenu(e) par votre famille ?</td>
+              <td class="Question_GBI">15. Depuis votre opération, avez-vous l’impression d’avoir été plus soutenu(e) ou moins soutenu(e) par votre famille ?</td>
               <td><input type="radio" name="q15" value="5"></td>
               <td><input type="radio" name="q15" value="4"></td>
               <td><input type="radio" name="q15" value="3"></td>
@@ -256,7 +179,7 @@
               <td><input type="radio" name="q15" value="1"></td>
             </tr>
             <tr>
-              <td style="text-align: left;">16. Depuis votre intervention, êtes-vous plus (ou moins) gêné(e) par votre problème auditif ? </td>
+              <td class="Question_GBI">16. Depuis votre intervention, êtes-vous plus (ou moins) gêné(e) par votre problème auditif ? </td>
               <td><input type="radio" name="q16" value="1"></td>
               <td><input type="radio" name="q16" value="2"></td>
               <td><input type="radio" name="q16" value="3"></td>
@@ -264,7 +187,7 @@
               <td><input type="radio" name="q16" value="5"></td>
             </tr>
             <tr>
-              <td style="text-align: left;">17. Depuis votre intervention, avez-vous pu participer à plus (ou moins) d’activités en société ?</td>
+              <td class="Question_GBI">17. Depuis votre intervention, avez-vous pu participer à plus (ou moins) d’activités en société ?</td>
               <td><input type="radio" name="q17" value="5"></td>
               <td><input type="radio" name="q17" value="4"></td>
               <td><input type="radio" name="q17" value="3"></td>
@@ -272,7 +195,7 @@
               <td><input type="radio" name="q17" value="1"></td>
             </tr>
             <tr>
-              <td style="text-align: left;">18. Depuis votre intervention, avez-vous plus (ou moins) besoin de vous retrouver seul(e) ?</td>
+              <td class="Question_GBI">18. Depuis votre intervention, avez-vous plus (ou moins) besoin de vous retrouver seul(e) ?</td>
               <td><input type="radio" name="q18" value="1"></td>
               <td><input type="radio" name="q18" value="2"></td>
               <td><input type="radio" name="q18" value="3"></td>
@@ -282,17 +205,12 @@
 
           </tbody>
         </table>
-      </div> <!--id headers -->
-
       <div class="buttons-container">
         <button type="button" onclick="calculateScore()">Calculer le Score</button>
         <button type="reset" onclick="resetForm()">Réinitialiser</button>
       </div>
-
     </form>
-
-    <div id="result"></div>
-
+    <div id="results"></div>
     <script>
         // This function is responsible for calculating the GBI and subscale scores.
         function calculateScore() {
@@ -338,8 +256,8 @@
 
         // Handle cases where not all questions are answered for a subscale
         if (answeredQuestions < 18) {
-          document.getElementById("result").innerHTML = "<p style='text-align: center; color: red;'>Veuillez répondre à toutes les questions!</p>";
-          document.getElementById("result").style.display = "block";
+          document.getElementById("results").innerHTML = "<p style='text-align: center; color: red;'>Veuillez répondre à toutes les questions!</p>";
+          document.getElementById("results").style.display = "block";
           return; // Exit if no questions are answered
         }
 
@@ -370,7 +288,7 @@
 
       // This function is purely for displaying the scores in the designated HTML element.
       function displayResults(gbiScore, generalBenefitSubscale, socialSupportSubscale, physicalHealthSubscale) {
-        let display = "<p style='text-align: center;'>Résultats</p>";
+        let display = "<p>Résultats</p>";
         display += "<br>";
         display += "<ul class='myList'>";
         display += "<li>Score Total GBI : " + gbiScore.toFixed(2) + "</li>";
@@ -380,15 +298,15 @@
         display += "</ul>";
         display += "<p> Les scores vont de -100 (bénéfices négatifs) à +100 (bénéfices positifs). </p>";
 
-        document.getElementById("result").innerHTML = display;
-        document.getElementById("result").style.display = "block";
+        document.getElementById("results").innerHTML = display;
+        document.getElementById("results").style.display = "block";
       }
 
       // This function resets the form and clears the displayed results.
       function resetForm() {
-        document.getElementById("gbi").reset(); // Assuming 'gbi' is the ID of your form
-        document.getElementById("result").innerHTML = "";
-        document.getElementById("result").style.display = "none"; // Hide the result div
+        document.getElementById("GBI").reset(); // Assuming 'gbi' is the ID of your form
+        document.getElementById("results").innerHTML = "";
+        document.getElementById("results").style.display = "none"; // Hide the result div
       }
     </script>
   </body>
