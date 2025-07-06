@@ -1,88 +1,22 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+  <!-- Author's details-->
+  <meta name="author" content="Nicolas Vannson">
+  <meta name="contact" content="hello@memau.eu">
+  <meta name="license" content="EUPLv1.2">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SF12</title>
   <style>
-    body {
-  font-family: Montserrat, sans-serif;
-  color:black;
-  }
-
-  table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  margin-left: auto;
-  margin-right: auto;
-  border: 1px solid #eeeeee;
-  }
-
-
-  th, td {
-  padding: 5px;
-  text-align: center;
-  border: 1px solid #eeeeee;
-  color:black !important;
-  }
-
-  .question-main {
-  background-color: #eeeeee;
-  font-weight: bold;
-  color:black !important;
-  }
-
-
-  input[type="radio"] {
-  margin: 5px;
-  }
-
-
-  .buttons-container {
-  text-align: center;
-  margin-top: 30px;
-  }
-  .buttons-container button {
-  padding: 12px 25px;
-  margin: 0 10px;
-  font-size: 17px;
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
-  background-color: #eeeeee;
-
-  }
-
-  .buttons-container button:hover {
-  background-color: #0056b3;
-  color : white;
-  }
-
-  #result { /* Correction ici : cibler l'ID directement */
-  text-align: center;
-  font-size: 17px;
-  margin-top: 30px;
-  border: 1px solid #eeeeee;
-  background-color: #eeeeee;
-  padding: 15px;
-  display: none;
-  border-radius: 5px;
-  padding: 15px;
-  }
-
-  ul.myList {
-  display: inline-block;
-  text-align: left;
-  }
+    /* style is within the style.css sheet */
   </style>
+  <title>SF12</title>
 </head>
 <body>   
-  <h1 style="text-align: center;">Questionnaire d'état de santé SF-12 (version 1.0)</h1>
-  <p style="text-align: center;"> Ware et al., 1996 </p>
-  <p style="text-align: center;"><b>COMMENT REPONDRE:</b></p>
-  <p style="text-align: center;">Les questions, qui suivent, portent sur votre état de santé tel que vous le ressentez. Ces informations nous permettront de mieux savoir comment vous vous sentez dans la vie de tous les jours. <b>Veuillez répondre à toutes les questions</b> en cochant la case correspondant à la réponse choisie. Si vous ne savez pas très bien comment répondre, choisissez la réponse la plus adaptée à votre situation.</p>
+  <h1>Questionnaire d'état de santé SF-12 (version 1.0)</h1>
+  <p > Ware et al., 1996 </p>
+  <p ><b>COMMENT REPONDRE:</b></p>
+  <p >Les questions, qui suivent, portent sur votre état de santé tel que vous le ressentez. Ces informations nous permettront de mieux savoir comment vous vous sentez dans la vie de tous les jours. <b>Veuillez répondre à toutes les questions</b> en cochant la case correspondant à la réponse choisie. Si vous ne savez pas très bien comment répondre, choisissez la réponse la plus adaptée à votre situation.</p>
   <br>
 
   <form id="SF12">
@@ -334,7 +268,7 @@
   <button type="reset" onclick="resetForm()">Réinitialiser</button>
   </div>
 
-  <div id="result"></div>
+  <div id="results"></div>
   </form>
 
   <script>
@@ -378,8 +312,8 @@
 
       // Check if all questions are answered
       if (answeredQuestionsCount < totalQuestions) {
-          document.getElementById("result").innerHTML = "<p style='text-align: center; color: red;'>Veuillez répondre à toutes les questions!</p>";
-          document.getElementById("result").style.display = "block";
+          document.getElementById("results").innerHTML = "<p style='text-align: center; color: red;'>Veuillez répondre à toutes les questions!</p>";
+          document.getElementById("results").style.display = "block";
       return; 
       }
 
@@ -521,8 +455,8 @@
   }
 
   function  display (MCS,PCS) {
-      const resultsDiv = document.getElementById("result");
-      let displayHtml = "<p style='text-align: center;'>Résultats</p>";
+      const resultsDiv = document.getElementById("results");
+      let displayHtml = "<p;'>Résultats</p>";
       displayHtml += "<br>";
       displayHtml += "<ul class='myList'>";
       displayHtml += "<li>Composante Mentale (MCS-12) : " +  MCS.toFixed(2) + "</li>";
@@ -534,7 +468,7 @@
 
   function resetForm() {
       document.getElementById("SF12").reset();
-      const resultsDiv = document.getElementById("result");
+      const resultsDiv = document.getElementById("results");
       resultsDiv.innerHTML = "";
       resultsDiv.style.display = "none";
   }

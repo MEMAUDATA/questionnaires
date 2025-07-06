@@ -68,8 +68,7 @@ Pour un enfant entre 7 et 9 ans, d'après les auteurs, l'échelle B est a privil
           <tr>
             <td class="Question_SSQ">
               A2. Tu es assis autour d’une table avec un groupe de 5 personnes environ. L’endroit est bruyant, comme une salle de classe où les élèves se déplacent et discutent. Tu peux voir toutes les personnes autour de
-              la table.
-              <b>Peux-tu comprendre ce que les personnes du groupe disent ?</b>
+              la table. <b>Peux-tu comprendre ce que les personnes du groupe disent ?</b>
             </td>
             <td class="Question_SSQ">
               <div class="SSQ_answer">
@@ -131,7 +130,7 @@ Pour un enfant entre 7 et 9 ans, d'après les auteurs, l'échelle B est a privil
 
           <tr>
             <td class="Question_SSQ">
-              A4. Tu discutes avec quelqu’un dans une pièce où beaucoup d’autres personnes parlent.<br>
+              A4. Tu discutes avec quelqu’un dans une pièce où beaucoup d’autres personnes parlent. 
               <b>Peux-tu comprendre ce qu’il te dit ?</b>
             </td>
             <td class="Question_SSQ">
@@ -180,7 +179,7 @@ Pour un enfant entre 7 et 9 ans, d'après les auteurs, l'échelle B est a privil
         <tbody>
           <tr>
             <td class="Question_SSQ">
-              B1. Tu es à la maison et tu entends un bruit fort (une porte qui claque ou l’aspirateur).<br><b>Peux-tu dire immédiatement d’où vient le bruit ? </b>
+              B1. Tu es à la maison et tu entends un bruit fort (une porte qui claque ou l’aspirateur). <b>Peux-tu dire immédiatement d’où vient le bruit ? </b>
             </td>
             <td class="Question_SSQ">
               <div class="SSQ_answer">
@@ -218,7 +217,7 @@ Pour un enfant entre 7 et 9 ans, d'après les auteurs, l'échelle B est a privil
 
           <tr>
             <td class="Question_SSQ">
-              B2. Tu es dehors. Un chien aboie très fort.<br>
+              B2. Tu es dehors. Un chien aboie très fort. 
               <b>Peux-tu dire immédiatement où il se trouve, sans le voir ?</b>
             </td>
             <td class="Question_SSQ">
@@ -257,7 +256,7 @@ Pour un enfant entre 7 et 9 ans, d'après les auteurs, l'échelle B est a privil
 
           <tr>
             <td class="Question_SSQ">
-              B3. Tu es sur le trottoir d’une rue où il y a beaucoup de bruit. Tu entends un bus ou un camion.<br>
+              B3. Tu es sur le trottoir d’une rue où il y a beaucoup de bruit. Tu entends un bus ou un camion. 
               <b>Peux-tu dire immédiatement d’où il vient avant de le voir ?</b>
             </td>
             <td class="Question_SSQ">
@@ -296,7 +295,7 @@ Pour un enfant entre 7 et 9 ans, d'après les auteurs, l'échelle B est a privil
 
           <tr>
             <td class="Question_SSQ">
-              B4. Tu entends des voix ou des bruits de pas.<br>
+              B4. Tu entends des voix ou des bruits de pas. 
               <b>Juste en écoutant, peux-tu dire où la personne va ? (par exemple, est-ce que la personne se
                 rapproche de toi ou se déplace de ta gauche vers ta droite ?)</b>
             </td>
@@ -387,7 +386,7 @@ Pour un enfant entre 7 et 9 ans, d'après les auteurs, l'échelle B est a privil
 
           <tr>
             <td class="Question_SSQ">
-              C2. Tu entends une chanson ou une musique que tu connais bien.<br>
+              C2. Tu entends une chanson ou une musique que tu connais bien. 
               <b>Arrives-tu facilement à la reconnaître ?</b>
             </td>
             <td class="Question_SSQ">
@@ -464,7 +463,7 @@ Pour un enfant entre 7 et 9 ans, d'après les auteurs, l'échelle B est a privil
 
           <tr>
             <td class="Question_SSQ">
-              C4. Tous les jours, tu entends les mêmes bruits à la maison.<br>
+              C4. Tous les jours, tu entends les mêmes bruits à la maison. 
               <b>Est-ce que tu peux les reconnaître facilement ? (par exemple, le bruit de la cafetière, la sonnerie du téléphone, l’eau qui coule…)</b>
             </td>
             <td class="Question_SSQ">
@@ -512,16 +511,12 @@ Pour un enfant entre 7 et 9 ans, d'après les auteurs, l'échelle B est a privil
       </div>
 
     </form>
-
-
-
     <div id="results"></div>
 
     <script>
-      function calculerScores() {
 
-        // Sliders colors
-        const sliders = document.querySelectorAll(".slider");
+       // Sliders colors
+       const sliders = document.querySelectorAll(".slider");
         sliders.forEach(function(slider) {
           slider.addEventListener("input", function () {
             const value = (this.value - this.min) / (this.max - this.min) * 100;
@@ -533,6 +528,8 @@ Pour un enfant entre 7 et 9 ans, d'après les auteurs, l'échelle B est a privil
           slider.style.background = `linear-gradient(to right, #2B176C ${initialValue}%, #eeeeee ${initialValue}%)`;
         });
 
+      function calculerScores() {
+       
         let total     			= 0;
         let parole    			= 0;
         let spatial 				= 0;
