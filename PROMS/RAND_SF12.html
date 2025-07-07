@@ -7,26 +7,30 @@
   <meta name="license" content="EUPLv1.2">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style.css">
   <style>
     /* style is within the style.css sheet */
+    /* Style for SF12 will be the same as the SF36*/
   </style>
   <title>SF12</title>
 </head>
 <body>   
   <h1>Questionnaire d'état de santé SF-12 (version 1.0)</h1>
-  <p > Ware et al., 1996 </p>
+  <p> Ware & Sherbourne, 1992 (version originale)<br>
+    Gandek et al., 1998 (version validée en français)</p>
   <p ><b>COMMENT REPONDRE:</b></p>
   <p >Les questions, qui suivent, portent sur votre état de santé tel que vous le ressentez. Ces informations nous permettront de mieux savoir comment vous vous sentez dans la vie de tous les jours. <b>Veuillez répondre à toutes les questions</b> en cochant la case correspondant à la réponse choisie. Si vous ne savez pas très bien comment répondre, choisissez la réponse la plus adaptée à votre situation.</p>
   <br>
+  
 
   <form id="SF12">
 
     <table>
-      <tbody>
+      
         <tr>
-          <td colspan="5" class="question-main">
+          <th colspan="5" class="Question_SF36">
             1. Dans l'ensemble, pensez-vous que votre santé est :
-          </td>
+          </th>
         </tr>
         <tr>
           <td><label><input type="radio" name="q1" value="5"> Excellente</label></td>
@@ -35,13 +39,13 @@
           <td><label><input type="radio" name="q1" value="2"> Médiocre</label></td>
           <td><label><input type="radio" name="q1" value="1"> Mauvaise</label></td>
         </tr>
-      </tbody>
+      
     </table>
 
     <table>
-      <thead>
+      
         <tr>
-          <th colspan="4" class="question-main">
+          <th colspan="4" class="Question_SF36">
             2. Voici une liste d'activités que vous pouvez avoir à faire dans votre vie de tous les jours. Pour chacune d'entre elles indiquez si vous êtes limité(e) en raison de votre état de santé actuel.
           </th>
         </tr>
@@ -51,27 +55,27 @@
           <th class="response-options">Oui, un peu limité(e)</th>
           <th class="response-options">Non, Pas du tout limité(e)</th>
         </tr>
-      </thead>
-      <tbody>
+      
+      
         <tr>
-          <td class="question-sub">a. Efforts physiques importants tels que courir, soulever un objet lourd, faire du sport</td>
-          <td class="flex-center"><label><input type="radio" name="q2a" value="1"></label></td>
-          <td class="flex-center"><label><input type="radio" name="q2a" value="2"></label></td>
-          <td class="flex-center"><label><input type="radio" name="q2a" value="3"></label></td>
+          <td class="Question_SF36">a. Efforts physiques importants tels que courir, soulever un objet lourd, faire du sport</td>
+          <td><label><input type="radio" name="q2a" value="1"></label></td>
+          <td><label><input type="radio" name="q2a" value="2"></label></td>
+          <td><label><input type="radio" name="q2a" value="3"></label></td>
         </tr>
         <tr>
-          <td class="question-sub">b. Marcher plus d'un kilomètre à pied</td>
-          <td class="flex-center"><label><input type="radio" name="q2b" value="1"></label></td>
-          <td class="flex-center"><label><input type="radio" name="q2b" value="2"></label></td>
-          <td class="flex-center"><label><input type="radio" name="q2b" value="3"></label></td>
+          <td class="Question_SF36">b. Marcher plus d'un kilomètre à pied</td>
+          <td><label><input type="radio" name="q2b" value="1"></label></td>
+          <td><label><input type="radio" name="q2b" value="2"></label></td>
+          <td><label><input type="radio" name="q2b" value="3"></label></td>
         </tr>
-      </tbody>
+      
     </table>
 
     <table>
-      <thead>
+      
         <tr>
-          <th colspan="3" class="question-main">
+          <th colspan="3" class="Question_SF36">
             3. Au cours de ces 4 dernières semaines, et en raison de votre état physique :
           </th>
         </tr>
@@ -80,27 +84,27 @@
           <th class="response-options">OUI</th>
           <th class="response-options">NON</th>
         </tr>
-      </thead>
-      <tbody>
+      
+      
         <tr>
-          <td class="question-sub">a. Avez-vous réduit le temps passé à votre travail ou à vos activités habituelles ?</td>
-          <td class="flex-center"><label><input type="radio" name="q3a" value="0"></label></td>
-          <td class="flex-center"><label><input type="radio" name="q3a" value="1"></label></td>
+          <td class="Question_SF36">a. Avez-vous réduit le temps passé à votre travail ou à vos activités habituelles ?</td>
+          <td><label><input type="radio" name="q3a" value="0"></label></td>
+          <td><label><input type="radio" name="q3a" value="1"></label></td>
         </tr>
         <tr>
-          <td class="question-sub">b. Avez-vous accompli moins de choses que vous auriez souhaitées ?</td>
-          <td class="flex-center"><label><input type="radio" name="q3b" value="0"></label></td>
-          <td class="flex-center"><label><input type="radio" name="q3b" value="1"></label></td>
+          <td class="Question_SF36">b. Avez-vous accompli moins de choses que vous auriez souhaitées ?</td>
+          <td><label><input type="radio" name="q3b" value="0"></label></td>
+          <td><label><input type="radio" name="q3b" value="1"></label></td>
         </tr>
-      </tbody>
+      
     </table>
 
     <table>
-      <tbody>
+      
         <tr>
-          <td colspan="6" class="question-main">
+          <th colspan="6" class="Question_SF36">
             4. Au cours de ces 4 dernières semaines, quelle a été l'intensité de vos douleurs physiques ?
-          </td>
+          </th>
         </tr>
         <tr>
           <td><label><input type="radio" name="q4" value="6"> Nulle</label></td>
@@ -110,15 +114,15 @@
           <td><label><input type="radio" name="q4" value="2"> Grande</label></td>
           <td><label><input type="radio" name="q4" value="1"> Très grande</label></td>
         </tr>
-      </tbody>
+      
     </table>
 
     <table>
-      <tbody>
+      
         <tr>
-          <td colspan="5" class="question-main">
+          <th colspan="5" class="Question_SF36">
             5. Je m'attends à ce que ma santé se dégrade :
-          </td>
+          </th>
         </tr>
         <tr>
           <td><label><input type="radio" name="q5" value="1"> Totalement vrai</label></td>
@@ -127,15 +131,13 @@
           <td><label><input type="radio" name="q5" value="4"> Plutôt faux</label></td>
           <td><label><input type="radio" name="q5" value="5"> Totalement faux</label></td>
         </tr>
-      </tbody>
+
     </table>
 
     <table>
-      <tbody>
-        <tr>
-          <td colspan="7" class="question-main">
+          <th colspan="7" class="Question_SF36">
             6. Au cours de ces 4 dernières semaines, y a-t-il eu des moments où : Vous vous êtes senti(e) dynamique ?
-          </td>
+          </th>
         </tr>
         <tr>
           <td><label><input type="radio" name="q6" value="6"> En permanence</label></td>
@@ -145,15 +147,13 @@
           <td><label><input type="radio" name="q6" value="2"> Rarement</label></td>
           <td><label><input type="radio" name="q6" value="1"> Jamais</label></td>
         </tr>
-      </tbody>
     </table>
 
     <table>
-      <tbody>
         <tr>
-          <td colspan="5" class="question-main">
+          <th colspan="5" class="Question_SF36">
             7. Au cours de ces 4 dernières semaines, dans quelle mesure votre état de santé, physique ou émotionnel, vous a-t-il gêné dans votre vie sociale et vos relations avec les autres, votre famille, vos amis, vos connaissances ?
-          </td>
+          </th>
         </tr>
         <tr>
           <td><label><input type="radio" name="q7" value="5"> Pas du tout</label></td>
@@ -162,13 +162,11 @@
           <td><label><input type="radio" name="q7" value="2"> Beaucoup</label></td>
           <td><label><input type="radio" name="q7" value="1"> Enormément</label></td>
         </tr>
-      </tbody>
     </table>
 
     <table>
-      <thead>
         <tr>
-          <th colspan="3" class="question-main">
+          <th colspan="3" class="Question_SF36">
             8. Au cours de ces 4 dernières semaines, et en raison de votre état émotionnel (comme vous sentir triste, nerveux (se) ou déprimé(e) :
           </th>
         </tr>
@@ -177,27 +175,23 @@
           <th class="response-options">OUI</th>
           <th class="response-options">NON</th>
         </tr>
-      </thead>
-      <tbody>
         <tr>
-          <td class="question-sub">a. Avez-vous réduit le temps passé à votre travail ou à vos activités habituelles ?</td>
-          <td class="flex-center"><label><input type="radio" name="q8a" value="1"></label></td>
-          <td class="flex-center"><label><input type="radio" name="q8a" value="2"></label></td>
+          <td class="Question_SF36">a. Avez-vous réduit le temps passé à votre travail ou à vos activités habituelles ?</td>
+          <td><label><input type="radio" name="q8a" value="1"></label></td>
+          <td><label><input type="radio" name="q8a" value="2"></label></td>
         </tr>
         <tr>
-          <td class="question-sub">b. Avez-vous accompli moins de choses que vous auriez souhaitées ?</td>
-          <td class="flex-center"><label><input type="radio" name="q8b" value="1"></label></td>
-          <td class="flex-center"><label><input type="radio" name="q8b" value="2"></label></td>
+          <td class="Question_SF36">b. Avez-vous accompli moins de choses que vous auriez souhaitées ?</td>
+          <td><label><input type="radio" name="q8b" value="1"></label></td>
+          <td><label><input type="radio" name="q8b" value="2"></label></td>
         </tr>
-      </tbody>
     </table>
 
     <table>
-      <tbody>
         <tr>
-          <td colspan="7" class="question-main">
+          <th colspan="7" class="Question_SF36">
             9. Au cours de ces 4 dernières semaines, y a-t-il eu des moments où : Vous vous êtes senti(e) calme et détendu(e) ?
-          </td>
+          </th>
         </tr>
         <tr>
           <td><label><input type="radio" name="q9" value="6"> En permanence</label></td>
@@ -207,15 +201,15 @@
           <td><label><input type="radio" name="q9" value="2"> Rarement</label></td>
           <td><label><input type="radio" name="q9" value="1"> Jamais</label></td>
         </tr>
-      </tbody>
+      
     </table>
 
     <table>
-      <tbody>
+      
         <tr>
-          <td colspan="7" class="question-main">
+          <th colspan="7" class="Question_SF36">
             10. Au cours de ces 4 dernières semaines, y a-t-il eu des moments où : Vous vous êtes senti(e) triste et abattu(e) ?
-          </td>
+          </th>
         </tr>
         <tr>
           <td><label><input type="radio" name="q10" value="1"> En permanence</label></td>
@@ -225,15 +219,14 @@
           <td><label><input type="radio" name="q10" value="5"> Rarement</label></td>
           <td><label><input type="radio" name="q10" value="6"> Jamais</label></td>
         </tr>
-      </tbody>
+      
     </table>
 
     <table>
-      <tbody>
         <tr>
-          <td colspan="7" class="question-main">
+          <th colspan="7" class="Question_SF36">
             11. Au cours de ces 4 dernières semaines, y a-t-il eu des moments où : Vous vous êtes senti(e) épuisé(e) ?
-          </td>
+          </th>
         </tr>
         <tr>
           <td><label><input type="radio" name="q11" value="1"> En permanence</label></td>
@@ -243,24 +236,22 @@
           <td><label><input type="radio" name="q11" value="5"> Rarement</label></td>
           <td><label><input type="radio" name="q11" value="6"> Jamais</label></td>
         </tr>
-      </tbody>
     </table>
 
     <table>
-      <tbody>
         <tr>
-          <td colspan="5" class="question-main">
+          <th colspan="5" class="Question_SF36">
             12. Par rapport à l'année dernière à la même époque, comment trouvez-vous votre état de santé en ce moment ?
-          </td>
+          </th>
         </tr>
         <tr>
-          <td class="flex-center"><label><input type="radio" name="q12" value="5">Bien meilleur que l'an dernier</label></td>
-          <td class="flex-center"><label><input type="radio" name="q12" value="4"> Plutôt meilleur que l'an dernier</label></td>
-          <td class="flex-center"><label><input type="radio" name="q12" value="3"> À peu près pareil</label></td>
-          <td class="flex-center"><label><input type="radio" name="q12" value="2"> Plutôt moins bon</label></td>
-          <td class="flex-center"><label><input type="radio" name="q12" value="1"> Beaucoup moins bon</label></td>
+          <td><label><input type="radio" name="q12" value="5">Bien meilleur que l'an dernier</label></td>
+          <td><label><input type="radio" name="q12" value="4"> Plutôt meilleur que l'an dernier</label></td>
+          <td><label><input type="radio" name="q12" value="3"> À peu près pareil</label></td>
+          <td><label><input type="radio" name="q12" value="2"> Plutôt moins bon</label></td>
+          <td><label><input type="radio" name="q12" value="1"> Beaucoup moins bon</label></td>
         </tr>
-      </tbody>
+      
     </table>
 
     <div class="buttons-container">
@@ -317,53 +308,16 @@
       return; 
       }
 
-      // --- Step 1: Compute Raw Scale Scores for 8 Dimensions ---
-
-      // 1. Physical Functioning (PF) - Items q2a, q2b (Range: 1-3 each, sum 2-6)
-      // Max raw score = 3+3=6, Min raw score = 1+1=2
+      
       let rawPF = q2a + q2b;
-
-      // 2. Role-Physical (RP) - Items q3a, q3b (Range: 0-1 each, sum 0-2)
-      // Note: Your HTML has 0 for "OUI" and 1 for "NON". Standard scoring often treats 'YES' as 0 and 'NO' as 1.
-      // If '0' means limitation and '1' means no limitation, sum is correctly higher for less limitation.
-      let rawRP = q3a + q3b;
-
-      // 3. Bodily Pain (BP) - Item q4 (Range: 1-6)
-      // Note: Your HTML values are 1-6, with 6 being 'Nulle' (No pain) and 1 being 'Très grande' (Very great pain).
-      // This is inverse to the typical 1-5 where 1 is best. The coefficients below will expect higher value = better.
-      // If your HTML values are already ordered 1 (worst) to 6 (best), this is fine.
-      // Assuming your HTML values are correctly inverted for standard scoring (lower value = more pain, higher value = less pain)
-      let rawBP = q4; // Range 1 (worst) to 6 (best)
-
-      // 4. General Health (GH) - Items q1, q5 (Range: q1=1-5, q5=1-5, sum 2-10)
-      // Note: q1: 1 (Mauvaise) to 5 (Excellente). q5: 1 (Totalement vrai - health degrades) to 5 (Totalement faux - health doesn't degrade).
-      // So, q5 needs to be reverse-scored if it's not already in your HTML for the sum to be meaningful.
-      // Your HTML already does this based on the values.
-      let rawGH = q1 + q5; // Assuming q5 values (1-5) are set such that 5 is best
-
-      // 5. Vitality (VT) - Items q6, q11 (Range: q6=1-6, q11=1-6, sum 2-12)
-      // Note: q6: 1 (Jamais dynamique) to 6 (En permanence dynamique).
-      // q11: 1 (En permanence épuisé) to 6 (Jamais épuisé).
-      // Your HTML values for q11 appear to be reverse-scored already (1=worst, 6=best).
+      let rawRP = q3a + q3b
+      let rawBP = q4; 
+      let rawGH = q1 + q5; 
       let rawVT = q6 + q11;
-
-      // 6. Social Functioning (SF) - Item q7 (Range: 1-5)
-      // Note: Your HTML values 1 (Enormément gêné) to 5 (Pas du tout gêné).
       let rawSF = q7;
-
-      // 7. Role-Emotional (RE) - Items q8a, q8b (Range: 0-1 each, sum 0-2)
-      // Similar to RP, assuming 0=limitation, 1=no limitation.
       let rawRE = q8a + q8b;
-
-      // 8. Mental Health (MH) - Items q9, q10 (Range: q9=1-6, q10=1-6, sum 2-12)
-      // Note: q9: 1 (Jamais calme) to 6 (En permanence calme).
-      // q10: 1 (En permanence triste) to 6 (Jamais triste).
-      // Your HTML values for q10 appear to be reverse-scored already (1=worst, 6=best).
       let rawMH = q9 + q10;
 
-      // --- Step 2: Transform Raw Scale Scores to 0-100 (if needed for display or specific models) ---
-
-      // Min and Max possible raw scores for each domain based on your HTML values
       const minPF = 2, maxPF = 6;
       const minRP = 0, maxRP = 2;
       const minBP = 1, maxBP = 6;
@@ -444,9 +398,7 @@
 
       // --- Step 4: Standardize PCS and MCS to a mean of 50 and SD of 10 ---
       // Raw PCS/MCS = (Sum of Z-scores * Coefficients)
-      // Standardized PCS/MCS = (Raw PCS/MCS * PCS/MCS Standard Deviation) + PCS/MCS Mean
-      // For the SF-12v2, the formula is: T-score = (Unstandardized Score * 10) + 50
-
+     
       let PCS = (unstandardizedPCS * 10) + 50;
       let MCS = (unstandardizedMCS * 10) + 50;
 

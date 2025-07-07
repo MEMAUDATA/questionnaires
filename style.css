@@ -170,14 +170,9 @@ ul.myList {
 
 
 /* THI */
-.options {
+.Answer_THI{
     display: flex;
     align-items: center;
-}
-
-.option {
-    margin-right: 10px;
-    color: black !important;
 }
 
 /* M.A.S.H. */
@@ -300,10 +295,6 @@ ol.my_QSCPGS {
 
 /* --- PREMS --- */
 /* For all SSQ versions */ 
-.Consignes_SSQ_box{
-    border: 1px solid black !important;
-
-}
 .Consignes_SSQ {
     text-align: left;
 }
@@ -373,11 +364,11 @@ ol.my_QSCPGS {
 
 }
 
-
-
-.question-main {
-    background-color: #eeeeee;
-    font-weight: bold;
-    color:black !important;
+.Question_SF36 {
+    text-align: left;
 }
+#SF36 th {
+    background-color: #eeeeee;
+  }
+
 
