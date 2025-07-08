@@ -12,12 +12,14 @@
     /* style is within the style.css sheet */
     /* Style for SF12 will be the same as the SF36*/
   </style>
-  <title>SF12</title>
+  <title>SF12v1.0</title>
 </head>
 <body>   
   <h1>Questionnaire d'état de santé SF-12 (version 1.0)</h1>
   <p> Ware & Sherbourne, 1992 (version originale)<br>
     Gandek et al., 1998 (version validée en français)</p>
+  <p> La version de ce questionnaire est libre.</p>
+       
   <p ><b>COMMENT REPONDRE:</b></p>
   <p >Les questions, qui suivent, portent sur votre état de santé tel que vous le ressentez. Ces informations nous permettront de mieux savoir comment vous vous sentez dans la vie de tous les jours. <b>Veuillez répondre à toutes les questions</b> en cochant la case correspondant à la réponse choisie. Si vous ne savez pas très bien comment répondre, choisissez la réponse la plus adaptée à votre situation.</p>
   <br>
@@ -303,8 +305,9 @@
 
       // Check if all questions are answered
       if (answeredQuestionsCount < totalQuestions) {
-          document.getElementById("results").innerHTML = "<p style='text-align: center; color: red;'>Veuillez répondre à toutes les questions!</p>";
-          document.getElementById("results").style.display = "block";
+          const resultDiv = document.getElementById("results");
+          resultDiv.innerHTML = "<p class=Error_message_not_all_answered>Veuillez répondre svp à toutes les questions avant de calculer le score!</p>";
+          resultDiv.style.display = "block"; 
       return; 
       }
 
