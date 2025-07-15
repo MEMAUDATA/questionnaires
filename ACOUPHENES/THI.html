@@ -375,7 +375,8 @@
       } else if ( totalScoreTHI > 76) {
         displayHtml += "gêne catastrophique.";
       }
-      displayHtml += "<p>Tableau du niveau de gêne</p>";
+      
+      displayHtml += "<br><p>Tableau du niveau de gêne</p>";
       displayHtml += "<ul class='myList'>";
       displayHtml += "<li> Score compris entre 0 et 16 : gêne légère ou négligeable</li>";
       displayHtml += "<li> Score compris entre 18 et 36 : gêne légère</li>";
@@ -385,7 +386,7 @@
       displayHtml += "</ul>";  
 
       displayHtml += "<p>Détails du score par sous-catégorie.<br>";
-      displayHtml += "<i>Plus le score est élevé, plus la gêne est importante</i></p>";
+      displayHtml += "Plus le score est élevé, plus la gêne est importante</p><br>";
       displayHtml += "<ul class='myList'>";
       displayHtml += "<li> F (sous-échelle fonctionnelle) : " + scoreF + "/44 </li>";
       displayHtml += "<li> E (sous-échelle émotionnelle) : " + scoreE + "/36</li>";

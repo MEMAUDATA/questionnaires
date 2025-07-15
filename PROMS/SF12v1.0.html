@@ -18,7 +18,7 @@
   <h1>Questionnaire d'état de santé SF-12 (version 1.0)</h1>
   <p> Ware & Sherbourne, 1992 (version originale)<br>
     Gandek et al., 1998 (version validée en français)</p>
-  <p> La version de ce questionnaire est libre.</p>
+  <p> La version de ce questionnaire est libre (non propriétaire).</p>
        
   <p ><b>COMMENT REPONDRE:</b></p>
   <p >Les questions, qui suivent, portent sur votre état de santé tel que vous le ressentez. Ces informations nous permettront de mieux savoir comment vous vous sentez dans la vie de tous les jours. <b>Veuillez répondre à toutes les questions</b> en cochant la case correspondant à la réponse choisie. Si vous ne savez pas très bien comment répondre, choisissez la réponse la plus adaptée à votre situation.</p>
@@ -277,13 +277,13 @@
           for (let i = 0; i < radios.length; i++) {
             if (radios[i].checked) {
               checkedValue = parseInt(radios[i].value);
-              answeredQuestionsCount++; // Increment count for each answered input
+              answeredQuestionsCount++; 
               break;
             }
           }
-          return checkedValue; // Return null if not answered
+          return checkedValue; 
         }
-        return null; // Return null if radios element not found
+        return null; 
       };
 
       // Collect raw scores for each individual item (as per HTML value attributes)
@@ -412,6 +412,8 @@
   function  display (MCS,PCS) {
       const resultsDiv = document.getElementById("results");
       let displayHtml = "<p;'>Résultats</p>";
+      displayHtml += "<br>";
+      displayHtml += "<p;'>Les scores du SF12 version 1.0 se comparent avec les scores obtenus au sein la population US de 1994.<br> Moyenne (+/-EC) MCS et PCS 50 (+/-10).</p>";
       displayHtml += "<br>";
       displayHtml += "<ul class='myList'>";
       displayHtml += "<li>Composante Mentale (MCS-12) : " +  MCS.toFixed(2) + "</li>";

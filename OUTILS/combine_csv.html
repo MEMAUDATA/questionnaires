@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+     <!-- Author's details-->
+     <meta name="author" content="Nicolas Vannson">
+     <meta name="contact" content="hello@memau.eu">
+     <meta name="license" content="EUPLv1.2">
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+     <link rel="stylesheet" href="/style.css">
+    <style>
+      /* style is within the style.css sheet */
+    </style>
+   <title>Combine CSV</title>
+   </head>
+<body>
+    <div id="dropArea" class="drag_n_drop">
+        <p>Drag & drop ici tes fichiers .csv</p>
+        <input type="file" id="csvFiles" accept=".csv" multiple style="display: none;">
+        <div class="buttons-container">
+            <button type="button" id="customFileButton">Choisis tes fichiers .csv</button>
+        </div>
+    </div>
+    <p id="fileCount"></p>
+    <div class="buttons-container">
+        <button type="button" onclick="combineCSVFiles()">Combiner les fichiers CSV</button>
+        <button type="button" onclick="resetcsv()">Réinitialiser</button>
+        <button type="button" id="downloadButton" style="display: none;" onclick="downloadCombinedFile()">Télécharger le fichier combiné</button>
+    </div>
+   
+    <script>
+
+        // button selection
+        document.getElementById('customFileButton').addEventListener('click', function() {
+        document.getElementById('csvFiles').click();
+            });
+
+        document.getElementById('csvFiles').addEventListener('change', function(event) {
+        const files = event.target.files;
+        const selectedFilesDiv = document.getElementById('selectedFiles');
+
+        const resultDiv = document.getElementById("fileCount");
+        resultDiv.innerHTML = `<p>Nombres de fichiers .csv sélectionnés : ${files.length}</p>`;    
+    });
+
+
+        const dropArea = document.getElementById('dropArea');
+        const fileInput = document.getElementById('csvFiles');
+
+        // Prevent default drag behaviors
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        // Highlight drop area when item is dragged over it
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, unhighlight, false);
+        });
+
+        // Handle dropped files
+        dropArea.addEventListener('drop', handleDrop, false);
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        function highlight() {
+            dropArea.classList.add('highlight');
+        }
+
+        function unhighlight() {
+            dropArea.classList.remove('highlight');
+        }
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+            // Display the number of selected .csv files
+        	const resultDiv = document.getElementById("fileCount");
+        	resultDiv.innerHTML = `<p>Nombres de fichiers .csv sélectionnés : ${files.length}</p>`;  
+            
+        }
+
+        function handleFiles(files) {
+            fileInput.files = files;
+        }
+
+        function combineCSVFiles() {
+                const files = fileInput.files;
+                const results = [];
+
+                if (files.length === 0) {
+                    const resultDiv = document.getElementById("fileCount");
+                    resultDiv.innerHTML = "<p class='Error_message_not_all_answered'>Please add at least 2 CSV files!</p>";
+                    resultDiv.style.display = "block";
+                    return;
+                } else {
+                    // Reset any previous warnings
+                    resetcsv();
+                }
+
+                let filesProcessed = 0;
+
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const reader = new FileReader();
+
+                    reader.onload = function(event) {
+                        const contents = event.target.result;
+                        Papa.parse(contents, {
+                            header: true,
+                            complete: function(result) {
+                                results.push(result.data);
+                                filesProcessed++;
+                                if (filesProcessed === files.length) {
+                                    combineResults(results);
+                                }
+                            },
+                            error: function(error) {
+                                console.error("Error parsing file:", error);
+                                const resultDiv = document.getElementById("fileCount");
+                                resultDiv.innerHTML = `<p class='Error_message_not_all_answered'>Error processing file: ${file.name}</p>`;
+                                resultDiv.style.display = "block";
+                            }
+                        });
+                    };
+
+                    reader.onerror = function(event) {
+                        console.error("File could not be read:", event.target.error);
+                        const resultDiv = document.getElementById("fileCount");
+                        resultDiv.innerHTML = `<p class='Error_message_not_all_answered'>Error reading file: ${file.name}</p>`;
+                        resultDiv.style.display = "block";
+                    };
+
+                    reader.readAsText(file);
+                }
+            }
+
+
+        let combinedDataBlob; // Define this variable globally
+        function combineResults(results) {
+            let combinedData = [];
+            results.forEach(result => {
+                combinedData = combinedData.concat(result);
+            });
+            const csv = Papa.unparse(combinedData);
+            combinedDataBlob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' }); // Assign to the global variable
+        }
+
+        function downloadCombinedFile() {
+            if (combinedDataBlob) {
+                const url = URL.createObjectURL(combinedDataBlob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'MEMAUDATA_csv_combinés.csv';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                document.getElementById('downloadButton').style.display = 'inline-block';
+            }
+        }
+
+        function resetcsv(){
+            // Reset the file input
+    		const fileInput = document.getElementById("csvFiles");
+    		fileInput.value = '';
+            downloadButton.style.display = 'none';
+            const resultDiv = document.getElementById("fileCount");
+    		resultDiv.innerHTML = " ";
+    		resultDiv.style.display = "block";
+        }
+
+    </script>
+</body>
+</html>

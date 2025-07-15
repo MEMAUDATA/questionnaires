@@ -319,16 +319,6 @@
       return;
     }
 
-    // Initialize domain scores
-    //let scorePF = 0; // Physical Functioning
-    //let scoreRP = 0; // Role Physical
-    //let scoreBP = 0; // Bodily Pain
-    //let scoreSF = 0; // Social Functioning
-    //let scoreMH = 0; // Mental Health
-    //let scoreHT = 0; // Health Transition / General Health
-
-    // 1 (Q1) + 6 (Q2a-f) + 1 (Q3) + 1 (Q4) + 1 (Q5) + 6 (Q6a-f) + 4 (Q7a-d)
-
     // Compute average scores
     let scorePF = scoreQ2/6;
     let scoreRP = (scoreQ4 + scoreQ5)/2;
@@ -344,7 +334,7 @@ function display(scorePF, scoreBP, scoreRP, scoreSF, scoreMH, scoreHT) {
     const resultsDiv = document.getElementById("results");
     let displayHtml = "<p>Résultats</p>";
     displayHtml += "<br>";
-    displayHtml += "<p> Les scores vont de 0 (faible niveau qualité de vie) à 100 (niveau très élevé).</p>";
+    displayHtml += "<p> Les scores vont de 0 % (faible niveau qualité de vie) à 100 % (niveau très élevé).</p>";
     displayHtml += "<br>";
     displayHtml += "<ul class='myList'>";
     displayHtml += "<li>Activité physique : " + scorePF.toFixed(2) + " % </li>";
