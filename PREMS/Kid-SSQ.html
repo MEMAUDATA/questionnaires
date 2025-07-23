@@ -1,34 +1,28 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <!-- Author's details-->
-    <meta name="author" content="Nicolas Vannson">
-    <meta name="contact" content="hello@memau.eu">
-    <meta name="license" content="EUPLv1.2">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.0/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <link rel="stylesheet" href="/style.css">
-    <style>
-      /* style is within the style.css sheet */
-    </style>
-  </head>
+    <head>
+        <!-- Author's details-->
+        <meta name="author" content="Nicolas Vannson">
+        <meta name="contact" content="hello@memau.eu">
+        <meta name="license" content="EUPLv1.2">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.0/jspdf.umd.min.js"></script>
+        <script src= https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+        <link rel="stylesheet" href="/style.css">
+        <style>
+          /* style is within the style.css sheet */
+        </style>
+      <title>Kid-SSQ</title>  
   <body>
     <h1>Kid-SSQ</h1>
     <p>Galvin & Noble, 2013 (version pédiatrique originale) <br>
     Coudert et al., 2023 (version pédiatrique validée et adpatée en français)</p>
     <p><i> Questionnaire sous licence CC BY-NC-SA 4.0 </i></p>
     <br>
-    <!-- add images to help children answering 
-<div style="text-align: center;">
-<p> Echelles visuelles pour aider l'enfant à répondre, si besoin. <br>
-Pour un enfant entre 7 et 9 ans, d'après les auteurs, l'échelle B est a privilégier. </p> <br>
-<img src="https://data.memau.eu/wp-content/uploads/2025/05/KID-SSQ-VISUAL_SCALE_A.png" alt="VSA" width="519" height="233">
-<img src="https://data.memau.eu/wp-content/uploads/2025/05/KID-SSQ-VISUAL_SCALE_B.png" alt="VSB" width="508" height="238"> 
-</div> 
--->
-
+   
     <form id="SSQKID">
 
       <h3 class="Question_SSQ"> Section A – Audition de la parole</h3>
@@ -515,9 +509,20 @@ Pour un enfant entre 7 et 9 ans, d'après les auteurs, l'échelle B est a privil
       </div>
 
     </form>
-    <div id="results"></div>
-
+    <div id="results" style="display:none">
+        <p id="scoreDisplay"></p><br>
+        <label for="nameID" class="Subject_name">Nom du sujet (si besoin)</label>
+        <input type="text" id="ID" name="nameID"><br>
+        <button id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
+        <button id="saveXLSbutton" onclick="saveXLS()">Exporter en XLS</button>
+      </div>
+  
     <script>
+
+        let globalTotal     = null;
+        let globalParole    = null;  
+        let globalSpatial   = null;  
+        let globalQualite   = null;    
 
        // Sliders colors
        const sliders = document.querySelectorAll(".slider");
@@ -536,13 +541,12 @@ Pour un enfant entre 7 et 9 ans, d'après les auteurs, l'échelle B est a privil
        
         let total     			= 0;
         let parole    			= 0;
-        let spatial 				= 0;
-        let qualite 				= 0;
+        let spatial 			= 0;
+        let qualite 			= 0;
 
         let count_Na_parole    	= 0;
-        let count_Na_spatial    	= 0;
-        let count_Na_qualite    	= 0;
-
+        let count_Na_spatial    = 0;
+        let count_Na_qualite    = 0;
 
 
         const sliderIds = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10', 'q11', 'q12'];
@@ -598,6 +602,12 @@ Pour un enfant entre 7 et 9 ans, d'après les auteurs, l'échelle B est a privil
 
 
         displayscores(total, parole, spatial,qualite);
+        
+        // add to global values
+        globalTotal     = total;
+        globalParole    = parole;  
+        globalSpatial   = spatial;  
+        globalQualite   = qualite;    
       } // end function
 
 
@@ -612,25 +622,194 @@ Pour un enfant entre 7 et 9 ans, d'après les auteurs, l'échelle B est a privil
         display += "<li>Audition spatiale : " + spatial.toFixed(2) + "</li>";
         display += "<li>Qualité d’audition : " + qualite.toFixed(2) + "</li>";
         display += "</ul>";
-        document.getElementById("results").innerHTML = display;
+        // Update the results div with the constructed HTML
+        document.getElementById("scoreDisplay").innerHTML = display;
         document.getElementById("results").style.display = "block";
+        document.getElementById('savePdfButton').style.display = 'inline-block';
+        document.getElementById('saveXLSbutton').style.display = 'inline-block';
 
 
 
       } // end function
+      
+
       function resetForm() {
         document.getElementById("SSQKID").reset();
-        document.getElementById("results").innerHTML = "";
-        document.getElementById("results").style.display = "none";
+        document.getElementById('results').style.display = 'none';
+        // Reset subject's name
+        document.getElementById("ID").value = "";
+        // Hide the save PDF button on reset
+        document.getElementById('savePdfButton').style.display = 'none';
+        document.getElementById('saveXLSbutton').style.display = 'none';
 
         // Réinitialise le fond des sliders
         const sliders = document.querySelectorAll(".slider");
         sliders.forEach(function (slider) {
-          const initialValue = (slider.value - slider.min) / (slider.max - slider.min) * 100;
-          slider.style.background = `linear-gradient(to right, #2B176C ${initialValue}%, #eeeeee ${initialValue}%)`;
-        });
+        const initialValue = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+        slider.style.background = `linear-gradient(to right, #2B176C ${initialValue}%, #eeeeee ${initialValue}%)`;
+      });
+
 
       } // end function
+
+      function saveXLS() {
+
+            const subjectCode = document.getElementById('ID').value || "SansNom"; // Nom du sujet
+            const today = new Date().toLocaleDateString('fr-FR');
+            const filename = `Kid-SSQ_${today}_${subjectCode}.csv`;
+
+            //const scoreText = document.getElementById('scoreDisplay').textContent;
+            //const totalScore = scoreText.replace('Le score total est ', '').trim();
+
+            const safetotal = typeof globalTotal === 'number' ? globalTotal.toFixed(2) : "NA";
+            const safeparole = typeof globalParole === 'number' ? globalParole.toFixed(2) : "NA";
+            const safespatial = typeof globalSpatial === 'number' ? globalSpatial.toFixed(2) : "NA";
+            const safequalite = typeof globalQualite === 'number' ? globalQualite.toFixed(2) : "NA";
+
+            // Slider and Na id
+            const sliderIds = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10', 'q11', 'q12'];
+            const naCheckboxIds = ['na1', 'na2', 'na3', 'na4', 'na5', 'na6', 'na7', 'na8', 'na9', 'na10', 'na11', 'na12'];
+
+
+            let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+            csvContent += "Sujet,Date,Questionnaire,Score Total, Parole, Spatial, Qualite";
+            sliderIds.forEach(q => {
+            csvContent += `,${q}`;
+            });
+            csvContent += "\n";
+
+            let row = `"${subjectCode}","${today}","Kid-SSQ","${safetotal}","${safeparole}","${safespatial}","${safequalite}" `;
+            for (let i = 0; i < sliderIds.length; i++) {
+            const slider = document.getElementById(sliderIds[i]);
+            const naCheckbox = document.getElementById(naCheckboxIds[i]);
+            let answer = naCheckbox.checked ? "NA" : slider.value;
+            row += `,"${answer}"`;
+            }
+
+            csvContent += row + "\n";
+
+            const link = document.createElement("a");
+            link.setAttribute("href", encodeURI(csvContent));
+            link.setAttribute("download", filename);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            }
+
+            function savePdf() {
+                const { jsPDF } = window.jspdf;
+                const today = new Date().toLocaleDateString('fr-FR');
+                const subjectCode = document.getElementById('ID').value || "SansNom";
+                const filename = `Kid-SSQ_${today}_${subjectCode}.pdf`;
+
+                const safetotal = typeof globalTotal === 'number' ? globalTotal.toFixed(2) : "NA";
+                const safeparole = typeof globalParole === 'number' ? globalParole.toFixed(2) : "NA";
+                const safespatial = typeof globalSpatial === 'number' ? globalSpatial.toFixed(2) : "NA";
+                const safequalite = typeof globalQualite === 'number' ? globalQualite.toFixed(2) : "NA";
+
+                // Slider and Na id
+                const sliderIds = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10', 'q11', 'q12'];
+                const naCheckboxIds = ['na1', 'na2', 'na3', 'na4', 'na5', 'na6', 'na7', 'na8', 'na9', 'na10', 'na11', 'na12'];
+
+                let data2table = '<table><tr>';
+                for (let i = 0; i < sliderIds.length; i++) {
+                    const answer = document.getElementById(naCheckboxIds[i])?.checked
+                        ? "Non applicable (NA)"
+                        : document.getElementById(sliderIds[i])?.value || 'N/A';
+
+                    data2table += `<td><strong>${sliderIds[i]}</strong>: ${answer}</td>`;
+
+                    // Add a new row every two columns
+                    if (i % 2 === 1 && i !== sliderIds.length - 1) {
+                        data2table += '</tr><tr>';
+                    }
+                }
+                data2table += '</tr></table>';
+
+                const content = document.createElement('div');
+                content.innerHTML = `
+                <style>
+                    .header_report,
+                    .body_report,
+                    .footer_report {
+                        text-align: center;
+                        margin: 0 auto;
+                        width: 100%;
+                    }
+                    .header_report {
+                        padding-top: 4%;
+                        padding-bottom: 4%;
+                        background-color:white; /*color for test*/
+                        border-bottom: 1px solid #2B176C;
+                    }
+                    .footer_report {
+                        padding-top: 3%;
+                        padding-bottom:3%;
+                        
+                    }
+                    .body_report {
+                        padding-top: 5%;
+                        padding-bottom:20%;
+                        background-color: white;
+                        color: black; 
+                    }
+                    
+                    .data2columns {
+                        display: flex;
+                        flex-wrap: wrap;
+                        justify-content: center;
+                        gap: 8px;
+                    }
+
+                    .data2columns p {
+                        width: 10%;
+                        margin: 0;
+                        padding: 8px;
+                        box-sizing: border-box;
+                        text-align: center;
+                    }
+                    
+                </style>
+                <div class="header_report">
+                    <img src="https://data.memau.eu/wp-content/uploads/2025/06/logo-memau-data.svg" alt="Logo" style="max-width: 210px; 
+                    margin-top: 10px;margin-bottom: 5px;">
+                    <p><i>Contact : hello@memau.eu </i></p>
+                </div>    
+                <div class="body_report">
+                    <h1>Kid-SSQ</h1>
+                    <p>Code du Sujet : ${subjectCode} </p>
+                    <p>Rapport généré le : ${today}</p>
+                    <p>Score total : ${safetotal}</p>
+                    <p>Audition de la parole : ${safeparole}</p>
+                    <p>Audition spatiale : ${safespatial}</p>
+                    <p>Qualité d'audition : ${safequalite}</p>
+                    <p>Score de chaque question</p>
+                    <div class="data2columns">
+                        ${data2table}
+                    </div>
+                    </div>
+                `;
+
+                document.body.appendChild(content);
+
+                // Use html2pdf to convert the HTML content to PDF
+                const opt = {
+                    margin: [10, 10, 10, 10], // Adjusted margin to ensure content is visible
+                    filename: filename,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2, useCORS: true,scrollY: 0  },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+
+                // Generate PDF from HTML content
+                html2pdf().set(opt).from(content).save().then(() => {
+                    document.body.removeChild(content);
+                });
+            }
+
+
+
+
     </script>
 
   </body>
