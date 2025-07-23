@@ -629,11 +629,20 @@
       const sliderIds = ["q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9", "q10", "q11", "q12"];
       const naCheckboxIds = ["q1_na", "q2_na", "q3_na", "q4_na", "q5_na", "q6_na", "q7_na", "q8_na", "q9_na", "q10_na", "q11_na", "q12_na"];  
 
-      let data2table = '';
+      let data2table = '<table><tr>';
       for (let i = 0; i < sliderIds.length; i++) {
-          const answer = document.getElementById(naCheckboxIds[i])?.checked ? "Non applicable (NA)" : document.getElementById(sliderIds[i])?.value;
-          data2table += `<p><strong>${sliderIds[i]}</strong>: ${answer || 'N/A'}</p>`;
+          const answer = document.getElementById(naCheckboxIds[i])?.checked
+              ? "Non applicable (NA)"
+              : document.getElementById(sliderIds[i])?.value || 'N/A';
+
+          data2table += `<td><strong>${sliderIds[i]}</strong>: ${answer}</td>`;
+
+          // Add a new row every two columns
+          if (i % 2 === 1 && i !== sliderIds.length - 1) {
+              data2table += '</tr><tr>';
+          }
       }
+      data2table += '</tr></table>';
 
       const content = document.createElement('div');
       content.innerHTML = `
@@ -658,10 +667,26 @@
           }
           .body_report {
               padding-top: 5%;
-              padding-bottom:80%;
+              padding-bottom:210%;
               background-color: white;
               color: black; 
           }
+          
+          .data2columns {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+          }
+
+          .data2columns p {
+            width: 45%;
+            margin: 0;
+            padding: 8px;
+            box-sizing: border-box;
+            text-align: left;
+          }
+          
       </style>
       <div class="header_report">
           <img src="https://data.memau.eu/wp-content/uploads/2025/06/logo-memau-data.svg" alt="Logo" style="max-width: 210px; 
@@ -672,17 +697,20 @@
           <h1>SSQ12</h1>
           <p>Code du Sujet : ${subjectCode} </p>
           <p>Rapport généré le : ${today}</p>
-          <p> Score total : ${safeScore} </p>
-          <p> Score de chaque question</p>
-          <p>${data2table}</p>
-      </div>
+          <p>Score total : ${safeScore}</p>
+          <p>Score de chaque question</p>
+
+          <div class="data2columns">
+            ${data2table}
+          </div>
+        </div>
     `;
 
     document.body.appendChild(content);
 
     // Use html2pdf to convert the HTML content to PDF
     const opt = {
-        margin: [-200, 10, 10, 10], // Adjusted margin to ensure content is visible
+        margin: [-375, 10, 10, 10], // Adjusted margin to ensure content is visible
         filename: filename,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2, useCORS: true },

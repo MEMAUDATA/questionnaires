@@ -337,17 +337,11 @@
 
         const sliderIds = ["q1", "q2", "q3", "q4", "q5"];
         const naCheckboxIds = ["q1_na", "q2_na", "q3_na", "q4_na", "q5_na"];
-        const questionLabels = [
-          "Q1",
-          "Q2",
-          "Q3",
-          "Q4",
-          "Q5"
-        ];
+        
 
         let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
         csvContent += "Sujet,Date,Score Total";
-        questionLabels.forEach(q => {
+        sliderIds.forEach(q => {
           csvContent += `,${q}`;
         });
         csvContent += "\n";
@@ -412,7 +406,7 @@
           }
           .body_report {
               padding-top: 5%;
-              padding-bottom:100%;
+              padding-bottom:20%;
               background-color: white;
               color: black; 
           }
@@ -436,10 +430,10 @@
 
     // Use html2pdf to convert the HTML content to PDF
     const opt = {
-        margin: [-175, 10, 10, 10], // Adjusted margin to ensure content is visible
+        margin: [10, 10, 10, 10], // Adjusted margin to ensure content is visible
         filename: filename,
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true },
+        html2canvas: { scale: 2, useCORS: true,scrollY: 0   },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
 
