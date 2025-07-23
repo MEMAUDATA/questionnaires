@@ -592,13 +592,13 @@
     
 
         let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
-        csvContent += "Sujet,Date,Score Total";
+        csvContent += "Sujet,Date,Questionnaire,Score Total";
         sliderIds.forEach(q => {
           csvContent += `,${q}`;
         });
         csvContent += "\n";
 
-        let row = `"${subjectCode}","${today}","${safeScore}"`;
+        let row = `"${subjectCode}","${today}","SSQ12","${safeScore}"`;
         for (let i = 0; i < sliderIds.length; i++) {
           const slider = document.getElementById(sliderIds[i]);
           const naCheckbox = document.getElementById(naCheckboxIds[i]);
@@ -667,7 +667,7 @@
           }
           .body_report {
               padding-top: 5%;
-              padding-bottom:210%;
+              padding-bottom:20%;
               background-color: white;
               color: black; 
           }
@@ -676,15 +676,15 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 16px;
+            gap: 8px;
           }
 
           .data2columns p {
-            width: 45%;
+            width: 10%;
             margin: 0;
             padding: 8px;
             box-sizing: border-box;
-            text-align: left;
+            text-align: center;
           }
           
       </style>
@@ -710,10 +710,10 @@
 
     // Use html2pdf to convert the HTML content to PDF
     const opt = {
-        margin: [-375, 10, 10, 10], // Adjusted margin to ensure content is visible
+        margin: [10, 10, 10, 10], // Adjusted margin to ensure content is visible
         filename: filename,
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true },
+        html2canvas: { scale: 2, useCORS: true,scrollY: 0  },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
 

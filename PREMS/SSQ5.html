@@ -340,13 +340,13 @@
         
 
         let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
-        csvContent += "Sujet,Date,Score Total";
+        csvContent += "Sujet,Date,Questionnaire,Score Total";
         sliderIds.forEach(q => {
           csvContent += `,${q}`;
         });
         csvContent += "\n";
 
-        let row = `"${subjectCode}","${today}","${safeScore}"`;
+        let row = `"${subjectCode}","${today}","SSQ5","${safeScore}"`;
         for (let i = 0; i < sliderIds.length; i++) {
           const slider = document.getElementById(sliderIds[i]);
           const naCheckbox = document.getElementById(naCheckboxIds[i]);
