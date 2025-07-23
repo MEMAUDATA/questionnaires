@@ -232,7 +232,6 @@
       } // end calculerScores function
 
       function displayscores(use, ben, ral, sat, rpr, iot, qol, n_use,n_ben,n_ral,n_sat,n_rpr,n_iot,n_qol){
-
         let display = "<p>Résultats</p>";
         display += "<br>"; 
         display += "<ul class='myList'>"; 
@@ -244,10 +243,6 @@
         display += "<li>Impact de l’appareillage sur les autres : " + iot + " (norme: " + n_iot + ")" + "</li>";
         display += "<li>Niveau de qualité de vie : " + qol + " (norme: " + n_qol + ")" + "</li>";
         display += "</ul>";
-        display += "<br>";
-        display = "<p>Les scores en deçà de la norme sont</p>"; 
-
-
         document.getElementById("results").innerHTML = display;
         document.getElementById("results").style.display = "block";
       }

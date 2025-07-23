@@ -153,6 +153,14 @@ ul.myList {
     background-color: #02884d ; /*#055033; /*#10471c;/* /* Darker blue on hover */
   }
 
+/* Name ID within the results section */
+
+.Subject_name {
+    margin-top: 20px; 
+    font-size: 15px;
+}
+
+
 /* -- Combine -- */
 .drag_n_drop {
     background-color:#2B176C;
