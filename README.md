@@ -11,5 +11,3 @@ Le site MEMAUDATA utilise le module Divi, le lien direct vers le .css dans un de
 
 
 Contact (site parent de data.memau.eu): hello@memau.eu 
-
-NV, Toulouse, Juin, 2025
