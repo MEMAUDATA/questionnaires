@@ -251,7 +251,13 @@
 
     </form>
 
-    <div id="results"></div> 
+    <div id="results" style="display:none">
+        <p id="scoreDisplay"></p><br>
+        <label for="nameID" class="Subject_name">Nom du sujet (si besoin)</label>
+        <input type="text" id="ID" name="nameID"><br>
+        <button id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
+        <button id="saveXLSbutton" onclick="saveXLS()">Exporter en XLS</button>
+      </div> 
     <script>
       function calculateScore() {
         let total = 0;

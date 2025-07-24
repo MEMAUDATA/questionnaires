@@ -39,6 +39,12 @@
         document.getElementById('csvFiles').addEventListener('change', function(event) {
           const files = event.target.files;
           const resultDiv = document.getElementById("fileCount");
+          // Check if there's at least 2 .csv files
+          if (files.length < 2) {
+            resultDiv.innerHTML = "<p class='Error_message_not_all_answered'>Ajoutez au moins deux fichiers .csv!</p>";
+            fileInput.value = ''; // Clear the file input
+            return;
+        }
           resultDiv.innerHTML = `<p>Nombre de fichiers .csv sélectionnés : ${files.length}</p>`;
         });
   
