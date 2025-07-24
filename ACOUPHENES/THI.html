@@ -1,418 +1,603 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <!-- Author's details-->
-    <meta name="author" content="Nicolas Vannson">
-    <meta name="contact" content="hello@memau.eu">
-    <meta name="license" content="EUPLv1.2">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.0/jspdf.umd.min.js"></script>
-    <script src= https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js ></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <link rel="stylesheet" href="/style.css">
-    <style>
-      /* style is within the style.css sheet */
-    </style>
-    <title>THI</title>
-  </head>
-  <body>
+<head>
+  <!-- Author's details-->
+  <meta name="author" content="Nicolas Vannson">
+  <meta name="contact" content="hello@memau.eu">
+  <meta name="license" content="EUPLv1.2">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.0/jspdf.umd.min.js"></script>
+  <script src= https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js ></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    /* style is within the style.css sheet */
+  </style>
+  <title>THI</title>
+</head>  
+<body>
+  <h1>Tinnitus Handicap Inventory (THI)</h1>
+  <p>Ghulyan-Bédikian et al., 2010</p>
+  <p>Le Dr Ghulyan-Bédikian a aimablement autorisé l'utilisation de ce questionnaire en ligne.</p>
+  <br>
+  <form id="THI">
+    <table>
+      <thead>
+        <tr>
+          <th>Items</th>
+          <th>Questions</th>
+          <th>Réponses</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1F</td>
+          <td class ="Question_THI">A cause de votre acouphène vous est-il difficile de vous concentrer?</td>
+          <td>
+            <div class="Answer_THI">
+              <label><input type="radio" name="tq1" value="oui"> oui</label>
+              <label><input type="radio" name="tq1" value="parfois"> parfois</label>
+              <label><input type="radio" name="tq1" value="non"> non</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>2F</td>
+          <td class ="Question_THI">A cause de l'intensité de votre acouphène vous est-il difficile d'entendre les personnes qui vous entourent?</td>
+          <td>
+            <div class="Answer_THI">
+              <label><input type="radio" name="tq2" value="oui"> oui</label>
+              <label><input type="radio" name="tq2" value="parfois"> parfois</label>
+              <label><input type="radio" name="tq2" value="non"> non</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>3E</td>
+          <td class ="Question_THI">Votre acouphène vous rend-t-il coléreux ?</td>
+          <td>
+            <div class="Answer_THI">
+              <label><input type="radio" name="tq3" value="oui"> oui</label>
+              <label><input type="radio" name="tq3" value="parfois"> parfois</label>
+              <label><input type="radio" name="tq3" value="non"> non</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>4F</td>
+          <td class ="Question_THI">Vous sentez-vous l'esprit confus à cause de votre acouphène ?</td>
+          <td>
+            <div class="Answer_THI">
+              <label><input type="radio" name="tq4" value="oui"> oui</label>
+              <label><input type="radio" name="tq4" value="parfois"> parfois</label>
+              <label><input type="radio" name="tq4" value="non"> non</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>5C</td>
+          <td class ="Question_THI">A cause de votre acouphène vous sentez-vous désespéré ?</td>
+          <td>
+            <div class="Answer_THI">
+              <label><input type="radio" name="tq5" value="oui"> oui</label>
+              <label><input type="radio" name="tq5" value="parfois"> parfois</label>
+              <label><input type="radio" name="tq5" value="non"> non</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>6E</td>
+          <td class ="Question_THI">Vous plaignez-vous beaucoup de votre acouphène ?</td>
+          <td>
+            <div class="Answer_THI">
+              <label><input type="radio" name="tq6" value="oui"> oui</label>
+              <label><input type="radio" name="tq6" value="parfois"> parfois</label>
+              <label><input type="radio" name="tq6" value="non"> non</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>7F</td>
+          <td class ="Question_THI">A cause de votre acouphène avez-vous du mal à trouver le sommeil la nuit ?</td>
+          <td>
+            <div class="Answer_THI">
+              <label><input type="radio" name="tq7" value="oui"> oui</label>
+              <label><input type="radio" name="tq7" value="parfois"> parfois</label>
+              <label><input type="radio" name="tq7" value="non"> non</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>8C</td>
+          <td class ="Question_THI">Avez-vous le sentiment de ne pas pouvoir vous libérer de votre acouphène ?</td>
+          <td>
+            <div class="Answer_THI">
+              <label><input type="radio" name="tq8" value="oui"> oui</label>
+              <label><input type="radio" name="tq8" value="parfois"> parfois</label>
+              <label><input type="radio" name="tq8" value="non"> non</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>9F</td>
+          <td class ="Question_THI">Votre acouphène interfère-t-il dans votre plaisir à pratiquer des activités sociales (aller au restaurant, au cinéma) ?</td>
+          <td>
+            <div class="Answer_THI">
+              <label><input type="radio" name="tq9" value="oui"> oui</label>
+              <label><input type="radio" name="tq9" value="parfois"> parfois</label>
+              <label><input type="radio" name="tq9" value="non"> non</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>10E</td>
+          <td class ="Question_THI">À cause de votre acouphène vous sentez-vous frustré?</td>
+          <td>
+            <div class="Answer_THI">
+              <label><input type="radio" name="tq10" value="oui"> oui</label>
+              <label><input type="radio" name="tq10" value="parfois"> parfois</label>
+              <label><input type="radio" name="tq10" value="non"> non</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>11C</td>
+          <td class ="Question_THI">À cause de votre acouphène avez-vous le sentiment d'être atteint d'une maladie grave?</td>
+          <td>
+            <div class="Answer_THI">
+              <label><input type="radio" name="tq11" value="oui"> oui</label>
+              <label><input type="radio" name="tq11" value="parfois"> parfois</label>
+              <label><input type="radio" name="tq11" value="non"> non</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>12F</td>
+          <td class ="Question_THI">À cause de votre acouphène vous est-il difficile de profiter pleinement de la vie ?</td>
+          <td>
+            <div class="Answer_THI">
+              <label><input type="radio" name="tq12" value="oui"> oui</label>
+              <label><input type="radio" name="tq12" value="parfois"> parfois</label>
+              <label><input type="radio" name="tq12" value="non"> non</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>13F</td>
+          <td class ="Question_THI">Votre acouphène interfère-t-il dans vos responsabilités au travail ou à la maison ?</td>
+          <td>
+            <div class="Answer_THI">
+              <label><input type="radio" name="tq13" value="oui"> oui</label>
+              <label><input type="radio" name="tq13" value="parfois"> parfois</label>
+              <label><input type="radio" name="tq13" value="non"> non</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>14E</td>
+          <td class ="Question_THI">Trouvez-vous que vous êtes souvent irritable à cause de votre acouphène ?</td>
+          <td>
+            <div class="Answer_THI">
+              <label><input type="radio" name="tq14" value="oui"> oui</label>
+              <label><input type="radio" name="tq14" value="parfois"> parfois</label>
+              <label><input type="radio" name="tq14" value="non"> non</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>15F</td>
+          <td class ="Question_THI">À cause de votre acouphène vous est-il difficile de lire ?</td>
+          <td>
+            <div class="Answer_THI">
+              <label><input type="radio" name="tq15" value="oui"> oui</label>
+              <label><input type="radio" name="tq15" value="parfois"> parfois</label>
+              <label><input type="radio" name="tq15" value="non"> non</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>16E</td>
+          <td class ="Question_THI">Étes-vous contrarié ou bouleversé par votre acouphène?</td>
+          <td>
+            <div class="Answer_THI">
+              <label><input type="radio" name="tq16" value="oui"> oui</label>
+              <label><input type="radio" name="tq16" value="parfois"> parfois</label>
+              <label><input type="radio" name="tq16" value="non"> non</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>17E</td>
+          <td class ="Question_THI">Pensez-vous que votre problème d'acouphène a installé un stress dans vos relations avec les membres de votre famille et vos amis ?</td>
+          <td>
+            <div class="Answer_THI">
+              <label><input type="radio" name="tq17" value="oui"> oui</label>
+              <label><input type="radio" name="tq17" value="parfois"> parfois</label>
+              <label><input type="radio" name="tq17" value="non"> non</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>18F</td>
+          <td class ="Question_THI">Vous est-il difficile de vous concentrer sur autre chose que votre acouphène ?</td>
+          <td>
+            <div class="Answer_THI">
+              <label><input type="radio" name="tq18" value="oui"> oui</label>
+              <label><input type="radio" name="tq18" value="parfois"> parfois</label>
+              <label><input type="radio" name="tq18" value="non"> non</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>19C</td>
+          <td class ="Question_THI">Pensez-vous ne pas avoir de contrôle sur votre acouphène ?</td>
+          <td>
+            <div class="Answer_THI">
+              <label><input type="radio" name="tq19" value="oui"> oui</label>
+              <label><input type="radio" name="tq19" value="parfois"> parfois</label>
+              <label><input type="radio" name="tq19" value="non"> non</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>20F</td>
+          <td class ="Question_THI">A cause de votre acouphène vous sentez-vous souvent fatigué ?</td>
+          <td>
+            <div class="Answer_THI">
+              <label><input type="radio" name="tq20" value="oui"> oui</label>
+              <label><input type="radio" name="tq20" value="parfois"> parfois</label>
+              <label><input type="radio" name="tq20" value="non"> non</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>21E</td>
+          <td class ="Question_THI">A cause de votre acouphène vous sentez-vous déprimé ?</td>
+          <td>
+            <div class="Answer_THI">
+              <label><input type="radio" name="tq21" value="oui"> oui</label>
+              <label><input type="radio" name="tq21" value="parfois"> parfois</label>
+              <label><input type="radio" name="tq21" value="non"> non</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>22E</td>
+          <td class ="Question_THI">Votre acouphène vous rend-t-il anxieux ?</td>
+          <td>
+            <div class="Answer_THI">
+              <label><input type="radio" name="tq22" value="oui"> oui</label>
+              <label><input type="radio" name="tq22" value="parfois"> parfois</label>
+              <label><input type="radio" name="tq22" value="non"> non</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>23C</td>
+          <td class ="Question_THI">Pensez-vous ne plus pouvoir faire face à votre acouphène ?</td>
+          <td>
+            <div class="Answer_THI">
+              <label><input type="radio" name="tq23" value="oui"> oui</label>
+              <label><input type="radio" name="tq23" value="parfois"> parfois</label>
+              <label><input type="radio" name="tq23" value="non"> non</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>24F</td>
+          <td class ="Question_THI">Votre acouphène s'aggrave-t-il quand vous êtes stressé ?</td>
+          <td>
+            <div class="Answer_THI">
+              <label><input type="radio" name="tq24" value="oui"> oui</label>
+              <label><input type="radio" name="tq24" value="parfois"> parfois</label>
+              <label><input type="radio" name="tq24" value="non"> non</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>25E</td>
+          <td class ="Question_THI">Votre acouphène vous donne-t-il un sentiment d'incertitude ?</td>
+          <td>
+            <div class="Answer_THI">
+              <label><input type="radio" name="tq25" value="oui"> oui</label>
+              <label><input type="radio" name="tq25" value="parfois"> parfois</label>
+              <label><input type="radio" name="tq25" value="non"> non</label>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-    <h1>Tinnitus Handicap Inventory (THI)</h1>
-    <p>Ghulyan-Bédikian et al., 2010</p>
-    <p>Le Dr Ghulyan-Bédikian a aimablement autorisé l'utilisation de ce questionnaire en ligne.</p>
-    <br>
-    <form id="THI">
-      <table>
-        <thead>
-          <tr>
-            <th>Items</th>
-            <th>Questions</th>
-            <th>Réponses</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1F</td>
-            <td class ="Question_THI">A cause de votre acouphène vous est-il difficile de vous concentrer?</td>
-            <td>
-              <div class="Answer_THI">
-                <label><input type="radio" name="tq1" value="oui"> oui</label>
-                <label><input type="radio" name="tq1" value="parfois"> parfois</label>
-                <label><input type="radio" name="tq1" value="non"> non</label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>2F</td>
-            <td class ="Question_THI">A cause de l'intensité de votre acouphène vous est-il difficile d'entendre les personnes qui vous entourent?</td>
-            <td>
-              <div class="Answer_THI">
-                <label><input type="radio" name="tq2" value="oui"> oui</label>
-                <label><input type="radio" name="tq2" value="parfois"> parfois</label>
-                <label><input type="radio" name="tq2" value="non"> non</label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>3E</td>
-            <td class ="Question_THI">Votre acouphène vous rend-t-il coléreux ?</td>
-            <td>
-              <div class="Answer_THI">
-                <label><input type="radio" name="tq3" value="oui"> oui</label>
-                <label><input type="radio" name="tq3" value="parfois"> parfois</label>
-                <label><input type="radio" name="tq3" value="non"> non</label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>4F</td>
-            <td class ="Question_THI">Vous sentez-vous l'esprit confus à cause de votre acouphène ?</td>
-            <td>
-              <div class="Answer_THI">
-                <label><input type="radio" name="tq4" value="oui"> oui</label>
-                <label><input type="radio" name="tq4" value="parfois"> parfois</label>
-                <label><input type="radio" name="tq4" value="non"> non</label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>5C</td>
-            <td class ="Question_THI">A cause de votre acouphène vous sentez-vous désespéré ?</td>
-            <td>
-              <div class="Answer_THI">
-                <label><input type="radio" name="tq5" value="oui"> oui</label>
-                <label><input type="radio" name="tq5" value="parfois"> parfois</label>
-                <label><input type="radio" name="tq5" value="non"> non</label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>6E</td>
-            <td class ="Question_THI">Vous plaignez-vous beaucoup de votre acouphène ?</td>
-            <td>
-              <div class="Answer_THI">
-                <label><input type="radio" name="tq6" value="oui"> oui</label>
-                <label><input type="radio" name="tq6" value="parfois"> parfois</label>
-                <label><input type="radio" name="tq6" value="non"> non</label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>7F</td>
-            <td class ="Question_THI">A cause de votre acouphène avez-vous du mal à trouver le sommeil la nuit ?</td>
-            <td>
-              <div class="Answer_THI">
-                <label><input type="radio" name="tq7" value="oui"> oui</label>
-                <label><input type="radio" name="tq7" value="parfois"> parfois</label>
-                <label><input type="radio" name="tq7" value="non"> non</label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>8C</td>
-            <td class ="Question_THI">Avez-vous le sentiment de ne pas pouvoir vous libérer de votre acouphène ?</td>
-            <td>
-              <div class="Answer_THI">
-                <label><input type="radio" name="tq8" value="oui"> oui</label>
-                <label><input type="radio" name="tq8" value="parfois"> parfois</label>
-                <label><input type="radio" name="tq8" value="non"> non</label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>9F</td>
-            <td class ="Question_THI">Votre acouphène interfère-t-il dans votre plaisir à pratiquer des activités sociales (aller au restaurant, au cinéma) ?</td>
-            <td>
-              <div class="Answer_THI">
-                <label><input type="radio" name="tq9" value="oui"> oui</label>
-                <label><input type="radio" name="tq9" value="parfois"> parfois</label>
-                <label><input type="radio" name="tq9" value="non"> non</label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>10E</td>
-            <td class ="Question_THI">À cause de votre acouphène vous sentez-vous frustré?</td>
-            <td>
-              <div class="Answer_THI">
-                <label><input type="radio" name="tq10" value="oui"> oui</label>
-                <label><input type="radio" name="tq10" value="parfois"> parfois</label>
-                <label><input type="radio" name="tq10" value="non"> non</label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>11C</td>
-            <td class ="Question_THI">À cause de votre acouphène avez-vous le sentiment d'être atteint d'une maladie grave?</td>
-            <td>
-              <div class="Answer_THI">
-                <label><input type="radio" name="tq11" value="oui"> oui</label>
-                <label><input type="radio" name="tq11" value="parfois"> parfois</label>
-                <label><input type="radio" name="tq11" value="non"> non</label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>12F</td>
-            <td class ="Question_THI">À cause de votre acouphène vous est-il difficile de profiter pleinement de la vie ?</td>
-            <td>
-              <div class="Answer_THI">
-                <label><input type="radio" name="tq12" value="oui"> oui</label>
-                <label><input type="radio" name="tq12" value="parfois"> parfois</label>
-                <label><input type="radio" name="tq12" value="non"> non</label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>13F</td>
-            <td class ="Question_THI">Votre acouphène interfère-t-il dans vos responsabilités au travail ou à la maison ?</td>
-            <td>
-              <div class="Answer_THI">
-                <label><input type="radio" name="tq13" value="oui"> oui</label>
-                <label><input type="radio" name="tq13" value="parfois"> parfois</label>
-                <label><input type="radio" name="tq13" value="non"> non</label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>14E</td>
-            <td class ="Question_THI">Trouvez-vous que vous êtes souvent irritable à cause de votre acouphène ?</td>
-            <td>
-              <div class="Answer_THI">
-                <label><input type="radio" name="tq14" value="oui"> oui</label>
-                <label><input type="radio" name="tq14" value="parfois"> parfois</label>
-                <label><input type="radio" name="tq14" value="non"> non</label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>15F</td>
-            <td class ="Question_THI">À cause de votre acouphène vous est-il difficile de lire ?</td>
-            <td>
-              <div class="Answer_THI">
-                <label><input type="radio" name="tq15" value="oui"> oui</label>
-                <label><input type="radio" name="tq15" value="parfois"> parfois</label>
-                <label><input type="radio" name="tq15" value="non"> non</label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>16E</td>
-            <td class ="Question_THI">Étes-vous contrarié ou bouleversé par votre acouphène?</td>
-            <td>
-              <div class="Answer_THI">
-                <label><input type="radio" name="tq16" value="oui"> oui</label>
-                <label><input type="radio" name="tq16" value="parfois"> parfois</label>
-                <label><input type="radio" name="tq16" value="non"> non</label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>17E</td>
-            <td class ="Question_THI">Pensez-vous que votre problème d'acouphène a installé un stress dans vos relations avec les membres de votre famille et vos amis ?</td>
-            <td>
-              <div class="Answer_THI">
-                <label><input type="radio" name="tq17" value="oui"> oui</label>
-                <label><input type="radio" name="tq17" value="parfois"> parfois</label>
-                <label><input type="radio" name="tq17" value="non"> non</label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>18F</td>
-            <td class ="Question_THI">Vous est-il difficile de vous concentrer sur autre chose que votre acouphène ?</td>
-            <td>
-              <div class="Answer_THI">
-                <label><input type="radio" name="tq18" value="oui"> oui</label>
-                <label><input type="radio" name="tq18" value="parfois"> parfois</label>
-                <label><input type="radio" name="tq18" value="non"> non</label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>19C</td>
-            <td class ="Question_THI">Pensez-vous ne pas avoir de contrôle sur votre acouphène ?</td>
-            <td>
-              <div class="Answer_THI">
-                <label><input type="radio" name="tq19" value="oui"> oui</label>
-                <label><input type="radio" name="tq19" value="parfois"> parfois</label>
-                <label><input type="radio" name="tq19" value="non"> non</label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>20F</td>
-            <td class ="Question_THI">A cause de votre acouphène vous sentez-vous souvent fatigué ?</td>
-            <td>
-              <div class="Answer_THI">
-                <label><input type="radio" name="tq20" value="oui"> oui</label>
-                <label><input type="radio" name="tq20" value="parfois"> parfois</label>
-                <label><input type="radio" name="tq20" value="non"> non</label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>21E</td>
-            <td class ="Question_THI">A cause de votre acouphène vous sentez-vous déprimé ?</td>
-            <td>
-              <div class="Answer_THI">
-                <label><input type="radio" name="tq21" value="oui"> oui</label>
-                <label><input type="radio" name="tq21" value="parfois"> parfois</label>
-                <label><input type="radio" name="tq21" value="non"> non</label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>22E</td>
-            <td class ="Question_THI">Votre acouphène vous rend-t-il anxieux ?</td>
-            <td>
-              <div class="Answer_THI">
-                <label><input type="radio" name="tq22" value="oui"> oui</label>
-                <label><input type="radio" name="tq22" value="parfois"> parfois</label>
-                <label><input type="radio" name="tq22" value="non"> non</label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>23C</td>
-            <td class ="Question_THI">Pensez-vous ne plus pouvoir faire face à votre acouphène ?</td>
-            <td>
-              <div class="Answer_THI">
-                <label><input type="radio" name="tq23" value="oui"> oui</label>
-                <label><input type="radio" name="tq23" value="parfois"> parfois</label>
-                <label><input type="radio" name="tq23" value="non"> non</label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>24F</td>
-            <td class ="Question_THI">Votre acouphène s'aggrave-t-il quand vous êtes stressé ?</td>
-            <td>
-              <div class="Answer_THI">
-                <label><input type="radio" name="tq24" value="oui"> oui</label>
-                <label><input type="radio" name="tq24" value="parfois"> parfois</label>
-                <label><input type="radio" name="tq24" value="non"> non</label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>25E</td>
-            <td class ="Question_THI">Votre acouphène vous donne-t-il un sentiment d'incertitude ?</td>
-            <td>
-              <div class="Answer_THI">
-                <label><input type="radio" name="tq25" value="oui"> oui</label>
-                <label><input type="radio" name="tq25" value="parfois"> parfois</label>
-                <label><input type="radio" name="tq25" value="non"> non</label>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="buttons-container">
+      <button type="button" onclick="calculateScoreTHI()">Calculer le Score</button>
+      <button type="reset" onclick="resetFormTHI()">Réinitialiser</button>
+    </div>
 
-      <div class="buttons-container">
-        <button type="button" onclick="calculateScoreTHI()">Calculer le Score</button>
-        <button type="reset" onclick="resetFormTHI()">Réinitialiser</button>
-      </div>
+  </form>
+
+  <div id="results" style="display:none">
+    <p id="scoreDisplay"></p><br>
+    <label for="nameID" class="Subject_name">Nom du sujet (si besoin)</label>
+    <input type="text" id="ID" name="nameID"><br>
+    <button id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
+    <button id="saveXLSbutton" onclick="saveXLS()">Exporter en XLS</button>
+  </div>
 
 
-      <div id="results" style="display:none">
-        <p id="scoreDisplay"></p><br>
-        <label for="nameID" class="Subject_name">Nom du sujet (si besoin)</label>
-        <input type="text" id="ID" name="nameID"><br>
-        <button id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
-        <button id="saveXLSbutton" onclick="saveXLS()">Exporter en XLS</button>
-      </div>
+  <script>
 
-    </form>    
+    // var globales 
+    let globalF = null;
+    let globalE = null;
+    let globalC = null;
+    let globalT = null;
 
-    <script>
-      function calculateScoreTHI() {
-        let scoreF = 0;
-        let scoreE = 0;
-        let scoreC = 0;
+    function calculateScoreTHI() {
+      let scoreF = 0;
+      let scoreE = 0;
+      let scoreC = 0;
 
-        for (let i = 1; i <= 25; i++) {
-          let tq = document.querySelector(`input[name="tq${i}"]:checked`);
-          if (!tq) {
-            const resultDiv = document.getElementById("results");
-            resultDiv.innerHTML = "<p class=Error_message_not_all_answered>Veuillez répondre svp à toutes les questions avant de calculer le score!</p>";
-            resultDiv.style.display = "block"; 
-            return;
-          }
-          let value = tq.value;
-          let questionType = getQuestionType(i);
+      for (let i = 1; i <= 25; i++) {
+        let tq = document.querySelector(`input[name="tq${i}"]:checked`);
+        if (!tq) {
+          const resultDiv = document.getElementById("results");
+          resultDiv.innerHTML = "<p class=Error_message_not_all_answered>Veuillez répondre svp à toutes les questions avant de calculer le score!</p>";
+          resultDiv.style.display = "block"; 
+          return;
+        };
 
-          if (value === "oui") {
-            if (questionType === "F") scoreF += 4;
-            if (questionType === "E") scoreE += 4;
-            if (questionType === "C") scoreC += 4;
-          } else if (value === "parfois") {
-            if (questionType === "F") scoreF += 2;
-            if (questionType === "E") scoreE += 2;
-            if (questionType === "C") scoreC += 2;
-          }
+        let value = tq.value;
+        let questionType = getQuestionType(i);
+
+        if (value === "oui") {
+          if (questionType === "F") scoreF += 4;
+          if (questionType === "E") scoreE += 4;
+          if (questionType === "C") scoreC += 4;
+        } else if (value === "parfois") {
+          if (questionType === "F") scoreF += 2;
+          if (questionType === "E") scoreE += 2;
+          if (questionType === "C") scoreC += 2;
+        }
+      }
+
+      let totalScoreTHI = scoreF + scoreE + scoreC;
+
+      displayResult_THI(totalScoreTHI,scoreF,scoreE,scoreC) ;
+      globalF = scoreF;
+      globalE = scoreE;
+      globalC = scoreC;
+      globalT = totalScoreTHI;
+
+    }
+
+    function getQuestionType(questionNumber) {
+      const questionTypes = {
+        1: "F", 2: "F", 3: "E", 4: "F", 5: "C",
+        6: "E", 7: "F", 8: "C", 9: "F", 10: "E",
+        11: "C", 12: "F", 13: "F", 14: "E", 15: "F",
+        16: "E", 17: "E", 18: "F", 19: "C", 20: "F",
+        21: "E", 22: "E", 23: "C", 24: "F", 25: "E"
+      };
+      return questionTypes[questionNumber] || null; // Return null if questionNumber is not found
+    }			
+
+
+    function displayResult_THI(totalScoreTHI,scoreF,scoreE,scoreC) {
+      let display = "<p>Résultats</p><br>";
+      display += "Votre score total est : " + totalScoreTHI +  ". Ceci indique une ";
+      if (totalScoreTHI <= 16) {
+        display += "gêne légère ou négligeable.";
+      } else if (totalScoreTHI <= 36) {
+        display += "gêne légère.";
+      } else if (totalScoreTHI <= 56) {
+        display += "gêne modérée.";
+      } else if (totalScoreTHI <= 76) {
+        display += "gêne sévère.";
+      } else if ( totalScoreTHI > 76) {
+        display += "gêne catastrophique.";
+      }
+
+      display += "<br><p>Tableau du niveau de gêne</p>";
+      display += "<ul class='myList'>";
+      display += "<li> Score compris entre 0 et 16 : gêne légère ou négligeable</li>";
+      display += "<li> Score compris entre 18 et 36 : gêne légère</li>";
+      display += "<li> Score compris entre 38 et 56 : gêne modérée</li>";
+      display += "<li> Score compris entre 58 et 76 : gêne sévère</li>";
+      display += "<li> Score supérieur à 78 : gêne catastrophique</li>";
+      display += "</ul>";  
+
+      display += "<p>Détails du score par sous-catégorie.<br>";
+      display += "Plus le score est élevé, plus la gêne est importante</p><br>";
+      display += "<ul class='myList'>";
+      display += "<li> F (sous-échelle fonctionnelle) : " + scoreF + "/44 </li>";
+      display += "<li> E (sous-échelle émotionnelle) : " + scoreE + "/36</li>";
+      display += "<li> C (sous-échelle catastrophique) : " + scoreC +  "/20</li>";
+      display += "</ul>"; 
+      // Update the results div with the constructed HTML
+      document.getElementById("scoreDisplay").innerHTML = display;
+      document.getElementById("results").style.display = "block";
+      document.getElementById('savePdfButton').style.display = 'inline-block';
+      document.getElementById('saveXLSbutton').style.display = 'inline-block';
+
+    } //end function display  
+
+    function resetFormTHI() {
+      document.getElementById("THI").reset();
+      document.getElementById('results').style.display = 'none';
+      // Reset subject's name
+      document.getElementById("ID").value = ""; 
+      // Hide the save PDF button on reset
+      document.getElementById('savePdfButton').style.display = 'none';
+      document.getElementById('saveXLSbutton').style.display = 'none';
+    }
+
+    function saveXLS() {
+
+      const subjectCode = document.getElementById('ID').value || "SansNom"; // Nom du sujet
+      const today = new Date().toLocaleDateString('fr-FR');
+      const filename = `THI_${today}_${subjectCode}.csv`;
+
+
+      const safeF = typeof globalF === 'number' ? globalF.toFixed(2) : "NA";
+      const safeE = typeof globalE === 'number' ? globalE.toFixed(2) : "NA";
+      const safeC = typeof globalC === 'number' ? globalC.toFixed(2) : "NA";
+      const safeT = typeof globalT === 'number' ? globalT.toFixed(2) : "NA";
+
+
+      let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+      csvContent += "Sujet,Date,Questionnaire,Score Total, Score F, Score E, Score C";
+      for (let i = 1; i <= 25; i++) {
+        csvContent += `,"Question ${i}"`;
+      }
+      csvContent += "\n";
+
+      let row = `"${subjectCode}","${today}","THI","${safeT}","${safeF}","${safeE}","${safeC}"`;
+      for (let i = 1; i <= 25; i++) {
+        let tq = document.querySelector(`input[name="tq${i}"]:checked`);
+        let value = tq ? tq.value : "NA";
+        row += `,"${value}"`;
+      }
+
+      csvContent += row + "\n";
+      const link = document.createElement("a");
+      link.setAttribute("href", encodeURI(csvContent));
+      link.setAttribute("download", filename);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+
+    function savePdf() {
+
+      const { jsPDF } = window.jspdf;
+      const today = new Date().toLocaleDateString('fr-FR');
+      const subjectCode = document.getElementById('ID').value || "SansNom";
+      const filename = `THI_${today}_${subjectCode}.pdf`;
+
+      const safeF = typeof globalF === 'number' ? globalF.toFixed(2) : "NA";
+      const safeE = typeof globalE === 'number' ? globalE.toFixed(2) : "NA";
+      const safeC = typeof globalC === 'number' ? globalC.toFixed(2) : "NA";
+      const safeT = typeof globalT === 'number' ? globalT.toFixed(2) : "NA";
+
+
+      col = ["Score total",
+              "Sous-échelle fonctionnelle (F)",
+              "Sous-échelle émotionnelle (E)",
+              "Sous-échelle catastrophique (C)"];
+
+      const safeScores = [safeT, safeF, safeE, safeC];
+      let data2table = "<table>";
+      for (let i = 0; i < 4; i++) {
+        data2table += `
+        <tr>
+        <td><strong>${col[i]}</strong></td>
+        <td> ${safeScores[i]}</td></tr>`;}
+              data2table += "</table>";
+
+      let data2table_longue = "<table>"
+      // Loop through rows
+      for (let row = 0; row < 5; row++) {
+        data2table_longue += "<tr>";
+        // Loop through columns in each row
+        for (let col = 1; col <= 5; col++) {
+          let index = row * 5 + col; 
+          let tq = document.querySelector(`input[name="tq${index}"]:checked`);
+          let value = tq ? tq.value : "NA";
+          data2table_longue += `<td><strong>Item ${index}</strong> ${value}</td>`;
+        }
+        data2table_longue += "</tr>";
+      }
+      data2table_longue += "</table>";
+
+
+
+      const content = document.createElement('div');
+      content.innerHTML = `
+        <style>
+        .header_report,
+        .body_report,
+        .footer_report {
+        text-align: center;
+        margin: 0 auto;
+        width: 100%;
+        }
+        .header_report {
+        padding-top: 4%;
+        padding-bottom: 4%;
+        border-bottom: 1px solid #2B176C;
+        }
+        .footer_report {
+        padding-top: 3%;
+        padding-bottom:3%;
+
+        }
+        .body_report {
+        padding-top: 5%;
+        padding-bottom:10%;
+        background-color: white;
+        color: black; 
         }
 
-        let totalScoreTHI = scoreF + scoreE + scoreC;
-        displayResult_THI(totalScoreTHI,scoreF,scoreE,scoreC) ;
-      }
 
-      function getQuestionType(questionNumber) {
-        const questionTypes = {
-          1: "F", 2: "F", 3: "E", 4: "F", 5: "C",
-          6: "E", 7: "F", 8: "C", 9: "F", 10: "E",
-          11: "C", 12: "F", 13: "F", 14: "E", 15: "F",
-          16: "E", 17: "E", 18: "F", 19: "C", 20: "F",
-          21: "E", 22: "E", 23: "C", 24: "F", 25: "E"
-        };
-        return questionTypes[questionNumber] || null; // Return null if questionNumber is not found
-      }
+        table {
+        border-collapse: collapse;
+        width: 80%;
 
-      function displayResult_THI(totalScoreTHI,scoreF,scoreE,scoreC) {
-        let displayHtml = "<p>Résultats</p><br>";
-      displayHtml += "Votre score total est : " + totalScoreTHI +  ". Ceci indique une ";
-      if (totalScoreTHI <= 16) {
-        displayHtml += "gêne légère ou négligeable.";
-      } else if (totalScoreTHI <= 36) {
-        displayHtml += "gêne légère.";
-      } else if (totalScoreTHI <= 56) {
-        displayHtml += "gêne modérée.";
-      } else if (totalScoreTHI <= 76) {
-        displayHtml += "gêne sévère.";
-      } else if ( totalScoreTHI > 76) {
-        displayHtml += "gêne catastrophique.";
-      }
-      
-      displayHtml += "<br><p>Tableau du niveau de gêne</p>";
-      displayHtml += "<ul class='myList'>";
-      displayHtml += "<li> Score compris entre 0 et 16 : gêne légère ou négligeable</li>";
-      displayHtml += "<li> Score compris entre 18 et 36 : gêne légère</li>";
-      displayHtml += "<li> Score compris entre 38 et 56 : gêne modérée</li>";
-      displayHtml += "<li> Score compris entre 58 et 76 : gêne sévère</li>";
-      displayHtml += "<li> Score supérieur à 78 : gêne catastrophique</li>";
-      displayHtml += "</ul>";  
+        margin: 0 auto;
+        }
 
-      displayHtml += "<p>Détails du score par sous-catégorie.<br>";
-      displayHtml += "Plus le score est élevé, plus la gêne est importante</p><br>";
-      displayHtml += "<ul class='myList'>";
-      displayHtml += "<li> F (sous-échelle fonctionnelle) : " + scoreF + "/44 </li>";
-      displayHtml += "<li> E (sous-échelle émotionnelle) : " + scoreE + "/36</li>";
-      displayHtml += "<li> C (sous-échelle catastrophique) : " + scoreC +  "/20</li>";
-      displayHtml += "</ul>"; 
+        th, td {
+        border: 1px solid #eeeeee;
+        }
+        td strong {
+        display: block;
+        text-align: left;
+        }
 
 
-        document.getElementById("results").innerHTML = displayHtml;
-        document.getElementById("results").style.display = "block";
+            </style>
+        <div class="header_report">
+        <img src="https://data.memau.eu/wp-content/uploads/2025/06/logo-memau-data.svg" alt="Logo" style="max-width: 210px; 
+        margin-top: 10px;margin-bottom: 5px;">
+        <p><i>Contact : hello@memau.eu </i></p>
+            </div>    
+        <div class="body_report">
+        <h1>THI</h1>
+        <p>Code du Sujet : ${subjectCode} </p>
+        <p>Rapport généré le : ${today}</p>
+        ${data2table}
+        <br>
+        ${data2table_longue}
+            </div>
+        `;
 
-        } //end function display  
+      document.body.appendChild(content);
 
-      function resetFormTHI() {
-        document.getElementById("THI").reset();
-        document.getElementById("results").innerHTML = "";
-        document.getElementById("results").style.display = "none";
-      }
-    </script>
-  </body>
+      // Define options for html2pdf
+      const opt = {
+        margin: 10,
+        filename: filename,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, scrollY: 0,windowHeight: 1200 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak: { avoid: '.body_report' }
+      };
+
+      // Generate and download the PDF
+      html2pdf().set(opt).from(content).save().then(() => {
+        document.body.removeChild(content);
+      });
+    }
+
+  </script>
+
+
+
+</body>
 </html>
+<!--
+
+

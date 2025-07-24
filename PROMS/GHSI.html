@@ -257,7 +257,8 @@
         <input type="text" id="ID" name="nameID"><br>
         <button id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
         <button id="saveXLSbutton" onclick="saveXLS()">Exporter en XLS</button>
-      </div> 
+      </div>
+
     <script>
       function calculateScore() {
         let total = 0;
@@ -295,9 +296,10 @@
         
         // Handle cases where not all questions are answered for a subscale
         if (answeredQuestions < 18) {
-          document.getElementById("results").innerHTML = "<p style='text-align: center; color: red;'>Veuillez répondre à toutes les questions!</p>";
-          document.getElementById("results").style.display = "block";
-          return; // Exit if no questions are answered
+          const resultDiv = document.getElementById("results");
+          resultDiv.innerHTML = "<p class=Error_message_not_all_answered>Veuillez répondre svp à toutes les questions avant de calculer le score!</p>";
+          resultDiv.style.display = "block"; 
+          return;
         }
         
         total = ((total / 18) - 1) * 25;
