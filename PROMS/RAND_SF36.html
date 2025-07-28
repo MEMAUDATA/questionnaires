@@ -1,433 +1,447 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
+  <head>
     <!-- Author's details-->
     <meta name="author" content="Nicolas Vannson">
     <meta name="contact" content="hello@memau.eu">
     <meta name="license" content="EUPLv1.2">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.0/jspdf.umd.min.js"></script>
+    <script src= https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link rel="stylesheet" href="/style.css">
     <style>
-    /* style is within the style.css sheet */
+      /* style is within the style.css sheet */
     </style>
-    <title>SF36</title>
-</head>
-<body>
-<h1>Questionnaire d'état de santé SF-36 (version 1.0)<br> développé par RAND (ou RAND-36)</h1>
-<br>
-<p> Ware & Sherbourne, 1992 (version originale du MOS SF-36)<br>
-    Hays, Sherbourne, Mazel, 1993 (version originale du RAND-36)<br>
-Leplège et al., 1998 (version validée en français)</p>
-<br>
-<p> La version de ce questionnaire est une version publique accordée par <a href= "https://www.rand.org/health-care/surveys_tools/mos/36-item-short-form.html"> RAND.</a> La traduction est celle de Leplège et al. et ne dépend pas de RAND.</p>
-<p>Les questions du RAND-36 (ou RAND SF36) et du MOS SF36 sont identiques. Le scoring diffère légèrement mais les résultats et les interprétations sont interchangeables 
-(García-Sánchez et al., 2024).</p> 
- <br>
-<p><b>COMMENT REPONDRE</b></p>
-<p class="Question_SF36">Les questions, qui suivent, portent sur votre état de santé tel que vous le ressentez. Ces informations nous permettront de mieux savoir comment vous vous sentez dans la vie de tous les jours. **Veuillez répondre à toutes les questions** en cochant la case correspondant à la réponse choisie. Si vous ne savez pas très bien comment répondre, choisissez la réponse la plus adaptée à votre situation.</p>
-<br>
+    <title>SF36v1.0</title>
+  </head>  
+  <body>
+    <h1>Questionnaire d'état de santé SF-36 (version 1.0)<br> développé par RAND (ou RAND-SF36)</h1>
+    <br>
+    <p> Ware & Sherbourne, 1992 (version originale du MOS SF-36)<br>
+      Hays, Sherbourne, Mazel, 1993 (version originale du RAND-36)<br>
+      Leplège et al., 1998 (version validée en français)</p>
+    <br>
+    <p> La version de ce questionnaire est une version publique accordée par <a href= "https://www.rand.org/health-care/surveys_tools/mos/36-item-short-form.html"> RAND.</a> La traduction est celle de Leplège et al. et ne dépend pas de RAND.</p>
+    <p>Les questions du RAND-36 v1.0 (ou RAND SF36) et du MOS SF36 v1.0 sont identiques. Le scoring diffère légèrement mais les résultats et les interprétations sont interchangeables 
+      (García-Sánchez et al., 2024).</p> 
+    <br>
+    <p><b>COMMENT REPONDRE</b></p>
+    <p class="Question_SF36">Les questions, qui suivent, portent sur votre état de santé tel que vous le ressentez. Ces informations nous permettront de mieux savoir comment vous vous sentez dans la vie de tous les jours. **Veuillez répondre à toutes les questions** en cochant la case correspondant à la réponse choisie. Si vous ne savez pas très bien comment répondre, choisissez la réponse la plus adaptée à votre situation.</p>
+    <br>
 
-<form id="SF36">
+    <form id="SF36">
 
-    <table>
+      <table>
         <tr> 
-        <th colspan="5" class="Question_SF36">
-        1. Dans l'ensemble, pensez-vous que votre santé est:
-        </th>
-         </tr>
+          <th colspan="5" class="Question_SF36">
+            1. Dans l'ensemble, pensez-vous que votre santé est:
+          </th>
+        </tr>
         <tr>     
-        <td><label><input type="radio" name="q1" value="100"> Excellente</label></td>
-        <td><label><input type="radio" name="q1" value="75"> Très bonne</label></td>
-        <td><label><input type="radio" name="q1" value="50"> Bonne</label></td>
-        <td><label><input type="radio" name="q1" value="25"> Médiocre</label></td>
-        <td><label><input type="radio" name="q1" value="0"> Mauvaise</label></td>
+          <td><label><input type="radio" name="q1" value="100"> Excellente</label></td>
+          <td><label><input type="radio" name="q1" value="75"> Très bonne</label></td>
+          <td><label><input type="radio" name="q1" value="50"> Bonne</label></td>
+          <td><label><input type="radio" name="q1" value="25"> Médiocre</label></td>
+          <td><label><input type="radio" name="q1" value="0"> Mauvaise</label></td>
         </tr>
-    </table>
+      </table>
 
-    <table>
-    <tbody>
-        <tr>
-        <th colspan="5" class="Question_SF36">
-            2. Par rapport à l'année dernière à la même époque, comment trouvez-vous votre état de santé en ce moment?
-        </td>
-        </tr>
-        <tr>
-        <td><label><input type="radio" name="q2" value="100"> Bien meilleur que l'an dernier</label></td>
-        <td><label><input type="radio" name="q2" value="75"> Plutôt meilleur que l'an dernier</label></td>
-        <td><label><input type="radio" name="q2" value="50"> A peu près pareil</label></td>
-        <td><label><input type="radio" name="q2" value="2"> Plutôt moins bon</label></td>
-        <td><label><input type="radio" name="q2" value="1"> Beaucoup moins bon</label></td>
-        </tr>
-    </tbody>
-    </table>
-
-    <table>
-    <thead>
-        <tr>
-        <th colspan="4" class="Question_SF36">
-            3. Voici une liste d'activités que vous pouvez avoir à faire dans votre vie de tous les jours. Pour chacune d'entre elles indiquez si vous êtes limité(e) en raison de votre état de santé actuel.
-        </th>
-        </tr>
-        <tr>
-        <th>Listes d'activités</th>
-        <th>Oui, beaucoup limité(e)</th>
-        <th>Oui, un peu limité(e)</th>
-        <th>Non, Pas du tout limité(e)</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-        <td class="Question_SF36">a. Efforts physiques importants tels que courir, soulever un objet lourd, faire du sport</td>
-        <td><label><input type="radio" name="q3a" value="0"></label></td>
-        <td><label><input type="radio" name="q3a" value="50"></label></td>
-        <td><label><input type="radio" name="q3a" value="100"></label></td>
-        </tr>
-        <tr>
-        <td class="Question_SF36">b. Efforts physiques modérés tels que déplacer une table, passer l'aspirateur, jouer aux boules</td>
-        <td><label><input type="radio" name="q3b" value="0"></label></td>
-        <td><label><input type="radio" name="q3b" value="50"></label></td>
-        <td><label><input type="radio" name="q3b" value="100"></label></td>
-        </tr>
-        <tr>
-        <td class="Question_SF36">c. Soulever et porter les courses</td>
-        <td><label><input type="radio" name="q3c" value="0"></label></td>
-        <td><label><input type="radio" name="q3c" value="50"></label></td>
-        <td><label><input type="radio" name="q3c" value="100"></label></td>
-        </tr>
-        <tr>
-        <td class="Question_SF36">d. Monter plusieurs étages par l'escalier</td>
-        <td><label><input type="radio" name="q3d" value="0"></label></td>
-        <td><label><input type="radio" name="q3d" value="50"></label></td>
-        <td><label><input type="radio" name="q3d" value="100"></label></td>
-        </tr>
-        <tr>
-        <td class="Question_SF36">e. Monter un étage par l'escalier</td>
-        <td><label><input type="radio" name="q3e" value="0"></label></td>
-        <td><label><input type="radio" name="q3e" value="50"></label></td>
-        <td><label><input type="radio" name="q3e" value="100"></label></td>
-        </tr>
-        <tr>
-        <td class="Question_SF36">f. Se pencher en avant, se mettre à genoux, s'accroupir</td>
-        <td><label><input type="radio" name="q3f" value="0"></label></td>
-        <td><label><input type="radio" name="q3f" value="50"></label></td>
-        <td><label><input type="radio" name="q3f" value="100"></label></td>
-        </tr>
-        <tr>
-        <td class="Question_SF36">g. Marcher plus d'un km à pied</td>
-        <td><label><input type="radio" name="q3g" value="0"></label></td>
-        <td><label><input type="radio" name="q3g" value="50"></label></td>
-        <td><label><input type="radio" name="q3g" value="100"></label></td>
-        </tr>
-        <tr>
-        <td class="Question_SF36">h. Marcher plusieurs centaines de mètres</td>
-        <td><label><input type="radio" name="q3h" value="0"></label></td>
-        <td><label><input type="radio" name="q3h" value="50"></label></td>
-        <td><label><input type="radio" name="q3h" value="100"></label></td>
-        </tr>
-        <tr>
-        <td class="Question_SF36">i. Marcher une centaine de mètres</td>
-        <td><label><input type="radio" name="q3i" value="0"></label></td>
-        <td><label><input type="radio" name="q3i" value="50"></label></td>
-        <td><label><input type="radio" name="q3i" value="100"></label></td>
-        </tr>
-        <tr>
-        <td class="Question_SF36">j. Prendre un bain, une douche ou s'habiller</td>
-        <td><label><input type="radio" name="q3j" value="0"></label></td>
-        <td><label><input type="radio" name="q3j" value="50"></label></td>
-        <td><label><input type="radio" name="q3j" value="100"></label></td>
-        </tr>
-    </tbody>
-    </table>
-
-    <table>
-        <tr>
-            <th colspan="3" class="Question_SF36">
-                4. Au cours de ces 4 dernières semaines, et en raison de votre état physique
+      <table>
+        <tbody>
+          <tr>
+            <th colspan="5" class="Question_SF36">
+              2. Par rapport à l'année dernière à la même époque, comment trouvez-vous votre état de santé en ce moment?
             </th>
-        </tr>
-        <tr>
-        <th></th>
-            <th>OUI</th>
-            <th>NON</th>
-        </tr>
-        <tr>
-            <td class="Question_SF36">a. Avez-vous réduit le temps passé à votre travail ou à vos activités habituelles</td>
-            <td><label><input type="radio" name="q4a" value="0"></label></td>
-            <td><label><input type="radio" name="q4a" value="100"></label></td>
-        </tr>
-        <tr>
-            <td class="Question_SF36">b. Avez-vous accompli moins de choses que vous auriez souhaitées</td>
-            <td><label><input type="radio" name="q4b" value="0"></label></td>
-            <td><label><input type="radio" name="q4b" value="100"></label></td>
-        </tr>
-        <tr>
-            <td class="Question_SF36">c. Avez-vous dû arrêter de faire certaines choses</td>
-            <td><label><input type="radio" name="q4c" value="0"></label></td>
-            <td><label><input type="radio" name="q4c" value="100"></label></td>
-        </tr>
-        <tr>
-            <td class="Question_SF36">d. Avez-vous eu des difficultés à faire votre travail ou toute autre activité (par exemple, cela vous a demandé un effort supplémentaire)</td>
-            <td><label><input type="radio" name="q4d" value="0"></label></td>
-            <td><label><input type="radio" name="q4d" value="100"></label></td>
-        </tr>
-    </table>
+          </tr>
+          <tr>
+            <td><label><input type="radio" name="q2" value="100"> Bien meilleur que l'an dernier</label></td>
+            <td><label><input type="radio" name="q2" value="75"> Plutôt meilleur que l'an dernier</label></td>
+            <td><label><input type="radio" name="q2" value="50"> A peu près pareil</label></td>
+            <td><label><input type="radio" name="q2" value="2"> Plutôt moins bon</label></td>
+            <td><label><input type="radio" name="q2" value="1"> Beaucoup moins bon</label></td>
+          </tr>
+        </tbody>
+      </table>
 
-    <table>
+      <table>
+        <thead>
+          <tr>
+            <th colspan="4" class="Question_SF36">
+              3. Voici une liste d'activités que vous pouvez avoir à faire dans votre vie de tous les jours. Pour chacune d'entre elles indiquez si vous êtes limité(e) en raison de votre état de santé actuel.
+            </th>
+          </tr>
+          <tr>
+            <th>Listes d'activités</th>
+            <th>Oui, beaucoup limité(e)</th>
+            <th>Oui, un peu limité(e)</th>
+            <th>Non, Pas du tout limité(e)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="Question_SF36">a. Efforts physiques importants tels que courir, soulever un objet lourd, faire du sport</td>
+            <td><label><input type="radio" name="q3a" value="0"></label></td>
+            <td><label><input type="radio" name="q3a" value="50"></label></td>
+            <td><label><input type="radio" name="q3a" value="100"></label></td>
+          </tr>
+          <tr>
+            <td class="Question_SF36">b. Efforts physiques modérés tels que déplacer une table, passer l'aspirateur, jouer aux boules</td>
+            <td><label><input type="radio" name="q3b" value="0"></label></td>
+            <td><label><input type="radio" name="q3b" value="50"></label></td>
+            <td><label><input type="radio" name="q3b" value="100"></label></td>
+          </tr>
+          <tr>
+            <td class="Question_SF36">c. Soulever et porter les courses</td>
+            <td><label><input type="radio" name="q3c" value="0"></label></td>
+            <td><label><input type="radio" name="q3c" value="50"></label></td>
+            <td><label><input type="radio" name="q3c" value="100"></label></td>
+          </tr>
+          <tr>
+            <td class="Question_SF36">d. Monter plusieurs étages par l'escalier</td>
+            <td><label><input type="radio" name="q3d" value="0"></label></td>
+            <td><label><input type="radio" name="q3d" value="50"></label></td>
+            <td><label><input type="radio" name="q3d" value="100"></label></td>
+          </tr>
+          <tr>
+            <td class="Question_SF36">e. Monter un étage par l'escalier</td>
+            <td><label><input type="radio" name="q3e" value="0"></label></td>
+            <td><label><input type="radio" name="q3e" value="50"></label></td>
+            <td><label><input type="radio" name="q3e" value="100"></label></td>
+          </tr>
+          <tr>
+            <td class="Question_SF36">f. Se pencher en avant, se mettre à genoux, s'accroupir</td>
+            <td><label><input type="radio" name="q3f" value="0"></label></td>
+            <td><label><input type="radio" name="q3f" value="50"></label></td>
+            <td><label><input type="radio" name="q3f" value="100"></label></td>
+          </tr>
+          <tr>
+            <td class="Question_SF36">g. Marcher plus d'un km à pied</td>
+            <td><label><input type="radio" name="q3g" value="0"></label></td>
+            <td><label><input type="radio" name="q3g" value="50"></label></td>
+            <td><label><input type="radio" name="q3g" value="100"></label></td>
+          </tr>
+          <tr>
+            <td class="Question_SF36">h. Marcher plusieurs centaines de mètres</td>
+            <td><label><input type="radio" name="q3h" value="0"></label></td>
+            <td><label><input type="radio" name="q3h" value="50"></label></td>
+            <td><label><input type="radio" name="q3h" value="100"></label></td>
+          </tr>
+          <tr>
+            <td class="Question_SF36">i. Marcher une centaine de mètres</td>
+            <td><label><input type="radio" name="q3i" value="0"></label></td>
+            <td><label><input type="radio" name="q3i" value="50"></label></td>
+            <td><label><input type="radio" name="q3i" value="100"></label></td>
+          </tr>
+          <tr>
+            <td class="Question_SF36">j. Prendre un bain, une douche ou s'habiller</td>
+            <td><label><input type="radio" name="q3j" value="0"></label></td>
+            <td><label><input type="radio" name="q3j" value="50"></label></td>
+            <td><label><input type="radio" name="q3j" value="100"></label></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table>
         <tr>
-        <th colspan="3" class="Question_SF36">
+          <th colspan="3" class="Question_SF36">
+            4. Au cours de ces 4 dernières semaines, et en raison de votre état physique
+          </th>
+        </tr>
+        <tr>
+          <th></th>
+          <th>OUI</th>
+          <th>NON</th>
+        </tr>
+        <tr>
+          <td class="Question_SF36">a. Avez-vous réduit le temps passé à votre travail ou à vos activités habituelles</td>
+          <td><label><input type="radio" name="q4a" value="0"></label></td>
+          <td><label><input type="radio" name="q4a" value="100"></label></td>
+        </tr>
+        <tr>
+          <td class="Question_SF36">b. Avez-vous accompli moins de choses que vous auriez souhaitées</td>
+          <td><label><input type="radio" name="q4b" value="0"></label></td>
+          <td><label><input type="radio" name="q4b" value="100"></label></td>
+        </tr>
+        <tr>
+          <td class="Question_SF36">c. Avez-vous dû arrêter de faire certaines choses</td>
+          <td><label><input type="radio" name="q4c" value="0"></label></td>
+          <td><label><input type="radio" name="q4c" value="100"></label></td>
+        </tr>
+        <tr>
+          <td class="Question_SF36">d. Avez-vous eu des difficultés à faire votre travail ou toute autre activité (par exemple, cela vous a demandé un effort supplémentaire)</td>
+          <td><label><input type="radio" name="q4d" value="0"></label></td>
+          <td><label><input type="radio" name="q4d" value="100"></label></td>
+        </tr>
+      </table>
+
+      <table>
+        <tr>
+          <th colspan="3" class="Question_SF36">
             5. Au cours de ces 4 dernières semaines, et en raison de votre état émotionnel (comme vous sentir triste, nerveux (se) ou déprimé(e).
-        </th>
+          </th>
         </tr>
         <tr>
-        <th></th>
-        <th>OUI</th>
-        <th>NON</th>
+          <th></th>
+          <th>OUI</th>
+          <th>NON</th>
         </tr>
         <tr>
-        <td class="Question_SF36">a. Avez-vous réduit le temps passé à votre travail ou à vos activités habituelles</td>
-        <td><label><input type="radio" name="q5a" value="0"></label></td>
-        <td><label><input type="radio" name="q5a" value="100"></label></td>
+          <td class="Question_SF36">a. Avez-vous réduit le temps passé à votre travail ou à vos activités habituelles</td>
+          <td><label><input type="radio" name="q5a" value="0"></label></td>
+          <td><label><input type="radio" name="q5a" value="100"></label></td>
         </tr>
         <tr>
-        <td class="Question_SF36">b. Avez-vous accompli moins de choses que vous auriez souhaitées</td>
-        <td> <label><input type="radio" name="q5b" value="0"></label></td>
-        <td>  <label><input type="radio" name="q5b" value="100"></label></td>
+          <td class="Question_SF36">b. Avez-vous accompli moins de choses que vous auriez souhaitées</td>
+          <td> <label><input type="radio" name="q5b" value="0"></label></td>
+          <td>  <label><input type="radio" name="q5b" value="100"></label></td>
         </tr>
         <tr>
-        <td class="Question_SF36">c. Avez-vous eu des difficultés à faire ce que vous aviez à faire avec autant de soin et d'attention que d'habitude</td>
-        <td><label><input type="radio" name="q5c" value="0"></label></td>
-        <td><label><input type="radio" name="q5c" value="100"></label></td>
+          <td class="Question_SF36">c. Avez-vous eu des difficultés à faire ce que vous aviez à faire avec autant de soin et d'attention que d'habitude</td>
+          <td><label><input type="radio" name="q5c" value="0"></label></td>
+          <td><label><input type="radio" name="q5c" value="100"></label></td>
         </tr>
-    </table>
+      </table>
 
-    <table>
+      <table>
         <tr>
-        <th colspan="5" class="Question_SF36">
+          <th colspan="5" class="Question_SF36">
             6. Au cours de ces 4 dernières semaines, dans quelle mesure votre état de santé, physique ou émotionnel, vous a-t-il gêné dans votre vie sociale et vos relations avec les autres, votre famille, vos amis, vos connaissances?
-        </th>
+          </th>
         </tr>
         <tr>
-            <td><label><input type="radio" name="q6" value="100"> Pas du tout</label></td>
-            <td><label><input type="radio" name="q6" value="75"> Un petit peu</label></td>
-            <td><label><input type="radio" name="q6" value="50"> Moyennement</label></td>
-            <td><label><input type="radio" name="q6" value="25"> Beaucoup</label></td>
-            <td><label><input type="radio" name="q6" value="0"> Enormément</label></td>
+          <td><label><input type="radio" name="q6" value="100"> Pas du tout</label></td>
+          <td><label><input type="radio" name="q6" value="75"> Un petit peu</label></td>
+          <td><label><input type="radio" name="q6" value="50"> Moyennement</label></td>
+          <td><label><input type="radio" name="q6" value="25"> Beaucoup</label></td>
+          <td><label><input type="radio" name="q6" value="0"> Enormément</label></td>
         </tr>
-    </table>
+      </table>
 
-    <table>
+      <table>
         <tr>
-        <th colspan="6" class="Question_SF36">
+          <th colspan="6" class="Question_SF36">
             7. Au cours de ces 4 dernières semaines, quelle a été l'intensité de vos douleurs physiques?
-        </th>
+          </th>
         </tr>
         <tr>
-        <td><label><input type="radio" name="q7" value="100"> Nulle</label></td>
-        <td><label><input type="radio" name="q7" value="80"> Très faible</label></td>
-        <td><label><input type="radio" name="q7" value="60"> Faible</label></td>
-        <td><label><input type="radio" name="q7" value="40"> Moyenne</label></td>
-        <td><label><input type="radio" name="q7" value="20"> Grande</label></td>
-        <td><label><input type="radio" name="q7" value="0"> Très grande</label></td>
+          <td><label><input type="radio" name="q7" value="100"> Nulle</label></td>
+          <td><label><input type="radio" name="q7" value="80"> Très faible</label></td>
+          <td><label><input type="radio" name="q7" value="60"> Faible</label></td>
+          <td><label><input type="radio" name="q7" value="40"> Moyenne</label></td>
+          <td><label><input type="radio" name="q7" value="20"> Grande</label></td>
+          <td><label><input type="radio" name="q7" value="0"> Très grande</label></td>
         </tr>
-    </table>
+      </table>
 
-    <table>
+      <table>
         <tr>
-        <th colspan="5" class="Question_SF36">
+          <th colspan="5" class="Question_SF36">
             8. Au cours de ces 4 dernières semaines, dans quelle mesure vos douleurs physiques vous ont-elles limité dans votre travail ou vos activités domestiques?
-        </th>
+          </th>
         </tr>
         <tr>
-        <td><label><input type="radio" name="q8" value="100"> Pas du tout</label></td>
-        <td><label><input type="radio" name="q8" value="75"> Un petit peu</label></td>
-        <td><label><input type="radio" name="q8" value="50"> Moyennement</label></td>
-        <td><label><input type="radio" name="q8" value="25"> Beaucoup</label></td>
-        <td><label><input type="radio" name="q8" value="0"> Enormément</label></td>
+          <td><label><input type="radio" name="q8" value="100"> Pas du tout</label></td>
+          <td><label><input type="radio" name="q8" value="75"> Un petit peu</label></td>
+          <td><label><input type="radio" name="q8" value="50"> Moyennement</label></td>
+          <td><label><input type="radio" name="q8" value="25"> Beaucoup</label></td>
+          <td><label><input type="radio" name="q8" value="0"> Enormément</label></td>
         </tr>
-    </table>
+      </table>
 
-    <table>
+      <table>
         <tr>
-        <th colspan="7" class="Question_SF36">
+          <th colspan="7" class="Question_SF36">
             9. Les questions qui suivent portent sur comment vous vous êtes senti(e) au cours de ces 4 dernières semaines. Pour chaque question, veuillez indiquer la réponse qui vous semble la plus appropriée. Au cours de ces 4 dernières semaines, y a-t-il eu des moments où:
-        </th>
+          </th>
         </tr>
         <tr>
-        <th></th>
-        <th>En permanence</th>
-        <th>Très souvent</th>
-        <th>Souvent</th>
-        <th>Quelquefois</th>
-        <th>Rarement</th>
-        <th>Jamais</th>
+          <th></th>
+          <th>En permanence</th>
+          <th>Très souvent</th>
+          <th>Souvent</th>
+          <th>Quelquefois</th>
+          <th>Rarement</th>
+          <th>Jamais</th>
         </tr>
 
         <tr>
-        <td class="Question_SF36">a. Vous vous êtes senti(e) dynamique?</td>
-        <td><label><input type="radio" name="q9a" value="100"></label></td>
-        <td><label><input type="radio" name="q9a" value="80"></label></td>
-        <td><label><input type="radio" name="q9a" value="60"></label></td>
-        <td><label><input type="radio" name="q9a" value="40"></label></td>
-        <td><label><input type="radio" name="q9a" value="20"></label></td>
-        <td><label><input type="radio" name="q9a" value="10"></label></td>
+          <td class="Question_SF36">a. Vous vous êtes senti(e) dynamique?</td>
+          <td><label><input type="radio" name="q9a" value="100"></label></td>
+          <td><label><input type="radio" name="q9a" value="80"></label></td>
+          <td><label><input type="radio" name="q9a" value="60"></label></td>
+          <td><label><input type="radio" name="q9a" value="40"></label></td>
+          <td><label><input type="radio" name="q9a" value="20"></label></td>
+          <td><label><input type="radio" name="q9a" value="10"></label></td>
         </tr>
         <tr>
-        <td class="Question_SF36">b. Vous vous êtes senti(e) très nerveux (se)?</td>
-        <td><label><input type="radio" name="q9b" value="0"></label></td>
-        <td><label><input type="radio" name="q9b" value="20"></label></td>
-        <td><label><input type="radio" name="q9b" value="40"></label></td>
-        <td><label><input type="radio" name="q9b" value="60"></label></td>
-        <td><label><input type="radio" name="q9b" value="80"></label></td>
-        <td><label><input type="radio" name="q9b" value="100"></label></td>
+          <td class="Question_SF36">b. Vous vous êtes senti(e) très nerveux (se)?</td>
+          <td><label><input type="radio" name="q9b" value="0"></label></td>
+          <td><label><input type="radio" name="q9b" value="20"></label></td>
+          <td><label><input type="radio" name="q9b" value="40"></label></td>
+          <td><label><input type="radio" name="q9b" value="60"></label></td>
+          <td><label><input type="radio" name="q9b" value="80"></label></td>
+          <td><label><input type="radio" name="q9b" value="100"></label></td>
         </tr>
         <tr>
-        <td class="Question_SF36">c. Vous vous êtes senti(e) si découragé(e) que rien ne pouvait vous remonter le moral ?</td>
-        <td><label><input type="radio" name="q9c" value="0"></label></td>
-        <td><label><input type="radio" name="q9c" value="20"></label></td>
-        <td><label><input type="radio" name="q9c" value="40"></label></td>
-        <td><label><input type="radio" name="q9c" value="60"></label></td>
-        <td><label><input type="radio" name="q9c" value="80"></label></td>
-        <td><label><input type="radio" name="q9c" value="100"></label></td>
+          <td class="Question_SF36">c. Vous vous êtes senti(e) si découragé(e) que rien ne pouvait vous remonter le moral ?</td>
+          <td><label><input type="radio" name="q9c" value="0"></label></td>
+          <td><label><input type="radio" name="q9c" value="20"></label></td>
+          <td><label><input type="radio" name="q9c" value="40"></label></td>
+          <td><label><input type="radio" name="q9c" value="60"></label></td>
+          <td><label><input type="radio" name="q9c" value="80"></label></td>
+          <td><label><input type="radio" name="q9c" value="100"></label></td>
         </tr>
         <tr>
-        <td class="Question_SF36">d. Vous vous êtes senti(e) calme et détendu(e)?</td>
-        <td><label><input type="radio" name="q9d" value="100"></label></td>
-        <td><label><input type="radio" name="q9d" value="80"></label></td>
-        <td><label><input type="radio" name="q9d" value="60"></label></td>
-        <td><label><input type="radio" name="q9d" value="40"></label></td>
-        <td><label><input type="radio" name="q9d" value="20"></label></td>
-        <td><label><input type="radio" name="q9d" value="0"></label></td>
+          <td class="Question_SF36">d. Vous vous êtes senti(e) calme et détendu(e)?</td>
+          <td><label><input type="radio" name="q9d" value="100"></label></td>
+          <td><label><input type="radio" name="q9d" value="80"></label></td>
+          <td><label><input type="radio" name="q9d" value="60"></label></td>
+          <td><label><input type="radio" name="q9d" value="40"></label></td>
+          <td><label><input type="radio" name="q9d" value="20"></label></td>
+          <td><label><input type="radio" name="q9d" value="0"></label></td>
         </tr>
         <tr>
-        <td class="Question_SF36">e. Vous vous êtes senti(e) débordant(e) d'énergie?</td>
-        <td><label><input type="radio" name="q9e" value="100"></label></td>
-        <td><label><input type="radio" name="q9e" value="80"></label></td>
-        <td><label><input type="radio" name="q9e" value="60"></label></td>
-        <td><label><input type="radio" name="q9e" value="40"></label></td>
-        <td><label><input type="radio" name="q9e" value="20"></label></td>
-        <td><label><input type="radio" name="q9e" value="0"></label></td>
+          <td class="Question_SF36">e. Vous vous êtes senti(e) débordant(e) d'énergie?</td>
+          <td><label><input type="radio" name="q9e" value="100"></label></td>
+          <td><label><input type="radio" name="q9e" value="80"></label></td>
+          <td><label><input type="radio" name="q9e" value="60"></label></td>
+          <td><label><input type="radio" name="q9e" value="40"></label></td>
+          <td><label><input type="radio" name="q9e" value="20"></label></td>
+          <td><label><input type="radio" name="q9e" value="0"></label></td>
         </tr>
         <tr>
-        <td class="Question_SF36">f. Vous vous êtes senti(e) triste et abattu(e)?</td>
-        <td><label><input type="radio" name="q9f" value="0"></label></td>
-        <td><label><input type="radio" name="q9f" value="20"></label></td>
-        <td><label><input type="radio" name="q9f" value="40"></label></td>
-        <td><label><input type="radio" name="q9f" value="60"></label></td>
-        <td><label><input type="radio" name="q9f" value="80"></label></td>
-        <td><label><input type="radio" name="q9f" value="100"></label></td>
+          <td class="Question_SF36">f. Vous vous êtes senti(e) triste et abattu(e)?</td>
+          <td><label><input type="radio" name="q9f" value="0"></label></td>
+          <td><label><input type="radio" name="q9f" value="20"></label></td>
+          <td><label><input type="radio" name="q9f" value="40"></label></td>
+          <td><label><input type="radio" name="q9f" value="60"></label></td>
+          <td><label><input type="radio" name="q9f" value="80"></label></td>
+          <td><label><input type="radio" name="q9f" value="100"></label></td>
         </tr>
         <tr>
-        <td class="Question_SF36">g. Vous vous êtes senti(e) épuisé(e)?</td>
-        <td><label><input type="radio" name="q9g" value="0"></label></td>
-        <td><label><input type="radio" name="q9g" value="20"></label></td>
-        <td><label><input type="radio" name="q9g" value="40"></label></td>
-        <td><label><input type="radio" name="q9g" value="60"></label></td>
-        <td><label><input type="radio" name="q9g" value="80"></label></td>
-        <td><label><input type="radio" name="q9g" value="100"></label></td>
+          <td class="Question_SF36">g. Vous vous êtes senti(e) épuisé(e)?</td>
+          <td><label><input type="radio" name="q9g" value="0"></label></td>
+          <td><label><input type="radio" name="q9g" value="20"></label></td>
+          <td><label><input type="radio" name="q9g" value="40"></label></td>
+          <td><label><input type="radio" name="q9g" value="60"></label></td>
+          <td><label><input type="radio" name="q9g" value="80"></label></td>
+          <td><label><input type="radio" name="q9g" value="100"></label></td>
         </tr>
         <tr>
-        <td class="Question_SF36">h. Vous vous êtes senti(e) heureux (se)?</td>
-        <td><label><input type="radio" name="q9h" value="100"></label></td>
-        <td><label><input type="radio" name="q9h" value="80"></label></td>
-        <td><label><input type="radio" name="q9h" value="60"></label></td>
-        <td><label><input type="radio" name="q9h" value="40"></label></td>
-        <td><label><input type="radio" name="q9h" value="20"></label></td>
-        <td><label><input type="radio" name="q9h" value="0"></label></td>
+          <td class="Question_SF36">h. Vous vous êtes senti(e) heureux (se)?</td>
+          <td><label><input type="radio" name="q9h" value="100"></label></td>
+          <td><label><input type="radio" name="q9h" value="80"></label></td>
+          <td><label><input type="radio" name="q9h" value="60"></label></td>
+          <td><label><input type="radio" name="q9h" value="40"></label></td>
+          <td><label><input type="radio" name="q9h" value="20"></label></td>
+          <td><label><input type="radio" name="q9h" value="0"></label></td>
         </tr>
         <tr>
-        <td class="Question_SF36">i. Vous vous êtes senti(e) fatigué(e)?</td>
-        <td><label><input type="radio" name="q9i" value="0"></label></td>
-        <td><label><input type="radio" name="q9i" value="20"></label></td>
-        <td><label><input type="radio" name="q9i" value="40"></label></td>
-        <td><label><input type="radio" name="q9i" value="60"></label></td>
-        <td><label><input type="radio" name="q9i" value="80"></label></td>
-        <td><label><input type="radio" name="q9i" value="100"></label></td>
+          <td class="Question_SF36">i. Vous vous êtes senti(e) fatigué(e)?</td>
+          <td><label><input type="radio" name="q9i" value="0"></label></td>
+          <td><label><input type="radio" name="q9i" value="20"></label></td>
+          <td><label><input type="radio" name="q9i" value="40"></label></td>
+          <td><label><input type="radio" name="q9i" value="60"></label></td>
+          <td><label><input type="radio" name="q9i" value="80"></label></td>
+          <td><label><input type="radio" name="q9i" value="100"></label></td>
         </tr>
-    </table>
+      </table>
 
-    <table>
+      <table>
         <tr>
-        <th colspan="5" class="Question_SF36">
+          <th colspan="5" class="Question_SF36">
             10. Au cours de ces 4 dernières semaines, y a-t-il eu des moments où votre état de santé, physique ou émotionnel, vous a gêné(e) dans votre vie sociale et vos relations avec les autres, votre famille, vos amis, vos connaissances?
-        </th>
+          </th>
         </tr>
         <tr>
-        <td><label><input type="radio" name="q10" value="0"><br> En permanence</label></td>
-        <td><label><input type="radio" name="q10" value="25"><br> Une bonne partie du temps</label></td>
-        <td><label><input type="radio" name="q10" value="50"><br> De temps en temps</label></td>
-        <td><label><input type="radio" name="q10" value="75"><br> Rarement</label></td>
-        <td><label><input type="radio" name="q10" value="100"><br> Jamais</label></td>
+          <td><label><input type="radio" name="q10" value="0"><br> En permanence</label></td>
+          <td><label><input type="radio" name="q10" value="25"><br> Une bonne partie du temps</label></td>
+          <td><label><input type="radio" name="q10" value="50"><br> De temps en temps</label></td>
+          <td><label><input type="radio" name="q10" value="75"><br> Rarement</label></td>
+          <td><label><input type="radio" name="q10" value="100"><br> Jamais</label></td>
         </tr>
-    </table>
+      </table>
 
-    <table>
+      <table>
         <tr>
-        <th colspan="6" class="Question_SF36">
+          <th colspan="6" class="Question_SF36">
             11. Indiquez, pour chacune des phrases suivantes, dans quelle mesure elles sont vraies ou fausses dans votre cas:
-        </th>
+          </th>
         </tr>
         <tr>
-        <th></th>
-        <th>Totalement vrai</th>
-        <th>Plutôt vrai</th>
-        <th>Je ne sais pas</th>
-        <th>Plutôt faux</th>
-        <th>Totalement faux</th>
+          <th></th>
+          <th>Totalement vrai</th>
+          <th>Plutôt vrai</th>
+          <th>Je ne sais pas</th>
+          <th>Plutôt faux</th>
+          <th>Totalement faux</th>
         </tr>
         <tr>
-        <td class="Question_SF36">a. Je tombe plus facilement malade que les autres</td>
-        <td><label><input type="radio" name="q11a" value="0"></label></td>
-        <td><label><input type="radio" name="q11a" value="25"></label></td>
-        <td><label><input type="radio" name="q11a" value="50"></label></td>
-        <td><label><input type="radio" name="q11a" value="75"></label></td>
-        <td><label><input type="radio" name="q11a" value="100"></label></td>
+          <td class="Question_SF36">a. Je tombe plus facilement malade que les autres</td>
+          <td><label><input type="radio" name="q11a" value="0"></label></td>
+          <td><label><input type="radio" name="q11a" value="25"></label></td>
+          <td><label><input type="radio" name="q11a" value="50"></label></td>
+          <td><label><input type="radio" name="q11a" value="75"></label></td>
+          <td><label><input type="radio" name="q11a" value="100"></label></td>
         </tr>
         <tr>
-        <td class="Question_SF36">b. Je me porte aussi bien que n'importe qui</td>
-        <td><label><input type="radio" name="q11b" value="100"></label></td>
-        <td><label><input type="radio" name="q11b" value="75"></label></td>
-        <td><label><input type="radio" name="q11b" value="50"></label></td>
-        <td><label><input type="radio" name="q11b" value="25"></label></td>
-        <td><label><input type="radio" name="q11b" value="0"></label></td>
+          <td class="Question_SF36">b. Je me porte aussi bien que n'importe qui</td>
+          <td><label><input type="radio" name="q11b" value="100"></label></td>
+          <td><label><input type="radio" name="q11b" value="75"></label></td>
+          <td><label><input type="radio" name="q11b" value="50"></label></td>
+          <td><label><input type="radio" name="q11b" value="25"></label></td>
+          <td><label><input type="radio" name="q11b" value="0"></label></td>
         </tr>
         <tr>
-        <td class="Question_SF36">c. Je m'attends à ce que ma santé se dégrade</td>
-        <td><label><input type="radio" name="q11c" value="0"></label></td>
-        <td><label><input type="radio" name="q11c" value="25"></label></td>
-        <td><label><input type="radio" name="q11c" value="50"></label></td>
-        <td><label><input type="radio" name="q11c" value="75"></label></td>
-        <td><label><input type="radio" name="q11c" value="100"></label></td>
+          <td class="Question_SF36">c. Je m'attends à ce que ma santé se dégrade</td>
+          <td><label><input type="radio" name="q11c" value="0"></label></td>
+          <td><label><input type="radio" name="q11c" value="25"></label></td>
+          <td><label><input type="radio" name="q11c" value="50"></label></td>
+          <td><label><input type="radio" name="q11c" value="75"></label></td>
+          <td><label><input type="radio" name="q11c" value="100"></label></td>
         </tr>
         <tr>
-        <td class="Question_SF36">d. Je suis en excellente santé</td>
-        <td><label><input type="radio" name="q11d" value="100"></label></td>
-        <td><label><input type="radio" name="q11d" value="75"></label></td>
-        <td><label><input type="radio" name="q11d" value="50"></label></td>
-        <td><label><input type="radio" name="q11d" value="25"></label></td>
-        <td><label><input type="radio" name="q11d" value="0"></label></td>
+          <td class="Question_SF36">d. Je suis en excellente santé</td>
+          <td><label><input type="radio" name="q11d" value="100"></label></td>
+          <td><label><input type="radio" name="q11d" value="75"></label></td>
+          <td><label><input type="radio" name="q11d" value="50"></label></td>
+          <td><label><input type="radio" name="q11d" value="25"></label></td>
+          <td><label><input type="radio" name="q11d" value="0"></label></td>
         </tr>
-    </table>
+      </table>
 
-    <div class="buttons-container">
-    <button type="button" onclick="calculateScore()">Calculer le score</button>
-    <button type="reset" onclick="resetForm()">Réinitialiser</button>
-    </div>
-
-<div id="results" style="display:none">
-        <p id="scoreDisplay"></p><br>
-        <label for="nameID" class="Subject_name">Nom du sujet (si besoin)</label>
-        <input type="text" id="ID" name="nameID"><br>
-        <button id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
-        <button id="saveXLSbutton" onclick="saveXLS()">Exporter en XLS</button>
+      <div class="buttons-container">
+        <button type="button" onclick="calculateScore()">Calculer le score</button>
+        <button type="reset" onclick="resetForm()">Réinitialiser</button>
       </div>
 
-</form>
-<script>
+    </form>
 
-function calculateScore() {
+    <div id="results" style="display:none">
+      <p id="scoreDisplay"></p><br>
+      <label for="nameID" class="Subject_name">Nom du sujet (si besoin)</label>
+      <input type="text" id="ID" name="nameID"><br>
+      <button id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
+      <button id="saveXLSbutton" onclick="saveXLS()">Exporter en XLS</button>
+    </div>
+
+
+    <script>
+
+      let globalGH = null;
+      let globalPF = null;
+      let globalBP = null;
+      let globalRP = null;
+      let globalVT = null;
+      let globalSF = null;
+      let globalRE = null;
+      let globalMH = null;
+      let globalHT = null;
+
+      function calculateScore() {
         // For ease, scores were already converted within the question
         // source :https://www-rand-org.translate.goog/health-care/surveys_tools/mos/36-item-short-form/scoring.html?_x_tr_sl=en&_x_tr_tl=fr&_x_tr_hl=fr&_x_tr_pto=rq    
 
@@ -436,32 +450,33 @@ function calculateScore() {
 
         // List of all expected question names (including sub-questions)
         const allQuestionNames = [
-            'q1', 'q2',
-            'q3a', 'q3b', 'q3c', 'q3d', 'q3e', 'q3f', 'q3g', 'q3h', 'q3i', 'q3j',
-            'q4a', 'q4b', 'q4c', 'q4d',
-            'q5a', 'q5b', 'q5c',
-            'q6', 'q7', 'q8',
-            'q9a', 'q9b', 'q9c', 'q9d', 'q9e', 'q9f', 'q9g', 'q9h', 'q9i',
-            'q10',
-            'q11a', 'q11b', 'q11c', 'q11d'
+          'q1', 'q2',
+          'q3a', 'q3b', 'q3c', 'q3d', 'q3e', 'q3f', 'q3g', 'q3h', 'q3i', 'q3j',
+          'q4a', 'q4b', 'q4c', 'q4d',
+          'q5a', 'q5b', 'q5c',
+          'q6', 'q7', 'q8',
+          'q9a', 'q9b', 'q9c', 'q9d', 'q9e', 'q9f', 'q9g', 'q9h', 'q9i',
+          'q10',
+          'q11a', 'q11b', 'q11c', 'q11d'
         ];
         const totalQuestions = allQuestionNames.length;
         let allAnswered = true;
 
         // Helper function to get the value of a selected radio button from a group
         const getRadioValue = (name) => {
-            const radios = form.elements[name];
-            if (radios) { // Check if the radio group exists
-                for (let i = 0; i < radios.length; i++) {
-                    if (radios[i].checked) {
-                        return parseFloat(radios[i].value); 
-                    }
-                }
+          const radios = form.elements[name];
+          if (radios) { // Check if the radio group exists
+            for (let i = 0; i < radios.length; i++) {
+              if (radios[i].checked) {
+                return parseFloat(radios[i].value); 
+              }
             }
-            allAnswered = false; 
-            return NaN; 
+          }
+          allAnswered = false; 
+          return NaN; 
         };
 
+        
 
         // Initialize scores for each domain
         let scorePF = 0; // Physical Functioning
@@ -496,10 +511,11 @@ function calculateScore() {
 
         // Physical Functioning (PF) - Q3a-j
         for (let i = 0; i < 10; i++) {
-            const charCode = 'a'.charCodeAt(0) + i;
-            const q3Val = getRadioValue(`q3${String.fromCharCode(charCode)}`);
-            scorePF += q3Val;
+          const charCode = 'a'.charCodeAt(0) + i;
+          const q3Val = getRadioValue(`q3${String.fromCharCode(charCode)}`);
+          scorePF += q3Val;
         }
+
 
         // Role-Physical (RP) - Q4a-d
         const q4aVal = getRadioValue('q4a');
@@ -519,7 +535,7 @@ function calculateScore() {
 
         // Social Functioning (SF) - Q6 and Q10
         const q6Val = getRadioValue('q6');
-         scoreSF += q6Val;
+        scoreSF += q6Val;
         const q10Val = getRadioValue('q10');
         scoreSF += q10Val;
 
@@ -554,7 +570,10 @@ function calculateScore() {
         scoreMH += q9hVal;
 
 
-         // Mean scores	
+        
+
+
+        // Mean scores	
         let mscorePF = scorePF/10;
         let mscoreRP = scoreRP/4;
         let mscoreBP = scoreBP/2;
@@ -565,7 +584,8 @@ function calculateScore() {
         let mscoreMH = scoreMH/4;
         let mscoreHT = scoreHT;// One unique item !
 
-        // Check if all questions are answered
+
+       // Check if all questions are answered
        if (!allAnswered) {
             const resultDiv = document.getElementById("results");
             resultDiv.innerHTML = "<p class=Error_message_not_all_answered>Veuillez répondre svp à toutes les questions avant de calculer le score!</p>";
@@ -573,38 +593,235 @@ function calculateScore() {
            return;
         }
 
-        display(mscoreGH, mscorePF, mscoreBP, mscoreRP, mscoreVT, mscoreSF, mscoreRE, mscoreMH, mscoreHT);
-    } // end calculateScore function
+      } // end calculateScore function
 
 
-    function  display(mscoreGH, mscorePF, mscoreBP, mscoreRP, mscoreVT, mscoreSF, mscoreRE, mscoreMH, mscoreHT){
+      function  displayscores(mscoreGH, mscorePF, mscoreBP, mscoreRP, mscoreVT, mscoreSF, mscoreRE, mscoreMH, mscoreHT){
         const resultsDiv = document.getElementById("results");
-        let displayHtml = "<p>Résultats</p>";
-        displayHtml += "<br>";
-        displayHtml += "<p> Les scores vont de 0 (faible niveau qualité de vie) à 100 (niveau très élevé).</p>"; 
-        displayHtml += "<br>";
-        displayHtml += "<ul class='myList'>";
-        displayHtml += "<li>Santé Générale : " + mscoreGH.toFixed(2) + " % </li>";
-        displayHtml += "<li>Activité physique : " + mscorePF.toFixed(2) + " % </li>";
-        displayHtml += "<li>Limitations dues à des problèmes émotionnels : " + mscoreRP.toFixed(2) + " % </li>";
-        displayHtml += "<li>Douleur : " + mscoreBP.toFixed(2) + " % </li>";
-        displayHtml += "<li>Fatigue (vitalité) : " + mscoreVT.toFixed(2) + " % </li>";
-        displayHtml += "<li>Vie et relation avec les autres : " + mscoreSF.toFixed(2) + " % </li>";
-        displayHtml += "<li>Limitations dues à l’état psychique : " + mscorePF.toFixed(2) + " % </li>";
-        displayHtml += "<li>Bien-être émotionnelle : " + mscoreMH.toFixed(2) + " % </li>";
-        displayHtml += "<li>Évolution de la santé perçue : " + mscoreHT.toFixed(2) + " % </li>";
-        displayHtml += "</ul>";
+        let display = "<p>Résultats</p>";
+        display += "<br>";
+        display += "<p> Les scores vont de 0 (faible niveau qualité de vie) à 100 (niveau très élevé).</p>"; 
+        display += "<br>";
+        display += "<ul class='myList'>";
+        display += "<li>Santé Générale : " + mscoreGH.toFixed(2) + " % </li>";
+        display += "<li>Activité physique : " + mscorePF.toFixed(2) + " % </li>";
+        display += "<li>Limitations dues à des problèmes émotionnels : " + mscoreRP.toFixed(2) + " % </li>";
+        display += "<li>Douleur : " + mscoreBP.toFixed(2) + " % </li>";
+        display += "<li>Fatigue (vitalité) : " + mscoreVT.toFixed(2) + " % </li>";
+        display += "<li>Vie et relation avec les autres : " + mscoreSF.toFixed(2) + " % </li>";
+        display += "<li>Limitations dues à l’état psychique : " + mscorePF.toFixed(2) + " % </li>";
+        display += "<li>Bien-être émotionnelle : " + mscoreMH.toFixed(2) + " % </li>";
+        display += "<li>Évolution de la santé perçue : " + mscoreHT.toFixed(2) + " % </li>";
+        display += "</ul>";
 
-        resultsDiv.innerHTML = displayHtml;
-        resultsDiv.style.display = "block";
-    }
+        // Update the results div with the constructed HTML
+        document.getElementById("scoreDisplay").innerHTML = display;
+        document.getElementById("results").style.display = "block";
+        document.getElementById('savePdfButton').style.display = 'inline-block';
+        document.getElementById('saveXLSbutton').style.display = 'inline-block';
+      }
 
-     function resetForm() {
+      function resetForm() {
         document.getElementById("SF36").reset();
-        const resultsDiv = document.getElementById("results");
-        resultsDiv.innerHTML = "";
-        resultsDiv.style.display = "none";
-    }
-</script>
-</body>
+        document.getElementById('results').style.display = 'none';
+        // Reset subject's name
+        document.getElementById("ID").value = ""; 
+        // Hide the save PDF button on reset
+        document.getElementById('savePdfButton').style.display = 'none';
+        document.getElementById('saveXLSbutton').style.display = 'none';
+      }
+
+      function saveXLS() {
+
+        const subjectCode = document.getElementById('ID').value || "SansNom"; // Nom du sujet
+        const today = new Date().toLocaleDateString('fr-FR');
+        const filename = `SF36v1_${today}_${subjectCode}.csv`;
+
+
+        const safeGH = typeof globalGH === 'number' ? globalGH.toFixed(2) : "NA";
+        const safePF = typeof globalPF === 'number' ? globalPF.toFixed(2) : "NA";
+        const safeBP = typeof globalBP === 'number' ? globalBP.toFixed(2) : "NA";
+        const safeRP = typeof globalRP === 'number' ? globalRP.toFixed(2) : "NA";
+        const safeVT = typeof globalVT === 'number' ? globalVT.toFixed(2) : "NA";
+        const safeSF = typeof globalSF === 'number' ? globalSF.toFixed(2) : "NA";
+        const safeRE = typeof globalRE === 'number' ? globalRE.toFixed(2) : "NA";
+        const safeMH = typeof globalMH === 'number' ? globalMH.toFixed(2) : "NA";
+        const safeHT = typeof globalHT === 'number' ? globalHT.toFixed(2) : "NA";
+
+		  const allQuestionNames = [
+          'q1', 'q2',
+          'q3a', 'q3b', 'q3c', 'q3d', 'q3e', 'q3f', 'q3g', 'q3h', 'q3i', 'q3j',
+          'q4a', 'q4b', 'q4c', 'q4d',
+          'q5a', 'q5b', 'q5c',
+          'q6', 'q7', 'q8',
+          'q9a', 'q9b', 'q9c', 'q9d', 'q9e', 'q9f', 'q9g', 'q9h', 'q9i',
+          'q10',
+          'q11a', 'q11b', 'q11c', 'q11d'
+        ];
+
+        let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+        csvContent += "Sujet,Date,Questionnaire,GH,PF,BP,RP,VT,SF,RE,MH,HT";
+        for (let i = 0; i <36; i++) {
+          csvContent += `,"${allQuestionNames[i]}"`;
+        }
+        csvContent += "\n";
+
+        let row =       `"${subjectCode}","${today}","SF36v1","${safeGH}","${safePF}","${safeBP}","${safeRP}","${safeVT}","${safeSF}","${safeRE}","${safeMH}","${safeHT}"`;
+        allQuestionNames.forEach(name => {
+        let selectedInput = document.querySelector(`input[name="${name}"]:checked`);
+        let value = selectedInput ? selectedInput.value : "NA";
+        row += `,"${value}"`;
+      });
+        
+       
+
+        csvContent += row + "\n";
+        const link = document.createElement("a");
+        link.setAttribute("href", encodeURI(csvContent));
+        link.setAttribute("download", filename);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+
+
+      function savePdf() {
+
+        const { jsPDF } = window.jspdf;
+        const today = new Date().toLocaleDateString('fr-FR');
+        const subjectCode = document.getElementById('ID').value || "SansNom";
+        const filename = `SF36v1_${today}_${subjectCode}.pdf`;
+
+        
+        const safeGH = typeof globalGH === 'number' ? globalGH.toFixed(2) : "NA";
+        const safePF = typeof globalPF === 'number' ? globalPF.toFixed(2) : "NA";
+        const safeBP = typeof globalBP === 'number' ? globalBP.toFixed(2) : "NA";
+        const safeRP = typeof globalRP === 'number' ? globalRP.toFixed(2) : "NA";
+        const safeVT = typeof globalVT === 'number' ? globalVT.toFixed(2) : "NA";
+        const safeSF = typeof globalSF === 'number' ? globalSF.toFixed(2) : "NA";
+        const safeRE = typeof globalRE === 'number' ? globalRE.toFixed(2) : "NA";
+        const safeMH = typeof globalMH === 'number' ? globalMH.toFixed(2) : "NA";
+        const safeHT = typeof globalHT === 'number' ? globalHT.toFixed(2) : "NA";
+
+      
+
+
+        col = ["GH","PF","BP","RP","VT","SF","RE","MH","HT"];
+        const safeScores = [safeGH, safePF, safeBP, safeRP,safeVT,safeSF,safeRE,safeMH,safeHT];
+        let data2table = "<table>";
+        for (let i = 0; i < col.length; i++) {
+          data2table += `
+          <tr>
+          <td><strong>${col[i]}</strong></td>
+          <td> ${safeScores[i]}</td></tr>`;}
+          data2table += "</table>";
+
+        const allQuestionNames = [
+          'q1', 'q2',
+          'q3a', 'q3b', 'q3c', 'q3d', 'q3e', 'q3f', 'q3g', 'q3h', 'q3i', 'q3j',
+          'q4a', 'q4b', 'q4c', 'q4d',
+          'q5a', 'q5b', 'q5c',
+          'q6', 'q7', 'q8',
+          'q9a', 'q9b', 'q9c', 'q9d', 'q9e', 'q9f', 'q9g', 'q9h', 'q9i',
+          'q10',
+          'q11a', 'q11b', 'q11c', 'q11d'
+        ];
+        
+        let data2table_longue = "<table>"
+        for (let row = 0; row < 6; row++) {
+          data2table_longue += "<tr>";
+          for (let col = 0; col < 6; col++) {
+              let index = row * 6 + col;
+              if (index < allQuestionNames.length) {
+                  let name = allQuestionNames[index];
+                  let selectedInput = document.querySelector(`input[name="${name}"]:checked`);
+                  let value = selectedInput ? selectedInput.value : "NA";
+                  data2table_longue += `<td><strong>${name}</strong> ${value}</td>`;
+              } else {
+                  data2table_longue += "<td></td>"; // Empty cell if there are no more questions
+              }
+          }
+          data2table_longue += "</tr>";
+      }
+
+        data2table_longue += "</table>";
+   
+        const content = document.createElement('div');
+        content.innerHTML = `
+              <style>
+                .header_report,
+                .body_report,
+                .footer_report {
+                text-align: center;
+                margin: 0 auto;
+                width: 100%;
+                }
+                .header_report {
+                padding-top: 4%;
+                padding-bottom: 4%;
+                border-bottom: 1px solid #2B176C;
+                }
+                .footer_report {
+                padding-top: 3%;
+                padding-bottom:3%;
+                }
+                .body_report {
+                padding-top: 5%;
+                padding-bottom:10%;
+                background-color: white;
+                color: black; 
+                }
+                table {
+                border-collapse: collapse;
+                width: 80%;
+
+                margin: 0 auto;
+                }
+
+                th, td {
+                border: 1px solid #eeeeee;
+                }
+                td strong {
+                display: block;
+                text-align: left;
+                }
+              </style>
+              <div class="header_report">
+                <img src="https://data.memau.eu/wp-content/uploads/2025/06/logo-memau-data.svg" alt="Logo" style="max-width: 210px; 
+                margin-top: 10px;margin-bottom: 5px;">
+                <p><i>Contact : hello@memau.eu </i></p>
+              </div>    
+              <div class="body_report">
+                <h1>SF36v1.0</h1>
+                <p>Code du Sujet : ${subjectCode} </p>
+                <p>Rapport généré le : ${today}</p>
+                <p> Scores globaux </p>
+                ${data2table}
+                <br>
+                ${data2table_longue}
+              </div>
+              `;
+
+        document.body.appendChild(content);
+
+        // Define options for html2pdf
+        const opt = {
+          margin: 10,
+          filename: filename,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2, useCORS: true, scrollY: 0,windowHeight: 1200 },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+          pagebreak: { avoid: '.body_report' }
+        };
+
+        // Generate and download the PDF
+        html2pdf().set(opt).from(content).save().then(() => {
+          document.body.removeChild(content);
+        });
+      }
+
+
+
+    </script>
+  </body>
 </html>

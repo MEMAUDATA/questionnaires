@@ -343,7 +343,7 @@
         let tq = document.querySelector(`input[name="tq${i}"]:checked`);
         if (!tq) {
           const resultDiv = document.getElementById("results");
-          resultDiv.innerHTML = "<p class=Error_message_not_all_answered>Veuillez répondre svp à toutes les questions avant de calculer le score!</p>";
+          resultDiv.innerHTML = "<p class=Error_message_not_all_answered>Veuillez répondre svp à toutes les questions!</p>";
           resultDiv.style.display = "block"; 
           return;
         };
@@ -541,22 +541,19 @@
         color: black; 
         }
 
-
-        table {
+        .body_report table {
         border-collapse: collapse;
         width: 80%;
-
         margin: 0 auto;
         }
 
-        th, td {
+        .body_report th, td {
         border: 1px solid #eeeeee;
         }
-        td strong {
+        .body_report td strong {
         display: block;
         text-align: left;
         }
-
 
             </style>
         <div class="header_report">
@@ -571,7 +568,7 @@
         ${data2table}
         <br>
         ${data2table_longue}
-            </div>
+        </div>
         `;
 
       document.body.appendChild(content);
@@ -593,11 +590,8 @@
     }
 
   </script>
-
-
-
 </body>
 </html>
-<!--
+
 
 
