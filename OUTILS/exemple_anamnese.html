@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <!-- Author's details-->
+    <meta name="author" content="Nicolas Vannson">
+    <meta name="contact" content="hello@memau.eu">
+    <meta name="license" content="EUPLv1.2">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.0/jspdf.umd.min.js"></script>
+    <script src= https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+      /* style is within the style.css sheet */
+    </style>
+    <title>Anamnèse</title>
+  </head>
+  <body>
+    <h1> Anamnèse</h1>
+    <p>Exemple d'anamnèse type </p>
+    <p > MEMAUDATA, 2025 (version originale)</p>
+    <br>
+    <form id="questionnaire">
+        <div class="question">
+            <label for="nom">Nom :</label>
+            <input type="text" id="nom" name="nom" required>
+        </div>
+        <div class="question">
+            <label for="prenom">Prénom :</label>
+            <input type="text" id="prenom" name="prenom" required>
+        </div>
+        <div class="question">
+            <label for="dateNaissance">Date de naissance :</label>
+            <input type="date" id="dateNaissance" name="dateNaissance" required>
+        </div>
+        <div class="question">
+            <label for="sexe">Sexe :</label>
+            <select id="sexe" name="sexe" required>
+                <option value="masculin">Masculin</option>
+                <option value="féminin">Féminin</option>
+                <option value="autre">Autre</option>
+            </select>
+        </div>
+        <div class="question">
+            <label>Avez-vous des antécédents familiaux de problèmes auditifs ?</label>
+            <input type="radio" id="antecedentsOui" name="antecedents" value="oui">
+            <label for="antecedentsOui">Oui</label>
+            <input type="radio" id="antecedentsNon" name="antecedents" value="non">
+            <label for="antecedentsNon">Non</label>
+        </div>
+        <div class="question">
+            <label for="problemesAuditifs">Si oui, décrivez :</label>
+            <textarea id="problemesAuditifs" name="problemesAuditifs"></textarea>
+        </div>
+        <div class="question">
+            <label>Avez-vous déjà été exposé à des bruits forts de manière prolongée ?</label>
+            <input type="radio" id="expositionOui" name="exposition" value="oui">
+            <label for="expositionOui">Oui</label>
+            <input type="radio" id="expositionNon" name="exposition" value="non">
+            <label for="expositionNon">Non</label>
+        </div>
+        <div class="question">
+            <label for="expositionDetails">Si oui, décrivez :</label>
+            <textarea id="expositionDetails" name="expositionDetails"></textarea>
+        </div>
+        <div class="question">
+            <label>Avez-vous déjà ressenti des acouphènes (sifflements, bourdonnements) ?</label>
+            <input type="radio" id="acouphenesOui" name="acouphenes" value="oui">
+            <label for="acouphenesOui">Oui</label>
+            <input type="radio" id="acouphenesNon" name="acouphenes" value="non">
+            <label for="acouphenesNon">Non</label>
+        </div>
+        <div class="question">
+            <label for="acouphenesDetails">Si oui, décrivez :</label>
+            <textarea id="acouphenesDetails" name="acouphenesDetails"></textarea>
+        </div>
+        <div class="question">
+            <label for="medicaments">Prenez-vous des médicaments ? Si oui, lesquels ?</label>
+            <textarea id="medicaments" name="medicaments"></textarea>
+        </div>
+        <div class="question">
+            <label for="autresProblemes">Avez-vous d'autres problèmes de santé ? Si oui, décrivez :</label>
+            <textarea id="autresProblemes" name="autresProblemes"></textarea>
+        </div>
+        <button type="submit">Soumettre</button>
+    </form>
+
+    <script>
+        document.getElementById('questionnaire').addEventListener('submit', function(event) {
+            event.preventDefault();
+            // Ici, vous pouvez ajouter le code pour traiter les réponses du questionnaire
+            alert('Questionnaire soumis !');
+        });
+    </script>
+  </body>
+</html>
+<!--
+<form id="ANAMNESE">
+      <table>
+        <tbody>
+          <tr>
+            <td>
+            </td>
+          </tr>
+         
+        </tbody>
+      </table>
+      <div class="buttons-container">
+        <button type="button" onclick="savePdf()">Exporter en PDF</button>
+        <button type="button" onclick="saveXLS()">Exporter en XLS</button>
+        <button type="reset" onclick="resetForm()">Réinitialiser</button>
+      </div>
+    </form>
+    <script>
+
+      function calculerScores() {
+          let allAnswered = true;
+
+          for (let i = 1; i <= 8; i++) {
+            let q = document.querySelector(`input[name="q${i}"]:checked`);
+            if (!q) {
+              allAnswered = false;
+              break;
+            }
+          }
+
+          //if (!allAnswered) return;
+
+          const resp = document.getElementById("IIPBAA");
+
+          // Assign actual scores only once
+          let use = parseInt(resp.elements["q1"].value);
+          let ben = parseInt(resp.elements["q2"].value);
+          let ral = parseInt(resp.elements["q3"].value);
+          let sat = parseInt(resp.elements["q4"].value);
+          let rpr = parseInt(resp.elements["q5"].value);
+          let iot = parseInt(resp.elements["q6"].value);
+          let qol = parseInt(resp.elements["q7"].value);
+          let perte = parseInt(resp.elements["q8"].value);
+
+          // Determine norms based on perte
+          let [n_use, n_ben, n_ral, n_sat, n_rpr, n_iot, n_qol] = perte >= 3
+            ? [3, 3, 3, 2, 3, 3, 3]
+            : [4, 3, 2, 3, 3, 2, 3];
+
+          displayscores(use, ben, ral, sat, rpr, iot, qol, n_use, n_ben, n_ral, n_sat, n_rpr, n_iot, n_qol);
+        }
+
+      function displayscores(use, ben, ral, sat, rpr, iot, qol, n_use,n_ben,n_ral,n_sat,n_rpr,n_iot,n_qol){
+        let display = "<p>Résultats</p>";
+        display += "<br>"; 
+        display += "<ul class='myList'>"; 
+        display += "<li>Temps de port : " + use + " (norme: " + n_use + ")" +  "</li>";
+        display += "<li>Bénéfice de l’appareillage auditif : " + ben + " (norme: " + n_ben + ")" + "</li>";
+        display += "<li>Limitations résiduelles : " + ral + " (norme: " + n_ral + ")" + "</li>";
+        display += "<li>Niveau de satisfaction : " + sat + " (norme: " + n_sat + ")" + "</li>";
+        display += "<li>Restrictions résiduelles : " + rpr + " (norme: " + n_rpr + ")" +"</li>";
+        display += "<li>Impact de l’appareillage sur les autres : " + iot + " (norme: " + n_iot + ")" + "</li>";
+        display += "<li>Niveau de qualité de vie : " + qol + " (norme: " + n_qol + ")" + "</li>";
+        display += "</ul>";
+        // Update the results div with the constructed HTML
+        document.getElementById("scoreDisplay").innerHTML = display;
+        document.getElementById("results").style.display = "block";
+        document.getElementById('savePdfButton').style.display = 'inline-block';
+        document.getElementById('saveXLSbutton').style.display = 'inline-block';
+      }
+      
+      
+
+      function resetForm() {
+        document.getElementById("IIPBAA").reset();
+        // Reset subject's name
+        document.getElementById("ID").value = "";
+        document.getElementById('results').style.display = 'none';
+        // Hide the save PDF button on reset
+        document.getElementById('savePdfButton').style.display = 'none';
+        document.getElementById('saveXLSbutton').style.display = 'none';
+      }
+      
+      
+       function saveXLS() {
+
+        const subjectCode = document.getElementById('ID').value || "SansNom"; // Nom du sujet
+        const today = new Date().toLocaleDateString('fr-FR');
+        const filename = `IOIHA_${today}_${subjectCode}.csv`;
+
+
+        let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+        csvContent += "Sujet,Date,Questionnaire,use, ben, ral, sat, rpr, iot, qol";
+        csvContent += "\n";
+
+        let row = `"${subjectCode}","${today}","SHQ"`;
+        for (let i = 1; i <8 ; i++) {
+          const resp = document.getElementById("IIPBAA");
+          var answer = parseInt(resp.elements[`q${i}`].value); 
+          row += `,"${answer}"`;
+        }    
+
+        csvContent += row + "\n";
+
+        const link = document.createElement("a");
+        link.setAttribute("href", encodeURI(csvContent));
+        link.setAttribute("download", filename);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+
+
+		function savePdf() {
+          const { jsPDF } = window.jspdf;
+          const today = new Date().toLocaleDateString('fr-FR');
+          const subjectCode = document.getElementById('ID').value || "SansNom";
+          const filename = `IOIHA_${today}_${subjectCode}.pdf`;
+
+        
+		const col = [
+          "Temps de port", "Bénéfice de l’appareillage auditif",
+          "Limitations résiduelles", "Niveau de satisfaction",
+          "Restrictions résiduelles", "Impact de l’appareillage sur les autres",
+          "Niveau de qualité de vie"
+        ];
+
+		const resp = document.getElementById("IIPBAA");
+        
+        let perte = parseInt(resp.elements["q8"].value);
+        let [n_use, n_ben, n_ral, n_sat, n_rpr, n_iot, n_qol] = perte >= 3
+            ? [3, 3, 3, 2, 3, 3, 3]
+            : [4, 3, 2, 3, 3, 2, 3];
+
+	      const norms = [n_use, n_ben, n_ral, n_sat, n_rpr, n_iot, n_qol];
+        
+        // Type of hearing loss
+        const perteLabels = {
+              1: "Profonde",
+              2: "Sévère",
+              3: "Moyenne",
+              4: "Légère",
+              5: "Aucune"
+            };
+
+		  let type_de_perte = perteLabels[perte] || "Inconnue";
+    
+        let data2table = "<table>";
+        for (let i = 0; i < 7; i++) {
+        	const resp = document.getElementById("IIPBAA");
+            var answer = parseInt(resp.elements[`q${i + 1}`].value);
+            const norm = norms[i];
+            const status = answer >= norm ? "✅" : "⚠️";
+            data2table += `
+              <tr>
+              <td><strong>${col[i]}</strong></td>
+              <td> ${answer}</td>
+              <td>→ Norme </td>
+              <td>${norms[i]} ${status} </td></tr>`;}
+          data2table += "</table>";
+        
+
+      const content = document.createElement('div');
+      content.innerHTML = `
+        <style>
+        .header_report,
+        .body_report,
+        .footer_report {
+        text-align: center;
+        margin: 0 auto;
+        width: 100%;
+        }
+        .header_report {
+        padding-top: 4%;
+        padding-bottom: 4%;
+        background-color:white; /*color for test*/
+        border-bottom: 1px solid #2B176C;
+        }
+        .footer_report {
+        padding-top: 3%;
+        padding-bottom:3%;
+
+        }
+        .body_report {
+        padding-top: 5%;
+        padding-bottom:20%;
+        background-color: white;
+        color: black; 
+        }
+
+
+		table {
+          border-collapse: collapse;
+          width: 80%;
+          margin-top: 20px;
+          margin: 0 auto;
+      	}
+
+        th, td {
+          padding: 6px 12px;
+          border: 1px solid #eeeeee;
+      }
+        td strong {
+          display: block;
+          text-align: left;
+        }
+
+
+        </style>
+        <div class="header_report">
+        <img src="https://data.memau.eu/wp-content/uploads/2025/06/logo-memau-data.svg" alt="Logo" style="max-width: 210px; 
+        margin-top: 10px;margin-bottom: 5px;">
+        <p><i>Contact : hello@memau.eu </i></p>
+              </div>    
+        <div class="body_report">
+        <h1>IOI-HA</h1>
+        <p>Code du Sujet : ${subjectCode} </p>
+        <p>Rapport généré le : ${today}</p>
+         <p>Perte auditive sans appareil(s) : ${type_de_perte}</p>
+        <br>
+        ${data2table}	
+        </div>
+        `;
+
+
+      document.body.appendChild(content);
+
+      // Use html2pdf to convert the HTML content to PDF
+      const opt = {
+        margin: [10, 10, 10, 10], // Adjusted margin to ensure content is visible
+        filename: filename,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true,scrollY: 0  },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      // Generate PDF from HTML content
+      html2pdf().set(opt).from(content).save().then(() => {
+        document.body.removeChild(content);
+      });
+      }				
+
+    </script>
+
+
+
+
+-->
