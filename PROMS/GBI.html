@@ -489,7 +489,7 @@
               <p>Bénéfice Général :&nbsp;${safeGeneral}</p>
               <p>Soutien Social :&nbsp;${safeSocial}</p>
               <p>Santé Physique :&nbsp;${safePhysique}</p>
-              <p>Score de chaque question</p>
+              <p>Score brut de chaque question</p>
 
               <div class="data2columns">
                 ${data2table}
@@ -520,6 +520,7 @@
       function resetForm() {
 
         document.getElementById("GBI").reset();
+        document.getElementById("ID").value = ""; 
         document.getElementById("scoreDisplay").innerHTML = "";
         document.getElementById("results").style.display = "none";
 
