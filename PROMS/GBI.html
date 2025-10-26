@@ -15,7 +15,7 @@
         <style>
           /* style is within the style.css sheet */
         </style>
-  <title>GBI</title>
+  <title>Questionnaire GBI</title>
   </head>
   <body>
     <h1>Glasgow Benefit Intervention (GBI)</h1>
@@ -215,88 +215,108 @@
         <button type="reset" onclick="resetForm()">Réinitialiser</button>
       </div>
     </form>
+
     <div id="results" style="display:none">
-        <p id="scoreDisplay"></p><br>
-        <label for="nameID" class="Subject_name">Nom du sujet (si besoin)</label>
-        <input type="text" id="ID" name="nameID"><br>
-        <button id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
-        <button id="saveXLSbutton" onclick="saveXLS()">Exporter en XLS</button>
-      </div>
+      <p id="scoreDisplay"></p><br>
+      <label for="nameID" class="Subject_name">Nom du sujet (si besoin)</label>
+      <input type="text" id="ID" name="nameID"><br>
+      <button id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
+      <button id="saveXLSbutton" onclick="saveXLS()">Exporter en XLS</button>
+    </div>
+
     <script>
-        // This function is responsible for calculating the GBI and subscale scores.
-        function calculateScore() {
-        let totalScore = 0;
-        let answeredQuestions = 0;
 
-        // Define questions for each subscale
-        const generalBenefitQuestions = ['q1', 'q2', 'q3', 'q5', 'q6', 'q7', 'q14', 'q15', 'q17'];
-        let generalBenefitScore = 0;
-        let generalBenefitAnswered = 0;
-
-        const socialSupportQuestions = ['q4', 'q10', 'q11', 'q18'];
-        let socialSupportScore = 0;
-        let socialSupportAnswered = 0;
-
-        const physicalHealthQuestions = ['q8', 'q9', 'q12', 'q13', 'q16'];
-        let physicalHealthScore = 0;
-        let physicalHealthAnswered = 0;
-
-        // Loop through all 18 questions to collect scores
-        for (let i = 1; i <= 18; i++) {
-          const qName = 'q' + i;
-          const selectedOption = document.querySelector(`input[name="${qName}"]:checked`);
-
-          if (selectedOption) {
-            const value = parseInt(selectedOption.value);
-            totalScore += value;
-            answeredQuestions++;
-
-            // Assign scores to respective subscales
-            if (generalBenefitQuestions.includes(qName)) {
-              generalBenefitScore += value;
-              generalBenefitAnswered++;
-            } else if (socialSupportQuestions.includes(qName)) {
-              socialSupportScore += value;
-              socialSupportAnswered++;
-            } else if (physicalHealthQuestions.includes(qName)) {
-              physicalHealthScore += value;
-              physicalHealthAnswered++;
-            }
-          }
-        }
-
-        // Handle cases where not all questions are answered for a subscale
-        if (answeredQuestions < 18) {
-          const resultDiv = document.getElementById("results"); // Assuming you have a div with id="result"
-          resultDiv.innerHTML = "<p class=Error_message_not_all_answered>Veuillez répondre svp à toutes les questions avant de calculer le score!</p>";
-          resultDiv.style.display = "block"; // Make sure the result div is visible
-        return; // Exit if no questions are answered
-        }
-
-
-        // --- Score Calculation ---
-        // The GBI uses a specific normalization.
-        // Each question score (1-5) is normalized around 0 (3 = 0, 5 = +2, 1 = -2).
-        // Then, the normalized sum is divided by the maximum possible positive sum
-        // (number of questions * 2, since max positive for one question is 2),
-        // and multiplied by 100 to scale to a -100 to +100 range.
-
-        const calculateSubscaleScore = (scoreSum, answeredCount) => {
-          if (answeredCount === 0) {
-            return 0; // Avoid division by zero if no questions were answered for this subscale
-          }
-          const normalizedSum = scoreSum - (3 * answeredCount);
-          return (normalizedSum / (2 * answeredCount)) * 100;
+        const GBI = {
+          gbiScore: null,
+          generalBenefitSubscale: null,
+          socialSupportSubscale: null,
+          physicalHealthSubscale: null
         };
 
-        const gbiScore = calculateSubscaleScore(totalScore, answeredQuestions);
-        const generalBenefitSubscale = calculateSubscaleScore(generalBenefitScore, generalBenefitAnswered);
-        const socialSupportSubscale = calculateSubscaleScore(socialSupportScore, socialSupportAnswered);
-        const physicalHealthSubscale = calculateSubscaleScore(physicalHealthScore, physicalHealthAnswered);
+        
 
-        // Display the calculated scores
-        displayResults(gbiScore, generalBenefitSubscale, socialSupportSubscale, physicalHealthSubscale);
-      }
+        // This function is responsible for calculating the GBI and subscale scores.
+        function calculateScore() {
+          let totalScore = 0;
+          let answeredQuestions = 0;
+
+          // Define questions for each subscale
+          const generalBenefitQuestions = ['q1', 'q2', 'q3', 'q5', 'q6', 'q7', 'q14', 'q15', 'q17'];
+          let generalBenefitScore = 0;
+          let generalBenefitAnswered = 0;
+
+          const socialSupportQuestions = ['q4', 'q10', 'q11', 'q18'];
+          let socialSupportScore = 0;
+          let socialSupportAnswered = 0;
+
+          const physicalHealthQuestions = ['q8', 'q9', 'q12', 'q13', 'q16'];
+          let physicalHealthScore = 0;
+          let physicalHealthAnswered = 0;
+
+          // Loop through all 18 questions to collect scores
+          for (let i = 1; i <= 18; i++) {
+            const qName = 'q' + i;
+            const selectedOption = document.querySelector(`input[name="${qName}"]:checked`);
+
+            if (selectedOption) {
+              const value = parseInt(selectedOption.value);
+              totalScore += value;
+              answeredQuestions++;
+
+              // Assign scores to respective subscales
+              if (generalBenefitQuestions.includes(qName)) {
+                generalBenefitScore += value;
+                generalBenefitAnswered++;
+              } else if (socialSupportQuestions.includes(qName)) {
+                socialSupportScore += value;
+                socialSupportAnswered++;
+              } else if (physicalHealthQuestions.includes(qName)) {
+                physicalHealthScore += value;
+                physicalHealthAnswered++;
+              }
+            }
+          }
+
+          // Handle cases where not all questions are answered for a subscale
+          if (answeredQuestions < 18) {
+            const resultDiv = document.getElementById("results");
+            resultDiv.innerHTML = "<p class=Error_message_not_all_answered>Veuillez répondre svp à toutes les questions avant de calculer le score!</p>";
+            resultDiv.style.display = "block"; 
+            return;
+          }
+
+
+          // --- Score Calculation ---
+          // The GBI uses a specific normalization.
+          // Each question score (1-5) is normalized around 0 (3 = 0, 5 = +2, 1 = -2).
+          // Then, the normalized sum is divided by the maximum possible positive sum
+          // (number of questions * 2, since max positive for one question is 2),
+          // and multiplied by 100 to scale to a -100 to +100 range.
+
+          const calculateSubscaleScore = (scoreSum, answeredCount) => {
+            if (answeredCount === 0) {
+              return 0; // Avoid division by zero if no questions were answered for this subscale
+            }
+            const normalizedSum = scoreSum - (3 * answeredCount);
+            return (normalizedSum / (2 * answeredCount)) * 100;
+          };
+
+          const gbiScore = calculateSubscaleScore(totalScore, answeredQuestions);
+          const generalBenefitSubscale = calculateSubscaleScore(generalBenefitScore, generalBenefitAnswered);
+          const socialSupportSubscale = calculateSubscaleScore(socialSupportScore, socialSupportAnswered);
+          const physicalHealthSubscale = calculateSubscaleScore(physicalHealthScore, physicalHealthAnswered);
+
+          // Display the calculated scores
+          displayResults(gbiScore, generalBenefitSubscale, socialSupportSubscale, physicalHealthSubscale);
+
+          // Return score for xls and pdf
+          GBI.gbiScore = gbiScore;
+          GBI.generalBenefitSubscale = generalBenefitSubscale;
+          GBI.socialSupportSubscale = socialSupportSubscale;
+          GBI.physicalHealthSubscale = physicalHealthSubscale;
+
+
+        }
 
       // This function is purely for displaying the scores in the designated HTML element.
       function displayResults(gbiScore, generalBenefitSubscale, socialSupportSubscale, physicalHealthSubscale) {
@@ -310,16 +330,226 @@
         display += "</ul>";
         display += "<p> Les scores vont de -100 (bénéfices négatifs) à +100 (bénéfices positifs). </p>";
 
-        document.getElementById("results").innerHTML = display;
+        // Update the results div with the constructed HTML
+        document.getElementById("scoreDisplay").innerHTML = display;
         document.getElementById("results").style.display = "block";
+        document.getElementById('savePdfButton').style.display = 'inline-block';
+        document.getElementById('saveXLSbutton').style.display = 'inline-block';
+
+
       }
 
+      function saveXLS() {
+
+        const subjectCode = document.getElementById('ID').value || "SansNom";
+        const today = new Date().toLocaleDateString('fr-FR');
+        const filename = `GBI_${today}_${subjectCode}.csv`;
+
+        // Récupérer les réponses
+        let answers = [];
+        for (let i = 1; i <= 18; i++) {
+            const selectedOption = document.querySelector(`input[name="q${i}"]:checked`);
+            answers.push(selectedOption ? selectedOption.value : "NA");
+        }
+
+        // Calculer les scores
+        const safeTotal = typeof GBI.gbiScore === 'number' ? GBI.gbiScore.toFixed(2) : "NA";
+        const safeGeneral = typeof GBI.generalBenefitSubscale === 'number' ? GBI.generalBenefitSubscale.toFixed(2) : "NA";
+        const safeSocial = typeof GBI.socialSupportSubscale === 'number' ? GBI.socialSupportSubscale.toFixed(2) : "NA";
+        const safePhysique = typeof GBI.physicalHealthSubscale === 'number' ? GBI.physicalHealthSubscale.toFixed(2) : "NA";
+
+
+
+        // Créer le contenu CSV
+        let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+        csvContent += "Sujet,Date,Questionnaire,Total,General,Social,Physique,";
+        for (let i = 1; i <= 18; i++) {
+            csvContent += `Q${i},`;
+        }
+        csvContent += "\n";
+        let row = `"${subjectCode}","${today}","GBI","${safeTotal}","${safeGeneral}","${safeSocial}","${safePhysique}",`;
+        row += answers.join(",");
+        csvContent += row + "\n";
+
+        // Télécharger le fichier
+        const link = document.createElement("a");
+        link.setAttribute("href", encodeURI(csvContent));
+        link.setAttribute("download", filename);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+
+      function savePdf() {
+
+          const { jsPDF } = window.jspdf;
+          const today = new Date().toLocaleDateString('fr-FR');
+          const subjectCode = document.getElementById('ID').value || "SansNom";
+          const filename = `GBI_${today}_${subjectCode}.pdf`;
+
+          // Calculer les scores
+          const safeTotal = typeof GBI.gbiScore === 'number' ? GBI.gbiScore.toFixed(2) : "NA";
+          const safeGeneral = typeof GBI.generalBenefitSubscale === 'number' ? GBI.generalBenefitSubscale.toFixed(2) : "NA";
+          const safeSocial = typeof GBI.socialSupportSubscale === 'number' ? GBI.socialSupportSubscale.toFixed(2) : "NA";
+          const safePhysique = typeof GBI.physicalHealthSubscale === 'number' ? GBI.physicalHealthSubscale.toFixed(2) : "NA";
+
+
+
+          let data2table = "<table>";
+          let answers = [];
+
+          for (let i = 1; i <= 18; i++) {
+            const selectedOption = document.querySelector(`input[name="q${i}"]:checked`);
+            const answer = selectedOption ? selectedOption.value : "NA";
+            answers.push(answer);
+
+            // Ouvrir une ligne toutes les deux questions
+            if (i % 2 === 1) {
+              data2table += "<tr>";
+            }
+
+            data2table += `<td>Q${i} : ${answer}</td>`;
+
+            // Fermer la ligne après deux colonnes ou à la dernière question
+            if (i % 2 === 0 || i === 18) {
+              data2table += "</tr>";
+            }
+          }
+
+          data2table += "</table>";
+
+         
+          const content = document.createElement('div');
+          content.innerHTML = `
+            <style>
+            @page {
+                size: A4;
+                margin: 0;
+              }  
+            .header_report,
+            .body_report,
+            .footer_report {
+            text-align: center;
+            margin: 0 auto;
+            width: 100%;
+            }
+            .header_report {
+            padding-top: 4%;
+            padding-bottom: 4%;
+            background-color:white; /*color for test*/
+            border-bottom: 1px solid #2B176C;
+            }
+            .footer_report {
+            padding-top: 3%;
+            padding-bottom:3%;
+
+            }
+            .body_report {
+            padding-top: 5%;
+            padding-bottom:20%;
+            background-color: white;
+            color: black; 
+            }
+
+
+            table {
+              border-collapse: collapse;
+              width: 80%;
+              margin-top: 20px;
+              margin: 0 auto;
+            }
+
+            th, td {
+              padding: 6px 12px;
+              border: 1px solid #eeeeee;
+          }
+            td strong {
+              display: block;
+              text-align: left;
+            }
+
+
+            </style>
+            <div class="header_report">
+            <img src="https://data.memau.eu/wp-content/uploads/2025/06/logo-memau-data.svg" alt="Logo" style="max-width: 210px; 
+            margin-top: 10px;margin-bottom: 5px;">
+            <p><i>Contact : hello@memau.eu </i></p>
+                  </div>    
+            <div class="body_report">
+              <h1>GBI</h1>
+              <p>Code du Sujet : ${subjectCode} </p>
+              <p>Rapport généré le : ${today}</p>
+              <p>Score total&nbsp:&nbsp;${safeTotal}</p>
+              <p>Bénéfice Général :&nbsp;${safeGeneral}</p>
+              <p>Soutien Social :&nbsp;${safeSocial}</p>
+              <p>Santé Physique :&nbsp;${safePhysique}</p>
+              <p>Score de chaque question</p>
+
+              <div class="data2columns">
+                ${data2table}
+              </div>
+            </div>
+            `;
+
+        
+
+            document.body.appendChild(content);
+
+            // Use html2pdf to convert the HTML content to PDF
+            const opt = {
+              margin: [10, 10, 10, 10], // Adjusted margin to ensure content is visible
+              filename: filename,
+              image: { type: 'jpeg', quality: 0.98 },
+              html2canvas: { scale: 2, useCORS: true,scrollY: 0  },
+              jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Generate PDF from HTML content
+            html2pdf().set(opt).from(content).save().then(() => {
+              document.body.removeChild(content);
+            });
+      }
+      
       // This function resets the form and clears the displayed results.
       function resetForm() {
-        document.getElementById("GBI").reset(); // Assuming 'gbi' is the ID of your form
-        document.getElementById("results").innerHTML = "";
-        document.getElementById("results").style.display = "none"; // Hide the result div
-      }
+            // Réinitialiser les variables globales
+            if (GBI) {
+                GBI.gbiScore = null;
+                GBI.generalBenefitSubscale = null;
+                GBI.socialSupportSubscale = null;
+                GBI.physicalHealthSubscale = null;
+            }
+
+            // Réinitialiser le formulaire
+            const form = document.getElementById("GBI");
+            if (form) form.reset();
+
+            // Réinitialiser le champ "Nom du sujet"
+            const subjectField = document.getElementById("ID");
+            if (subjectField) subjectField.value = "";
+
+            // Supprimer les messages d'erreur
+            const errorMessages = document.querySelectorAll(".Error_message_not_all_answered");
+            errorMessages.forEach(errorMsg => errorMsg.remove());
+
+            // Masquer les boutons d'export
+            const pdfBtn = document.getElementById('savePdfButton');
+            if (pdfBtn) pdfBtn.style.display = 'none';
+
+            const xlsBtn = document.getElementById('saveXLSbutton');
+            if (xlsBtn) xlsBtn.style.display = 'none';
+
+            // Masquer la div des résultats
+            const resultsDiv = document.getElementById('results');
+            if (resultsDiv) {
+                resultsDiv.style.display = 'none';
+                resultsDiv.innerHTML = ""; // Optionnel : vider le contenu
+            }
+        }
+
+
+      
+        
     </script>
   </body>
 </html>

@@ -227,7 +227,7 @@
         csvContent += "Sujet,Date,Questionnaire,use, ben, ral, sat, rpr, iot, qol";
         csvContent += "\n";
 
-        let row = `"${subjectCode}","${today}","SHQ"`;
+        let row = `"${subjectCode}","${today}","IOIHA"`;
         for (let i = 1; i <8 ; i++) {
           const resp = document.getElementById("IIPBAA");
           var answer = parseInt(resp.elements[`q${i}`].value); 
