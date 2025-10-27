@@ -422,7 +422,7 @@
 
     <div id="results" style="display:none">
       <p id="scoreDisplay"></p><br>
-      <label for="nameID" class="Subject_name">Nom du sujet (si besoin)</label>
+      <label id ="labelId" for="nameID" class="Subject_name">Nom du sujet (si besoin)</label>
       <input type="text" id="ID" name="nameID"><br>
       <button id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
       <button id="saveXLSbutton" onclick="saveXLS()">Exporter en XLS</button>
@@ -431,15 +431,19 @@
 
     <script>
 
-      let globalGH = null;
-      let globalPF = null;
-      let globalBP = null;
-      let globalRP = null;
-      let globalVT = null;
-      let globalSF = null;
-      let globalRE = null;
-      let globalMH = null;
-      let globalHT = null;
+
+      const SF36 = {
+          globalGH : null,
+          globalPF : null,
+          globalBP : null,
+          globalRP : null,
+          globalVT : null,
+          globalSF : null,
+          globalRE : null,
+          globalMH : null,
+          globalHT : null
+        };
+
 
       function calculateScore() {
         // For ease, scores were already converted within the question
@@ -584,12 +588,31 @@
 
        // Check if all questions are answered
        if (!allAnswered) {
-            const resultDiv = document.getElementById("results");
-            resultDiv.innerHTML = "<p class=Error_message_not_all_answered>Veuillez répondre svp à toutes les questions avant de calculer le score!</p>";
-            resultDiv.style.display = "block"; 
-           return;
+
+            let errormsg = "<p class=Error_message_not_all_answered>Veuillez répondre svp à toutes les questions avant de calculer le score!</p>";
+            document.getElementById("scoreDisplay").innerHTML = errormsg;
+            document.getElementById('savePdfButton').style.display = "none";
+            document.getElementById('saveXLSbutton').style.display = "none";
+            document.getElementById("ID").style.display = "none";
+            document.getElementById("labelId").style.display = "none";
+            document.getElementById("results").style.display = "block";
+            
+            return;
         }
 
+
+        // Save global scores
+        SF36.globalGH = mscoreGH;
+        SF36.globalPF = mscorePF;
+        SF36.globalBP = mscoreBP;
+        SF36.globalRP = mscoreRP;
+        SF36.globalVT = mscoreVT;
+        SF36.globalSF = mscoreSF;
+        SF36.globalRE = mscoreRE;
+        SF36.globalMH = mscoreMH;
+        SF36.globalHT = mscoreHT;
+
+       
        // Display scores
        displayscores(mscoreGH, mscorePF, mscoreBP, mscoreRP, mscoreVT, mscoreSF, mscoreRE, mscoreMH, mscoreHT) 
 
@@ -619,16 +642,8 @@
         document.getElementById("results").style.display = "block";
         document.getElementById('savePdfButton').style.display = 'inline-block';
         document.getElementById('saveXLSbutton').style.display = 'inline-block';
-      }
-
-      function resetForm() {
-        document.getElementById("SF36").reset();
-        document.getElementById('results').style.display = 'none';
-        // Reset subject's name
-        document.getElementById("ID").value = ""; 
-        // Hide the save PDF button on reset
-        document.getElementById('savePdfButton').style.display = 'none';
-        document.getElementById('saveXLSbutton').style.display = 'none';
+        document.getElementById("ID").style.display = 'inline-block';
+        document.getElementById("labelId").style.display = 'inline-block';
       }
 
       function saveXLS() {
@@ -638,15 +653,15 @@
         const filename = `SF36v1_${today}_${subjectCode}.csv`;
 
 
-        const safeGH = typeof globalGH === 'number' ? globalGH.toFixed(2) : "NA";
-        const safePF = typeof globalPF === 'number' ? globalPF.toFixed(2) : "NA";
-        const safeBP = typeof globalBP === 'number' ? globalBP.toFixed(2) : "NA";
-        const safeRP = typeof globalRP === 'number' ? globalRP.toFixed(2) : "NA";
-        const safeVT = typeof globalVT === 'number' ? globalVT.toFixed(2) : "NA";
-        const safeSF = typeof globalSF === 'number' ? globalSF.toFixed(2) : "NA";
-        const safeRE = typeof globalRE === 'number' ? globalRE.toFixed(2) : "NA";
-        const safeMH = typeof globalMH === 'number' ? globalMH.toFixed(2) : "NA";
-        const safeHT = typeof globalHT === 'number' ? globalHT.toFixed(2) : "NA";
+        const safeGH = typeof SF36.globalGH === 'number' ? SF36.globalGH.toFixed(2) : "NA";
+        const safePF = typeof SF36.globalPF === 'number' ? SF36.globalPF.toFixed(2) : "NA";
+        const safeBP = typeof SF36.globalBP === 'number' ? SF36.globalBP.toFixed(2) : "NA";
+        const safeRP = typeof SF36.globalRP === 'number' ? SF36.globalRP.toFixed(2) : "NA";
+        const safeVT = typeof SF36.globalVT === 'number' ? SF36.globalVT.toFixed(2) : "NA";
+        const safeSF = typeof SF36.globalSF === 'number' ? SF36.globalSF.toFixed(2) : "NA";
+        const safeRE = typeof SF36.globalRE === 'number' ? SF36.globalRE.toFixed(2) : "NA";
+        const safeMH = typeof SF36.globalMH === 'number' ? SF36.globalMH.toFixed(2) : "NA";
+        const safeHT = typeof SF36.globalHT === 'number' ? SF36.globalHT.toFixed(2) : "NA";
 
 		  const allQuestionNames = [
           'q1', 'q2',
@@ -693,19 +708,18 @@
         const filename = `SF36v1_${today}_${subjectCode}.pdf`;
 
         
-        const safeGH = typeof globalGH === 'number' ? globalGH.toFixed(2) : "NA";
-        const safePF = typeof globalPF === 'number' ? globalPF.toFixed(2) : "NA";
-        const safeBP = typeof globalBP === 'number' ? globalBP.toFixed(2) : "NA";
-        const safeRP = typeof globalRP === 'number' ? globalRP.toFixed(2) : "NA";
-        const safeVT = typeof globalVT === 'number' ? globalVT.toFixed(2) : "NA";
-        const safeSF = typeof globalSF === 'number' ? globalSF.toFixed(2) : "NA";
-        const safeRE = typeof globalRE === 'number' ? globalRE.toFixed(2) : "NA";
-        const safeMH = typeof globalMH === 'number' ? globalMH.toFixed(2) : "NA";
-        const safeHT = typeof globalHT === 'number' ? globalHT.toFixed(2) : "NA";
-
-      
+        const safeGH = typeof SF36.globalGH === 'number' ? SF36.globalGH.toFixed(2) : "NA";
+        const safePF = typeof SF36.globalPF === 'number' ? SF36.globalPF.toFixed(2) : "NA";
+        const safeBP = typeof SF36.globalBP === 'number' ? SF36.globalBP.toFixed(2) : "NA";
+        const safeRP = typeof SF36.globalRP === 'number' ? SF36.globalRP.toFixed(2) : "NA";
+        const safeVT = typeof SF36.globalVT === 'number' ? SF36.globalVT.toFixed(2) : "NA";
+        const safeSF = typeof SF36.globalSF === 'number' ? SF36.globalSF.toFixed(2) : "NA";
+        const safeRE = typeof SF36.globalRE === 'number' ? SF36.globalRE.toFixed(2) : "NA";
+        const safeMH = typeof SF36.globalMH === 'number' ? SF36.globalMH.toFixed(2) : "NA";
+        const safeHT = typeof SF36.globalHT === 'number' ? SF36.globalHT.toFixed(2) : "NA";
 
 
+    
         col = ["GH","PF","BP","RP","VT","SF","RE","MH","HT"];
         const safeScores = [safeGH, safePF, safeBP, safeRP,safeVT,safeSF,safeRE,safeMH,safeHT];
         let data2table = "<table>";
@@ -766,8 +780,8 @@
                 padding-bottom:3%;
                 }
                 .body_report {
-                padding-top: 5%;
-                padding-bottom:10%;
+                padding-top: 2%;
+                padding-bottom:5%;
                 background-color: white;
                 color: black; 
                 }
@@ -798,6 +812,7 @@
                 <p> Scores globaux </p>
                 ${data2table}
                 <br>
+                <p> Score brut par item</p>
                 ${data2table_longue}
               </div>
               `;
@@ -818,6 +833,17 @@
         html2pdf().set(opt).from(content).save().then(() => {
           document.body.removeChild(content);
         });
+      }
+
+      function resetForm() {
+        document.getElementById("SF36").reset();
+        document.getElementById("ID").value = ""; 
+        document.getElementById("scoreDisplay").innerHTML = "";
+        document.getElementById("results").style.display = "none";
+
+
+
+
       }
 
 
