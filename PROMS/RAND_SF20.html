@@ -18,8 +18,8 @@
     <title>SF20</title>
   </head>
   <body>
-    <h1>Questionnaire d'état de santé SF20 (version 1.0)<br>
-    développé par RAND ou RAND-20</h1>
+    <h1>Questionnaire d'état de santé SF20 version 1.0<br>
+    développé par RAND (ou RAND-SF20)</h1>
     <p>Stewart et al., 1988 (version originale)</p>
     <p> La version de ce questionnaire est une version publique accordée par <a href= "https://www.rand.org/health-care/surveys_tools/mos/36-item-short-form.html"> RAND.</a> </p>
      
@@ -262,102 +262,193 @@
       <div class="buttons-container">
         <button type="button" onclick="calculateScore()">Calculer le score</button>
         <button type="reset" onclick="resetForm()">Réinitialiser</button>
-        </div>
+      </div>
 
-      <div id="results"> </div>
+      <div id="results" style="display:none">
+          <p id="scoreDisplay"></p><br>
+          <label id ="labelId" for="nameID" class="Subject_name">Nom du sujet (si besoin)</label>
+          <input type="text" id="ID" name="nameID"><br>
+          <button id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
+          <button id="saveXLSbutton" onclick="saveXLS()">Exporter en XLS</button>
+      </div>
 
     </form>
 
     <script>
-      function calculateScore() {
-      const form = document.getElementById('SF20');
-      let answeredQuestionsCount = 0;
-      const totalQuestions = 20; 
 
-      const getRadioValue = (name) => {
-        const radios = form.elements[name];
-        if (radios) {
-          for (let i = 0; i < radios.length; i++) {
-            if (radios[i].checked) {
-              answeredQuestionsCount++;
-              return parseInt(radios[i].value);
-            }
-          }
-        }
-        return NaN; 
+      const SF20 = {
+
+        globalPF : null,
+        globalBP : null,
+        globalRP : null,
+        globalSF : null,
+        globalMH : null,
+        globalHT : null
+
       };
 
+              
+      function calculateScore() {
+        const form = document.getElementById('SF20');
+        let answeredQuestionsCount = 0;
+        const totalQuestions = 20; 
+
+        const getRadioValue = (name) => {
+          const radios = form.elements[name];
+          if (radios) {
+            for (let i = 0; i < radios.length; i++) {
+              if (radios[i].checked) {
+                answeredQuestionsCount++;
+                return parseInt(radios[i].value);
+              }
+            }
+          }
+          return NaN; 
+        };
+
    
-    //Get scores
-    let scoreQ1 = getRadioValue('q1');
-    let scoreQ2 = 0;
-    for (let i = 0; i < 6; i++) {
-            const charCode = 'a'.charCodeAt(0) + i;
-            const q2Val = getRadioValue(`q2${String.fromCharCode(charCode)}`);
-            scoreQ2 += q2Val;
+        //Get scores
+        let scoreQ1 = getRadioValue('q1');
+        let scoreQ2 = 0;
+        for (let i = 0; i < 6; i++) {
+                const charCode = 'a'.charCodeAt(0) + i;
+                const q2Val = getRadioValue(`q2${String.fromCharCode(charCode)}`);
+                scoreQ2 += q2Val;
+            }
+
+        let scoreQ3   = getRadioValue('q3');
+        let scoreQ4   = getRadioValue('q4');
+        let scoreQ5   = getRadioValue('q5');
+        let scoreQ6_a = getRadioValue('q6a');
+        let scoreQ6_b = getRadioValue('q6b');
+        let scoreQ6_c = getRadioValue('q6c');
+        let scoreQ6_d = getRadioValue('q6d');
+        let scoreQ6_e = getRadioValue('q6e');
+        let scoreQ6_f = getRadioValue('q6f');
+
+   
+        let scoreQ7 = 0;
+        for (let i = 0; i < 4; i++) {
+          const charCode = 'a'.charCodeAt(0) + i;
+          const q7Val = getRadioValue(`q7${String.fromCharCode(charCode)}`);
+          scoreQ7 += q7Val;
         }
 
-    let scoreQ3   = getRadioValue('q3');
-    let scoreQ4   = getRadioValue('q4');
-    let scoreQ5   = getRadioValue('q5');
-    let scoreQ6_a = getRadioValue('q6a');
-    let scoreQ6_b = getRadioValue('q6b');
-    let scoreQ6_c = getRadioValue('q6c');
-    let scoreQ6_d = getRadioValue('q6d');
-    let scoreQ6_e = getRadioValue('q6e');
-    let scoreQ6_f = getRadioValue('q6f');
+        if (answeredQuestionsCount <20) {
 
-   
-    let scoreQ7 = 0;
-    for (let i = 0; i < 4; i++) {
-      const charCode = 'a'.charCodeAt(0) + i;
-      const q7Val = getRadioValue(`q7${String.fromCharCode(charCode)}`);
-      scoreQ7 += q7Val;
+          let errormsg = "<p class=Error_message_not_all_answered>Veuillez répondre svp à toutes les questions avant de calculer le score!</p>";
+          document.getElementById("scoreDisplay").innerHTML = errormsg;
+          document.getElementById("results").style.display = "block";
+          document.getElementById('savePdfButton').style.display = "none";
+          document.getElementById('saveXLSbutton').style.display = "none";
+          document.getElementById("ID").style.display = "none";
+          document.getElementById("labelId").style.display = "none";
+          return;
+
+        }
+
+        // Compute average scores
+        let scorePF = scoreQ2/6;
+        let scoreRP = (scoreQ4 + scoreQ5)/2;
+        let scoreBP = scoreQ3;
+        let scoreSF = scoreQ6_a;
+        let scoreMH = (scoreQ6_b+scoreQ6_c+scoreQ6_d+scoreQ6_e+scoreQ6_f)/5;
+        let scoreHT = (scoreQ1 + scoreQ7)/5;
+
+        // Update global results
+        SF20.globalPF = scorePF;
+        SF20.globalBP = scoreBP;
+        SF20.globalRP = scoreRP;
+        SF20.globalSF = scoreSF;
+        SF20.globalMH = scoreMH;
+        SF20.globalHT = scoreHT;
+
+        // Display scores
+        display(scorePF, scoreBP, scoreRP, scoreSF, scoreMH, scoreHT);
     }
 
-    if (answeredQuestionsCount <20) {
-        const resultDiv = document.getElementById("results");
-        resultDiv.innerHTML = "<p class=Error_message_not_all_answered>Veuillez répondre svp à toutes les questions avant de calculer le score!</p>";
-        resultDiv.style.display = "block"; 
-      return;
-    }
+      function display(scorePF, scoreBP, scoreRP, scoreSF, scoreMH, scoreHT) {
 
-    // Compute average scores
-    let scorePF = scoreQ2/6;
-    let scoreRP = (scoreQ4 + scoreQ5)/2;
-    let scoreBP = scoreQ3;
-    let scoreSF = scoreQ6_a;
-    let scoreMH = (scoreQ6_b+scoreQ6_c+scoreQ6_d+scoreQ6_e+scoreQ6_f)/5;
-    let scoreHT = (scoreQ1 + scoreQ7)/5;
+          let displayHtml = "<p>Résultats</p>";
+          displayHtml += "<br>";
+          displayHtml += "<p> Les scores vont de 0 % (faible niveau qualité de vie) à 100 % (niveau très élevé).</p>";
+          displayHtml += "<br>";
+          displayHtml += "<ul class='myList'>";
+          displayHtml += "<li>Activité physique : " + scorePF.toFixed(2) + " % </li>";
+          displayHtml += "<li>Limitations dues à l’état physique : " + scoreRP.toFixed(2) + " % </li>";
+          displayHtml += "<li>Douleur  : " + scoreBP.toFixed(2) + " % </li>";
+          displayHtml += "<li>Vie et relation avec les autres  : " + scoreSF.toFixed(2) + " % </li>";
+          displayHtml += "<li>Bien-être émotionnelle : " + scoreMH.toFixed(2) + " % </li>";
+          displayHtml += "<li>Évolution de la santé perçue  : " + scoreHT.toFixed(2) + " % </li>";
+          displayHtml += "</ul>";
 
-    display(scorePF, scoreBP, scoreRP, scoreSF, scoreMH, scoreHT);
-}
+          // Update the results div with the constructed HTML
+          document.getElementById("scoreDisplay").innerHTML = displayHtml;
+          document.getElementById("results").style.display = "block";
+          document.getElementById('savePdfButton').style.display = 'inline-block';
+          document.getElementById('saveXLSbutton').style.display = 'inline-block';
+          document.getElementById("ID").style.display = 'inline-block';
+          document.getElementById("labelId").style.display = 'inline-block';
+      }
 
-function display(scorePF, scoreBP, scoreRP, scoreSF, scoreMH, scoreHT) {
-    const resultsDiv = document.getElementById("results");
-    let displayHtml = "<p>Résultats</p>";
-    displayHtml += "<br>";
-    displayHtml += "<p> Les scores vont de 0 % (faible niveau qualité de vie) à 100 % (niveau très élevé).</p>";
-    displayHtml += "<br>";
-    displayHtml += "<ul class='myList'>";
-    displayHtml += "<li>Activité physique : " + scorePF.toFixed(2) + " % </li>";
-    displayHtml += "<li>Limitations dues à l’état physique : " + scoreRP.toFixed(2) + " % </li>";
-    displayHtml += "<li>Douleur  : " + scoreBP.toFixed(2) + " % </li>";
-    displayHtml += "<li>Vie et relation avec les autres  : " + scoreSF.toFixed(2) + " % </li>";
-    displayHtml += "<li>Bien-être émotionnelle : " + scoreMH.toFixed(2) + " % </li>";
-    displayHtml += "<li>Évolution de la santé perçue  : " + scoreHT.toFixed(2) + " % </li>";
-    displayHtml += "</ul>";
+    
+      function saveXLS() {
 
-    resultsDiv.innerHTML = displayHtml;
-    resultsDiv.style.display = "block";
-}
+        const subjectCode = document.getElementById('ID').value || "SansNom"; // Nom du sujet
+        const today = new Date().toLocaleDateString('fr-FR');
+        const filename = `SF20v1.0${today}_${subjectCode}.csv`;
 
-function resetForm() {
-    document.getElementById("SF20").reset();
-    const resultsDiv = document.getElementById("results");
-    resultsDiv.innerHTML = "";
-    resultsDiv.style.display = "none";
-}
+        const safePF = typeof SF20.globalPF === 'number' ? SF20.globalPF.toFixed(2) : "NA";
+        const safeBP = typeof SF20.globalBP === 'number' ? SF20.globalBP.toFixed(2) : "NA";
+        const safeRP = typeof SF20.globalRP === 'number' ? SF20.globalRP.toFixed(2) : "NA";
+        const safeSF = typeof SF20.globalSF === 'number' ? SF20.globalSF.toFixed(2) : "NA";
+        const safeMH = typeof SF20.globalMH === 'number' ? SF20.globalMH.toFixed(2) : "NA";
+        const safeHT = typeof SF20.globalHT === 'number' ? SF20.globalHT.toFixed(2) : "NA";
+
+        const allQuestionNames = [
+          'q1', 
+          'q2a', 'q2b', 'q2c', 'q2d', 'q2e', 'q2f',
+          'q3',
+          'q4',
+          'q5',
+          'q6a', 'q6b', 'q6c', 'q6d', 'q6e', 'q6f',
+          'q7a', 'q7b', 'q7c', 'q7d',
+        ];
+
+        let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+        csvContent += "Sujet,Date,Questionnaire,PF,BP,RP,SF,MH,HT";
+        for (let i = 0; i <20; i++) {
+          csvContent += `,"${allQuestionNames[i]}"`;
+        }
+        csvContent += "\n";
+
+        let row =       `"${subjectCode}","${today}","SF20v1","${safePF}","${safeBP}","${safeRP}","${safeSF}","${safeMH}","${safeHT}"`;
+        allQuestionNames.forEach(name => {
+        let selectedInput = document.querySelector(`input[name="${name}"]:checked`);
+        let value = selectedInput ? selectedInput.value : "NA";
+        row += `,"${value}"`;
+        });
+
+        csvContent += row + "\n";
+        const link = document.createElement("a");
+        link.setAttribute("href", encodeURI(csvContent));
+        link.setAttribute("download", filename);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+      }
+
+  
+      function resetForm() {
+
+        document.getElementById("SF20").reset();
+        document.getElementById("ID").value = ""; 
+        document.getElementById("scoreDisplay").innerHTML = "";
+        document.getElementById("results").style.display = "none";
+
+      }
+
     
     </script>
   </body>
