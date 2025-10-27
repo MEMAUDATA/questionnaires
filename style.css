@@ -49,6 +49,7 @@ tr:hover {
 .Error_message_not_all_answered {
     color: #2B176C; 
     text-align: center;
+    align-items: center; 
   }
 
 
@@ -127,6 +128,12 @@ input[type="radio"] {
     display: none;
     border-radius: 5px;
     padding: 15px;
+
+    /* for error */
+    display: flex;
+    justify-content: center;   /* Horizontal centering */
+    align-items: center;       /* Vertical centering */
+    min-height: 100px;
 }
 
 ul.myList {

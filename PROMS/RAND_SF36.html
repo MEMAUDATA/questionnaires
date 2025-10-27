@@ -570,9 +570,6 @@
         scoreMH += q9hVal;
 
 
-        
-
-
         // Mean scores	
         let mscorePF = scorePF/10;
         let mscoreRP = scoreRP/4;
@@ -592,6 +589,9 @@
             resultDiv.style.display = "block"; 
            return;
         }
+
+       // Display scores
+       displayscores(mscoreGH, mscorePF, mscoreBP, mscoreRP, mscoreVT, mscoreSF, mscoreRE, mscoreMH, mscoreHT) 
 
       } // end calculateScore function
 

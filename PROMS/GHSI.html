@@ -253,7 +253,7 @@
 
     <div id="results" style="display:none">
       <p id="scoreDisplay"></p><br>
-      <label for="nameID" class="Subject_name">Nom du sujet (si besoin)</label>
+      <label id="labelId" for="nameID" class="Subject_name">Nom du sujet (si besoin)</label>
       <input type="text" id="ID" name="nameID"><br>
       <button id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
       <button id="saveXLSbutton" onclick="saveXLS()">Exporter en XLS</button>
@@ -306,11 +306,16 @@
         
         // Handle cases where not all questions are answered for a subscale
         if (answeredQuestions < 18) {
-          const resultDiv = document.getElementById("results");
-          resultDiv.innerHTML = "<p class=Error_message_not_all_answered>Veuillez répondre svp à toutes les questions avant de calculer le score!</p>";
-          resultDiv.style.display = "block"; 
-          return;
-        }
+
+            let errormsg = "<p class=Error_message_not_all_answered>Veuillez répondre svp à toutes les questions avant de calculer le score!</p>";
+            document.getElementById("scoreDisplay").innerHTML = errormsg;
+            document.getElementById("results").style.display = "block";
+            document.getElementById('savePdfButton').style.display = "none";
+            document.getElementById('saveXLSbutton').style.display = "none";
+            document.getElementById("ID").style.display = "none";
+            document.getElementById("labelId").style.display = "none";
+            return;
+          }
         
         total = ((total / 18) - 1) * 25;
         general = ((general / 12) - 1) * 25; 
@@ -344,6 +349,7 @@
         display += "<p>Tous les scores sont compris entre 0 et +100.</p>" ;
         display += "<p>Le score de 0 reflète un très mauvais état de santé et 100 un excellent";
 
+        // Update the results div with the constructed HTML
         document.getElementById("scoreDisplay").innerHTML = display;
         document.getElementById("results").style.display = "block";
         document.getElementById('savePdfButton').style.display = 'inline-block';
@@ -357,7 +363,7 @@
       function resetForm() {
         document.getElementById("GHSI").reset();
         document.getElementById("ID").value = ""; 
-        document.getElementById("results").innerHTML = "";
+        document.getElementById("scoreDisplay").innerHTML = "";
         document.getElementById("results").style.display = "none";
       } // end resetForm function
 
