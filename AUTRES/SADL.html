@@ -468,6 +468,46 @@
 
     <script>
 
+      /* =====================================================================
+         PARAMÈTRES DE SCORING SADL  —  à vérifier contre la version FR validée
+         ---------------------------------------------------------------------
+         - Étendue de l'échelle : sliders réglés sur 0–7 dans ce fichier.
+           Si la version validée est en 1–7, passer SCALE_MIN à 1
+           (l'inversion devient alors automatiquement 8 - x).
+         - Items inversés (formulés négativement) : 2, 4, 7, 13.
+         - Sous-échelles (structure standard Cox & Alexander 1999) :
+             Effet positif   : 1, 3, 5, 6, 9, 10   (6 items)
+             Coût & service  : 12, 14, 15          (3 items)
+             Aspects négatifs: 2, 7, 11            (3 items ; 2 et 7 inversés)
+             Image perso.    : 4, 8, 13            (3 items ; 4 et 13 inversés)
+         - Score global : moyenne de TOUS les items (méthode standard).
+           Alternative « moyenne des 4 sous-échelles » disponible plus bas.
+      ===================================================================== */
+      const SCALE_MIN = 0;
+      const SCALE_MAX = 7;
+      const REVERSED  = new Set([2, 4, 7, 13]);
+      const SUBSCALES = {
+        effet:  [1, 3, 5, 6, 9, 10],
+        cout:   [12, 14, 15],
+        aspect: [2, 7, 11],
+        image:  [4, 8, 13]
+      };
+      const ALL_ITEMS = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+
+      const round2 = x => Math.round(x * 100) / 100;
+
+      // Valeur scorée d'un item (inversion appliquée si nécessaire)
+      function scoredValue(qNum) {
+        const el = document.getElementById(`q${qNum}`);
+        const raw = parseFloat(el.value);
+        return REVERSED.has(qNum) ? (SCALE_MIN + SCALE_MAX - raw) : raw;
+      }
+
+      function subscaleMean(ids) {
+        const sum = ids.reduce((s, q) => s + scoredValue(q), 0);
+        return sum / ids.length;
+      }
+
       // Sliders colors
       const sliders = document.querySelectorAll(".slider");
       sliders.forEach(function(slider) {
@@ -490,60 +530,26 @@
       let globalImage  = null;
 
       function calculateScore() {
-        let effet       = 0;
-        let cout        = 0;
-        let aspect      = 0;
-        let image       = 0;
-        let effetcount  = 0;
-        let coutcount   = 0;
-        let aspectcount = 0;
-        let imagecount  = 0;
-        const sliderIds = ["q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9", "q10", "q11", "q12","q13","q14","q15"];
+        const meaneffet  = subscaleMean(SUBSCALES.effet);
+        const meancout   = subscaleMean(SUBSCALES.cout);
+        const meanaspect = subscaleMean(SUBSCALES.aspect);
+        const meanimage  = subscaleMean(SUBSCALES.image);
 
-        for (let i = 0; i < sliderIds.length; i++) {
-          const sliderId            = sliderIds[i];
-          const questionNumber      = document.getElementById(sliderId);
-          const answerValue         = parseFloat(questionNumber.value,10);
+        // Score global = moyenne de tous les items (méthode standard SADL)
+        const total = ALL_ITEMS.reduce((s, q) => s + scoredValue(q), 0) / ALL_ITEMS.length;
 
-          const qNum = i + 1; // Because your sliders are "q1" through "q15"
-          if ([1, 3, 5, 6, 10].includes(qNum)) {
-            effet += answerValue;
-            effetcount++;
-          } else if ([12, 14, 15].includes(qNum)) {
-            cout += answerValue;
-            coutcount++;
-          } else if ([2, 7, 11].includes(qNum)) {
-            aspect += answerValue;
-            aspectcount++;
-          } else if ([4, 8, 13].includes(qNum)) {
-            image += answerValue;
-            imagecount++;
-          } // end qNum condition
-        } // end for loop
+        // --- Alternative : moyenne des 4 sous-échelles (décommenter si besoin) ---
+        // const total = (meaneffet + meancout + meanaspect + meanimage) / 4;
 
-        // Calculate means
-        const meaneffet = effetcount > 0 ? (effet / effetcount).toFixed(2) : 0;
-        const meancout = coutcount > 0 ? (cout / coutcount).toFixed(2) : 0;
-        const meanaspect = aspectcount > 0 ? (aspect / aspectcount).toFixed(2) : 0;
-        const meanimage = imagecount > 0 ? (image / imagecount).toFixed(2) : 0;
+        // Stockage des scores dans les variables globales (nombres)
+        globalEffet  = round2(meaneffet);
+        globalCout   = round2(meancout);
+        globalAspect = round2(meanaspect);
+        globalImage  = round2(meanimage);
+        globalTotal  = round2(total);
 
-        const total = (
-                      (parseFloat(meaneffet) +
-                      parseFloat(meancout) +
-                      parseFloat(meanaspect) +
-                      parseFloat(meanimage)) / 4
-                    ).toFixed(2);
-
-        // Store scores in global variables
-        globalEffet  = parseFloat(meaneffet);
-        globalCout   = parseFloat(meancout);
-        globalAspect = parseFloat(meanaspect);
-        globalImage  = parseFloat(meanimage);
-        globalTotal  = parseFloat(total);
-
-        // Display the subscale scores
         const responses = getSelectedLabels();
-        display(total,meaneffet,meancout,meanaspect,meanimage,responses);
+        display(globalTotal, globalEffet, globalCout, globalAspect, globalImage, responses);
       }// end calculateScore function
 
     function getSelectedLabels() {
@@ -559,18 +565,18 @@
         return responses;
       }
 
-      function  display(total,meaneffet,meancout,meanaspect,meanimage,responses) {
+      function  display(total, meaneffet, meancout, meanaspect, meanimage, responses) {
 
         let display = "<p>Résultats</p>";
         display += "<br>";
-        display += "<p>Le score sétend de 0 à 7. Un score élevé indique un plus haut niveau de satisfaction.</p>";
+        display += "<p>Le score s'étend de 0 à 7. Un score élevé indique un plus haut niveau de satisfaction.</p>";
         display += "<br>";
         display += "<ul class='myList'>";
-        display += "<li>Score Total : " + total + "</li>"
-        display += "<li>Effet positif : " + meaneffet + "</li>";
-        display += "<li>Coût et service : " + meancout + "</li>";
-        display += "<li>Aspects négatifs : " + meanaspect + "</li>";
-        display += "<li>Image personnelle : " + meanimage + "</li>";
+        display += "<li>Score Total : " + total.toFixed(2) + "</li>";
+        display += "<li>Effet positif : " + meaneffet.toFixed(2) + "</li>";
+        display += "<li>Coût et service : " + meancout.toFixed(2) + "</li>";
+        display += "<li>Aspects négatifs : " + meanaspect.toFixed(2) + "</li>";
+        display += "<li>Image personnelle : " + meanimage.toFixed(2) + "</li>";
         display += "</ul>";
          display += "<br>";
         display += "<p>Information de l'utilisateur(trice)</p>";
@@ -610,11 +616,17 @@
       });
       }
 
+      // Neutralise l'injection de formule CSV (=, +, -, @ en début de champ)
+      function sanitizeForCsv(v) {
+        return /^[=+\-@\t\r]/.test(v) ? "'" + v : v;
+      }
+
       function saveXLS() {
 
-        const subjectCode = document.getElementById('ID').value || "SansNom"; // Nom du sujet
+        const rawCode = document.getElementById('ID').value || "SansNom";
+        const subjectCode = sanitizeForCsv(rawCode);
         const today = new Date().toLocaleDateString('fr-FR');
-        const filename = `SADL_${today}_${subjectCode}.csv`;
+        const filename = `SADL_${today}_${rawCode}.csv`;
 
         const safeTotal  = typeof globalTotal  === 'number' ? globalTotal.toFixed(2)  : "NA";
         const safeEffet  = typeof globalEffet  === 'number' ? globalEffet.toFixed(2)  : "NA";
@@ -622,8 +634,9 @@
         const safeAspect = typeof globalAspect === 'number' ? globalAspect.toFixed(2) : "NA";
         const safeImage  = typeof globalImage  === 'number' ? globalImage.toFixed(2)  : "NA";
 
-        let csvContent = "data:text/csv;charset=utf-8,﻿";
+        let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
         csvContent += "Sujet,Date,Questionnaire,Score Total,Score Effet,Score Cout,Score Aspect,Score Image";
+        // Réponses brutes (non inversées) pour traçabilité / ré-analyse
         for (let i = 1; i <= 15; i++) {
           csvContent += `,"Question ${i}"`;
         }
@@ -682,7 +695,7 @@
                 data2table += "</table>";
 
         let data2table_longue = "<table>"
-        // Loop through rows (15 items -> 3 rows x 5 columns)
+        // Loop through rows (15 items -> 3 rows x 5 columns) — réponses brutes
         for (let row = 0; row < 3; row++) {
           data2table_longue += "<tr>";
           for (let col = 1; col <= 5; col++) {
@@ -713,6 +726,7 @@
 
 
         const content = document.createElement('div');
+        content.lang = 'fr';
         content.innerHTML = `
           <style>
           .header_report,
@@ -745,7 +759,7 @@
           margin: 0 auto;
           }
 
-          .body_report th, td {
+          .body_report th, .body_report td {
           border: 1px solid #eeeeee;
           }
           .body_report td strong {
