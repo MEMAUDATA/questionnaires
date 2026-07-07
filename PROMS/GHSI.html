@@ -391,13 +391,13 @@
 
         // Créer le contenu CSV
         let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
-        csvContent += "Sujet,Date,Questionnaire,Total,General,Social,Physique,";
+        csvContent += "Sujet,Date,Questionnaire,Total,General,Social,Physique";
         for (let i = 1; i <= 18; i++) {
-            csvContent += `Q${i},`;
+            csvContent += `,Q${i}`;
         }
         csvContent += "\n";
-        let row = `"${subjectCode}","${today}","GHSI","${safeTotal}","${safeGeneral}","${safeSocial}","${safePhysique}",`;
-        row += answers.join(",");
+        let row = `"${subjectCode}","${today}","GHSI","${safeTotal}","${safeGeneral}","${safeSocial}","${safePhysique}"`;
+        row += "," + answers.join(",");
         csvContent += row + "\n";
 
         // Télécharger le fichier

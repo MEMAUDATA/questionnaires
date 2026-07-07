@@ -396,7 +396,7 @@
 
         const subjectCode = document.getElementById('ID').value || "SansNom"; // Nom du sujet
         const today = new Date().toLocaleDateString('fr-FR');
-        const filename = `SF20v1.0${today}_${subjectCode}.csv`;
+        const filename = `SF20v1.0_${today}_${subjectCode}.csv`;
 
         const safePF = typeof SF20.globalPF === 'number' ? SF20.globalPF.toFixed(2) : "NA";
         const safeBP = typeof SF20.globalBP === 'number' ? SF20.globalBP.toFixed(2) : "NA";
