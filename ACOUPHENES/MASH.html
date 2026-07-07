@@ -302,22 +302,26 @@
       </div>
     <script>
 
+      // var globales
+      let globalT = null;
+
       function calculateScore() {
 
         let total = 0;
-        let allAnswered = true; 
+        let allAnswered = true;
         for (let i = 1; i <= 14; i++) {
           let question= document.querySelector(`input[name="q${i}"]:checked`);
-          if (!question) { 
+          if (!question) {
             allAnswered = false;
-            break; 
+            break;
           }
           total += parseInt(question.value);
         } // enf for loop
-        
+
         if (allAnswered) {
           total = total /14;
-          displayscores(total); 
+          globalT = total;
+          displayscores(total);
         } else {
           // Display a message to the user that not all questions have been answered
           const resultDiv = document.getElementById("results"); // Assuming you have a div with id="result"
@@ -326,7 +330,7 @@
         }
 
       } // end calculateScore function
-        
+
       function displayscores(total) {
         let displayHtml = "<p'>Résultat</p>";
         displayHtml += "<p>Le score global : " + total.toFixed(2) + " /10 </p>";
@@ -340,15 +344,162 @@
         else if (total >7) {
           displayHtml += " Cela indique une hyperacousie sévère : score > à 7";
         }
-        document.getElementById("results").innerHTML = displayHtml;
+        document.getElementById("scoreDisplay").innerHTML = displayHtml;
         document.getElementById("results").style.display = "block";
+        document.getElementById('savePdfButton').style.display = 'inline-block';
+        document.getElementById('saveXLSbutton').style.display = 'inline-block';
       } // end display function
 
       function resetForm() {
         document.getElementById("MASH").reset();
-        document.getElementById("results").innerHTML = "";
         document.getElementById("results").style.display = "none";
+        // Reset subject's name
+        document.getElementById("ID").value = "";
+        // Hide the export buttons on reset
+        document.getElementById('savePdfButton').style.display = 'none';
+        document.getElementById('saveXLSbutton').style.display = 'none';
       } // end resetForm function
+
+      function saveXLS() {
+
+        const subjectCode = document.getElementById('ID').value || "SansNom"; // Nom du sujet
+        const today = new Date().toLocaleDateString('fr-FR');
+        const filename = `MASH_${today}_${subjectCode}.csv`;
+
+        const safeT = typeof globalT === 'number' ? globalT.toFixed(2) : "NA";
+
+        let csvContent = "data:text/csv;charset=utf-8,﻿";
+        csvContent += "Sujet,Date,Questionnaire,Score Total";
+        for (let i = 1; i <= 14; i++) {
+          csvContent += `,"Question ${i}"`;
+        }
+        csvContent += "\n";
+
+        let row = `"${subjectCode}","${today}","MASH","${safeT}"`;
+        for (let i = 1; i <= 14; i++) {
+          let question = document.querySelector(`input[name="q${i}"]:checked`);
+          let value = question ? question.value : "NA";
+          row += `,"${value}"`;
+        }
+
+        csvContent += row + "\n";
+        const link = document.createElement("a");
+        link.setAttribute("href", encodeURI(csvContent));
+        link.setAttribute("download", filename);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+
+
+      function savePdf() {
+
+        const { jsPDF } = window.jspdf;
+        const today = new Date().toLocaleDateString('fr-FR');
+        const subjectCode = document.getElementById('ID').value || "SansNom";
+        const filename = `MASH_${today}_${subjectCode}.pdf`;
+
+        const safeT = typeof globalT === 'number' ? globalT.toFixed(2) : "NA";
+
+        const col = ["Score total"];
+        const safeScores = [safeT];
+        let data2table = "<table>";
+        for (let i = 0; i < col.length; i++) {
+          data2table += `
+          <tr>
+          <td><strong>${col[i]}</strong></td>
+          <td> ${safeScores[i]}</td></tr>`;}
+        data2table += "</table>";
+
+        let data2table_longue = "<table>";
+        // Loop through rows (2 items per row, 7 rows = 14 items)
+        for (let row = 0; row < 7; row++) {
+          data2table_longue += "<tr>";
+          for (let col = 1; col <= 2; col++) {
+            let index = row * 2 + col;
+            let question = document.querySelector(`input[name="q${index}"]:checked`);
+            let value = question ? question.value : "NA";
+            data2table_longue += `<td><strong>Item ${index}</strong> ${value}</td>`;
+          }
+          data2table_longue += "</tr>";
+        }
+        data2table_longue += "</table>";
+
+
+        const content = document.createElement('div');
+        content.innerHTML = `
+          <style>
+          .header_report,
+          .body_report,
+          .footer_report {
+          text-align: center;
+          margin: 0 auto;
+          width: 100%;
+          }
+          .header_report {
+          padding-top: 4%;
+          padding-bottom: 4%;
+          border-bottom: 1px solid #2B176C;
+          }
+          .footer_report {
+          padding-top: 3%;
+          padding-bottom:3%;
+
+          }
+          .body_report {
+          padding-top: 5%;
+          padding-bottom:10%;
+          background-color: white;
+          color: black;
+          }
+
+          .body_report table {
+          border-collapse: collapse;
+          width: 80%;
+          margin: 0 auto;
+          }
+
+          .body_report th, td {
+          border: 1px solid #eeeeee;
+          }
+          .body_report td strong {
+          display: block;
+          text-align: left;
+          }
+
+              </style>
+          <div class="header_report">
+          <img src="https://data.memau.eu/wp-content/uploads/2025/06/logo-memau-data.svg" alt="Logo" style="max-width: 210px;
+          margin-top: 10px;margin-bottom: 5px;">
+          <p><i>Contact : hello@memau.eu </i></p>
+              </div>
+          <div class="body_report">
+          <h1>MASH</h1>
+          <p>Code du Sujet : ${subjectCode} </p>
+          <p>Rapport généré le : ${today}</p>
+          ${data2table}
+          <br>
+          ${data2table_longue}
+          </div>
+          `;
+
+        document.body.appendChild(content);
+
+        // Define options for html2pdf
+        const opt = {
+          margin: 10,
+          filename: filename,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2, useCORS: true, scrollY: 0,windowHeight: 1200 },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+          pagebreak: { avoid: '.body_report' }
+        };
+
+        // Generate and download the PDF
+        html2pdf().set(opt).from(content).save().then(() => {
+          document.body.removeChild(content);
+        });
+      }
     </script>
   </body>
 </html>

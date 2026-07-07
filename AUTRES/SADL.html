@@ -485,6 +485,13 @@
     });
 
 
+      // Variables globales
+      let globalTotal  = null;
+      let globalEffet  = null;
+      let globalCout   = null;
+      let globalAspect = null;
+      let globalImage  = null;
+
       function calculateScore() {
         let effet       = 0;
         let cout        = 0;
@@ -514,8 +521,9 @@
           } else if ([4, 8, 13].includes(qNum)) {
             image += answerValue;
             imagecount++;
-        } // end qNum loop
-        
+          } // end qNum condition
+        } // end for loop
+
         // Calculate means
         const meaneffet = effetcount > 0 ? (effet / effetcount).toFixed(2) : 0;
         const meancout = coutcount > 0 ? (cout / coutcount).toFixed(2) : 0;
@@ -523,19 +531,23 @@
         const meanimage = imagecount > 0 ? (image / imagecount).toFixed(2) : 0;
 
         const total = (
-                      (parseFloat(meaneffet) + 
-                      parseFloat(meancout) + 
-                      parseFloat(meanaspect) + 
+                      (parseFloat(meaneffet) +
+                      parseFloat(meancout) +
+                      parseFloat(meanaspect) +
                       parseFloat(meanimage)) / 4
                     ).toFixed(2);
 
-        
+        // Store scores in global variables
+        globalEffet  = parseFloat(meaneffet);
+        globalCout   = parseFloat(meancout);
+        globalAspect = parseFloat(meanaspect);
+        globalImage  = parseFloat(meanimage);
+        globalTotal  = parseFloat(total);
+
         // Display the subscale scores
         const responses = getSelectedLabels();
         display(total,meaneffet,meancout,meanaspect,meanimage,responses);
-      } // end for loop
-
-    }// end calculateScore function
+      }// end calculateScore function
 
     function getSelectedLabels() {
         const questions = ["anx1", "anx2", "anx3", "anx4"];
@@ -579,13 +591,19 @@
             }
           }
           display += "</ul>";
-        document.getElementById("results").innerHTML = display;
+        document.getElementById("scoreDisplay").innerHTML = display;
         document.getElementById("results").style.display = "block";
+        document.getElementById('savePdfButton').style.display = 'inline-block';
+        document.getElementById('saveXLSbutton').style.display = 'inline-block';
       }
       function resetForm() {
         document.getElementById("SADL").reset();
-        document.getElementById("results").innerHTML = "";
         document.getElementById("results").style.display = "none";
+        // Reset subject's name
+        document.getElementById("ID").value = "";
+        // Hide the export buttons on reset
+        document.getElementById('savePdfButton').style.display = 'none';
+        document.getElementById('saveXLSbutton').style.display = 'none';
 
          // Réinitialise le fond des sliders
          const sliders = document.querySelectorAll(".slider");
@@ -593,6 +611,186 @@
         const initialValue = (slider.value - slider.min) / (slider.max - slider.min) * 100;
         slider.style.background = `linear-gradient(to right, #2B176C ${initialValue}%, #eeeeee ${initialValue}%)`;
       });
+      }
+
+      function saveXLS() {
+
+        const subjectCode = document.getElementById('ID').value || "SansNom"; // Nom du sujet
+        const today = new Date().toLocaleDateString('fr-FR');
+        const filename = `SADL_${today}_${subjectCode}.csv`;
+
+        const safeTotal  = typeof globalTotal  === 'number' ? globalTotal.toFixed(2)  : "NA";
+        const safeEffet  = typeof globalEffet  === 'number' ? globalEffet.toFixed(2)  : "NA";
+        const safeCout   = typeof globalCout   === 'number' ? globalCout.toFixed(2)   : "NA";
+        const safeAspect = typeof globalAspect === 'number' ? globalAspect.toFixed(2) : "NA";
+        const safeImage  = typeof globalImage  === 'number' ? globalImage.toFixed(2)  : "NA";
+
+        let csvContent = "data:text/csv;charset=utf-8,﻿";
+        csvContent += "Sujet,Date,Questionnaire,Score Total,Score Effet,Score Cout,Score Aspect,Score Image";
+        for (let i = 1; i <= 15; i++) {
+          csvContent += `,"Question ${i}"`;
+        }
+        for (let i = 1; i <= 4; i++) {
+          csvContent += `,"Anx ${i}"`;
+        }
+        csvContent += "\n";
+
+        let row = `"${subjectCode}","${today}","SADL","${safeTotal}","${safeEffet}","${safeCout}","${safeAspect}","${safeImage}"`;
+        for (let i = 1; i <= 15; i++) {
+          let slider = document.getElementById(`q${i}`);
+          let value = slider ? slider.value : "NA";
+          row += `,"${value}"`;
+        }
+        for (let i = 1; i <= 4; i++) {
+          let anx = document.querySelector(`input[name="anx${i}"]:checked`);
+          let value = anx ? anx.value : "NA";
+          row += `,"${value}"`;
+        }
+
+        csvContent += row + "\n";
+        const link = document.createElement("a");
+        link.setAttribute("href", encodeURI(csvContent));
+        link.setAttribute("download", filename);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+
+
+      function savePdf() {
+
+        const { jsPDF } = window.jspdf;
+        const today = new Date().toLocaleDateString('fr-FR');
+        const subjectCode = document.getElementById('ID').value || "SansNom";
+        const filename = `SADL_${today}_${subjectCode}.pdf`;
+
+        const safeTotal  = typeof globalTotal  === 'number' ? globalTotal.toFixed(2)  : "NA";
+        const safeEffet  = typeof globalEffet  === 'number' ? globalEffet.toFixed(2)  : "NA";
+        const safeCout   = typeof globalCout   === 'number' ? globalCout.toFixed(2)   : "NA";
+        const safeAspect = typeof globalAspect === 'number' ? globalAspect.toFixed(2) : "NA";
+        const safeImage  = typeof globalImage  === 'number' ? globalImage.toFixed(2)  : "NA";
+
+        const col = ["Score Total",
+                "Effet positif",
+                "Coût et service",
+                "Aspects négatifs",
+                "Image personnelle"];
+
+        const safeScores = [safeTotal, safeEffet, safeCout, safeAspect, safeImage];
+        let data2table = "<table>";
+        for (let i = 0; i < 5; i++) {
+          data2table += `
+          <tr>
+          <td><strong>${col[i]}</strong></td>
+          <td> ${safeScores[i]}</td></tr>`;}
+                data2table += "</table>";
+
+        let data2table_longue = "<table>"
+        // Loop through rows (15 items -> 3 rows x 5 columns)
+        for (let row = 0; row < 3; row++) {
+          data2table_longue += "<tr>";
+          for (let col = 1; col <= 5; col++) {
+            let index = row * 5 + col;
+            let slider = document.getElementById(`q${index}`);
+            let value = slider ? slider.value : "NA";
+            data2table_longue += `<td><strong>Item ${index}</strong> ${value}</td>`;
+          }
+          data2table_longue += "</tr>";
+        }
+        data2table_longue += "</table>";
+
+        // Informations utilisateur(trice)
+        const responses = getSelectedLabels();
+        const questionsLabels = {
+          anx1: "Durée de port des appareils actuels",
+          anx2: "Durée totale d’appareillage",
+          anx3: "Nombre d’heures de port par jour",
+          anx4: "Gêne auditive sans appareils"
+        };
+        let data2table_anx = "<table>";
+        for (const key in questionsLabels) {
+          let value = responses[key] ? responses[key] : "NA";
+          data2table_anx += `<tr><td><strong>${questionsLabels[key]}</strong></td><td> ${value}</td></tr>`;
+        }
+        data2table_anx += "</table>";
+
+
+
+        const content = document.createElement('div');
+        content.innerHTML = `
+          <style>
+          .header_report,
+          .body_report,
+          .footer_report {
+          text-align: center;
+          margin: 0 auto;
+          width: 100%;
+          }
+          .header_report {
+          padding-top: 4%;
+          padding-bottom: 4%;
+          border-bottom: 1px solid #2B176C;
+          }
+          .footer_report {
+          padding-top: 3%;
+          padding-bottom:3%;
+
+          }
+          .body_report {
+          padding-top: 5%;
+          padding-bottom:10%;
+          background-color: white;
+          color: black;
+          }
+
+          .body_report table {
+          border-collapse: collapse;
+          width: 80%;
+          margin: 0 auto;
+          }
+
+          .body_report th, td {
+          border: 1px solid #eeeeee;
+          }
+          .body_report td strong {
+          display: block;
+          text-align: left;
+          }
+
+              </style>
+          <div class="header_report">
+          <img src="https://data.memau.eu/wp-content/uploads/2025/06/logo-memau-data.svg" alt="Logo" style="max-width: 210px;
+          margin-top: 10px;margin-bottom: 5px;">
+          <p><i>Contact : hello@memau.eu </i></p>
+              </div>
+          <div class="body_report">
+          <h1>SADL</h1>
+          <p>Code du Sujet : ${subjectCode} </p>
+          <p>Rapport généré le : ${today}</p>
+          ${data2table}
+          <br>
+          ${data2table_longue}
+          <br>
+          ${data2table_anx}
+          </div>
+          `;
+
+        document.body.appendChild(content);
+
+        // Define options for html2pdf
+        const opt = {
+          margin: 10,
+          filename: filename,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2, useCORS: true, scrollY: 0,windowHeight: 1200 },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+          pagebreak: { avoid: '.body_report' }
+        };
+
+        // Generate and download the PDF
+        html2pdf().set(opt).from(content).save().then(() => {
+          document.body.removeChild(content);
+        });
       }
     </script>
   </body>

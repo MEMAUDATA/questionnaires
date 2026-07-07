@@ -439,7 +439,132 @@
 
       }
 
-  
+
+      function savePdf() {
+
+        const { jsPDF } = window.jspdf;
+        const today = new Date().toLocaleDateString('fr-FR');
+        const subjectCode = document.getElementById('ID').value || "SansNom";
+        const filename = `SF20v1_${today}_${subjectCode}.pdf`;
+
+        const safePF = typeof SF20.globalPF === 'number' ? SF20.globalPF.toFixed(2) : "NA";
+        const safeBP = typeof SF20.globalBP === 'number' ? SF20.globalBP.toFixed(2) : "NA";
+        const safeRP = typeof SF20.globalRP === 'number' ? SF20.globalRP.toFixed(2) : "NA";
+        const safeSF = typeof SF20.globalSF === 'number' ? SF20.globalSF.toFixed(2) : "NA";
+        const safeMH = typeof SF20.globalMH === 'number' ? SF20.globalMH.toFixed(2) : "NA";
+        const safeHT = typeof SF20.globalHT === 'number' ? SF20.globalHT.toFixed(2) : "NA";
+
+        col = ["PF","BP","RP","SF","MH","HT"];
+        const safeScores = [safePF, safeBP, safeRP, safeSF, safeMH, safeHT];
+        let data2table = "<table>";
+        for (let i = 0; i < col.length; i++) {
+          data2table += `
+          <tr>
+          <td><strong>${col[i]}</strong></td>
+          <td> ${safeScores[i]}</td></tr>`;}
+          data2table += "</table>";
+
+        const allQuestionNames = [
+          'q1',
+          'q2a', 'q2b', 'q2c', 'q2d', 'q2e', 'q2f',
+          'q3',
+          'q4',
+          'q5',
+          'q6a', 'q6b', 'q6c', 'q6d', 'q6e', 'q6f',
+          'q7a', 'q7b', 'q7c', 'q7d',
+        ];
+
+        let data2table_longue = "<table>"
+        for (let row = 0; row < 4; row++) {
+          data2table_longue += "<tr>";
+          for (let col = 0; col < 5; col++) {
+              let index = row * 5 + col;
+              if (index < allQuestionNames.length) {
+                  let name = allQuestionNames[index];
+                  let selectedInput = document.querySelector(`input[name="${name}"]:checked`);
+                  let value = selectedInput ? selectedInput.value : "NA";
+                  data2table_longue += `<td><strong>${name}</strong> ${value}</td>`;
+              } else {
+                  data2table_longue += "<td></td>";
+              }
+          }
+          data2table_longue += "</tr>";
+        }
+        data2table_longue += "</table>";
+
+        const content = document.createElement('div');
+        content.innerHTML = `
+              <style>
+                .header_report,
+                .body_report,
+                .footer_report {
+                text-align: center;
+                margin: 0 auto;
+                width: 100%;
+                }
+                .header_report {
+                padding-top: 4%;
+                padding-bottom: 4%;
+                border-bottom: 1px solid #2B176C;
+                }
+                .footer_report {
+                padding-top: 3%;
+                padding-bottom:3%;
+                }
+                .body_report {
+                padding-top: 2%;
+                padding-bottom:5%;
+                background-color: white;
+                color: black;
+                }
+                table {
+                border-collapse: collapse;
+                width: 80%;
+                margin: 0 auto;
+                }
+                th, td {
+                border: 1px solid #eeeeee;
+                }
+                td strong {
+                display: block;
+                text-align: left;
+                }
+              </style>
+              <div class="header_report">
+                <img src="https://data.memau.eu/wp-content/uploads/2025/06/logo-memau-data.svg" alt="Logo" style="max-width: 210px;
+                margin-top: 10px;margin-bottom: 5px;">
+                <p><i>Contact : hello@memau.eu </i></p>
+              </div>
+              <div class="body_report">
+                <h1>SF20v1.0</h1>
+                <p>Code du Sujet : ${subjectCode} </p>
+                <p>Rapport généré le : ${today}</p>
+                <p> Scores globaux </p>
+                ${data2table}
+                <br>
+                <p> Score brut par item</p>
+                ${data2table_longue}
+              </div>
+              `;
+
+        document.body.appendChild(content);
+
+        const opt = {
+          margin: 10,
+          filename: filename,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2, useCORS: true, scrollY: 0,windowHeight: 1200 },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+          pagebreak: { avoid: '.body_report' }
+        };
+
+        html2pdf().set(opt).from(content).save().then(() => {
+          document.body.removeChild(content);
+        });
+
+      }
+
+
       function resetForm() {
 
         document.getElementById("SF20").reset();
