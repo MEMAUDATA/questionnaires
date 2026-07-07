@@ -17,7 +17,7 @@
   <body>
     <h1>SSQ5</h1>
     <p> Gatehouse & Noble,2004 (version originale à 49 items)<br>
-      Moulin et Richard, 2016 (version simplifiée et validée en français)<p>
+      Moulin et Richard, 2016 (version simplifiée et validée en français)</p>
     <p><b>Conseil pour répondre aux questions</b></p>
     <p class="Consignes_SSQ">Les questions suivantes concernent votre capacité et votre expérience en matière d’audition et d’écoute dans le cadre de
       situations diverses.<br>
@@ -38,7 +38,7 @@
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
-              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q1">
+              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="qex">
               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
@@ -54,7 +54,7 @@
               </div>
             </td>
             <td class="na-checkbox">
-              <input type="checkbox" id="q1_na">
+              <input type="checkbox" id="qex_na">
               <span style="float: right;">Non appliquable</span>
             </td>
           </tr>
@@ -268,6 +268,15 @@
 
       let globalScore = null;
 
+      // Neutralise l'injection de formule CSV (=, +, -, @ en début de champ)
+      function sanitizeForCsv(v) {
+        return /^[=+\-@\t\r]/.test(v) ? "'" + v : v;
+      }
+
+      // NaN est de type 'number' en JS : on teste donc aussi isNaN pour ne pas écrire "NaN"
+      function fmtScore(v) {
+        return (typeof v === 'number' && !isNaN(v)) ? v.toFixed(2) : "NA";
+      }
 
       function calculerScores() {
         let score = 0;
@@ -286,14 +295,15 @@
           if (naCheckbox.checked) {
             countNa++;
           } else {
-            score += parseFloat(slider.value, 10);
+            score += parseFloat(slider.value);
           }
         }
 
-        if (countNa === 5) {
-          score = 0;
+        // Toutes les cases NA -> score incalculable (NaN), jamais 0 (0 = pire capacité, pas "absence")
+        if (countNa === sliderIds.length) {
+          score = NaN;
         } else {
-          score = score / (5 - countNa);
+          score = score / (sliderIds.length - countNa);
         }
 
         displayscores(score);
@@ -308,8 +318,12 @@
       function displayscores(score) {
 
         let display = "";
-        display += "<p>Résultats</p>";
-        display += "<p> Score total : " + score.toFixed(2) + "</p>";
+        if (isNaN(score)) {
+          display += "<p>Score incalculable : toutes les cases « non applicable » ont été cochées.</p>";
+        } else {
+          display += "<p>Résultats</p>";
+          display += "<p> Score total : " + score.toFixed(2) + "</p>";
+        }
 
 
         // Update the results div with the constructed HTML
@@ -323,14 +337,12 @@
 
       function saveXLS() {
 
-        const subjectCode = document.getElementById('ID').value || "SansNom"; // Nom du sujet
+        const rawCode = document.getElementById('ID').value || "SansNom";
+        const subjectCode = sanitizeForCsv(rawCode);
         const today = new Date().toLocaleDateString('fr-FR');
-        const filename = `SSQ5_${today}_${subjectCode}.csv`;
+        const filename = `SSQ5_${today}_${rawCode}.csv`;
 
-        //const scoreText = document.getElementById('scoreDisplay').textContent;
-        //const totalScore = scoreText.replace('Le score total est ', '').trim();
-
-        const safeScore = typeof globalScore === 'number' ? globalScore.toFixed(2) : "NA";
+        const safeScore = fmtScore(globalScore);
 
         const sliderIds = ["q1", "q2", "q3", "q4", "q5"];
         const naCheckboxIds = ["q1_na", "q2_na", "q3_na", "q4_na", "q5_na"];
@@ -368,18 +380,28 @@
       const subjectCode = document.getElementById('ID').value || "SansNom";
       const filename = `SSQ5_${today}_${subjectCode}.pdf`;
 
-      const safeScore = typeof globalScore === 'number' ? globalScore.toFixed(2) : "NA";
+      const safeScore = fmtScore(globalScore);
 
       const sliderIds = ["q1", "q2", "q3", "q4", "q5"];
       const naCheckboxIds = ["q1_na", "q2_na", "q3_na", "q4_na", "q5_na"];
 
-      let data2table = '';
+      let data2table = '<table><tr>';
       for (let i = 0; i < sliderIds.length; i++) {
-          const answer = document.getElementById(naCheckboxIds[i])?.checked ? "Non applicable (NA)" : document.getElementById(sliderIds[i])?.value;
-          data2table += `<p><strong>${sliderIds[i]}</strong>: ${answer || 'N/A'}</p>`;
+          const answer = document.getElementById(naCheckboxIds[i])?.checked
+              ? "Non applicable (NA)"
+              : document.getElementById(sliderIds[i])?.value || 'N/A';
+
+          data2table += `<td><strong>${sliderIds[i]}</strong>: ${answer}</td>`;
+
+          // Nouvelle ligne toutes les 2 colonnes
+          if (i % 2 === 1 && i !== sliderIds.length - 1) {
+              data2table += '</tr><tr>';
+          }
       }
+      data2table += '</tr></table>';
 
       const content = document.createElement('div');
+      content.lang = 'fr';
       content.innerHTML = `
       <style>
           .header_report,
@@ -406,6 +428,16 @@
               background-color: white;
               color: black; 
           }
+
+          .body_report table {
+              border-collapse: collapse;
+              margin: 0 auto;
+          }
+          .body_report td {
+              border: 1px solid #eeeeee;
+              padding: 6px 8px;
+              text-align: center;
+          }
       </style>
       <div class="header_report">
           <img src="https://data.memau.eu/wp-content/uploads/2025/06/logo-memau-data.svg" alt="Logo" style="max-width: 210px; 
@@ -418,7 +450,7 @@
           <p>Rapport généré le : ${today}</p>
           <p> Score total : ${safeScore} </p>
           <p> Score de chaque question</p>
-          <p>${data2table}</p>
+          ${data2table}
       </div>
     `;
 

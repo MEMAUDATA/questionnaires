@@ -37,7 +37,7 @@
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
-              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q1">
+              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="qex">
               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
@@ -53,7 +53,7 @@
               </div>
             </td>
             <td class="na-checkbox">
-              <input type="checkbox" id="q1_na">
+              <input type="checkbox" id="qex_na">
               <span style="float: right;">Non appliquable</span>
             </td>
           </tr>
@@ -174,7 +174,7 @@
 
           <tr>
             <td class="Question_SSQ">
-              4. Vous discutez avec quelqu’un dans une pièce dans laquelle beaucoupd’autres personnes s’entretiennent.Pouvez-vous suivre ce que vous dit votre interlocuteur ?
+              4. Vous discutez avec quelqu’un dans une pièce dans laquelle beaucoup d’autres personnes s’entretiennent. Pouvez-vous suivre ce que vous dit votre interlocuteur ?
             </td>
 
             <td class="Question_SSQ">
@@ -212,8 +212,8 @@
 
             <td class="Question_SSQ">
               <div class="SSQ_answer">
-                <span>Concentration intense</span>
-                <span>Pas de concentration</span>
+                <span>Pas du tout</span>
+                <span>Parfaitement</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q5">
               <div class="SSQ_answer">
@@ -454,13 +454,13 @@
 
           <tr>
             <td class="Question_SSQ">
-              12. Devez-vous vous concentrerintensément lorsque vous écoutez quelqu’un ou quelque chose ?
+              12. Devez-vous vous concentrer intensément lorsque vous écoutez quelqu’un ou quelque chose ?
             </td>
 
             <td class="Question_SSQ">
               <div class="SSQ_answer">
-                <span>Pas du tout</span>
-                <span>Parfaitement</span>
+                <span>Concentration intense</span>
+                <span>Pas de concentration</span>
               </div>
               <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q12">
               <div class="SSQ_answer">
@@ -520,6 +520,15 @@
 
       let globalScore = null;
 
+      // Neutralise l'injection de formule CSV (=, +, -, @ en début de champ)
+      function sanitizeForCsv(v) {
+        return /^[=+\-@\t\r]/.test(v) ? "'" + v : v;
+      }
+
+      // NaN est de type 'number' en JS : on teste donc aussi isNaN pour ne pas écrire "NaN"
+      function fmtScore(v) {
+        return (typeof v === 'number' && !isNaN(v)) ? v.toFixed(2) : "NA";
+      }
 
       function calculerScores() {
         let score = 0;
@@ -538,14 +547,15 @@
           if (naCheckbox.checked) {
             countNa++;
           } else {
-            score += parseFloat(slider.value, 10);
+            score += parseFloat(slider.value);
           }
         }
 
-        if (countNa === 12) {
-          score = 0;
+        // Toutes les cases NA -> score incalculable (NaN), jamais 0 (0 = pire capacité, pas "absence")
+        if (countNa === sliderIds.length) {
+          score = NaN;
         } else {
-          score = score / (12 - countNa);
+          score = score / (sliderIds.length - countNa);
         }
 
         displayscores(score);
@@ -560,8 +570,12 @@
       function displayscores(score) {
 
         let display = "";
-        display += "<p>Résultats</p>";
-        display += "<p> Score total : " + score.toFixed(2) + "</p>";
+        if (isNaN(score)) {
+          display += "<p>Score incalculable : toutes les cases « non applicable » ont été cochées.</p>";
+        } else {
+          display += "<p>Résultats</p>";
+          display += "<p> Score total : " + score.toFixed(2) + "</p>";
+        }
 
 
         // Update the results div with the constructed HTML
@@ -575,14 +589,12 @@
 
       function saveXLS() {
 
-        const subjectCode = document.getElementById('ID').value || "SansNom"; // Nom du sujet
+        const rawCode = document.getElementById('ID').value || "SansNom";
+        const subjectCode = sanitizeForCsv(rawCode);
         const today = new Date().toLocaleDateString('fr-FR');
-        const filename = `SSQ12_${today}_${subjectCode}.csv`;
+        const filename = `SSQ12_${today}_${rawCode}.csv`;
 
-        //const scoreText = document.getElementById('scoreDisplay').textContent;
-        //const totalScore = scoreText.replace('Le score total est ', '').trim();
-
-        const safeScore = typeof globalScore === 'number' ? globalScore.toFixed(2) : "NA";
+        const safeScore = fmtScore(globalScore);
 
         const sliderIds = ["q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9", "q10", "q11", "q12"];
         const naCheckboxIds = ["q1_na", "q2_na", "q3_na", "q4_na", "q5_na", "q6_na", "q7_na", "q8_na", "q9_na", "q10_na", "q11_na", "q12_na"];
@@ -620,7 +632,7 @@
       const subjectCode = document.getElementById('ID').value || "SansNom";
       const filename = `SSQ12_${today}_${subjectCode}.pdf`;
 
-      const safeScore = typeof globalScore === 'number' ? globalScore.toFixed(2) : "NA";
+      const safeScore = fmtScore(globalScore);
 
       const sliderIds = ["q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9", "q10", "q11", "q12"];
       const naCheckboxIds = ["q1_na", "q2_na", "q3_na", "q4_na", "q5_na", "q6_na", "q7_na", "q8_na", "q9_na", "q10_na", "q11_na", "q12_na"];  
@@ -641,6 +653,7 @@
       data2table += '</tr></table>';
 
       const content = document.createElement('div');
+      content.lang = 'fr';
       content.innerHTML = `
       <style>
           .header_report,
@@ -667,20 +680,15 @@
               background-color: white;
               color: black; 
           }
-          
-          .data2columns {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 8px;
-          }
 
-          .data2columns p {
-            width: 10%;
-            margin: 0;
-            padding: 8px;
-            box-sizing: border-box;
-            text-align: center;
+          .body_report table {
+              border-collapse: collapse;
+              margin: 0 auto;
+          }
+          .body_report td {
+              border: 1px solid #eeeeee;
+              padding: 6px 8px;
+              text-align: center;
           }
           
       </style>
@@ -695,10 +703,7 @@
           <p>Rapport généré le : ${today}</p>
           <p>Score total : ${safeScore}</p>
           <p>Score de chaque question</p>
-
-          <div class="data2columns">
-            ${data2table}
-          </div>
+          ${data2table}
         </div>
     `;
 

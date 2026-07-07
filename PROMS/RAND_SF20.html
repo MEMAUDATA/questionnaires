@@ -389,11 +389,17 @@
       }
 
     
+      // Neutralise l'injection de formule CSV (=, +, -, @ en début de champ)
+      function sanitizeForCsv(v) {
+        return /^[=+\-@\t\r]/.test(v) ? "'" + v : v;
+      }
+
       function saveXLS() {
 
-        const subjectCode = document.getElementById('ID').value || "SansNom"; // Nom du sujet
+        const rawCode = document.getElementById('ID').value || "SansNom"; // Nom du sujet
+        const subjectCode = sanitizeForCsv(rawCode);
         const today = new Date().toLocaleDateString('fr-FR');
-        const filename = `SF20v1.0_${today}_${subjectCode}.csv`;
+        const filename = `SF20v1.0_${today}_${rawCode}.csv`;
 
         const safePF = typeof SF20.globalPF === 'number' ? SF20.globalPF.toFixed(2) : "NA";
         const safeBP = typeof SF20.globalBP === 'number' ? SF20.globalBP.toFixed(2) : "NA";
@@ -450,7 +456,7 @@
         const safeMH = typeof SF20.globalMH === 'number' ? SF20.globalMH.toFixed(2) : "NA";
         const safeHT = typeof SF20.globalHT === 'number' ? SF20.globalHT.toFixed(2) : "NA";
 
-        col = ["PF","BP","RP","SF","MH","HT"];
+        const col = ["PF","BP","RP","SF","MH","HT"];
         const safeScores = [safePF, safeBP, safeRP, safeSF, safeMH, safeHT];
         let data2table = "<table>";
         for (let i = 0; i < col.length; i++) {
@@ -489,6 +495,7 @@
         data2table_longue += "</table>";
 
         const content = document.createElement('div');
+        content.lang = 'fr';
         content.innerHTML = `
               <style>
                 .header_report,
@@ -574,6 +581,3 @@
     </script>
   </body>
 </html>
-
-
-

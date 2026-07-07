@@ -535,6 +535,11 @@
           slider.style.background = `linear-gradient(to right, #2B176C ${initialValue}%, #eeeeee ${initialValue}%)`;
         });
 
+      // Neutralise l'injection de formule CSV (=, +, -, @ en début de champ)
+      function sanitizeForCsv(v) {
+        return /^[=+\-@\t\r]/.test(v) ? "'" + v : v;
+      }
+
       function calculerScores() {
        
         let total     			= 0;
@@ -558,7 +563,7 @@
           const naCheckbox = document.getElementById(naCheckboxIds[i]);
           if (slider && naCheckbox) {
             if (!naCheckbox.checked) { // Only add if NOT checked
-              parole += parseFloat(slider.value, 10);
+              parole += parseFloat(slider.value);
             } else {
               count_Na_parole++; // Still count the N/A for parole
             }
@@ -571,7 +576,7 @@
           const naCheckbox = document.getElementById(naCheckboxIds[i]);
           if (slider && naCheckbox) {
             if (!naCheckbox.checked) { // Only add if NOT checked
-              spatial += parseFloat(slider.value, 10);
+              spatial += parseFloat(slider.value);
             } else {
               count_Na_spatial++; // Still count the N/A for spatial
             }
@@ -584,7 +589,7 @@
           const naCheckbox = document.getElementById(naCheckboxIds[i]);
           if (slider && naCheckbox) {
             if (!naCheckbox.checked) { // Only add if NOT checked
-              qualite += parseFloat(slider.value, 10);
+              qualite += parseFloat(slider.value);
             } else {
               count_Na_qualite++; // Still count the N/A for qualite
             }
@@ -592,6 +597,7 @@
         } // end qualite loop
 
         // Compute average scores
+        // Une sous-échelle entièrement NA -> NaN (le garde-fou dans displayscores/export gère l'affichage)
         parole = parole / (4- count_Na_parole);
         spatial = spatial /(4 - count_Na_spatial);
         qualite = qualite / (4 - count_Na_qualite);
@@ -611,22 +617,26 @@
 
       function displayscores(total, parole, spatial,qualite) {
 
+        let display = "";
 
-        let display = "<p>Résultats</p>";
-        display += "<br>"; 
-        display += "<ul class='myList'>"; 
-        display += "<li>Score total : " + total.toFixed(2) + "</li>";
-        display += "<li>Audition de la parole : " + parole.toFixed(2) + "</li>";
-        display += "<li>Audition spatiale : " + spatial.toFixed(2) + "</li>";
-        display += "<li>Qualité d’audition : " + qualite.toFixed(2) + "</li>";
-        display += "</ul>";
+        if (isNaN(total) || isNaN(parole) || isNaN(spatial) || isNaN(qualite)) {
+          display += "<p>Score incalculable : une sous-échelle entière a été cochée « non applicable ».</p>";
+        } else {
+          display += "<p>Résultats</p>";
+          display += "<br>";
+          display += "<ul class='myList'>";
+          display += "<li>Score total : " + total.toFixed(2) + "</li>";
+          display += "<li>Audition de la parole : " + parole.toFixed(2) + "</li>";
+          display += "<li>Audition spatiale : " + spatial.toFixed(2) + "</li>";
+          display += "<li>Qualité d’audition : " + qualite.toFixed(2) + "</li>";
+          display += "</ul>";
+        }
+
         // Update the results div with the constructed HTML
         document.getElementById("scoreDisplay").innerHTML = display;
         document.getElementById("results").style.display = "block";
         document.getElementById('savePdfButton').style.display = 'inline-block';
         document.getElementById('saveXLSbutton').style.display = 'inline-block';
-
-
 
       } // end function
       
@@ -652,17 +662,17 @@
 
       function saveXLS() {
 
-            const subjectCode = document.getElementById('ID').value || "SansNom"; // Nom du sujet
+            const rawCode = document.getElementById('ID').value || "SansNom";
+            const subjectCode = sanitizeForCsv(rawCode);
             const today = new Date().toLocaleDateString('fr-FR');
-            const filename = `Kid-SSQ_${today}_${subjectCode}.csv`;
+            const filename = `Kid-SSQ_${today}_${rawCode}.csv`;
 
-            //const scoreText = document.getElementById('scoreDisplay').textContent;
-            //const totalScore = scoreText.replace('Le score total est ', '').trim();
-
-            const safetotal = typeof globalTotal === 'number' ? globalTotal.toFixed(2) : "NA";
-            const safeparole = typeof globalParole === 'number' ? globalParole.toFixed(2) : "NA";
-            const safespatial = typeof globalSpatial === 'number' ? globalSpatial.toFixed(2) : "NA";
-            const safequalite = typeof globalQualite === 'number' ? globalQualite.toFixed(2) : "NA";
+            // NaN est de type 'number' en JS : on teste donc aussi isNaN pour ne pas écrire "NaN"
+            const fmt = v => (typeof v === 'number' && !isNaN(v)) ? v.toFixed(2) : "NA";
+            const safetotal   = fmt(globalTotal);
+            const safeparole  = fmt(globalParole);
+            const safespatial = fmt(globalSpatial);
+            const safequalite = fmt(globalQualite);
 
             // Slider and Na id
             const sliderIds = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10', 'q11', 'q12'];
@@ -699,10 +709,11 @@
                 const subjectCode = document.getElementById('ID').value || "SansNom";
                 const filename = `Kid-SSQ_${today}_${subjectCode}.pdf`;
 
-                const safetotal = typeof globalTotal === 'number' ? globalTotal.toFixed(2) : "NA";
-                const safeparole = typeof globalParole === 'number' ? globalParole.toFixed(2) : "NA";
-                const safespatial = typeof globalSpatial === 'number' ? globalSpatial.toFixed(2) : "NA";
-                const safequalite = typeof globalQualite === 'number' ? globalQualite.toFixed(2) : "NA";
+                const fmt = v => (typeof v === 'number' && !isNaN(v)) ? v.toFixed(2) : "NA";
+                const safetotal   = fmt(globalTotal);
+                const safeparole  = fmt(globalParole);
+                const safespatial = fmt(globalSpatial);
+                const safequalite = fmt(globalQualite);
 
                 // Slider and Na id
                 const sliderIds = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10', 'q11', 'q12'];
@@ -724,6 +735,7 @@
                 data2table += '</tr></table>';
 
                 const content = document.createElement('div');
+                content.lang = 'fr';
                 content.innerHTML = `
                 <style>
                     .header_report,
@@ -750,19 +762,14 @@
                         background-color: white;
                         color: black; 
                     }
-                    
-                    .data2columns {
-                        display: flex;
-                        flex-wrap: wrap;
-                        justify-content: center;
-                        gap: 8px;
-                    }
 
-                    .data2columns p {
-                        width: 10%;
-                        margin: 0;
-                        padding: 8px;
-                        box-sizing: border-box;
+                    .body_report table {
+                        border-collapse: collapse;
+                        margin: 0 auto;
+                    }
+                    .body_report td {
+                        border: 1px solid #eeeeee;
+                        padding: 6px 8px;
                         text-align: center;
                     }
                     
@@ -781,9 +788,7 @@
                     <p>Audition spatiale : ${safespatial}</p>
                     <p>Qualité d'audition : ${safequalite}</p>
                     <p>Score de chaque question</p>
-                    <div class="data2columns">
-                        ${data2table}
-                    </div>
+                    ${data2table}
                     </div>
                 `;
 
@@ -811,4 +816,3 @@
 
   </body>
 </html>
-

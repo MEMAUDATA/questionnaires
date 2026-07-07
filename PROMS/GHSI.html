@@ -344,7 +344,7 @@
         display += "<li>Score Physique : " + physical.toFixed(2) + "</li>";
         display += "</ul>";
         display += "<p>Tous les scores sont compris entre 0 et +100.</p>" ;
-        display += "<p>Le score de 0 reflète un très mauvais état de santé et 100 un excellent";
+        display += "<p>Le score de 0 reflète un très mauvais état de santé et 100 un excellent.</p>";
 
         // Update the results div with the constructed HTML
         document.getElementById("scoreDisplay").innerHTML = display;
@@ -365,11 +365,17 @@
       } // end resetForm function
 
 
+      // Neutralise l'injection de formule CSV (=, +, -, @ en début de champ)
+      function sanitizeForCsv(v) {
+        return /^[=+\-@\t\r]/.test(v) ? "'" + v : v;
+      }
+
       function saveXLS() {
 
-        const subjectCode = document.getElementById('ID').value || "SansNom";
+        const rawCode = document.getElementById('ID').value || "SansNom";
+        const subjectCode = sanitizeForCsv(rawCode);
         const today = new Date().toLocaleDateString('fr-FR');
-        const filename = `GHSI_${today}_${subjectCode}.csv`;
+        const filename = `GHSI_${today}_${rawCode}.csv`;
 
         // Récupérer les réponses
         let answers = [];
@@ -445,6 +451,7 @@
 
 
           const content = document.createElement('div');
+          content.lang = 'fr';
           content.innerHTML = `
             <style>
             @page {

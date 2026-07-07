@@ -21,7 +21,7 @@
     <p><b>Conseil pour répondre aux questions</b></p>
     <p><i> Questionnaire sous licence CC BY-NC-SA 4.0 </i></p>
     <p class="Consignes_SSQ">Les questions suivantes concernent votre capacité et votre expérience en matière d’audition et d’écoute dans le cadre de
-      situations diverses.<br>
+      situations diverses.
       Déplacez le curseur (ou slider) situé à droite de chacune des questions, à l’endroit adéquat entre le 0 et le 10. Si le curseur se trouve au niveau de la valeur 10, cela signifie que vous êtes parfaitement capable de faire ou d’expérimenter ce qui est décrit dans la question correspondante. Si le curseur se trouve sur le 0, cela indique que vous n’êtes pratiquement pas en mesure de faire
       ni d’expérimenter ce qui est décrit.<br>
     <p style="text-align: left;"><b>Exemple</b></p> 
@@ -39,7 +39,7 @@
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
-              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q1">
+              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="qex">
               <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
@@ -55,7 +55,7 @@
               </div>
             </td>
             <td class="na-checkbox">
-              <input type="checkbox" id="q1_na">
+              <input type="checkbox" id="qex_na">
               <span style="float: right;">Non appliquable</span>
             </td>
           </tr>
@@ -1098,6 +1098,7 @@
           <tr>
             <td class="Question_SSQ">
               13. Lorsque vous entendez un bus ou un camion, pouvez-vous dire s'il s'éloigne ou s'il se rapproche de vous?
+            </td>
             <td class="Question_SSQ">
               <div class="SSQ_answer">
                 <span>Pas du tout</span>
@@ -1135,6 +1136,7 @@
           <tr>
             <td class="Question_SSQ">
               14. Avez-vous l'impression que les bruits et sons que vous entendez se trouvent plutôt à l'intérieur de votre tête ou plutôt dans le monde extérieur ? 
+            </td>
             <td class="Question_SSQ">
               <div class="SSQ_answer">
                 <span>À l’intérieur de ma tête</span>
@@ -1762,6 +1764,7 @@
           <tr>
             <td class="Question_SSQ">
               13. Pouvez-vous facilement juger de l’humeur d’une personne au son de sa voix ?
+            </td>
             <td class="Question_SSQ">
               <div class="SSQ_answer">
                 <span>Pas du tout</span>
@@ -1799,6 +1802,7 @@
           <tr>
             <td class="Question_SSQ">
               14. Devez-vous vous concentrer intensément lorsque vous écoutez quelqu’un ou quelque chose ?
+            </td>
             <td class="Question_SSQ">
               <div class="SSQ_answer">
                 <span>Concentration intense</span>
@@ -2022,6 +2026,11 @@
             slider.style.background = `linear-gradient(to right, #2B176C ${initialValue}%, #eeeeee ${initialValue}%)`;
         });
 
+        // Neutralise l'injection de formule CSV (=, +, -, @ en début de champ)
+        function sanitizeForCsv(v) {
+            return /^[=+\-@\t\r]/.test(v) ? "'" + v : v;
+        }
+
         function calculerScores() {
 
             let total     				= 0;
@@ -2039,7 +2048,7 @@
             const naCheckbox = document.getElementById(naCheckboxIds[i]);
             if (slider && naCheckbox) {
                 if (!naCheckbox.checked) { // Only add if NOT checked
-                parole += parseFloat(slider.value, 10);
+                parole += parseFloat(slider.value);
                 } else {
                 count_Na_parole++; // Still count the N/A for parole
                 }
@@ -2052,7 +2061,7 @@
             const naCheckbox = document.getElementById(naCheckboxIds[i]);
             if (slider && naCheckbox) {
                 if (!naCheckbox.checked) { // Only add if NOT checked
-                spatial += parseFloat(slider.value, 10);
+                spatial += parseFloat(slider.value);
                 } else {
                 count_Na_spatial++; // Still count the N/A for spatial
                 }
@@ -2065,7 +2074,7 @@
             const naCheckbox = document.getElementById(naCheckboxIds[i]);
             if (slider && naCheckbox) {
                 if (!naCheckbox.checked) { // Only add if NOT checked
-                qualite += parseFloat(slider.value, 10);
+                qualite += parseFloat(slider.value);
                 } else {
                 count_Na_qualite++; // Still count the N/A for qualite
                 }
@@ -2136,12 +2145,10 @@
 
         function saveXLS() {
 
-            const subjectCode = document.getElementById('ID').value || "SansNom"; // Nom du sujet
+            const rawCode = document.getElementById('ID').value || "SansNom";
+            const subjectCode = sanitizeForCsv(rawCode);
             const today = new Date().toLocaleDateString('fr-FR');
-            const filename = `SSQ49_${today}_${subjectCode}.csv`;
-
-            //const scoreText = document.getElementById('scoreDisplay').textContent;
-            //const totalScore = scoreText.replace('Le score total est ', '').trim();
+            const filename = `SSQ49_${today}_${rawCode}.csv`;
 
             const safetotal = typeof globalTotal === 'number' ? globalTotal.toFixed(2) : "NA";
             const safeparole = typeof globalParole === 'number' ? globalParole.toFixed(2) : "NA";
@@ -2199,9 +2206,9 @@
                     ? "Non applicable (NA)"
                     : document.getElementById(sliderIds[i])?.value || 'N/A';
 
-                data2table += `<p><strong>${sliderIds[i]}</strong>: ${answer}</p>`;
+                data2table += `<td><strong>${sliderIds[i]}</strong>: ${answer}</td>`;
 
-                // Add a new row every two columns
+                // Nouvelle ligne toutes les 4 colonnes
                 if ((i + 1) % 4 === 0) {
                     data2table += '</tr><tr>';
                 }
@@ -2210,6 +2217,7 @@
 
 
             const content = document.createElement('div');
+            content.lang = 'fr';
             content.innerHTML = `
             <style>
                 .header_report,
@@ -2236,19 +2244,16 @@
                     background-color: white;
                     color: black; 
                 }
-                
-                .data2columns {
-                    display: flex;
-                    flex-wrap: wrap;
-                    justify-content: center;
-                    gap: 8px;
-                }
 
-                .data2columns p {
-                    width: 10%;
-                    margin: 0;
-                    padding: 8px;
+                .body_report table {
+                    border-collapse: collapse;
+                    margin: 0 auto;
+                }
+                .body_report td {
+                    border: 1px solid #eeeeee;
+                    padding: 6px 8px;
                     text-align: center;
+                    font-size: 0.85em;
                 }
                 
             </style>
@@ -2266,9 +2271,7 @@
                 <p>Audition spatiale : ${safespatial}</p>
                 <p>Qualité d'audition : ${safequalite}</p>
                 <p>Score de chaque question</p>
-                <div class="data2columns">
-                    ${data2table}
-                </div>
+                ${data2table}
                 </div>
             `;
 

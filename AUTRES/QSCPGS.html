@@ -417,7 +417,7 @@
         <label for="nameID" class="Subject_name">Nom du sujet (si besoin)</label>
         <input type="text" id="ID" name="nameID"><br>
         <button id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
-        <button id="saveXLSbutton" onclick="saveXLS()">Exporter en CSV</button>
+        <button id="saveXLSbutton" onclick="saveXLS()">Exporter en XLS</button>
       </div>
 
     <script>
@@ -433,19 +433,19 @@
         let global = 0;
 
 
-        // Global (questions 1 to 10)
+        // Satisfaction corporelle (questions 1 à 10 : section "votre corps")
         for (let i = 1; i <= 10; i++) {
           const radioButtons = document.querySelectorAll(`input[name="q${i}"]:checked`);
           if (radioButtons.length > 0) {
-            global += parseInt(radioButtons[0].value);
+            corps += parseInt(radioButtons[0].value);
           }
         }
 
-        // Corps (questions 11 to 20)
+        // Perception globale de soi (questions 11 à 20 : section "Globalement")
         for (let i = 11; i <= 20; i++) {
           const radioButtons = document.querySelectorAll(`input[name="q${i}"]:checked`);
           if (radioButtons.length > 0) {
-            corps += parseInt(radioButtons[0].value);
+            global += parseInt(radioButtons[0].value);
           }
         }
 
@@ -497,7 +497,7 @@
         const safeGlobal = typeof globalGlobal === 'number' ? globalGlobal.toFixed(2) : "NA";
         const safeT = typeof globalT === 'number' ? globalT.toFixed(2) : "NA";
 
-        let csvContent = "data:text/csv;charset=utf-8,﻿";
+        let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
         csvContent += "Sujet,Date,Questionnaire,Score Total,Satisfaction corporelle,Perception globale de soi";
         for (let i = 1; i <= 20; i++) {
           csvContent += `,"Question ${i}"`;
