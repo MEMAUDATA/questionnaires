@@ -57,8 +57,8 @@
             <td><label><input type="radio" name="q2" value="100"> Bien meilleur que l'an dernier</label></td>
             <td><label><input type="radio" name="q2" value="75"> Plutôt meilleur que l'an dernier</label></td>
             <td><label><input type="radio" name="q2" value="50"> A peu près pareil</label></td>
-            <td><label><input type="radio" name="q2" value="2"> Plutôt moins bon</label></td>
-            <td><label><input type="radio" name="q2" value="1"> Beaucoup moins bon</label></td>
+            <td><label><input type="radio" name="q2" value="25"> Plutôt moins bon</label></td>
+            <td><label><input type="radio" name="q2" value="0"> Beaucoup moins bon</label></td>
           </tr>
         </tbody>
       </table>
@@ -271,7 +271,7 @@
           <td><label><input type="radio" name="q9a" value="60"></label></td>
           <td><label><input type="radio" name="q9a" value="40"></label></td>
           <td><label><input type="radio" name="q9a" value="20"></label></td>
-          <td><label><input type="radio" name="q9a" value="10"></label></td>
+          <td><label><input type="radio" name="q9a" value="0"></label></td>
         </tr>
         <tr>
           <td class="Question_SF36">b. Vous vous êtes senti(e) très nerveux (se)?</td>
@@ -421,8 +421,8 @@
       <p id="scoreDisplay"></p><br>
       <label id ="labelId" for="nameID" class="Subject_name">Nom du sujet (si besoin)</label>
       <input type="text" id="ID" name="nameID"><br>
-      <button id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
-      <button id="saveXLSbutton" onclick="saveXLS()">Exporter en CSV</button>
+      <button type="button" id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
+      <button type="button" id="saveXLSbutton" onclick="saveXLS()">Exporter en CSV</button>
     </div>
 
 
@@ -625,11 +625,11 @@
         display += "<ul class='myList'>";
         display += "<li>Santé Générale : " + mscoreGH.toFixed(2) + " % </li>";
         display += "<li>Activité physique : " + mscorePF.toFixed(2) + " % </li>";
-        display += "<li>Limitations dues à des problèmes émotionnels : " + mscoreRP.toFixed(2) + " % </li>";
+        display += "<li>Limitations dues à l’état physique : " + mscoreRP.toFixed(2) + " % </li>";
         display += "<li>Douleur : " + mscoreBP.toFixed(2) + " % </li>";
         display += "<li>Fatigue (vitalité) : " + mscoreVT.toFixed(2) + " % </li>";
         display += "<li>Vie et relation avec les autres : " + mscoreSF.toFixed(2) + " % </li>";
-        display += "<li>Limitations dues à l’état psychique : " + mscorePF.toFixed(2) + " % </li>";
+        display += "<li>Limitations dues à l’état émotionnel : " + mscoreRE.toFixed(2) + " % </li>";
         display += "<li>Bien-être émotionnelle : " + mscoreMH.toFixed(2) + " % </li>";
         display += "<li>Évolution de la santé perçue : " + mscoreHT.toFixed(2) + " % </li>";
         display += "</ul>";
@@ -643,11 +643,17 @@
         document.getElementById("labelId").style.display = 'inline-block';
       }
 
+      // Neutralise l'injection de formule CSV (=, +, -, @ en début de champ)
+      function sanitizeForCsv(v) {
+        return /^[=+\-@\t\r]/.test(v) ? "'" + v : v;
+      }
+
       function saveXLS() {
 
-        const subjectCode = document.getElementById('ID').value || "SansNom"; // Nom du sujet
+        const rawCode = document.getElementById('ID').value || "SansNom"; // Nom du sujet
+        const subjectCode = sanitizeForCsv(rawCode);
         const today = new Date().toLocaleDateString('fr-FR');
-        const filename = `SF36v1_${today}_${subjectCode}.csv`;
+        const filename = `SF36v1_${today}_${rawCode}.csv`;
 
 
         const safeGH = typeof SF36.globalGH === 'number' ? SF36.globalGH.toFixed(2) : "NA";
@@ -716,7 +722,7 @@
 
 
     
-        col = ["GH","PF","BP","RP","VT","SF","RE","MH","HT"];
+        const col = ["GH","PF","BP","RP","VT","SF","RE","MH","HT"];
         const safeScores = [safeGH, safePF, safeBP, safeRP,safeVT,safeSF,safeRE,safeMH,safeHT];
         let data2table = "<table>";
         for (let i = 0; i < col.length; i++) {
@@ -757,6 +763,7 @@
         data2table_longue += "</table>";
    
         const content = document.createElement('div');
+        content.lang = 'fr';
         content.innerHTML = `
               <style>
                 .header_report,
@@ -777,7 +784,7 @@
                 }
                 .body_report {
                 padding-top: 2%;
-                padding-bottom:5%;
+                padding-bottom:0;
                 background-color: white;
                 color: black; 
                 }
@@ -817,12 +824,11 @@
 
         // Define options for html2pdf
         const opt = {
-          margin: 10,
+          margin: [10, 10, 10, 10],
           filename: filename,
           image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2, useCORS: true, scrollY: 0,windowHeight: 1200 },
-          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-          pagebreak: { avoid: '.body_report' }
+          html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
 
         // Generate and download the PDF

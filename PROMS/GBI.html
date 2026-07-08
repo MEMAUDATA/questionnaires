@@ -217,8 +217,8 @@
       <p id="scoreDisplay"></p><br>
       <label id ="labelId" for="nameID" class="Subject_name">Nom du sujet (si besoin)</label>
       <input type="text" id="ID" name="nameID"><br>
-      <button id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
-      <button id="saveXLSbutton" onclick="saveXLS()">Exporter en CSV</button>
+      <button type="button" id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
+      <button type="button" id="saveXLSbutton" onclick="saveXLS()">Exporter en CSV</button>
     </div>
 
     <script>
@@ -238,15 +238,15 @@
           let answeredQuestions = 0;
 
           // Define questions for each subscale
-          const generalBenefitQuestions = ['q1', 'q2', 'q3', 'q5', 'q6', 'q7', 'q14', 'q15', 'q17'];
+          const generalBenefitQuestions = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q9', 'q10', 'q14', 'q16', 'q17', 'q18'];
           let generalBenefitScore = 0;
           let generalBenefitAnswered = 0;
 
-          const socialSupportQuestions = ['q4', 'q10', 'q11', 'q18'];
+          const socialSupportQuestions = ['q7', 'q11', 'q15'];
           let socialSupportScore = 0;
           let socialSupportAnswered = 0;
 
-          const physicalHealthQuestions = ['q8', 'q9', 'q12', 'q13', 'q16'];
+          const physicalHealthQuestions = ['q8', 'q12', 'q13'];
           let physicalHealthScore = 0;
           let physicalHealthAnswered = 0;
 
@@ -342,11 +342,17 @@
 
       }
 
+      // Neutralise l'injection de formule CSV (=, +, -, @ en début de champ)
+      function sanitizeForCsv(v) {
+        return /^[=+\-@\t\r]/.test(v) ? "'" + v : v;
+      }
+
       function saveXLS() {
 
-        const subjectCode = document.getElementById('ID').value || "SansNom";
+        const rawCode = document.getElementById('ID').value || "SansNom";
+        const subjectCode = sanitizeForCsv(rawCode);
         const today = new Date().toLocaleDateString('fr-FR');
-        const filename = `GBI_${today}_${subjectCode}.csv`;
+        const filename = `GBI_${today}_${rawCode}.csv`;
 
         // Récupérer les réponses
         let answers = [];
@@ -422,6 +428,7 @@
 
          
           const content = document.createElement('div');
+          content.lang = 'fr';
           content.innerHTML = `
             <style>
             @page {

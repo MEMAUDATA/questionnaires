@@ -265,8 +265,8 @@
         <p id="scoreDisplay"></p><br>
         <label id ="labelId" for="nameID" class="Subject_name">Nom du sujet (si besoin)</label>
         <input type="text" id="ID" name="nameID"><br>
-        <button id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
-        <button id="saveXLSbutton" onclick="saveXLS()">Exporter en CSV</button>
+        <button type="button" id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
+        <button type="button" id="saveXLSbutton" onclick="saveXLS()">Exporter en CSV</button>
       </div>
   </form>
 
@@ -459,11 +459,17 @@
       document.getElementById("results").style.display = "none";
   }
 
+  // Neutralise l'injection de formule CSV (=, +, -, @ en début de champ)
+  function sanitizeForCsv(v) {
+    return /^[=+\-@\t\r]/.test(v) ? "'" + v : v;
+  }
+
   function saveXLS() {
 
-    const subjectCode = document.getElementById('ID').value || "SansNom";
+    const rawCode = document.getElementById('ID').value || "SansNom";
+    const subjectCode = sanitizeForCsv(rawCode);
     const today = new Date().toLocaleDateString('fr-FR');
-    const filename = `SF12v1.0_${today}_${subjectCode}.csv`;
+    const filename = `SF12v1.0_${today}_${rawCode}.csv`;
 
     // Calculer les scores
     const safeMCS = typeof SF12.MCS === 'number' ? SF12.MCS.toFixed(2) : "NA";
@@ -539,6 +545,7 @@
 
 
       const content = document.createElement('div');
+      content.lang = 'fr';
       content.innerHTML = `
         <style>
         @page {
@@ -633,4 +640,3 @@
   </script>
 </body>
 </html>
-

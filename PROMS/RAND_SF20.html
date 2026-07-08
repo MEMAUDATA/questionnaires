@@ -265,8 +265,8 @@
           <p id="scoreDisplay"></p><br>
           <label id ="labelId" for="nameID" class="Subject_name">Nom du sujet (si besoin)</label>
           <input type="text" id="ID" name="nameID"><br>
-          <button id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
-          <button id="saveXLSbutton" onclick="saveXLS()">Exporter en CSV</button>
+          <button type="button" id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
+          <button type="button" id="saveXLSbutton" onclick="saveXLS()">Exporter en CSV</button>
       </div>
 
     </form>
@@ -553,12 +553,11 @@
         document.body.appendChild(content);
 
         const opt = {
-          margin: 10,
+          margin: [10, 10, 10, 10],
           filename: filename,
           image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2, useCORS: true, scrollY: 0,windowHeight: 1200 },
-          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-          pagebreak: { avoid: '.body_report' }
+          html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
 
         html2pdf().set(opt).from(content).save().then(() => {
