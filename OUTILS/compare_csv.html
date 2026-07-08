@@ -28,7 +28,7 @@
       <button type="button"  onclick="resetcsv()">Réinitialiser</button>
     </div>
     <div class="buttons-container">
-        <button type="button" id="downloadButton" style="display: none;margin-left: 390px;" onclick="downloadPlot()">Télécharger le graphique en .PDF</button>
+        <button type="button" id="downloadButton" style="display: none;margin-left: 390px;" onclick="savePdf()">Télécharger le graphique en .PDF</button>
     </div>
     <script>
         // Button selection
@@ -166,10 +166,48 @@
   
 
         // Plot CSV
-        function plotCSV() {}
+        function plotCSV() {
+
+            const files = fileInput.files;
+            const results = [];
+            
+            if (files.length === 0) {
+                        const resultDiv = document.getElementById("fileCount");
+                        resultDiv.innerHTML = "<p class='Error_message_not_all_answered'>Ajoutez au moins un fichier .csv!</p>";
+                        return;
+            }
+
+        }
 
         // Export plot
-        function downloadPlot() {}
+        function savePdf() {
+
+            const today = new Date().toLocaleDateString('fr-FR');
+            const subjectCode = document.getElementById('ID').value || "SansNom";
+            const filename = `FIGURE_${today}_${subjectCode}.pdf`;
+            content.lang = 'fr';
+
+
+            document.body.appendChild(content);
+
+            // Use html2pdf to convert the HTML content to PDF
+            const opt = {
+            margin: [10, 10, 10, 10], // Adjusted margin to ensure content is visible
+            filename: filename,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true,scrollY: 0 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Generate PDF from HTML content
+            html2pdf().set(opt).from(content).save().then(() => {
+            document.body.removeChild(content);
+            });
+
+
+
+
+        }
 
         // Reset all
         function resetcsv() {
@@ -179,36 +217,6 @@
           resultDiv.innerHTML = "";
         }
 
-
-
-        let combinedDataBlob;
-  
-        function combineResults(results) {
-          let combinedData = [];
-          results.forEach(result => {
-            combinedData = combinedData.concat(result);
-          });
-  
-          const csv = Papa.unparse(combinedData);
-          combinedDataBlob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
-          downloadButton.style.display = 'block';
-        }
-  
-        function downloadCombinedFile() {
-          if (combinedDataBlob) {
-            const url = URL.createObjectURL(combinedDataBlob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'MEMAUDATA_csv_combinés.csv';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-          }
-        }
-  
-       
-  
       </script>
   </body>
 </html>
