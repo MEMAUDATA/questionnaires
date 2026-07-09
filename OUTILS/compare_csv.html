@@ -8,7 +8,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
-    <!-- Librairie d'export PDF (html2canvas + jsPDF empaquetés) -->
     <script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
     <link rel="stylesheet" href="/style.css">
     <style>
@@ -21,7 +20,7 @@
   </head>
   <body>
     <div id="dropArea" class="drag_n_drop">
-      <p>Drag &amp; drop ici tes fichiers .csv</p>
+      <p>Drag & drop ici tes fichiers .csv</p>
       <input type="file" id="csvFiles" accept=".csv" multiple style="display: none;">
       <div class="buttons-container">
         <button type="button" id="customFileButton">Choisis tes fichiers .csv</button>
@@ -32,32 +31,26 @@
       <button type="button" onclick="plotCSV()">Générer le graphe</button>
       <button type="button" onclick="resetcsv()">Réinitialiser</button>
     </div>
-    <div class="buttons-container">
-      <button type="button" id="downloadButton" style="display: none;" onclick="savePdf()">Télécharger le graphique en .PDF</button>
-    </div>
+  
 
-    <!-- Zone de sortie (graphe + tableau), masquée tant qu'aucun graphe n'est généré -->
     <div id="output" style="display: none;">
       <h2>Comparaison des scores totaux</h2>
       <div id="chartContainer"></div>
       <div id="tableContainer"></div>
+      <div class="buttons-container">
+        <button type="button" id="downloadButton" style="display: none;" onclick="savePdf()">Télécharger le graphique en .PDF</button>
+      </div>
     </div>
 
     <script>
-      // ============================================================
-      //  CONFIGURATION — à ajuster si les en-têtes de tes CSV changent
-      // ============================================================
       const CONFIG = {
-        // Noms de champs possibles pour chaque info recherchée.
-        // La détection est insensible à la casse et aux accents,
-        // et accepte une correspondance partielle (ex : "Date de passation").
+
         cles: {
           questionnaire: ["questionnaire", "nom du questionnaire", "nom questionnaire", "test", "instrument", "echelle", "nom"],
           date:          ["date", "date de passation", "date de remplissage", "date du test", "horodatage", "timestamp"],
           sujet:         ["sujet", "code du sujet", "code sujet", "identifiant", "id", "patient", "code patient", "initiales"],
           score:         ["score total", "score", "total", "score global", "note totale", "resultat", "score final"]
         },
-        // Palette de violets MEMAU pour les barres
         couleurBarres: ["#2B176C", "#5B44A8", "#8E7BD1", "#B9AEE6"]
       };
 
@@ -75,9 +68,7 @@
       let tableHTML = "";
       let dernieresEntrees = [];
 
-      // ============================================================
-      //  SÉLECTION / DRAG & DROP
-      // ============================================================
+      
       document.getElementById('customFileButton').addEventListener('click', function () {
         fileInput.click();
       });
@@ -112,8 +103,6 @@
           resultDiv.innerHTML = "<p class='Error_message_not_all_answered'>Ajoutez au moins un fichier .csv !</p>";
           return;
         }
-
-        // Vérifie l'extension de chaque fichier
         for (let i = 0; i < files.length; i++) {
           if (!files[i].name.trim().toLowerCase().endsWith('.csv')) {
             resultDiv.innerHTML = "<p class='Error_message_not_all_answered'>Erreur ! Au moins un des fichiers n'est pas un .csv !</p>";
@@ -122,7 +111,7 @@
           }
         }
 
-        fileInput.files = files; // on branche les fichiers déposés sur l'input
+        fileInput.files = files;
         afficherNombre(files);
       }
 
@@ -135,9 +124,7 @@
         resultDiv.innerHTML = `<p>Nombre de fichiers .csv sélectionnés : ${files.length}${pluriel ? "" : ""}</p>`;
       }
 
-      // ============================================================
-      //  OUTILS D'EXTRACTION
-      // ============================================================
+      
 
       // Normalise une chaîne : minuscules, sans accents, espaces réduits
       function norm(s) {
@@ -223,9 +210,7 @@
         });
       }
 
-      // ============================================================
-      //  GÉNÉRATION DU GRAPHE + TABLEAU
-      // ============================================================
+  
       async function plotCSV() {
         const files = fileInput.files;
         if (!files || files.length === 0) {
@@ -236,8 +221,6 @@
         resultDiv.innerHTML = "<p>Traitement en cours…</p>";
         try {
           const entrees = await Promise.all(Array.from(files).map(lireFichier));
-
-          // Tri chronologique quand les dates sont exploitables
           entrees.sort((a, b) => {
             const da = Date.parse(a.date), db = Date.parse(b.date);
             return (!isNaN(da) && !isNaN(db)) ? da - db : 0;
@@ -259,10 +242,9 @@
         }
       }
 
-      // ---------- Petits utilitaires de mise en forme ----------
       function echapper(s) {
         return (s ?? "").toString().replace(/[&<>"']/g, c =>
-          ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+          ({ '&': '&', '<': '<', '>': '>', '"': '"', "'": '&#39;' }[c]));
       }
       function tronquer(s, n) {
         s = (s ?? "").toString();
@@ -297,7 +279,7 @@
         const barW = Math.min(90, bandW * 0.6);
         const y = v => m.top + ih - (v / yMax) * ih;
 
-        // Grille + graduations Y
+
         let grille = "";
         const ticks = 5;
         for (let i = 0; i <= ticks; i++) {
@@ -307,7 +289,7 @@
           grille += `<text x="${m.left - 8}" y="${yy + 4}" text-anchor="end" font-size="12" fill="#555">${arrondi(val)}</text>`;
         }
 
-        // Barres + valeurs + étiquettes
+
         let barres = "";
         entrees.forEach((e, i) => {
           const cx = m.left + bandW * i + bandW / 2;
@@ -333,12 +315,12 @@
           <line x1="${m.left}" y1="${m.top + ih}" x2="${W - m.right}" y2="${m.top + ih}" stroke="#2B176C" stroke-width="1.5"/>
           <text x="${m.left}" y="${m.top - 16}" font-size="13" font-weight="bold" fill="#2B176C">Score total</text>`;
 
-        return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" width="100%" ` +
-               `style="max-width:${W}px;height:auto;font-family:Arial,Helvetica,sans-serif;background:#fff;">` +
-               `${grille}${axes}${barres}</svg>`;
+          return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" ` +
+                `width="${W}" height="${H}" ` +
+                `style="display:block;margin:0 auto;max-width:100%;height:auto;font-family:Arial,Helvetica,sans-serif;background:#fff;">` +
+                `${grille}${axes}${barres}</svg>`;
       }
 
-      // Construit le tableau récapitulatif (Questionnaire, Date, Sujet, Score total)
       function construireTableau(entrees) {
         const td = "padding:8px 10px;border-bottom:1px solid #e5e2f0;";
         const lignes = entrees.map(e => `
@@ -363,9 +345,7 @@
           </table>`;
       }
 
-      // ============================================================
-      //  EXPORT PDF (figure + tableau)
-      // ============================================================
+
       function savePdf() {
         if (!chartHTML) {
           resultDiv.innerHTML = "<p class='Error_message_not_all_answered'>Génère d'abord le graphique.</p>";
@@ -373,13 +353,13 @@
         }
 
         const today = new Date().toLocaleDateString('fr-FR');
-        // Code sujet déduit des données : unique s'il n'y en a qu'un, sinon "Comparaison"
         const sujets = [...new Set(dernieresEntrees.map(e => e.sujet).filter(s => s && s !== "N/D"))];
         const subjectCode = sujets.length === 1 ? sujets[0] : (sujets.length > 1 ? "Comparaison" : "SansNom");
         const filename = `FIGURE_${today.replace(/\//g, '-')}_${subjectCode}.pdf`;
 
         const content = document.createElement('div');
         content.lang = 'fr';
+        content.style.width = '718px';
         content.innerHTML = `
           <style>
             @page { size: A4; margin: 0; }
@@ -425,9 +405,7 @@
         });
       }
 
-      // ============================================================
-      //  RÉINITIALISATION
-      // ============================================================
+     
       function resetcsv() {
         fileInput.value = '';
         downloadButton.style.display = 'none';
