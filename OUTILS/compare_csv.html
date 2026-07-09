@@ -68,14 +68,24 @@
       let tableHTML = "";
       let dernieresEntrees = [];
 
-      
+      // ---------- Accumulation des fichiers ----------
+      // Les fichiers glissés/sélectionnés s'ajoutent aux précédents au lieu
+      // de les remplacer, pour permettre un drag & drop fichier par fichier.
+      let accumulatedFiles = [];
+
       document.getElementById('customFileButton').addEventListener('click', function () {
         fileInput.click();
       });
 
       fileInput.addEventListener('change', function (event) {
         const files = event.target.files;
-        afficherNombre(files);
+        if (!files || files.length === 0) return; // sélection annulée
+        if (!validerExtensions(files)) {
+          fileInput.value = '';
+          return;
+        }
+        ajouterFichiers(files);
+        rafraichirSelection();
       });
 
       // Empêche le comportement par défaut du navigateur
@@ -97,22 +107,58 @@
 
       function handleDrop(e) {
         const files = e.dataTransfer.files;
-        resultDiv.innerHTML = "";
 
         if (!files || files.length === 0) {
           resultDiv.innerHTML = "<p class='Error_message_not_all_answered'>Ajoutez au moins un fichier .csv !</p>";
           return;
         }
+        if (!validerExtensions(files)) {
+          return;
+        }
+
+        // Chaque drop peut ne contenir qu'un seul fichier : il vient
+        // s'ajouter à ceux déjà déposés/sélectionnés, sans les effacer.
+        ajouterFichiers(files);
+        rafraichirSelection();
+      }
+
+      function validerExtensions(files) {
         for (let i = 0; i < files.length; i++) {
           if (!files[i].name.trim().toLowerCase().endsWith('.csv')) {
             resultDiv.innerHTML = "<p class='Error_message_not_all_answered'>Erreur ! Au moins un des fichiers n'est pas un .csv !</p>";
-            fileInput.value = '';
-            return;
+            return false;
           }
         }
+        return true;
+      }
 
-        fileInput.files = files;
-        afficherNombre(files);
+      function ajouterFichiers(nouveauxFichiers) {
+        for (let i = 0; i < nouveauxFichiers.length; i++) {
+          const f = nouveauxFichiers[i];
+          const dejaPresent = accumulatedFiles.some(existant =>
+            existant.name === f.name &&
+            existant.size === f.size &&
+            existant.lastModified === f.lastModified
+          );
+          if (!dejaPresent) {
+            accumulatedFiles.push(f);
+          }
+        }
+      }
+
+      // Reconstruit le FileList réel de l'input à partir de l'accumulateur
+      // (on ne peut pas assigner directement un FileList d'un autre event
+      // à .files — il faut repasser par un DataTransfer dédié à cet input).
+      function rafraichirSelection() {
+        const dt = new DataTransfer();
+        accumulatedFiles.forEach(f => dt.items.add(f));
+        fileInput.files = dt.files;
+
+        // Une nouvelle sélection invalide un graphe déjà généré
+        downloadButton.style.display = 'none';
+        outputDiv.style.display = 'none';
+
+        afficherNombre(fileInput.files);
       }
 
       function afficherNombre(files) {
@@ -120,8 +166,7 @@
           resultDiv.innerHTML = "<p class='Error_message_not_all_answered'>Ajoutez au moins un fichier .csv !</p>";
           return;
         }
-        const pluriel = files.length > 1 ? "s" : "";
-        resultDiv.innerHTML = `<p>Nombre de fichiers .csv sélectionnés : ${files.length}${pluriel ? "" : ""}</p>`;
+        resultDiv.innerHTML = `<p>Nombre de fichiers .csv ajoutés : ${files.length}</p>`;
       }
 
       
@@ -252,7 +297,7 @@
       }
       function arrondi(x) { return (Math.round(x * 100) / 100).toString(); }
 
-      // Arrondit une valeur max vers un "joli" plafond d'axe (1,2,5 × 10^n)
+      // Arrondit une valeur (positive) vers un "joli" plafond (1,2,5 × 10^n)
       function arrondiSup(v) {
         if (v <= 0) return 1;
         const mag = Math.pow(10, Math.floor(Math.log10(v)));
@@ -261,65 +306,77 @@
         return nice * mag;
       }
 
-      // Construit un histogramme SVG des scores totaux (auto-contenu, rendu fidèle en PDF)
       function construireGraphe(entrees) {
-        const avecScore = entrees.filter(e => e.score !== null);
-        if (avecScore.length === 0) {
-          return "<p class='Error_message_not_all_answered'>Aucun score total numérique n'a pu être détecté dans les fichiers. " +
-                 "Vérifie le nom de la colonne du score dans le bloc CONFIG.</p>";
-        }
-
-        const W = 800, H = 460;
-        const m = { top: 40, right: 30, bottom: 90, left: 60 };
-        const iw = W - m.left - m.right;
-        const ih = H - m.top - m.bottom;
-        const n = entrees.length;
-        const yMax = arrondiSup(Math.max(...avecScore.map(e => e.score)));
-        const bandW = iw / n;
-        const barW = Math.min(90, bandW * 0.6);
-        const y = v => m.top + ih - (v / yMax) * ih;
-
-
-        let grille = "";
-        const ticks = 5;
-        for (let i = 0; i <= ticks; i++) {
-          const val = (yMax / ticks) * i;
-          const yy = y(val);
-          grille += `<line x1="${m.left}" y1="${yy}" x2="${W - m.right}" y2="${yy}" stroke="#e5e2f0" stroke-width="1"/>`;
-          grille += `<text x="${m.left - 8}" y="${yy + 4}" text-anchor="end" font-size="12" fill="#555">${arrondi(val)}</text>`;
-        }
-
-
-        let barres = "";
-        entrees.forEach((e, i) => {
-          const cx = m.left + bandW * i + bandW / 2;
-          const couleur = CONFIG.couleurBarres[i % CONFIG.couleurBarres.length];
-
-          if (e.score !== null) {
-            const yy = y(e.score);
-            const hh = m.top + ih - yy;
-            barres += `<rect x="${cx - barW / 2}" y="${yy}" width="${barW}" height="${hh}" rx="4" fill="${couleur}"/>`;
-            barres += `<text x="${cx}" y="${yy - 8}" text-anchor="middle" font-size="13" font-weight="bold" fill="#2B176C">${arrondi(e.score)}</text>`;
-          } else {
-            barres += `<text x="${cx}" y="${m.top + ih - 6}" text-anchor="middle" font-size="12" fill="#b00">N/D</text>`;
+          const avecScore = entrees.filter(e => e.score !== null);
+          if (avecScore.length === 0) {
+            return "<p class='Error_message_not_all_answered'>Aucun score total numérique n'a pu être détecté dans les fichiers. " +
+                  "Vérifie le nom de la colonne du score dans le bloc CONFIG.</p>";
           }
 
-          const l1 = tronquer(e.questionnaire, 16);
-          const l2 = e.date !== "N/D" ? e.date : e.sujet;
-          barres += `<text x="${cx}" y="${m.top + ih + 18}" text-anchor="middle" font-size="12" fill="#333">${echapper(l1)}</text>`;
-          barres += `<text x="${cx}" y="${m.top + ih + 34}" text-anchor="middle" font-size="11" fill="#777">${echapper(l2)}</text>`;
-        });
+          const W = 800, H = 460;
+          const m = { top: 40, right: 30, bottom: 90, left: 78 };
+          const iw = W - m.left - m.right;
+          const ih = H - m.top - m.bottom;
+          const n = entrees.length;
+          const bandW = iw / n;
+          const barW = Math.min(90, bandW * 0.6);
 
-        const axes = `
-          <line x1="${m.left}" y1="${m.top}" x2="${m.left}" y2="${m.top + ih}" stroke="#2B176C" stroke-width="1.5"/>
-          <line x1="${m.left}" y1="${m.top + ih}" x2="${W - m.right}" y2="${m.top + ih}" stroke="#2B176C" stroke-width="1.5"/>
-          <text x="${m.left}" y="${m.top - 16}" font-size="13" font-weight="bold" fill="#2B176C">Score total</text>`;
+          // ---- Échelle bidirectionnelle (gère les scores négatifs) ----
+          const maxBrut = Math.max(...avecScore.map(e => e.score), 0);
+          const minBrut = Math.min(...avecScore.map(e => e.score), 0);
+          // "Joli" pas de graduation commun aux deux côtés de l'axe
+          const step = arrondiSup(Math.max(maxBrut, -minBrut, 1) / 4);
+          const yMax = maxBrut > 0 ? Math.ceil(maxBrut / step) * step : 0;
+          const yMin = minBrut < 0 ? -Math.ceil(-minBrut / step) * step : 0;
+          const range = (yMax - yMin) || 1; // évite une division par 0 si tous les scores valent 0
+          const y = v => m.top + ih - ((v - yMin) / range) * ih;
+          const yZero = y(0);
+
+          let grille = "";
+          for (let val = yMin; val <= yMax + 1e-9; val += step) {
+            const yy = y(val);
+            grille += `<line x1="${m.left}" y1="${yy}" x2="${W - m.right}" y2="${yy}" stroke="#e5e2f0" stroke-width="1"/>`;
+            grille += `<text x="${m.left - 8}" y="${yy + 4}" text-anchor="end" font-size="12" fill="#555">${arrondi(val)}</text>`;
+          }
+
+          let barres = "";
+          entrees.forEach((e, i) => {
+            const cx = m.left + bandW * i + bandW / 2;
+            const couleur = CONFIG.couleurBarres[i % CONFIG.couleurBarres.length];
+
+            if (e.score !== null) {
+              const yy = y(e.score);
+              // La barre part de la ligne zéro, vers le haut (score positif)
+              // ou vers le bas (score négatif) — jamais du bas du graphe.
+              const top = Math.min(yy, yZero);
+              const hh = Math.abs(yZero - yy);
+              barres += `<rect x="${cx - barW / 2}" y="${top}" width="${barW}" height="${hh}" rx="4" fill="${couleur}"/>`;
+              // Étiquette au-dessus de la barre si positif, en dessous si négatif
+              const labelY = e.score >= 0 ? yy - 8 : yy + 16;
+              barres += `<text x="${cx}" y="${labelY}" text-anchor="middle" font-size="13" font-weight="bold" fill="#2B176C">${arrondi(e.score)}</text>`;
+            } else {
+              barres += `<text x="${cx}" y="${yZero - 6}" text-anchor="middle" font-size="12" fill="#b00">N/D</text>`;
+            }
+
+            const l1 = tronquer(e.questionnaire, 16);
+            const l2 = e.date !== "N/D" ? e.date : e.sujet;
+            barres += `<text x="${cx}" y="${m.top + ih + 18}" text-anchor="middle" font-size="12" fill="#333">${echapper(l1)}</text>`;
+            barres += `<text x="${cx}" y="${m.top + ih + 34}" text-anchor="middle" font-size="11" fill="#777">${echapper(l2)}</text>`;
+          });
+
+          const axes = `
+            <line x1="${m.left}" y1="${m.top}" x2="${m.left}" y2="${m.top + ih}" stroke="#2B176C" stroke-width="1.5"/>
+            <line x1="${m.left}" y1="${yZero}" x2="${W - m.right}" y2="${yZero}" stroke="#2B176C" stroke-width="1.5"/>
+            <text x="${m.left - 45}" y="${m.top + ih / 2}"
+                  text-anchor="middle" font-size="13" font-weight="bold" fill="#2B176C"
+                  transform="rotate(-90 ${m.left - 45} ${m.top + ih / 2})">Score total</text>`;
 
           return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" ` +
                 `width="${W}" height="${H}" ` +
                 `style="display:block;margin:0 auto;max-width:100%;height:auto;font-family:Arial,Helvetica,sans-serif;background:#fff;">` +
                 `${grille}${axes}${barres}</svg>`;
-      }
+        }
+
 
       function construireTableau(entrees) {
         const td = "padding:8px 10px;border-bottom:1px solid #e5e2f0;";
@@ -332,13 +389,13 @@
           </tr>`).join("");
 
         return `
-          <table style="border-collapse:collapse;width:100%;max-width:800px;margin:16px auto;font-family:Arial,Helvetica,sans-serif;font-size:14px;">
+          <table style="border-collapse:collapse;width:90%;max-width:800px;margin:16px auto;font-family:Arial,Helvetica,sans-serif;font-size:14px;">
             <thead>
               <tr style="background:#2B176C;color:#fff;">
-                <th style="padding:8px 10px;text-align:left;">Questionnaire</th>
-                <th style="padding:8px 10px;text-align:left;">Date</th>
-                <th style="padding:8px 10px;text-align:left;">Sujet</th>
-                <th style="padding:8px 10px;text-align:center;">Score total</th>
+                <th style="padding:6px 8px;text-align:center;">Questionnaire</th>
+                <th style="padding:6px 8px;text-align:center;">Date</th>
+                <th style="padding:6px 8px;text-align:center;">Sujet</th>
+                <th style="padding:6px 8px;text-align:center;">Score total</th>
               </tr>
             </thead>
             <tbody>${lignes}</tbody>
@@ -354,8 +411,20 @@
 
         const today = new Date().toLocaleDateString('fr-FR');
         const sujets = [...new Set(dernieresEntrees.map(e => e.sujet).filter(s => s && s !== "N/D"))];
-        const subjectCode = sujets.length === 1 ? sujets[0] : (sujets.length > 1 ? "Comparaison" : "SansNom");
-        const filename = `FIGURE_${today.replace(/\//g, '-')}_${subjectCode}.pdf`;
+
+        // Nom de fichier : reste simple, un seul "Comparaison" est très bien pour un nom de fichier
+        const fileTag = sujets.length === 1 ? sujets[0] : (sujets.length > 1 ? "Comparaison" : "SansNom");
+        const filename = `FIGURE_${today.replace(/\//g, '-')}_${fileTag}.pdf`;
+
+        // Ligne affichée dans le rapport : distincte du nom de fichier
+        let subjectLine;
+        if (sujets.length === 0) {
+          subjectLine = "Sujet : non renseigné";
+        } else if (sujets.length === 1) {
+          subjectLine = `Code du sujet : ${echapper(sujets[0])}`;
+        } else {
+          subjectLine = `Sujets comparés : ${sujets.map(echapper).join(", ")}`;
+        }
 
         const content = document.createElement('div');
         content.lang = 'fr';
@@ -373,18 +442,18 @@
             }
             .footer_report { padding-top: 3%; padding-bottom: 3%; }
             .body_report {
-              padding-top: 5%; padding-bottom: 20%;
+              padding-top: 5%; padding-bottom: 10%;
               background-color: white; color: black;
             }
           </style>
           <div class="header_report">
             <img src="https://data.memau.eu/wp-content/uploads/2025/06/logo-memau-data.svg" alt="Logo"
-                 style="max-width: 210px; margin-top: 10px; margin-bottom: 5px;">
+                style="max-width: 210px; margin-top: 10px; margin-bottom: 5px;">
             <p><i>Contact : hello@memau.eu</i></p>
           </div>
           <div class="body_report">
             <h1>Comparaison de plusieurs scores</h1>
-            <p>Code du sujet : ${echapper(subjectCode)}</p>
+            <p>${subjectLine}</p>
             <p>Rapport généré le : ${today}</p>
             <div style="width:700px;margin:20px auto;">${chartHTML}</div>
             <div>${tableHTML}</div>
@@ -407,6 +476,7 @@
 
      
       function resetcsv() {
+        accumulatedFiles = [];
         fileInput.value = '';
         downloadButton.style.display = 'none';
         outputDiv.style.display = 'none';

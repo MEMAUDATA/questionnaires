@@ -9,9 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <link rel="stylesheet" href="/style.css">
-    <style>
-      /* style is within the style.css sheet */
-    </style>
     <title>Combine CSV</title>
   </head>
   <body>
@@ -28,119 +25,144 @@
       <button type="button"  onclick="resetcsv()">Réinitialiser</button>
     </div>
     <div class="buttons-container">
-        <button type="button" id="downloadButton" style="display: none;margin-left: 390px;" onclick="downloadCombinedFile()">Télécharger le fichier combiné</button>
+      <button type="button" id="downloadButton" style="display: none;margin-left: 390px;" onclick="downloadCombinedFile()">Télécharger le fichier combiné</button>
     </div>
     <script>
         // Button selection
         document.getElementById('customFileButton').addEventListener('click', function() {
           document.getElementById('csvFiles').click();
         });
-  
+
         document.getElementById('csvFiles').addEventListener('change', function(event) {
           const files = event.target.files;
-          const resultDiv = document.getElementById("fileCount");
-          // Check if there's at least 2 .csv files
-          if (files.length < 2) {
-            resultDiv.innerHTML = "<p class='Error_message_not_all_answered'>Ajoutez au moins deux fichiers .csv!</p>";
-            fileInput.value = ''; // Clear the file input
+          if (files.length === 0) return; // user cancelled the picker
+          if (!validateExtensions(files)) {
+            fileInput.value = '';
             return;
-        }
-          resultDiv.innerHTML = `<p>Nombre de fichiers .csv sélectionnés : ${files.length}</p>`;
+          }
+          addFilesToAccumulator(files);
+          refreshFileInputAndDisplay();
         });
-  
+
         const dropArea = document.getElementById('dropArea');
         const fileInput = document.getElementById('csvFiles');
         const downloadButton = document.getElementById('downloadButton');
-  
+
+        let accumulatedFiles = [];
+
+        function validateExtensions(files) {
+          const resultDiv = document.getElementById("fileCount");
+          for (let i = 0; i < files.length; i++) {
+            const fileName = files[i].name.trim().toLowerCase();
+            if (!fileName.endsWith('.csv')) {
+              resultDiv.innerHTML = "<p class='Error_message_not_all_answered'>Erreur! Au moins un des fichiers sélectionnés n'est pas un fichier .csv!</p>";
+              return false;
+            }
+          }
+          return true;
+        }
+
+        function addFilesToAccumulator(newFiles) {
+          for (let i = 0; i < newFiles.length; i++) {
+            const f = newFiles[i];
+            const alreadyThere = accumulatedFiles.some(existing =>
+              existing.name === f.name &&
+              existing.size === f.size &&
+              existing.lastModified === f.lastModified
+            );
+            if (!alreadyThere) {
+              accumulatedFiles.push(f);
+            }
+          }
+        }
+
+        function refreshFileInputAndDisplay() {
+          const dataTransfer = new DataTransfer();
+          accumulatedFiles.forEach(f => dataTransfer.items.add(f));
+          fileInput.files = dataTransfer.files;
+
+          // Any change to the file set invalidates a previously combined result
+          combinedDataBlob = null;
+          downloadButton.style.display = 'none';
+
+          const resultDiv = document.getElementById("fileCount");
+          const count = accumulatedFiles.length;
+          if (count < 2) {
+            resultDiv.innerHTML = `<p>Nombre de fichiers .csv ajoutés : ${count} — ajoutes-en au moins un de plus.</p>`;
+          } else {
+            resultDiv.innerHTML = `<p>Nombre de fichiers .csv ajoutés : ${count}</p>`;
+          }
+        }
+
+
         // Prevent default drag behaviors
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
           dropArea.addEventListener(eventName, preventDefaults, false);
           document.body.addEventListener(eventName, preventDefaults, false);
         });
-  
+
         // Highlight drop area when item is dragged over it
         ['dragenter', 'dragover'].forEach(eventName => {
           dropArea.addEventListener(eventName, highlight, false);
         });
-  
+
         ['dragleave', 'drop'].forEach(eventName => {
           dropArea.addEventListener(eventName, unhighlight, false);
         });
-  
+
         // Handle dropped files
         dropArea.addEventListener('drop', handleDrop, false);
-  
+
         function preventDefaults(e) {
           e.preventDefault();
           e.stopPropagation();
         }
-  
+
         function highlight() {
           dropArea.classList.add('highlight');
         }
-  
+
         function unhighlight() {
           dropArea.classList.remove('highlight');
         }
-  
+
         function handleDrop(e) {
             const dt = e.dataTransfer;
             const files = dt.files;
-            const resultDiv = document.getElementById("fileCount");
 
-            // Clear previous messages
-            resultDiv.innerHTML = "";
-            
-            // Check if there's at least 2 .csv files
-            if (files.length < 2) {
-            resultDiv.innerHTML = "<p class='Error_message_not_all_answered'>Ajoutez au moins deux fichiers .csv!</p>";
-            fileInput.value = ''; // Clear the file input
-            return;
-        }
-
-            // Check if all files have the .csv extension
-            for (let i = 0; i < files.length; i++) {
-            const fileName = files[i].name.trim().toLowerCase();
-            if (!fileName.endsWith('.csv')) {
-                resultDiv.innerHTML = "<p class='Error_message_not_all_answered'>Erreur! Au moins un des fichiers sélectionnés n'est pas un fichier .csv!</p>";
-                fileInput.value = ''; // Clear the file input
-                return; // Exit the function early if any file is invalid
-            }
+            if (files.length === 0) return;
+            if (!validateExtensions(files)) {
+              return;
             }
 
-            // If all files are valid, handle them
-            handleFiles(files);
-            resultDiv.innerHTML = `<p>Nombre de fichiers .csv sélectionnés : ${files.length}</p>`;
+            addFilesToAccumulator(files);
+            refreshFileInputAndDisplay();
       }
 
-  
-        function handleFiles(files) {
-          fileInput.files = files;
-        }
-  
         function combineCSVFiles() {
           const files = fileInput.files;
           const results = [];
-  
-          if (files.length === 0) {
+
+          if (files.length < 2) {
             const resultDiv = document.getElementById("fileCount");
-            resultDiv.innerHTML = "<p class='Error_message_not_all_answered'>Ajoutez au moins un fichier .csv!</p>";
+            resultDiv.innerHTML = "<p class='Error_message_not_all_answered'>Ajoutez au moins deux fichiers .csv!</p>";
             return;
           }
-  
-  
+          results.length = files.length;
           let filesProcessed = 0;
-  
+
           for (let i = 0; i < files.length; i++) {
             const file = files[i];
+            const fileIndex = i;
             const reader = new FileReader();
-  
+
             reader.onload = function(event) {
               const contents = event.target.result;
               Papa.parse(contents, {
                 header: true,
+                skipEmptyLines: true,
                 complete: function(result) {
-                  results.push(result.data);
+                  results[fileIndex] = result.data;
                   filesProcessed++;
                   if (filesProcessed === files.length) {
                     combineResults(results);
@@ -153,50 +175,64 @@
                 }
               });
             };
-  
+
             reader.onerror = function(event) {
               console.error("File could not be read:", event.target.error);
               const resultDiv = document.getElementById("fileCount");
               resultDiv.innerHTML = `<p class='Error_message_not_all_answered'>Erreur lors de la lecture du fichier : ${file.name}</p>`;
             };
-  
+
             reader.readAsText(file);
           }
         }
-  
+
         let combinedDataBlob;
-  
+
         function combineResults(results) {
           let combinedData = [];
           results.forEach(result => {
-            combinedData = combinedData.concat(result);
+            if (result) combinedData = combinedData.concat(result);
           });
-  
-          const csv = Papa.unparse(combinedData);
+
+          const allFields = [];
+          const seenFields = new Set();
+          combinedData.forEach(row => {
+            Object.keys(row).forEach(key => {
+              if (!seenFields.has(key)) {
+                seenFields.add(key);
+                allFields.push(key);
+              }
+            });
+          });
+
+          const csv = Papa.unparse({ fields: allFields, data: combinedData });
           combinedDataBlob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
           downloadButton.style.display = 'block';
         }
-  
+
         function downloadCombinedFile() {
           if (combinedDataBlob) {
+            const today = new Date().toLocaleDateString('fr-FR').replace(/\//g, '_');
             const url = URL.createObjectURL(combinedDataBlob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'MEMAUDATA_csv_combinés.csv';
+            a.download = `${today}_MEMAUDATA_CSV_combinés.csv`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
           }
         }
-  
+
         function resetcsv() {
+          accumulatedFiles = [];
           fileInput.value = '';
+          combinedDataBlob = null;
           downloadButton.style.display = 'none';
           const resultDiv = document.getElementById("fileCount");
           resultDiv.innerHTML = "";
         }
-  
+
       </script>
   </body>
 </html>
