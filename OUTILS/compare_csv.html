@@ -15,6 +15,27 @@
       #output { margin-top: 24px; }
       #output h2 { text-align: center; color: #2B176C; font-family: Arial, Helvetica, sans-serif; }
       #chartContainer { text-align: center; }
+      #chartContainer svg { max-width: 100%; height: auto; }
+
+      /* Table : autorise le défilement horizontal plutôt que d'écraser les colonnes */
+      #tableScrollWrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+      /* Boutons : passent sur plusieurs lignes et deviennent pleine largeur sur petit écran */
+      .buttons-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      @media (max-width: 480px) {
+        .buttons-container button {
+          flex: 1 1 100%;
+          max-width: 320px;
+        }
+        #dropArea p { font-size: 0.95rem; }
+        #output h2 { font-size: 1.1rem; }
+      }
     </style>
     <title>Compare CSV</title>
   </head>
@@ -306,20 +327,39 @@
         return nice * mag;
       }
 
-      function construireGraphe(entrees) {
+      function construireGraphe(entrees, forPdf = false) {
           const avecScore = entrees.filter(e => e.score !== null);
           if (avecScore.length === 0) {
             return "<p class='Error_message_not_all_answered'>Aucun score total numérique n'a pu être détecté dans les fichiers. " +
                   "Vérifie le nom de la colonne du score dans le bloc CONFIG.</p>";
           }
 
-          const W = 800, H = 460;
-          const m = { top: 40, right: 30, bottom: 90, left: 78 };
+          // Le PDF garde toujours des dimensions "qualité impression" fixes,
+          // indépendamment de la taille de l'écran qui a servi à le générer.
+          // À l'écran, on adapte la taille du SVG et des polices à la largeur
+          // réelle du viewport : un viewBox fixe (800) rendu tout petit sur
+          // mobile fait paraître le texte minuscule une fois mis à l'échelle.
+          const vw = window.innerWidth || 800;
+          const isMobile = !forPdf && vw < 640;
+
+          const W = forPdf ? 800 : (isMobile ? Math.max(320, Math.min(vw - 32, 480)) : 800);
+          const H = forPdf ? 460 : (isMobile ? 400 : 460);
+          const m = forPdf
+            ? { top: 40, right: 30, bottom: 90, left: 78 }
+            : (isMobile
+                ? { top: 30, right: 14, bottom: 110, left: 48 }
+                : { top: 40, right: 30, bottom: 90, left: 78 });
+          const fsAxis  = isMobile ? 10 : 12;
+          const fsScore = isMobile ? 11 : 13;
+          const fsLabel = isMobile ? 10 : 12;
+          const fsSub   = isMobile ? 9  : 11;
+          const truncLen = isMobile ? 9 : 16;
+
           const iw = W - m.left - m.right;
           const ih = H - m.top - m.bottom;
           const n = entrees.length;
           const bandW = iw / n;
-          const barW = Math.min(90, bandW * 0.6);
+          const barW = Math.min(isMobile ? 46 : 90, bandW * 0.6);
 
           // ---- Échelle bidirectionnelle (gère les scores négatifs) ----
           const maxBrut = Math.max(...avecScore.map(e => e.score), 0);
@@ -336,8 +376,12 @@
           for (let val = yMin; val <= yMax + 1e-9; val += step) {
             const yy = y(val);
             grille += `<line x1="${m.left}" y1="${yy}" x2="${W - m.right}" y2="${yy}" stroke="#e5e2f0" stroke-width="1"/>`;
-            grille += `<text x="${m.left - 8}" y="${yy + 4}" text-anchor="end" font-size="12" fill="#555">${arrondi(val)}</text>`;
+            grille += `<text x="${m.left - 8}" y="${yy + 4}" text-anchor="end" font-size="${fsAxis}" fill="#555">${arrondi(val)}</text>`;
           }
+
+          // Sur mobile, avec plusieurs barres, les étiquettes de catégorie
+          // sont pivotées pour ne pas se chevaucher dans l'espace réduit.
+          const rotateLabels = isMobile && n > 3;
 
           let barres = "";
           entrees.forEach((e, i) => {
@@ -353,23 +397,30 @@
               barres += `<rect x="${cx - barW / 2}" y="${top}" width="${barW}" height="${hh}" rx="4" fill="${couleur}"/>`;
               // Étiquette au-dessus de la barre si positif, en dessous si négatif
               const labelY = e.score >= 0 ? yy - 8 : yy + 16;
-              barres += `<text x="${cx}" y="${labelY}" text-anchor="middle" font-size="13" font-weight="bold" fill="#2B176C">${arrondi(e.score)}</text>`;
+              barres += `<text x="${cx}" y="${labelY}" text-anchor="middle" font-size="${fsScore}" font-weight="bold" fill="#2B176C">${arrondi(e.score)}</text>`;
             } else {
-              barres += `<text x="${cx}" y="${yZero - 6}" text-anchor="middle" font-size="12" fill="#b00">N/D</text>`;
+              barres += `<text x="${cx}" y="${yZero - 6}" text-anchor="middle" font-size="${fsAxis}" fill="#b00">N/D</text>`;
             }
 
-            const l1 = tronquer(e.questionnaire, 16);
+            const l1 = tronquer(e.questionnaire, truncLen);
             const l2 = e.date !== "N/D" ? e.date : e.sujet;
-            barres += `<text x="${cx}" y="${m.top + ih + 18}" text-anchor="middle" font-size="12" fill="#333">${echapper(l1)}</text>`;
-            barres += `<text x="${cx}" y="${m.top + ih + 34}" text-anchor="middle" font-size="11" fill="#777">${echapper(l2)}</text>`;
+
+            if (rotateLabels) {
+              const ly = m.top + ih + 16;
+              barres += `<text x="${cx}" y="${ly}" text-anchor="end" font-size="${fsLabel}" fill="#333" transform="rotate(-35 ${cx} ${ly})">${echapper(l1)}</text>`;
+              barres += `<text x="${cx}" y="${ly + 16}" text-anchor="end" font-size="${fsSub}" fill="#777" transform="rotate(-35 ${cx} ${ly + 16})">${echapper(l2)}</text>`;
+            } else {
+              barres += `<text x="${cx}" y="${m.top + ih + 18}" text-anchor="middle" font-size="${fsLabel}" fill="#333">${echapper(l1)}</text>`;
+              barres += `<text x="${cx}" y="${m.top + ih + 34}" text-anchor="middle" font-size="${fsSub}" fill="#777">${echapper(l2)}</text>`;
+            }
           });
 
           const axes = `
             <line x1="${m.left}" y1="${m.top}" x2="${m.left}" y2="${m.top + ih}" stroke="#2B176C" stroke-width="1.5"/>
             <line x1="${m.left}" y1="${yZero}" x2="${W - m.right}" y2="${yZero}" stroke="#2B176C" stroke-width="1.5"/>
-            <text x="${m.left - 45}" y="${m.top + ih / 2}"
-                  text-anchor="middle" font-size="13" font-weight="bold" fill="#2B176C"
-                  transform="rotate(-90 ${m.left - 45} ${m.top + ih / 2})">Score total</text>`;
+            <text x="${m.left - (isMobile ? 34 : 45)}" y="${m.top + ih / 2}"
+                  text-anchor="middle" font-size="${fsLabel}" font-weight="bold" fill="#2B176C"
+                  transform="rotate(-90 ${m.left - (isMobile ? 34 : 45)} ${m.top + ih / 2})">Score total</text>`;
 
           return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" ` +
                 `width="${W}" height="${H}" ` +
@@ -389,25 +440,32 @@
           </tr>`).join("");
 
         return `
-          <table style="border-collapse:collapse;width:90%;max-width:800px;margin:16px auto;font-family:Arial,Helvetica,sans-serif;font-size:14px;">
+          <div id="tableScrollWrap">
+          <table style="border-collapse:collapse;width:100%;max-width:800px;margin:16px auto;font-family:Arial,Helvetica,sans-serif;font-size:14px;">
             <thead>
               <tr style="background:#2B176C;color:#fff;">
-                <th style="padding:6px 8px;text-align:center;">Questionnaire</th>
-                <th style="padding:6px 8px;text-align:center;">Date</th>
-                <th style="padding:6px 8px;text-align:center;">Sujet</th>
-                <th style="padding:6px 8px;text-align:center;">Score total</th>
+                <th style="padding:8px 10px;text-align:left;">Questionnaire</th>
+                <th style="padding:8px 10px;text-align:left;">Date</th>
+                <th style="padding:8px 10px;text-align:left;">Sujet</th>
+                <th style="padding:8px 10px;text-align:center;">Score total</th>
               </tr>
             </thead>
             <tbody>${lignes}</tbody>
-          </table>`;
+          </table>
+          </div>`;
       }
 
 
       function savePdf() {
-        if (!chartHTML) {
+        if (!dernieresEntrees.length) {
           resultDiv.innerHTML = "<p class='Error_message_not_all_answered'>Génère d'abord le graphique.</p>";
           return;
         }
+
+        // Le PDF utilise toujours une version "qualité impression" du graphe
+        // (dimensions et polices fixes), même si l'écran d'origine était un
+        // mobile avec un rendu plus compact.
+        const chartHTMLPourPdf = construireGraphe(dernieresEntrees, true);
 
         const today = new Date().toLocaleDateString('fr-FR');
         const sujets = [...new Set(dernieresEntrees.map(e => e.sujet).filter(s => s && s !== "N/D"))];
@@ -442,7 +500,7 @@
             }
             .footer_report { padding-top: 3%; padding-bottom: 3%; }
             .body_report {
-              padding-top: 5%; padding-bottom: 10%;
+              padding-top: 5%; padding-bottom: 20%;
               background-color: white; color: black;
             }
           </style>
@@ -455,7 +513,7 @@
             <h1>Comparaison de plusieurs scores</h1>
             <p>${subjectLine}</p>
             <p>Rapport généré le : ${today}</p>
-            <div style="width:700px;margin:20px auto;">${chartHTML}</div>
+            <div style="width:700px;margin:20px auto;">${chartHTMLPourPdf}</div>
             <div>${tableHTML}</div>
           </div>`;
 
@@ -487,6 +545,17 @@
         tableHTML = "";
         dernieresEntrees = [];
       }
+
+      let resizeTimer;
+      window.addEventListener('resize', function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function () {
+          if (dernieresEntrees.length > 0 && outputDiv.style.display !== 'none') {
+            chartHTML = construireGraphe(dernieresEntrees);
+            chartContainer.innerHTML = chartHTML;
+          }
+        }, 250);
+      });
     </script>
   </body>
 </html>

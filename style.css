@@ -118,6 +118,22 @@ input[type="radio"] {
     color : white;
 }
 
+@media (max-width: 834px) {
+    .buttons-container button {
+      margin: 8px 14px; /* un peu plus d'air qu'en desktop (10px) */
+    }
+  }
+
+@media (max-width: 480px) {
+    .buttons-container button {
+      display: block;      
+      width: 100%;
+      max-width: 280px;
+      margin: 8px auto;  
+    }
+  }
+  
+
 /* results section */
 #results { 
     text-align: center;
@@ -162,20 +178,40 @@ ul.myList {
 }
 
 
-/* -- Combine -- */
+/* -- Combine/Compare -- */
 .drag_n_drop {
-    background-color:#2B176C;
+    box-sizing: border-box; 
+    background-color: #2B176C;
     border-radius: 20px;
     width: 600px;
+    max-width: 90%;         
     height: 300px;
     text-align: center;
     padding: 50px;
     margin: 20px auto;
     color: white;
-}
-.drag_n_drop.highlight {
+  }
+  .drag_n_drop.highlight {
     border-color: purple;
-}
+  }
+  
+  /* Tablette (≈481–834px */
+  @media (max-width: 834px) {
+    .drag_n_drop {
+      width: 500px;
+      padding: 36px;
+    }
+  }
+  
+  /* Mobile (≤480px) */
+  @media (max-width: 480px) {
+    .drag_n_drop {
+      height: auto;         
+      min-height: 180px;
+      padding: 24px;
+      font-size: 12px;
+    }
+  }
 
 
 /* Specific style for each questionnaires */
