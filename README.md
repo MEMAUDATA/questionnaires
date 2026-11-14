@@ -11,3 +11,5 @@ Le site MEMAUDATA utilise le module Divi, le lien direct vers le .css dans un de
 
 
 Contact (site parent de data.memau.eu): hello@memau.eu 
+
+Ce fichier utilise le script memaudata-questionnaires.php et le plugin WP-pusher afin d'automatiser la mise à jour du repo github avec wordpress
