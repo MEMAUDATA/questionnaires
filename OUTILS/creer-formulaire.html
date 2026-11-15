@@ -1,12 +1,22 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Créateur de formulaires</title>
-<link rel="stylesheet" href="/style.css">
-
-</head>
+  <head>
+    <!-- Author's details-->
+    <meta name="author" content="Nicolas Vannson">
+    <meta name="contact" content="hello@memau.eu">
+  <meta name="license" content="EUPL-1.2">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" href="/style.css">
+  <script src="/UTILS/scoreSSQ.js?v=1"></script>
+  <script src="/UTILS/exporterCSV.js?v=6"></script>
+  <script src="/UTILS/exporterPDF.js?v=6"></script>
+    <style>
+      /* style is within the style.css sheet */
+    </style>
+  <title>Créateur de formulaires</title>
+  </head>
 <body>
 <div class="Fc mode-edit" id="fc">
 
@@ -267,7 +277,7 @@
       var set = v !== undefined, mid = (q.min + q.max) / 2;
       box.appendChild(h('div', { 'class': 'rng' + (set ? '' : ' untouched') }, [
         h('span', { 'class': 'e' }, [q.minLabel || String(q.min)]),
-        h('input', { type: 'range', min: q.min, max: q.max, step: q.step, value: set ? v : mid }),
+        h('input', { type: 'range', 'class': 'slider', min: q.min, max: q.max, step: q.step, value: set ? v : mid }),
         h('span', { 'class': 'e' }, [q.maxLabel || String(q.max)]),
         h('output', {}, [set ? String(v) : '—'])
       ]));
@@ -294,6 +304,12 @@
       });
     });
     autosizeAll();
+    [].forEach.call(v.querySelectorAll('.rng:not(.untouched) input[type=range]'), function (r) { paint(r, true); });
+  }
+  /* Dégradé du curseur, comme dans SSQ5 */
+  function paint(el, on) {
+    var v = (el.value - el.min) / (el.max - el.min) * 100;
+    el.style.background = on ? 'linear-gradient(to right, #2B176C ' + v + '%, #eeeeee ' + v + '%)' : '#eeeeee';
   }
   function onFill(e) {
     var t = e.target;
@@ -308,6 +324,7 @@
     else if (type === 'range') {
       ans[id] = parseFloat(t.value);
       fq.querySelector('.rng').classList.remove('untouched');
+      paint(t, true);
       fq.querySelector('output').textContent = t.value;
     } else {
       if (t.value === '') delete ans[id]; else ans[id] = t.value;
@@ -323,6 +340,7 @@
       var r = fq.querySelector('input[type=range]');
       r.value = (parseFloat(r.min) + parseFloat(r.max)) / 2;
       fq.querySelector('.rng').classList.add('untouched');
+      paint(r, false);
       fq.querySelector('output').textContent = '—';
     }
   }
