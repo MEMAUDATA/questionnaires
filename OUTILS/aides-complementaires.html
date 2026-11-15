@@ -217,15 +217,16 @@ Crédit d’impôt de 50% sur le montant à charge (après déduction du montant
         h += '<fieldset class="Aide_question"><legend>'+echapper(e.question)+' *</legend>';
         if(e.image) h += imageHtml(e.image);
         Object.keys(e.reponses).forEach(function(libelle){
-          h += '<label><input type="radio" name="reponse" value="'+echapper(libelle)+'"'+(p.reponse===libelle ? ' checked' : '')+'>'+echapper(libelle)+'</label>';
+          /* un <div> par réponse : une réponse par ligne, même sans CSS */
+          h += '<div><label><input type="radio" name="reponse" value="'+echapper(libelle)+'"'+(p.reponse===libelle ? ' checked' : '')+'>'+echapper(libelle)+'</label></div>';
         });
         h += '<p class="Error_message_not_all_answered" hidden>Cette question est obligatoire.</p></fieldset>';
       }
       h += '<div class="buttons-container">'+
-           '<button type="button" id="aco-prev"'+(parcours.length < 2 ? ' style="visibility:hidden"' : '')+'>Précédent</button>'+
+           (parcours.length < 2 ? '' : '<button type="button" id="aco-prev">Précédent</button>')+
            '<button type="button" id="aco-next">'+(suivante(p.etape, p.reponse) === FIN ? 'Terminer' : 'Suivant')+'</button></div>';
       vue.innerHTML = h;
-      document.getElementById("aco-prev").onclick = precedent;
+      if(parcours.length > 1) document.getElementById("aco-prev").onclick = precedent;
       document.getElementById("aco-next").onclick = suivant;
       vue.scrollIntoView({behavior:"smooth", block:"start"});
     }
