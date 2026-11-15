@@ -39,7 +39,7 @@
        ============================================================ */
     /* Dossier des schémas, relatif à la racine du plugin (là où se trouve style.css).
        Sur WordPress : id "memaudata-style-css" (ajouté par wp_enqueue_style) ; en local : /style.css */
-    var IMAGES_SOUS_DOSSIER = "OUTILS/img/aide-choix-prothetique/";
+    var IMAGES_SOUS_DOSSIER = "OUTILS/img/";
     function racinePlugin(){
       var l = document.getElementById("memaudata-style-css") || document.querySelector('link[rel="stylesheet"][href^="/style.css"]');
       return l ? new URL(l.getAttribute("href"), location.href).href.replace(/style\.css.*$/, "") : "/";
