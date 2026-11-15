@@ -77,6 +77,7 @@ add_shortcode('memaudata', function ($atts) {
     }
 
     wp_enqueue_script('memaudata-html2pdf', MEMAUDATA_HTML2PDF_URL, [], '0.10.1', true);
+    wp_enqueue_style('memaudata-style', plugins_url('style.css', __FILE__), [], filemtime(MEMAUDATA_ROOT . 'style.css'));
 
     return '<div class="mdq" data-questionnaire="' . esc_attr(basename($file, '.html')) . '">' . $m[1] . '</div>';
 });
