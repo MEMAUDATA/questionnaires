@@ -516,15 +516,15 @@ ol.my_QSCPGS {
 }
 
 /* --- OUTILS : créateur de formulaires (formulaire.html) --- */
-.Fc {--ink:#1d2433; --muted:#6b7385; --line:#d9dde6; --accent:#1f5fbf; --bg:#f3f4f7; --danger:#c0392b;}
+.Fc {--ink:#1d2433; --muted:#6b7385; --line:#d9dde6; --accent:#2B176C; --bg:#f3f4f7; --danger:#c0392b;}
 .Fc, .Fc * {box-sizing:border-box;}
 .Fc {margin:0; background:var(--bg); color:var(--ink); font:15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;}
 .Fc .toolbar {position:sticky; top:0; z-index:10; display:flex; flex-wrap:wrap; gap:6px; align-items:center; padding:8px 12px; background:#fff; border-bottom:1px solid var(--line);}
 .Fc .toolbar button,
 .Fc .tab {font:inherit; font-size:14px; padding:6px 10px; border:1px solid var(--line); background:#fff; border-radius:6px; cursor:pointer;}
-.Fc .toolbar button:hover {background:#eef2fa; border-color:var(--accent);}
+.Fc .toolbar button:hover {background:#f0edf8; border-color:var(--accent);}
 .Fc .toolbar .primary {background:var(--accent); color:#fff; border-color:var(--accent);}
-.Fc .toolbar .primary:hover {background:#184d9a;}
+.Fc .toolbar .primary:hover {background:#1d0f4d;}
 .Fc .brand {font-weight:600; margin-right:6px;}
 .Fc .tabs {display:inline-flex; margin-right:8px;}
 .Fc .tab {border-radius:0;}
@@ -550,13 +550,13 @@ ol.my_QSCPGS {
 .Fc #editView textarea {resize:vertical;}
 .Fc #editView input:focus,
 .Fc #editView textarea:focus,
-.Fc #editView select:focus {outline:2px solid rgba(31,95,191,.3); border-color:var(--accent);}
+.Fc #editView select:focus {outline:2px solid rgba(43,23,108,.3); border-color:var(--accent);}
 .Fc .stitle {font-size:17px !important; font-weight:600;}
 .Fc .grid {display:grid; grid-template-columns:repeat(3,1fr); gap:6px 10px; margin-top:6px;}
 .Fc .grid.two {grid-template-columns:1fr 1fr;}
 .Fc .chk {display:inline-flex; gap:6px; align-items:center; margin-top:8px; font-size:14px; color:var(--muted); cursor:pointer;}
 .Fc .mini {font:inherit; font-size:13px; padding:3px 8px; border:1px solid var(--line); background:#fff; border-radius:5px; cursor:pointer;}
-.Fc .mini:hover {background:#eef2fa; border-color:var(--accent);}
+.Fc .mini:hover {background:#f0edf8; border-color:var(--accent);}
 .Fc .mini.danger:hover {background:#fdeaea; border-color:var(--danger); color:var(--danger);}
 .Fc .addq {margin:0 0 18px 18px;}
 .Fc .help {color:var(--muted); font-size:13px; margin:0 0 12px;}
