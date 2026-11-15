@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+     <!-- Author's details-->
+     <meta name="author" content="Nicolas Vannson">
+     <meta name="contact" content="hello@memau.eu">
+     <meta name="license" content="EUPL-1.2">
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+     <link rel="stylesheet" href="/style.css">
+     <style>
+       /* style is within the style.css sheet */
+     </style>
+    <title>Aides complémentaires</title>
+</head>
+<body>
+    <!-- Reproduction du Google Form « Aides complémentaires », réalisée avec l'accord de son auteur.
+         Styles : section « OUTILS : arbres de décision » de style.css. -->
+    <h1>Aides complémentaires</h1>
+    <div id="aco-view" aria-live="polite"></div>
+
+    <script>
+    (function(){
+    "use strict";
+
+    /* ============================================================
+       CONTENU DU FORMULAIRE : le dictionnaire ETAPES
+       ------------------------------------------------------------
+       Chaque étape a un nom court (la clé) et peut contenir :
+         titre, texte : le cadre gris affiché en haut
+         image        : un schéma (nom de fichier dans IMAGES_DOSSIER)
+         question + reponses : une question à choix unique ;
+                        chaque réponse indique le nom de l'étape suivante
+         suite        : étape suivante quand il n'y a pas de question
+       "debut" est la première étape. "fin" termine le parcours.
+       Pour corriger un enchaînement, changez simplement le nom
+       d'étape à droite d'une réponse (ou après "suite").
+       ============================================================ */
+    var IMAGES_DOSSIER = "";
+
+    var ETAPES = {
+      debut: {
+        question: "Quel statut vous correspond le mieux ?",
+        reponses: {
+          "Travailleur, salarié dans le privé,  commercial,  profession libérale ou artisan": "travailleur_salarie_dans_le_prive_commercial",
+          "Salarié du secteur public": "salarie_du_secteur_public",
+          "Autre": "autre",
+        },
+      },
+      autre: {
+        titre: "Autre",
+        question: "Nature de la perte",
+        reponses: {
+          "Perte sévère à profonde ou perte d'autonomie reconnue": "perte_severe_a_profonde_ou_perte_d_autonomie",
+          "Autre": "autre_autre",
+        },
+      },
+      autre_autre: {
+        titre: "Autre autre",
+        question: "Exercez vous une activité professionnelle ?",
+        reponses: {
+          "Oui": "autre_autre_oui",
+          "Non ou non déclarée": "autre_autre_non",
+        },
+      },
+      autre_autre_non: {
+        titre: "Autre autre non",
+        texte: `Rapprochez vous de votre assistante sociale pour savoir si vous pouvez bénéficier d'un financement complémentaire pour votre appareillage.
+Rapprochez vous du service social de votre CPAM  pour savoir si vous pouvez bénéficier d'un financement complémentaire pour votre appareillage.`,
+        suite: "autre_autre_oui",
+      },
+      autre_autre_oui: {
+        titre: "Autre autre oui",
+        texte: "Crédit d’impôt de 50% sur le montant à charge (après déduction du montant remboursé) si capable de justifier de la nécessité de l’appareillage pour le maintien de l’activité professionnelle, et si aux frais réels sur sa déclaration de revenus. ",
+        suite: "fin",
+      },
+      perte_severe_a_profonde_ou_perte_d_autonomie: {
+        titre: "Perte sévère à profonde ou perte d'autonomie reconnue",
+        question: "Vous avez :",
+        reponses: {
+          "Entre 25 et 60 ans": "perte_severe_entre_25_et_60_ans",
+          "Moins de 25 ans ou plus de 60 ans": "se_rapprocher_de_l_assistante_sociale",
+        },
+      },
+      perte_severe_entre_25_et_60_ans: {
+        titre: "Perte sévère entre 25 et 60 ans",
+        question: "Exercez vous une activité professionnelle ?",
+        reponses: {
+          "Oui": "perte_severe_entre_25_et_60_ans_actif",
+          "Non ou non déclarée": "perte_severe_entre_25_et_60_ans_non_considere",
+        },
+      },
+      perte_severe_entre_25_et_60_ans_actif: {
+        titre: "Perte sévère entre 25 et 60 ans actif",
+        texte: `Rapprochez vous de votre MDPH pour prétendre à la PCH : aide de 410,28€ par mois à demander auprès de la MDPH (plusieurs mois d'attente).
+
+Crédit d’impôt de 50% sur le montant à charge (après déduction du montant remboursé) si capable de justifier de la nécessité de l’appareillage pour le maintien de l’activité professionnelle, et si aux frais réels sur sa déclaration de revenus. `,
+        suite: "perte_severe_entre_25_et_60_ans_non_considere",
+      },
+      perte_severe_entre_25_et_60_ans_non_considere: {
+        titre: "Perte sévère entre 25 et 60 ans non considéré actif",
+        texte: "Rapprochez vous de votre assistante sociale pour savoir si vous pouvez bénéficier d'un financement complémentaire pour votre appareillage.",
+        suite: "fin",
+      },
+      se_rapprocher_de_l_assistante_sociale: {
+        titre: "Se rapprocher de l'assistante sociale",
+        texte: "Rapprochez vous de votre assistante sociale pour savoir si vous pouvez bénéficier d'un financement complémentaire pour votre appareillage.",
+        suite: "fin",
+      },
+      salarie_du_secteur_public: {
+        titre: "Salarié du secteur public",
+        question: "Avez vous une RQTH ?",
+        reponses: {
+          "Oui": "public_rqth",
+          "Non": "se_rapprocher_de_l_assistante_sociale",
+        },
+      },
+      public_rqth: {
+        titre: "Public RQTH",
+        question: "Handicap reconnu avant 60 ans et âgé entre 25 et 75 ans ?",
+        reponses: {
+          "Oui": "public_rqth_oui",
+          "Non": "public_rqth_non",
+        },
+      },
+      public_rqth_non: {
+        titre: "Public RQTH non",
+        texte: `Aide FIPHFP : financement plafonné à 1600€ sur 3 ans, sur le RAC à demander auprès du FIPHFP
+
+Crédit d’impôt de 50% sur le montant à charge (après déduction du montant remboursé) si capable de justifier de la nécessité de l’appareillage pour le maintien de l’activité professionnelle, et si aux frais réels sur sa déclaration de revenus. `,
+        suite: "public_rqth_oui",
+      },
+      public_rqth_oui: {
+        titre: "Public RQTH oui",
+        texte: `Aide FIPHFP : financement plafonné à 1600€ sur 3 ans, sur le RAC à demander auprès du FIPHFP
+
+Rapprochez vous de votre MDPH pour prétendre à la PCH : aide de 410,28€ par mois à demander auprès de la MDPH (plusieurs mois d'attente).
+
+Crédit d’impôt de 50% sur le montant à charge (après déduction du montant remboursé) si capable de justifier de la nécessité de l’appareillage pour le maintien de l’activité professionnelle, et si aux frais réels sur sa déclaration de revenus. `,
+        suite: "fin",
+      },
+      travailleur_salarie_dans_le_prive_commercial: {
+        titre: "Travailleur, salarié dans le privé,  commercial,  profession libérale ou artisan",
+        question: "Handicap reconnu avant 60 ans et âgé entre 25 et 75 ans ?",
+        reponses: {
+          "Oui": "prive_rqth_oui",
+          "Non": "prive_rqth_non",
+        },
+      },
+      prive_rqth_oui: {
+        titre: "Privé RQTH oui",
+        texte: `Aide AGEFIPH :
+Toute demande de financement auprès de L’AGEFIPH doit être effectuée avant l’achat de vos prothèses auditives. Il faudra remplir un dossier d’intervention AGEFIPH. Ce dernier sera transmis à la délégation régionale dont vous dépendez.
+L’aide financière accordée par L’AGEFIPH est égale à la moitié de la facture de votre appareil auditif, sans pour autant dépasser 700€ par aide auditive.
+
+Aide OETH : Jusqu'à 800€ par appareil
+
+Rapprochez vous de votre MDPH pour prétendre à la PCH : aide de 410,28€ par mois à demander auprès de la MDPH (plusieurs mois d'attente).
+
+Crédit d’impôt de 50% sur le montant à charge (après déduction du montant remboursé) si capable de justifier de la nécessité de l’appareillage pour le maintien de l’activité professionnelle, et si aux frais réels sur sa déclaration de revenus. `,
+        suite: "prive_rqth_non",
+      },
+      prive_rqth_non: {
+        titre: "Privé RQTH non",
+        texte: `Aide OETH : Jusqu'à 800€ par appareil
+
+Rapprochez vous de votre MDPH pour prétendre à la PCH : aide de 410,28€ par mois à demander auprès de la MDPH (plusieurs mois d'attente).
+
+Crédit d’impôt de 50% sur le montant à charge (après déduction du montant remboursé) si capable de justifier de la nécessité de l’appareillage pour le maintien de l’activité professionnelle, et si aux frais réels sur sa déclaration de revenus. `,
+        suite: "fin",
+      },
+    };
+
+    /* ============================================================
+       MOTEUR : affiche l'étape courante et suit le dictionnaire
+       ============================================================ */
+    var DEBUT = "debut", FIN = "fin", MAX_ETAPES = 200;
+    var vue = document.getElementById("aco-view");
+    var parcours = [];   /* étapes parcourues : [{etape: "nom", reponse: "libellé choisi"}] */
+
+    function echapper(t){
+      return String(t).replace(/[&<>"']/g, function(c){
+        return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+      });
+    }
+    /* Transforme les adresses http(s) en liens, après échappement du texte */
+    function avecLiens(t){
+      return echapper(t).replace(/https?:\/\/[^\s<]+[^\s<.,;:!?)]/g, function(u){
+        return '<a href="'+u+'" target="_blank" rel="noopener noreferrer">'+u+'</a>';
+      });
+    }
+    /* Une ligne vide dans le texte = un nouveau paragraphe */
+    function texteHtml(t){
+      if(!t) return "";
+      return t.split(/\n{2,}/).map(function(p){ return '<p>'+avecLiens(p)+'</p>'; }).join("");
+    }
+    function imageHtml(fichier){
+      return '<figure class="Aide_figure"><img src="'+echapper(IMAGES_DOSSIER+fichier)+'" alt="Schéma de référence" '+
+        'onerror="this.outerHTML=\'<p class=&quot;Error_message_not_all_answered&quot;>Schéma indisponible.</p>\'"></figure>';
+    }
+
+    /* Nom de l'étape qui suit, selon la réponse donnée */
+    function suivante(nom, reponse){
+      var e = ETAPES[nom];
+      return e.question ? e.reponses[reponse] : e.suite;
+    }
+
+    function afficher(){
+      var p = parcours[parcours.length-1], e = ETAPES[p.etape], h = "";
+      h += '<p class="Aide_step">Étape '+parcours.length+'</p>';
+      if(e.titre || e.texte){
+        h += '<div class="Aide_card">'+(e.titre ? '<h3>'+echapper(e.titre)+'</h3>' : '')+texteHtml(e.texte)+'</div>';
+      }
+      if(e.image && !e.question) h += imageHtml(e.image);
+      if(e.question){
+        h += '<fieldset class="Aide_question"><legend>'+echapper(e.question)+' *</legend>';
+        if(e.image) h += imageHtml(e.image);
+        Object.keys(e.reponses).forEach(function(libelle){
+          h += '<label><input type="radio" name="reponse" value="'+echapper(libelle)+'"'+(p.reponse===libelle ? ' checked' : '')+'>'+echapper(libelle)+'</label>';
+        });
+        h += '<p class="Error_message_not_all_answered" hidden>Cette question est obligatoire.</p></fieldset>';
+      }
+      h += '<div class="buttons-container">'+
+           '<button type="button" id="aco-prev"'+(parcours.length < 2 ? ' style="visibility:hidden"' : '')+'>Précédent</button>'+
+           '<button type="button" id="aco-next">'+(suivante(p.etape, p.reponse) === FIN ? 'Terminer' : 'Suivant')+'</button></div>';
+      vue.innerHTML = h;
+      document.getElementById("aco-prev").onclick = precedent;
+      document.getElementById("aco-next").onclick = suivant;
+      vue.scrollIntoView({behavior:"smooth", block:"start"});
+    }
+
+    /* Réponse choisie : on la mémorise et on adapte le libellé du bouton */
+    vue.addEventListener("change", function(ev){
+      if(!ev.target || ev.target.type !== "radio") return;
+      var p = parcours[parcours.length-1];
+      p.reponse = ev.target.value;
+      var fs = ev.target.closest("fieldset");
+      fs.classList.remove("Aide_invalid");
+      fs.querySelector(".Error_message_not_all_answered").hidden = true;
+      document.getElementById("aco-next").textContent = (suivante(p.etape, p.reponse) === FIN ? "Terminer" : "Suivant");
+    });
+
+    function suivant(){
+      var p = parcours[parcours.length-1], e = ETAPES[p.etape];
+      if(e.question && !p.reponse){   /* toutes les questions sont obligatoires */
+        var fs = vue.querySelector("fieldset");
+        fs.classList.add("Aide_invalid");
+        fs.querySelector(".Error_message_not_all_answered").hidden = false;
+        return;
+      }
+      var n = suivante(p.etape, p.reponse);
+      if(n === FIN || parcours.length >= MAX_ETAPES) return synthese();
+      if(!ETAPES[n]){ console.error("Étape inconnue : "+n); return synthese(); }
+      parcours.push({etape: n, reponse: null});
+      afficher();
+    }
+    function precedent(){
+      if(parcours.length < 2) return;
+      parcours.pop();
+      afficher();
+    }
+
+    function enregistrerPdf(){
+      var zone = document.getElementById("aco-summary");
+      if(typeof window.html2pdf === "function"){
+        window.html2pdf().set({
+          margin: 10, filename: "aide-choix-prothetique.pdf",
+          image: {type:"jpeg", quality:0.98}, html2canvas: {scale:2, useCORS:true},
+          jsPDF: {unit:"mm", format:"a4", orientation:"portrait"}
+        }).from(zone).save();
+      } else { window.print(); }
+    }
+
+    /* Page finale : rappel des étapes parcourues, avec les réponses données */
+    function synthese(){
+      var h = '<div class="Aide_card Aide_summary" id="aco-summary"><h3>Synthèse du parcours</h3>';
+      parcours.forEach(function(p){
+        var e = ETAPES[p.etape];
+        if(!e.titre && !e.texte && !p.reponse) return;
+        h += '<section>'+(e.titre ? '<h4>'+echapper(e.titre)+'</h4>' : '');
+        if(p.reponse) h += '<p class="Aide_answer">'+echapper(e.question.replace(/\s+/g, " "))+' <strong>'+echapper(p.reponse)+'</strong></p>';
+        h += texteHtml(e.texte)+'</section>';
+      });
+      h += '</div><div class="buttons-container">'+
+           '<button type="button" id="aco-print">'+(typeof window.html2pdf === "function" ? 'Enregistrer en PDF' : 'Imprimer')+'</button>'+
+           '<button type="button" id="aco-back">Retour</button>'+
+           '<button type="button" id="aco-reset">Recommencer</button></div>';
+      vue.innerHTML = h;
+      document.getElementById("aco-print").onclick = enregistrerPdf;
+      document.getElementById("aco-back").onclick = afficher;
+      document.getElementById("aco-reset").onclick = demarrer;
+      vue.scrollIntoView({behavior:"smooth", block:"start"});
+    }
+
+    function demarrer(){
+      parcours = [{etape: DEBUT, reponse: null}];
+      afficher();
+    }
+    demarrer();
+    })();
+    </script>
+</body>
+</html>

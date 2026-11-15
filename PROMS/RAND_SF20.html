@@ -9,6 +9,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
         <link rel="stylesheet" href="/style.css">
+        <script src="/UTILS/exporterCSV.js?v=6"></script>
+        <script src="/UTILS/exporterPDF.js?v=6"></script>
         <style>
           /* style is within the style.css sheet */
         </style>
@@ -263,320 +265,124 @@
 
       <div id="results" style="display:none">
           <p id="scoreDisplay"></p><br>
-          <label id ="labelId" for="nameID" class="Subject_name">Nom du sujet (si besoin)</label>
+          <label id ="labelId" for="ID" class="Subject_name">Nom du sujet (si besoin)</label>
           <input type="text" id="ID" name="nameID"><br>
-          <button type="button" id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
-          <button type="button" id="saveXLSbutton" onclick="saveXLS()">Exporter en CSV</button>
+          <button type="button" id="savePdfButton" onclick="exporterPDF({ ...collectSF20(), perRow: 5 })">Exporter en PDF</button>
+          <button type="button" id="saveXLSbutton" onclick="exporterCSV(collectSF20())">Exporter en CSV</button>
       </div>
 
     </form>
 
     <script>
+      // ---------- RAND SF-20 ----------
+      // Items déjà cotés 0 à 100 dans le HTML. Six dimensions, pas de score global.
+      const SF20_ITEMS = ['q1',
+        'q2a', 'q2b', 'q2c', 'q2d', 'q2e', 'q2f',
+        'q3', 'q4', 'q5',
+        'q6a', 'q6b', 'q6c', 'q6d', 'q6e', 'q6f',
+        'q7a', 'q7b', 'q7c', 'q7d'];
 
-      const SF20 = {
-
-        globalPF : null,
-        globalBP : null,
-        globalRP : null,
-        globalSF : null,
-        globalMH : null,
-        globalHT : null
-
+      // Dimension -> items qui la composent (le score est leur moyenne)
+      const SF20_DIMENSIONS = {
+        'PF': { libelle: 'Activité physique',                 items: ['q2a', 'q2b', 'q2c', 'q2d', 'q2e', 'q2f'] },
+        'RP': { libelle: "Limitations dues à l'état physique", items: ['q4', 'q5'] },
+        'BP': { libelle: 'Douleur',                            items: ['q3'] },
+        'SF': { libelle: 'Vie et relation avec les autres',    items: ['q6a'] },
+        'MH': { libelle: 'Bien-être émotionnel',               items: ['q6b', 'q6c', 'q6d', 'q6e', 'q6f'] },
+        'HT': { libelle: 'Évolution de la santé perçue',       items: ['q1', 'q7a', 'q7b', 'q7c', 'q7d'] }
       };
 
-              
+      let sf20Scores = {};
+
+      const exportButtons = () => [
+        document.getElementById('savePdfButton'),
+        document.getElementById('saveXLSbutton')
+      ];
+      const champsSujet = () => [
+        document.getElementById('ID'),
+        document.getElementById('labelId')
+      ];
+      const showExports = show => {
+        exportButtons().forEach(b => b.style.display = show ? 'inline-block' : 'none');
+        champsSujet().forEach(e => { if (e) e.style.display = show ? 'inline-block' : 'none'; });
+      };
+
+      function sf20Valeurs() {
+        return SF20_ITEMS.map(name => {
+          const c = document.querySelector(`input[name="${name}"]:checked`);
+          return c ? c.value : 'NA';
+        });
+      }
+
       function calculateScore() {
-        const form = document.getElementById('SF20');
-        let answeredQuestionsCount = 0;
-        const totalQuestions = 20; 
+        const v = sf20Valeurs();
 
-        const getRadioValue = (name) => {
-          const radios = form.elements[name];
-          if (radios) {
-            for (let i = 0; i < radios.length; i++) {
-              if (radios[i].checked) {
-                answeredQuestionsCount++;
-                return parseInt(radios[i].value);
-              }
-            }
-          }
-          return NaN; 
-        };
-
-   
-        //Get scores
-        let scoreQ1 = getRadioValue('q1');
-        let scoreQ2 = 0;
-        for (let i = 0; i < 6; i++) {
-                const charCode = 'a'.charCodeAt(0) + i;
-                const q2Val = getRadioValue(`q2${String.fromCharCode(charCode)}`);
-                scoreQ2 += q2Val;
-            }
-
-        let scoreQ3   = getRadioValue('q3');
-        let scoreQ4   = getRadioValue('q4');
-        let scoreQ5   = getRadioValue('q5');
-        let scoreQ6_a = getRadioValue('q6a');
-        let scoreQ6_b = getRadioValue('q6b');
-        let scoreQ6_c = getRadioValue('q6c');
-        let scoreQ6_d = getRadioValue('q6d');
-        let scoreQ6_e = getRadioValue('q6e');
-        let scoreQ6_f = getRadioValue('q6f');
-
-   
-        let scoreQ7 = 0;
-        for (let i = 0; i < 4; i++) {
-          const charCode = 'a'.charCodeAt(0) + i;
-          const q7Val = getRadioValue(`q7${String.fromCharCode(charCode)}`);
-          scoreQ7 += q7Val;
-        }
-
-        if (answeredQuestionsCount <20) {
-
-          let errormsg = "<p class=Error_message_not_all_answered>Veuillez répondre svp à toutes les questions avant de calculer le score!</p>";
-          document.getElementById("scoreDisplay").innerHTML = errormsg;
-          document.getElementById("results").style.display = "block";
-          document.getElementById('savePdfButton').style.display = "none";
-          document.getElementById('saveXLSbutton').style.display = "none";
-          document.getElementById("ID").style.display = "none";
-          document.getElementById("labelId").style.display = "none";
+        if (v.includes('NA')) {
+          sf20Scores = {};
+          document.getElementById('scoreDisplay').innerHTML =
+            '<p class="Error_message_not_all_answered">Veuillez répondre svp à toutes les questions avant de calculer le score !</p>';
+          document.getElementById('results').style.display = 'block';
+          showExports(false);
           return;
-
         }
 
-        // Compute average scores
-        let scorePF = scoreQ2/6;
-        let scoreRP = (scoreQ4 + scoreQ5)/2;
-        let scoreBP = scoreQ3;
-        let scoreSF = scoreQ6_a;
-        let scoreMH = (scoreQ6_b+scoreQ6_c+scoreQ6_d+scoreQ6_e+scoreQ6_f)/5;
-        let scoreHT = (scoreQ1 + scoreQ7)/5;
+        const brut = {};
+        SF20_ITEMS.forEach((name, i) => { brut[name] = parseFloat(v[i]); });
 
-        // Update global results
-        SF20.globalPF = scorePF;
-        SF20.globalBP = scoreBP;
-        SF20.globalRP = scoreRP;
-        SF20.globalSF = scoreSF;
-        SF20.globalMH = scoreMH;
-        SF20.globalHT = scoreHT;
-
-        // Display scores
-        display(scorePF, scoreBP, scoreRP, scoreSF, scoreMH, scoreHT);
-    }
-
-      function display(scorePF, scoreBP, scoreRP, scoreSF, scoreMH, scoreHT) {
-
-          let displayHtml = "<p>Résultats</p>";
-          displayHtml += "<br>";
-          displayHtml += "<p> Les scores vont de 0 % (faible niveau qualité de vie) à 100 % (niveau très élevé).</p>";
-          displayHtml += "<br>";
-          displayHtml += "<ul class='myList'>";
-          displayHtml += "<li>Activité physique : " + scorePF.toFixed(2) + " % </li>";
-          displayHtml += "<li>Limitations dues à l’état physique : " + scoreRP.toFixed(2) + " % </li>";
-          displayHtml += "<li>Douleur  : " + scoreBP.toFixed(2) + " % </li>";
-          displayHtml += "<li>Vie et relation avec les autres  : " + scoreSF.toFixed(2) + " % </li>";
-          displayHtml += "<li>Bien-être émotionnelle : " + scoreMH.toFixed(2) + " % </li>";
-          displayHtml += "<li>Évolution de la santé perçue  : " + scoreHT.toFixed(2) + " % </li>";
-          displayHtml += "</ul>";
-
-          // Update the results div with the constructed HTML
-          document.getElementById("scoreDisplay").innerHTML = displayHtml;
-          document.getElementById("results").style.display = "block";
-          document.getElementById('savePdfButton').style.display = 'inline-block';
-          document.getElementById('saveXLSbutton').style.display = 'inline-block';
-          document.getElementById("ID").style.display = 'inline-block';
-          document.getElementById("labelId").style.display = 'inline-block';
-      }
-
-    
-      // Neutralise l'injection de formule CSV (=, +, -, @ en début de champ)
-      function sanitizeForCsv(v) {
-        return /^[=+\-@\t\r]/.test(v) ? "'" + v : v;
-      }
-
-      function saveXLS() {
-
-        const rawCode = document.getElementById('ID').value || "SansNom"; // Nom du sujet
-        const subjectCode = sanitizeForCsv(rawCode);
-        const today = new Date().toLocaleDateString('fr-FR');
-        const filename = `SF20v1.0_${today}_${rawCode}.csv`;
-
-        const safePF = typeof SF20.globalPF === 'number' ? SF20.globalPF.toFixed(2) : "NA";
-        const safeBP = typeof SF20.globalBP === 'number' ? SF20.globalBP.toFixed(2) : "NA";
-        const safeRP = typeof SF20.globalRP === 'number' ? SF20.globalRP.toFixed(2) : "NA";
-        const safeSF = typeof SF20.globalSF === 'number' ? SF20.globalSF.toFixed(2) : "NA";
-        const safeMH = typeof SF20.globalMH === 'number' ? SF20.globalMH.toFixed(2) : "NA";
-        const safeHT = typeof SF20.globalHT === 'number' ? SF20.globalHT.toFixed(2) : "NA";
-
-        const allQuestionNames = [
-          'q1', 
-          'q2a', 'q2b', 'q2c', 'q2d', 'q2e', 'q2f',
-          'q3',
-          'q4',
-          'q5',
-          'q6a', 'q6b', 'q6c', 'q6d', 'q6e', 'q6f',
-          'q7a', 'q7b', 'q7c', 'q7d',
-        ];
-
-        let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
-        csvContent += "Sujet,Date,Questionnaire,PF,BP,RP,SF,MH,HT";
-        for (let i = 0; i <20; i++) {
-          csvContent += `,"${allQuestionNames[i]}"`;
-        }
-        csvContent += "\n";
-
-        let row =       `"${subjectCode}","${today}","SF20v1","${safePF}","${safeBP}","${safeRP}","${safeSF}","${safeMH}","${safeHT}"`;
-        allQuestionNames.forEach(name => {
-        let selectedInput = document.querySelector(`input[name="${name}"]:checked`);
-        let value = selectedInput ? selectedInput.value : "NA";
-        row += `,"${value}"`;
+        sf20Scores = {};
+        Object.keys(SF20_DIMENSIONS).forEach(code => {
+          const items = SF20_DIMENSIONS[code].items;
+          const somme = items.reduce((s, name) => s + brut[name], 0);
+          sf20Scores[code] = Math.round((somme / items.length) * 100) / 100;
         });
 
-        csvContent += row + "\n";
-        const link = document.createElement("a");
-        link.setAttribute("href", encodeURI(csvContent));
-        link.setAttribute("download", filename);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
+        display();
       }
 
-
-      function savePdf() {
-
-        const today = new Date().toLocaleDateString('fr-FR');
-        const subjectCode = document.getElementById('ID').value || "SansNom";
-        const filename = `SF20v1_${today}_${subjectCode}.pdf`;
-
-        const safePF = typeof SF20.globalPF === 'number' ? SF20.globalPF.toFixed(2) : "NA";
-        const safeBP = typeof SF20.globalBP === 'number' ? SF20.globalBP.toFixed(2) : "NA";
-        const safeRP = typeof SF20.globalRP === 'number' ? SF20.globalRP.toFixed(2) : "NA";
-        const safeSF = typeof SF20.globalSF === 'number' ? SF20.globalSF.toFixed(2) : "NA";
-        const safeMH = typeof SF20.globalMH === 'number' ? SF20.globalMH.toFixed(2) : "NA";
-        const safeHT = typeof SF20.globalHT === 'number' ? SF20.globalHT.toFixed(2) : "NA";
-
-        const col = ["PF","BP","RP","SF","MH","HT"];
-        const safeScores = [safePF, safeBP, safeRP, safeSF, safeMH, safeHT];
-        let data2table = "<table>";
-        for (let i = 0; i < col.length; i++) {
-          data2table += `
-          <tr>
-          <td><strong>${col[i]}</strong></td>
-          <td> ${safeScores[i]}</td></tr>`;}
-          data2table += "</table>";
-
-        const allQuestionNames = [
-          'q1',
-          'q2a', 'q2b', 'q2c', 'q2d', 'q2e', 'q2f',
-          'q3',
-          'q4',
-          'q5',
-          'q6a', 'q6b', 'q6c', 'q6d', 'q6e', 'q6f',
-          'q7a', 'q7b', 'q7c', 'q7d',
-        ];
-
-        let data2table_longue = "<table>"
-        for (let row = 0; row < 4; row++) {
-          data2table_longue += "<tr>";
-          for (let col = 0; col < 5; col++) {
-              let index = row * 5 + col;
-              if (index < allQuestionNames.length) {
-                  let name = allQuestionNames[index];
-                  let selectedInput = document.querySelector(`input[name="${name}"]:checked`);
-                  let value = selectedInput ? selectedInput.value : "NA";
-                  data2table_longue += `<td><strong>${name}</strong> ${value}</td>`;
-              } else {
-                  data2table_longue += "<td></td>";
-              }
-          }
-          data2table_longue += "</tr>";
-        }
-        data2table_longue += "</table>";
-
-        const content = document.createElement('div');
-        content.lang = 'fr';
-        content.innerHTML = `
-              <style>
-                .header_report,
-                .body_report,
-                .footer_report {
-                text-align: center;
-                margin: 0 auto;
-                width: 100%;
-                }
-                .header_report {
-                padding-top: 4%;
-                padding-bottom: 4%;
-                border-bottom: 1px solid #2B176C;
-                }
-                .footer_report {
-                padding-top: 3%;
-                padding-bottom:3%;
-                }
-                .body_report {
-                padding-top: 2%;
-                padding-bottom:5%;
-                background-color: white;
-                color: black;
-                }
-                table {
-                border-collapse: collapse;
-                width: 80%;
-                margin: 0 auto;
-                }
-                th, td {
-                border: 1px solid #eeeeee;
-                }
-                td strong {
-                display: block;
-                text-align: left;
-                }
-              </style>
-              <div class="header_report">
-                <img src="https://data.memau.eu/wp-content/uploads/2025/06/logo-memau-data.svg" alt="Logo" style="max-width: 210px;
-                margin-top: 10px;margin-bottom: 5px;">
-                <p><i>Contact : hello@memau.eu </i></p>
-              </div>
-              <div class="body_report">
-                <h1>SF20v1.0</h1>
-                <p>Code du Sujet : ${subjectCode} </p>
-                <p>Rapport généré le : ${today}</p>
-                <p> Scores globaux </p>
-                ${data2table}
-                <br>
-                <p> Score brut par item</p>
-                ${data2table_longue}
-              </div>
-              `;
-
-        document.body.appendChild(content);
-
-        const opt = {
-          margin: [10, 10, 10, 10],
-          filename: filename,
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
-          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-
-        html2pdf().set(opt).from(content).save().then(() => {
-          document.body.removeChild(content);
+      function display() {
+        let html = '<p>Résultats</p><br>';
+        html += '<p>Les scores vont de 0 % (faible qualité de vie) à 100 % (niveau très élevé).</p><br>';
+        html += "<ul class='myList'>";
+        Object.keys(SF20_DIMENSIONS).forEach(code => {
+          html += `<li>${SF20_DIMENSIONS[code].libelle} : ${sf20Scores[code].toFixed(2)} %</li>`;
         });
+        html += '</ul>';
 
+        document.getElementById('scoreDisplay').innerHTML = html;
+        document.getElementById('results').style.display = 'block';
+        showExports(true);
       }
-
 
       function resetForm() {
-
-        document.getElementById("SF20").reset();
-        document.getElementById("ID").value = ""; 
-        document.getElementById("scoreDisplay").innerHTML = "";
-        document.getElementById("results").style.display = "none";
-
+        document.getElementById('SF20').reset();
+        document.getElementById('ID').value = '';
+        document.getElementById('scoreDisplay').innerHTML = '';
+        document.getElementById('results').style.display = 'none';
+        sf20Scores = {};
       }
 
-    
+      // Invalide les scores dès qu'une réponse change (évite d'exporter un score périmé)
+      document.getElementById('SF20').addEventListener('change', e => {
+        if (e.target && e.target.type === 'radio') {
+          sf20Scores = {};
+          document.getElementById('results').style.display = 'none';
+        }
+      });
+
+      function collectSF20() {
+        const sous = {};
+        Object.keys(SF20_DIMENSIONS).forEach(code => {
+          sous[`Score ${code}`] = sf20Scores[code] ?? null;
+        });
+        return {
+          questionnaire: 'SF20v1',
+          // Pas de score global : le SF-20 s'interprète dimension par dimension
+          subject: document.getElementById('ID').value || 'SansNom',
+          subscores: sous,
+          items: sf20Valeurs(),
+          itemLabels: SF20_ITEMS
+        };
+      }
     </script>
   </body>
 </html>

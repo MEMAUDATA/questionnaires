@@ -9,6 +9,8 @@
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
      <link rel="stylesheet" href="/style.css">
+    <script src="/UTILS/exporterCSV.js?v=3"></script>
+    <script src="/UTILS/exporterPDF.js?v=3"></script>
      <style>
        /* style is within the style.css sheet */
      </style>
@@ -180,216 +182,108 @@
         <p id="scoreDisplay"></p><br>
         <label for="nameID" class="Subject_name">Nom du sujet (si besoin)</label>
         <input type="text" id="ID" name="nameID"><br>
-        <button id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
-        <button id="saveXLSbutton" onclick="saveXLS()">Exporter en CSV</button>
+        <button type="button" id="savePdfButton" onclick="exporterPDF({ ...collectHADS(), perRow: 2 })">Exporter en PDF</button>
+        <button type="button" id="saveXLSbutton" onclick="exporterCSV(collectHADS())">Exporter en CSV</button>
       </div>
     <script>
+      // ---------- HADS ----------
+      const HADS_NB_PAR_SOUS_ECHELLE = 7;
+      const HADS_NOMS = [
+        ...Array.from({ length: HADS_NB_PAR_SOUS_ECHELLE }, (_, i) => `anx${i + 1}`),
+        ...Array.from({ length: HADS_NB_PAR_SOUS_ECHELLE }, (_, i) => `dep${i + 1}`)
+      ];
+      const HADS_LIBELLES = [
+        ...Array.from({ length: HADS_NB_PAR_SOUS_ECHELLE }, (_, i) => `Anxiete ${i + 1}`),
+        ...Array.from({ length: HADS_NB_PAR_SOUS_ECHELLE }, (_, i) => `Depression ${i + 1}`)
+      ];
 
-      // var globales
+      // Scores (null tant qu'ils ne sont pas calculés)
       let globalAnxiete = null;
       let globalDepression = null;
       let globalTotal = null;
 
+      const exportButtons = () => [
+        document.getElementById('savePdfButton'),
+        document.getElementById('saveXLSbutton')
+      ];
+      const showExports = show =>
+        exportButtons().forEach(b => b.style.display = show ? 'inline-block' : 'none');
+
+      function hadsValues() {
+        return HADS_NOMS.map(name => {
+          const c = document.querySelector(`input[name="${name}"]:checked`);
+          return c ? c.value : 'NA';
+        });
+      }
+
       function calculerScores() {
-        let scoreAnxiete = 0;
-        let scoreDepression = 0;
-        let total = 0;
+        const values = hadsValues();
 
-        // Calcul du score pour l'anxiété
-        for (let i = 1; i <= 7; i++) {
-          const questionName = "anx" + i;
-          const reponseSelectionnee = document.querySelector('input[name="' + questionName + '"]:checked');
-          if (reponseSelectionnee) {
-            scoreAnxiete += parseInt(reponseSelectionnee.value);
-          }
+        // Sans ce contrôle, un item non répondu était silencieusement compté 0
+        if (values.includes('NA')) {
+          globalAnxiete = null;
+          globalDepression = null;
+          globalTotal = null;
+          document.getElementById('scoreDisplay').innerHTML =
+            '<p class="Error_message_not_all_answered">Veuillez répondre svp à toutes les questions avant de calculer le score !</p>';
+          document.getElementById('results').style.display = 'block';
+          showExports(false);
+          return;
         }
 
-        // Calcul du score pour la dépression
-        for (let i = 1; i <= 7; i++) {
-          const questionName = "dep" + i;
-          const reponseSelectionnee = document.querySelector('input[name="' + questionName + '"]:checked');
-          if (reponseSelectionnee) {
-            scoreDepression += parseInt(reponseSelectionnee.value);
-          }
-        }
+        const nums = values.map(v => parseInt(v, 10));
+        globalAnxiete = nums.slice(0, HADS_NB_PAR_SOUS_ECHELLE).reduce((s, v) => s + v, 0);
+        globalDepression = nums.slice(HADS_NB_PAR_SOUS_ECHELLE).reduce((s, v) => s + v, 0);
+        globalTotal = globalAnxiete + globalDepression;
 
-        total = scoreAnxiete + scoreDepression;
+        displayResult();
+      }
 
-        // Affichage des résultats
+      function displayResult() {
         let display = "<p style='text-align: center;'>Résultats</p>";
-        display += "<br>";
+        display += '<br>';
         display += "<ul class='myList'>";
-        display += "<li>Score Anxiété : " + scoreAnxiete + "</li>";
-        display += "<li>Score Dépression : " + scoreDepression + "</li>";
-        display += "<li>Score Total : " + total + "</li>";
-        display += "</ul>";
-        document.getElementById("scoreDisplay").innerHTML = display;
-        document.getElementById("results").style.display = "block";
-        document.getElementById('savePdfButton').style.display = 'inline-block';
-        document.getElementById('saveXLSbutton').style.display = 'inline-block';
+        display += '<li>Score Anxiété : ' + globalAnxiete + '/21</li>';
+        display += '<li>Score Dépression : ' + globalDepression + '/21</li>';
+        display += '<li>Score Total : ' + globalTotal + '/42</li>';
+        display += '</ul>';
 
-        globalAnxiete = scoreAnxiete;
-        globalDepression = scoreDepression;
-        globalTotal = total;
+        document.getElementById('scoreDisplay').innerHTML = display;
+        document.getElementById('results').style.display = 'block';
+        showExports(true);
       }
 
       function resetForm() {
-        document.getElementById("HADS").reset();
-        document.getElementById("results").style.display = "none";
-        document.getElementById("ID").value = "";
-        document.getElementById('savePdfButton').style.display = 'none';
-        document.getElementById('saveXLSbutton').style.display = 'none';
+        document.getElementById('HADS').reset();
+        document.getElementById('results').style.display = 'none';
+        document.getElementById('ID').value = '';
+        globalAnxiete = null;
+        globalDepression = null;
+        globalTotal = null;
       }
 
-      function saveXLS() {
+      // Invalide les scores dès qu'une réponse change (évite d'exporter un score périmé)
+      document.getElementById('HADS').addEventListener('change', () => {
+        globalAnxiete = null;
+        globalDepression = null;
+        globalTotal = null;
+        document.getElementById('results').style.display = 'none';
+      });
 
-        const subjectCode = document.getElementById('ID').value || "SansNom";
-        const today = new Date().toLocaleDateString('fr-FR');
-        const filename = `HADS_${today}_${subjectCode}.csv`;
-
-        const safeAnxiete = typeof globalAnxiete === 'number' ? globalAnxiete : "NA";
-        const safeDepression = typeof globalDepression === 'number' ? globalDepression : "NA";
-        const safeTotal = typeof globalTotal === 'number' ? globalTotal : "NA";
-
-        let csvContent = "data:text/csv;charset=utf-8,﻿";
-        csvContent += "Sujet,Date,Questionnaire,Score Total,Score Anxiete,Score Depression";
-        for (let i = 1; i <= 7; i++) {
-          csvContent += `,"Anxiete ${i}"`;
-        }
-        for (let i = 1; i <= 7; i++) {
-          csvContent += `,"Depression ${i}"`;
-        }
-        csvContent += "\n";
-
-        let row = `"${subjectCode}","${today}","HADS","${safeTotal}","${safeAnxiete}","${safeDepression}"`;
-        for (let i = 1; i <= 7; i++) {
-          let rep = document.querySelector(`input[name="anx${i}"]:checked`);
-          let value = rep ? rep.value : "NA";
-          row += `,"${value}"`;
-        }
-        for (let i = 1; i <= 7; i++) {
-          let rep = document.querySelector(`input[name="dep${i}"]:checked`);
-          let value = rep ? rep.value : "NA";
-          row += `,"${value}"`;
-        }
-
-        csvContent += row + "\n";
-        const link = document.createElement("a");
-        link.setAttribute("href", encodeURI(csvContent));
-        link.setAttribute("download", filename);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
-
-      function savePdf() {
-
-        const today = new Date().toLocaleDateString('fr-FR');
-        const subjectCode = document.getElementById('ID').value || "SansNom";
-        const filename = `HADS_${today}_${subjectCode}.pdf`;
-
-        const safeAnxiete = typeof globalAnxiete === 'number' ? globalAnxiete : "NA";
-        const safeDepression = typeof globalDepression === 'number' ? globalDepression : "NA";
-        const safeTotal = typeof globalTotal === 'number' ? globalTotal : "NA";
-
-        const col = ["Score total", "Anxiété", "Dépression"];
-        const safeScores = [safeTotal, safeAnxiete, safeDepression];
-        let data2table = "<table>";
-        for (let i = 0; i < 3; i++) {
-          data2table += `
-          <tr>
-          <td><strong>${col[i]}</strong></td>
-          <td> ${safeScores[i]}</td></tr>`;
-        }
-        data2table += "</table>";
-
-        let data2table_longue = "<table>";
-        for (let i = 1; i <= 7; i++) {
-          let rep = document.querySelector(`input[name="anx${i}"]:checked`);
-          let value = rep ? rep.value : "NA";
-          data2table_longue += `<tr><td><strong>Anxiété ${i}</strong> ${value}</td></tr>`;
-        }
-        for (let i = 1; i <= 7; i++) {
-          let rep = document.querySelector(`input[name="dep${i}"]:checked`);
-          let value = rep ? rep.value : "NA";
-          data2table_longue += `<tr><td><strong>Dépression ${i}</strong> ${value}</td></tr>`;
-        }
-        data2table_longue += "</table>";
-
-        const content = document.createElement('div');
-        content.innerHTML = `
-          <style>
-          .header_report,
-          .body_report,
-          .footer_report {
-          text-align: center;
-          margin: 0 auto;
-          width: 100%;
-          }
-          .header_report {
-          padding-top: 4%;
-          padding-bottom: 4%;
-          border-bottom: 1px solid #2B176C;
-          }
-          .footer_report {
-          padding-top: 3%;
-          padding-bottom:3%;
-
-          }
-          .body_report {
-          padding-top: 5%;
-          padding-bottom:10%;
-          background-color: white;
-          color: black;
-          }
-
-          .body_report table {
-          border-collapse: collapse;
-          width: 80%;
-          margin: 0 auto;
-          }
-
-          .body_report th, td {
-          border: 1px solid #eeeeee;
-          }
-          .body_report td strong {
-          display: block;
-          text-align: left;
-          }
-
-              </style>
-          <div class="header_report">
-          <img src="https://data.memau.eu/wp-content/uploads/2025/06/logo-memau-data.svg" alt="Logo" style="max-width: 210px;
-          margin-top: 10px;margin-bottom: 5px;">
-          <p><i>Contact : hello@memau.eu </i></p>
-              </div>
-          <div class="body_report">
-          <h1>HADS</h1>
-          <p>Code du Sujet : ${subjectCode} </p>
-          <p>Rapport généré le : ${today}</p>
-          ${data2table}
-          <br>
-          ${data2table_longue}
-          </div>
-          `;
-
-        document.body.appendChild(content);
-
-        // Define options for html2pdf
-        const opt = {
-          margin: 10,
-          filename: filename,
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2, useCORS: true, scrollY: 0,windowHeight: 1200 },
-          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-          pagebreak: { avoid: '.body_report' }
+      function collectHADS() {
+        return {
+          questionnaire: 'HADS',
+          subject: document.getElementById('ID').value || 'SansNom',
+          score: globalTotal,
+          subscores: {
+            'Score Anxiete': globalAnxiete,
+            'Score Depression': globalDepression
+          },
+          items: hadsValues(),
+          itemLabels: HADS_LIBELLES
         };
-
-        // Generate and download the PDF
-        html2pdf().set(opt).from(content).save().then(() => {
-          document.body.removeChild(content);
-        });
       }
+
     </script>
   </body>
 </html>

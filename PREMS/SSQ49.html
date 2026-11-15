@@ -9,6 +9,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
         <link rel="stylesheet" href="/style.css">
+    <script src="/UTILS/scoreSSQ.js?v=1"></script>
+    <script src="/UTILS/exporterCSV.js?v=6"></script>
+    <script src="/UTILS/exporterPDF.js?v=6"></script>
         <style>
           /* style is within the style.css sheet */
         </style>
@@ -2000,297 +2003,129 @@
 
     <div id="results" style="display:none">
         <p id="scoreDisplay"></p><br>
-        <label for="nameID" class="Subject_name">Nom du sujet (si besoin)</label>
+        <label for="ID" class="Subject_name">Nom du sujet (si besoin)</label>
         <input type="text" id="ID" name="nameID"><br>
-        <button id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
-        <button id="saveXLSbutton" onclick="saveXLS()">Exporter en CSV</button>
+        <button type="button" id="savePdfButton" onclick="exporterPDF({ ...collectSSQ49(), perRow: 7 })">Exporter en PDF</button>
+        <button type="button" id="saveXLSbutton" onclick="exporterCSV(collectSSQ49())">Exporter en CSV</button>
       </div>
   
     <script>
+      // ---------- SSQ49 ----------
+      const SSQ49_SLIDERS = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10', 'q11', 'q12', 'q13', 'q14', 'q15', 'q16', 'q17', 'q18', 'q19', 'q20', 'q21', 'q22', 'q23', 'q24', 'q25', 'q26', 'q27', 'q28', 'q29', 'q30', 'q31', 'q32', 'q33', 'q34', 'q35', 'q36', 'q37', 'q38', 'q39', 'q40', 'q41', 'q42', 'q43', 'q44', 'q45', 'q46', 'q47', 'q48', 'q49'];
+      const SSQ49_NA = ['na1', 'na2', 'na3', 'na4', 'na5', 'na6', 'na7', 'na8', 'na9', 'na10', 'na11', 'na12', 'na13', 'na14', 'na15', 'na16', 'na17', 'na18', 'na19', 'na20', 'na21', 'na22', 'na23', 'na24', 'na25', 'na26', 'na27', 'na28', 'na29', 'na30', 'na31', 'na32', 'na33', 'na34', 'na35', 'na36', 'na37', 'na38', 'na39', 'na40', 'na41', 'na42', 'na43', 'na44', 'na45', 'na46', 'na47', 'na48', 'na49'];
+      // Sous-échelles, par numéro d'item
+      const SSQ49_SOUS = {
+        'Parole': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+        'Spatial': [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
+        'Qualite': [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49],
+      };
 
-        let globalTotal     = null;
-        let globalParole    = null;  
-        let globalSpatial   = null;  
-        let globalQualite   = null;    
+      let globalTotal = null;
+      let globalParole = null;
+      let globalSpatial = null;
+      let globalQualite = null;
 
-        // Sliders colors
-        const sliders = document.querySelectorAll(".slider");
-        sliders.forEach(function(slider) {
-            slider.addEventListener("input", function () {
-            const value = (this.value - this.min) / (this.max - this.min) * 100;
-            this.style.background = `linear-gradient(to right, #2B176C ${value}%,  #eeeeee ${value}%)`;
-            });
+      const exportButtons = () => [
+        document.getElementById('savePdfButton'),
+        document.getElementById('saveXLSbutton')
+      ];
+      const showExports = show =>
+        exportButtons().forEach(b => b.style.display = show ? 'inline-block' : 'none');
 
-            // Appliquer le dégradé à l’état initial
-            const initialValue = (slider.value - slider.min) / (slider.max - slider.min) * 100;
-            slider.style.background = `linear-gradient(to right, #2B176C ${initialValue}%, #eeeeee ${initialValue}%)`;
+      // Dégradé des sliders
+      document.querySelectorAll('.slider').forEach(function (slider) {
+        const peindre = el => {
+          const v = (el.value - el.min) / (el.max - el.min) * 100;
+          el.style.background = `linear-gradient(to right, #2B176C ${v}%, #eeeeee ${v}%)`;
+        };
+        slider.addEventListener('input', function () { peindre(this); });
+        peindre(slider);
+      });
+
+      function sSQ49Valeurs() {
+        return ssqValeurs(SSQ49_SLIDERS, SSQ49_NA);
+      }
+
+      function calculerScores() {
+        const v = sSQ49Valeurs();
+        globalParole = ssqMoyenneItems(v, SSQ49_SOUS['Parole']);
+        globalSpatial = ssqMoyenneItems(v, SSQ49_SOUS['Spatial']);
+        globalQualite = ssqMoyenneItems(v, SSQ49_SOUS['Qualite']);
+        // Total = moyenne des sous-scores (sous-échelles de tailles inégales)
+        globalTotal = ssqMoyenneSousScores([globalParole, globalSpatial, globalQualite]);
+
+        displayscores();
+      }
+
+      function displayscores() {
+        let display = '';
+        if (globalTotal === null) {
+          display = '<p>Score incalculable : une sous-échelle entière a été cochée « non applicable ».</p>';
+        } else {
+          display += '<p>Résultats</p><br>';
+          display += "<ul class='myList'>";
+          display += '<li>Score total : ' + ssqFmt(globalTotal) + '</li>';
+          display += '<li>Audition de la parole : ' + ssqFmt(globalParole) + '</li>';
+          display += '<li>Audition spatiale : ' + ssqFmt(globalSpatial) + '</li>';
+          display += '<li>Qualité d’audition : ' + ssqFmt(globalQualite) + '</li>';
+
+          display += '</ul>';
+        }
+
+        document.getElementById('scoreDisplay').innerHTML = display;
+        document.getElementById('results').style.display = 'block';
+        showExports(true);
+      }
+
+      function resetForm() {
+        document.getElementById('SSQ49').reset();
+        document.getElementById('DEMO').reset();
+        document.getElementById('results').style.display = 'none';
+        document.getElementById('ID').value = '';
+        globalTotal = null;
+        globalParole = null;
+        globalSpatial = null;
+        globalQualite = null;
+
+        document.querySelectorAll('.slider').forEach(function (slider) {
+          const v = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+          slider.style.background = `linear-gradient(to right, #2B176C ${v}%, #eeeeee ${v}%)`;
         });
+      }
 
-        // Neutralise l'injection de formule CSV (=, +, -, @ en début de champ)
-        function sanitizeForCsv(v) {
-            return /^[=+\-@\t\r]/.test(v) ? "'" + v : v;
-        }
+      // Invalide les scores dès qu'une réponse change (évite d'exporter un score périmé)
+      document.getElementById('SSQ49').addEventListener('input', () => {
+        globalTotal = null;
+        globalParole = null;
+        globalSpatial = null;
+        globalQualite = null;
 
-        function calculerScores() {
+        document.getElementById('results').style.display = 'none';
+      });
+      document.getElementById('SSQ49').addEventListener('change', () => {
+        globalTotal = null;
+        globalParole = null;
+        globalSpatial = null;
+        globalQualite = null;
 
-            let total     				= 0;
-            let parole    				= 0;
-            let spatial 				= 0;
-            let qualite 				= 0;
-            let count_Na_parole    		= 0;
-            let count_Na_spatial    	= 0;
-            let count_Na_qualite    	= 0;
-            const sliderIds = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10', 'q11', 'q12', 'q13', 'q14', 'q15', 'q16', 'q17', 'q18', 'q19', 'q20', 'q21', 'q22', 'q23', 'q24', 'q25', 'q26', 'q27', 'q28', 'q29', 'q30', 'q31', 'q32', 'q33', 'q34', 'q35', 'q36', 'q37', 'q38', 'q39', 'q40', 'q41', 'q42', 'q43', 'q44', 'q45', 'q46', 'q47', 'q48', 'q49'];
-            const naCheckboxIds = ['na1', 'na2', 'na3', 'na4', 'na5', 'na6', 'na7', 'na8', 'na9', 'na10', 'na11', 'na12', 'na13', 'na14', 'na15', 'na16', 'na17', 'na18', 'na19', 'na20', 'na21', 'na22', 'na23', 'na24', 'na25', 'na26', 'na27', 'na28', 'na29', 'na30', 'na31', 'na32', 'na33', 'na34', 'na35', 'na36', 'na37', 'na38', 'na39', 'na40', 'na41', 'na42', 'na43', 'na44', 'na45', 'na46', 'na47', 'na48', 'na49'];
-            // Boucle parole
-            for (let i = 0; i < 14; i++) {
-            const slider = document.getElementById(sliderIds[i]);
-            const naCheckbox = document.getElementById(naCheckboxIds[i]);
-            if (slider && naCheckbox) {
-                if (!naCheckbox.checked) { // Only add if NOT checked
-                parole += parseFloat(slider.value);
-                } else {
-                count_Na_parole++; // Still count the N/A for parole
-                }
-            }
-            } // end parole loop
+        document.getElementById('results').style.display = 'none';
+      });
 
-            // Boucle spatial
-            for (let i = 14; i < 31; i++) {
-            const slider = document.getElementById(sliderIds[i]);
-            const naCheckbox = document.getElementById(naCheckboxIds[i]);
-            if (slider && naCheckbox) {
-                if (!naCheckbox.checked) { // Only add if NOT checked
-                spatial += parseFloat(slider.value);
-                } else {
-                count_Na_spatial++; // Still count the N/A for spatial
-                }
-            }
-            }// end
+      function collectSSQ49() {
+        return {
+          questionnaire: 'SSQ49',
+          subject: document.getElementById('ID').value || 'SansNom',
+          score: globalTotal,
+          subscores: {
+            'Audition de la parole': globalParole,
+            'Audition spatiale': globalSpatial,
+            'Qualité d’audition': globalQualite,
+          },
+          items: sSQ49Valeurs(),
+          itemLabels: SSQ49_SLIDERS.map((_, i) => `Question ${i + 1}`)
+        };
+      }
 
-            // Boucle qualite
-            for (let i = 31; i < 49; i++) {
-            const slider = document.getElementById(sliderIds[i]);
-            const naCheckbox = document.getElementById(naCheckboxIds[i]);
-            if (slider && naCheckbox) {
-                if (!naCheckbox.checked) { // Only add if NOT checked
-                qualite += parseFloat(slider.value);
-                } else {
-                count_Na_qualite++; // Still count the N/A for qualite
-                }
-            }
-            } // end qualite loop
-
-            // Compute average scores
-
-            parole = parole / (14.0 - count_Na_parole);
-            spatial = spatial / (17.0 - count_Na_spatial);
-            qualite = qualite / (18.0 - count_Na_qualite);
-
-
-            total = (parole + spatial + qualite) / 3.0;
-            displayscores(total, parole, spatial,qualite);
-            // add to global values
-            globalTotal     = total;
-            globalParole    = parole;  
-            globalSpatial   = spatial;  
-            globalQualite   = qualite;    
-
-        } // end function
-
-
-        function displayscores(total, parole, spatial, qualite) {
-            let display = ""; 
-
-            if (isNaN(total)) {
-            display += "<p>Score incalculable : toutes les cases Non applicable ont été cochées.</p>";
-            } else {
-            display += "<p>Résultats</p><br>";
-            display += "<ul class='myList'>";
-            display += "<li>Score total : " + total.toFixed(2) + "</li>";
-            display += "<li>Audition de la parole : " + parole.toFixed(2) + "</li>";
-            display += "<li>Audition spatiale : " + spatial.toFixed(2) + "</li>";
-            display += "<li>Qualité d’audition : " + qualite.toFixed(2) + "</li>";
-            display += "</ul>";
-            }
-
-        
-            // Update the results div with the constructed HTML
-            document.getElementById("scoreDisplay").innerHTML = display;
-            document.getElementById("results").style.display = "block";
-            document.getElementById('savePdfButton').style.display = 'inline-block';
-            document.getElementById('saveXLSbutton').style.display = 'inline-block';
-
-        }
-
-
-        function resetForm() {
-            document.getElementById("DEMO").reset();
-            document.getElementById("SSQ49").reset();
-            document.getElementById('results').style.display = 'none';
-            // Reset subject's name
-            document.getElementById("ID").value = "";
-            // Hide the save PDF button on reset
-            document.getElementById('savePdfButton').style.display = 'none';
-            document.getElementById('saveXLSbutton').style.display = 'none';
-
-            // Réinitialise le fond des sliders
-            const sliders = document.querySelectorAll(".slider");
-            sliders.forEach(function (slider) {
-            const initialValue = (slider.value - slider.min) / (slider.max - slider.min) * 100;
-            slider.style.background = `linear-gradient(to right, #2B176C ${initialValue}%, #eeeeee ${initialValue}%)`;
-            });
-
-        } // end function
-
-        function saveXLS() {
-
-            const rawCode = document.getElementById('ID').value || "SansNom";
-            const subjectCode = sanitizeForCsv(rawCode);
-            const today = new Date().toLocaleDateString('fr-FR');
-            const filename = `SSQ49_${today}_${rawCode}.csv`;
-
-            const safetotal = typeof globalTotal === 'number' ? globalTotal.toFixed(2) : "NA";
-            const safeparole = typeof globalParole === 'number' ? globalParole.toFixed(2) : "NA";
-            const safespatial = typeof globalSpatial === 'number' ? globalSpatial.toFixed(2) : "NA";
-            const safequalite = typeof globalQualite === 'number' ? globalQualite.toFixed(2) : "NA";
-
-            // Slider and Na id
-            const sliderIds = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10', 'q11', 'q12', 'q13', 'q14', 'q15', 'q16', 'q17', 'q18', 'q19', 'q20', 'q21', 'q22', 'q23', 'q24', 'q25', 'q26', 'q27', 'q28', 'q29', 'q30', 'q31', 'q32', 'q33', 'q34', 'q35', 'q36', 'q37', 'q38', 'q39', 'q40', 'q41', 'q42', 'q43', 'q44', 'q45', 'q46', 'q47', 'q48', 'q49'];
-            const naCheckboxIds = ['na1', 'na2', 'na3', 'na4', 'na5', 'na6', 'na7', 'na8', 'na9', 'na10', 'na11', 'na12', 'na13', 'na14', 'na15', 'na16', 'na17', 'na18', 'na19', 'na20', 'na21', 'na22', 'na23', 'na24', 'na25', 'na26', 'na27', 'na28', 'na29', 'na30', 'na31', 'na32', 'na33', 'na34', 'na35', 'na36', 'na37', 'na38', 'na39', 'na40', 'na41', 'na42', 'na43', 'na44', 'na45', 'na46', 'na47', 'na48', 'na49'];
-           
-
-            let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
-            csvContent += "Sujet,Date,Questionnaire,Score Total, Parole, Spatial, Qualite";
-            sliderIds.forEach(q => {
-            csvContent += `,${q}`;
-            });
-            csvContent += "\n";
-
-            let row = `"${subjectCode}","${today}","SSQ49","${safetotal}","${safeparole}","${safespatial}","${safequalite}" `;
-            for (let i = 0; i < sliderIds.length; i++) {
-            const slider = document.getElementById(sliderIds[i]);
-            const naCheckbox = document.getElementById(naCheckboxIds[i]);
-            let answer = naCheckbox.checked ? "NA" : slider.value;
-            row += `,"${answer}"`;
-            }
-
-            csvContent += row + "\n";
-
-            const link = document.createElement("a");
-            link.setAttribute("href", encodeURI(csvContent));
-            link.setAttribute("download", filename);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
-
-        function savePdf() {
-            const today = new Date().toLocaleDateString('fr-FR');
-            const subjectCode = document.getElementById('ID').value || "SansNom";
-            const filename = `SSQ49_${today}_${subjectCode}.pdf`;
-
-            const safetotal = typeof globalTotal === 'number' ? globalTotal.toFixed(2) : "NA";
-            const safeparole = typeof globalParole === 'number' ? globalParole.toFixed(2) : "NA";
-            const safespatial = typeof globalSpatial === 'number' ? globalSpatial.toFixed(2) : "NA";
-            const safequalite = typeof globalQualite === 'number' ? globalQualite.toFixed(2) : "NA";
-
-            // Slider and Na id
-            const sliderIds = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10', 'q11', 'q12', 'q13', 'q14', 'q15', 'q16', 'q17', 'q18', 'q19', 'q20', 'q21', 'q22', 'q23', 'q24', 'q25', 'q26', 'q27', 'q28', 'q29', 'q30', 'q31', 'q32', 'q33', 'q34', 'q35', 'q36', 'q37', 'q38', 'q39', 'q40', 'q41', 'q42', 'q43', 'q44', 'q45', 'q46', 'q47', 'q48', 'q49'];
-            const naCheckboxIds = ['na1', 'na2', 'na3', 'na4', 'na5', 'na6', 'na7', 'na8', 'na9', 'na10', 'na11', 'na12', 'na13', 'na14', 'na15', 'na16', 'na17', 'na18', 'na19', 'na20', 'na21', 'na22', 'na23', 'na24', 'na25', 'na26', 'na27', 'na28', 'na29', 'na30', 'na31', 'na32', 'na33', 'na34', 'na35', 'na36', 'na37', 'na38', 'na39', 'na40', 'na41', 'na42', 'na43', 'na44', 'na45', 'na46', 'na47', 'na48', 'na49'];
-           
-            let data2table = '<table><tr>';
-            for (let i = 0; i < sliderIds.length; i++) {
-                const answer = document.getElementById(naCheckboxIds[i])?.checked
-                    ? "Non applicable (NA)"
-                    : document.getElementById(sliderIds[i])?.value || 'N/A';
-
-                data2table += `<td><strong>${sliderIds[i]}</strong>: ${answer}</td>`;
-
-                // Nouvelle ligne toutes les 4 colonnes
-                if ((i + 1) % 4 === 0) {
-                    data2table += '</tr><tr>';
-                }
-            }
-            data2table += '</tr></table>';
-
-
-            const content = document.createElement('div');
-            content.lang = 'fr';
-            content.innerHTML = `
-            <style>
-                .header_report,
-                .body_report,
-                .footer_report {
-                    text-align: center;
-                    margin: 0 auto;
-                    width: 100%;
-                }
-                .header_report {
-                    padding-top: 4%;
-                    padding-bottom: 4%;
-                    background-color:white; /*color for test*/
-                    border-bottom: 1px solid #2B176C;
-                }
-                .footer_report {
-                    padding-top: 3%;
-                    padding-bottom:3%;
-                    
-                }
-                .body_report {
-                    padding-top: 5%;
-                    padding-bottom:20%;
-                    background-color: white;
-                    color: black; 
-                }
-
-                .body_report table {
-                    border-collapse: collapse;
-                    margin: 0 auto;
-                }
-                .body_report td {
-                    border: 1px solid #eeeeee;
-                    padding: 6px 8px;
-                    text-align: center;
-                    font-size: 0.85em;
-                }
-                
-            </style>
-            <div class="header_report">
-                <img src="https://data.memau.eu/wp-content/uploads/2025/06/logo-memau-data.svg" alt="Logo" style="max-width: 210px; 
-                margin-top: 10px;margin-bottom: 5px;">
-                <p><i>Contact : hello@memau.eu </i></p>
-            </div>    
-            <div class="body_report">
-                <h1>SSQ49</h1>
-                <p>Code du Sujet : ${subjectCode} </p>
-                <p>Rapport généré le : ${today}</p>
-                <p>Score total : ${safetotal}</p>
-                <p>Audition de la parole : ${safeparole}</p>
-                <p>Audition spatiale : ${safespatial}</p>
-                <p>Qualité d'audition : ${safequalite}</p>
-                <p>Score de chaque question</p>
-                ${data2table}
-                </div>
-            `;
-
-            document.body.appendChild(content);
-
-            // Use html2pdf to convert the HTML content to PDF
-            const opt = {
-                margin: [10, 10, 10, 10], // Adjusted margin to ensure content is visible
-                filename: filename,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true,scrollY: 0  },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-
-            // Generate PDF from HTML content
-            html2pdf().set(opt).from(content).save().then(() => {
-                document.body.removeChild(content);
-            });
-        }
     </script>
 
   </body>

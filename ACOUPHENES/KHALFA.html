@@ -9,6 +9,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
         <link rel="stylesheet" href="/style.css">
+    <script src="/UTILS/exporterCSV.js?v=5"></script>
+    <script src="/UTILS/exporterPDF.js?v=5"></script>
         <style>
           /* style is within the style.css sheet */
         </style>
@@ -134,8 +136,8 @@
       </table>
 
       <div class="buttons-container">
-        <button type="button" onclick="calculateScoreHyperacousie()">Calculer le Score</button>
-        <button type="reset" onclick="resetFormHyperacousie()">Réinitialiser</button>
+        <button type="button" onclick="calculerScores()">Calculer le Score</button>
+        <button type="reset" onclick="resetForm()">Réinitialiser</button>
       </div>
 
 
@@ -143,8 +145,8 @@
         <p id="scoreDisplay"></p><br>
         <label for="ID" class="Subject_name">Nom du sujet (si besoin)</label>
         <input type="text" id="ID" name="nameID"><br>
-        <button type="button" id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
-        <button type="button" id="saveXLSbutton" onclick="saveXLS()">Exporter en CSV</button>
+        <button type="button" id="savePdfButton" onclick="exporterPDF({ ...collectKHALFA(), perRow: 5 })">Exporter en PDF</button>
+        <button type="button" id="saveXLSbutton" onclick="exporterCSV(collectKHALFA())">Exporter en CSV</button>
       </div>
   
 
@@ -152,190 +154,81 @@
     </form>
 
     <script>
+      // ---------- KHALFA ----------
+      const KHALFA_NB_ITEMS = 14;   // items cotés 0 à 3 : score de 0 à 42
 
-      // var globales
       let globalT = null;
 
-      function calculateScoreHyperacousie() {
-        const form = document.getElementById("KHALFA");
-        let score_hyperacousie = 0;
+      const exportButtons = () => [
+        document.getElementById('savePdfButton'),
+        document.getElementById('saveXLSbutton')
+      ];
+      const showExports = show =>
+        exportButtons().forEach(b => b.style.display = show ? 'inline-block' : 'none');
 
-        for (let i = 1; i <= 14; i++) {
-          const question = form.elements["hq" + i];
-          let answered = false;
-          for (let j = 0; j < question.length; j++) {
-            if (question[j].checked) {
-              score_hyperacousie += parseInt(question[j].value);
-              answered = true;
-              break;
-            }
-          }
-          if (!answered) {
-            const scoreDisplay = document.getElementById("scoreDisplay");
-            scoreDisplay.innerHTML = "<p class=Error_message_not_all_answered>Veuillez répondre svp à toutes les questions!</p>";
-            document.getElementById("results").style.display = "block";
-            document.getElementById('savePdfButton').style.display = 'none';
-            document.getElementById('saveXLSbutton').style.display = 'none';
-            return;
-          }
-        }
-
-        globalT = score_hyperacousie;
-        displayResult_hyperacousie(score_hyperacousie);
-      }
-
-      function displayResult_hyperacousie(score_hyperacousie) {
-        let result = "Le score est : " + score_hyperacousie + ". Ceci indique une";
-
-        if (score_hyperacousie >= 0 && score_hyperacousie <= 14) {
-          result += " gêne légère ou négligeable.";
-        } else if (score_hyperacousie >= 15 && score_hyperacousie <= 28) {
-          result += " gêne modérée.";
-        } else if (score_hyperacousie >= 29 && score_hyperacousie <= 42) {
-          result += " gêne importante.";
-        }
-
-        document.getElementById("scoreDisplay").innerHTML = result;
-        document.getElementById("results").style.display = "block";
-        document.getElementById('savePdfButton').style.display = 'inline-block';
-        document.getElementById('saveXLSbutton').style.display = 'inline-block';
-      }
-
-      function resetFormHyperacousie() {
-        document.getElementById("KHALFA").reset();
-        document.getElementById("results").style.display = "none";
-        document.getElementById("ID").value = "";
-        document.getElementById('savePdfButton').style.display = 'none';
-        document.getElementById('saveXLSbutton').style.display = 'none';
-      }
-
-      function saveXLS() {
-
-        const subjectCode = document.getElementById('ID').value || "SansNom";
-        const today = new Date().toLocaleDateString('fr-FR');
-        const filename = `KHALFA_${today}_${subjectCode}.csv`;
-
-        const safeT = typeof globalT === 'number' ? globalT : "NA";
-
-        let csvContent = "data:text/csv;charset=utf-8,﻿";
-        csvContent += "Sujet,Date,Questionnaire,Score Total";
-        for (let i = 1; i <= 14; i++) {
-          csvContent += `,"Question ${i}"`;
-        }
-        csvContent += "\n";
-
-        let row = `"${subjectCode}","${today}","KHALFA","${safeT}"`;
-        for (let i = 1; i <= 14; i++) {
-          let hq = document.querySelector(`input[name="hq${i}"]:checked`);
-          let value = hq ? hq.value : "NA";
-          row += `,"${value}"`;
-        }
-
-        csvContent += row + "\n";
-        const link = document.createElement("a");
-        link.setAttribute("href", encodeURI(csvContent));
-        link.setAttribute("download", filename);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
-
-
-      function savePdf() {
-
-        const today = new Date().toLocaleDateString('fr-FR');
-        const subjectCode = document.getElementById('ID').value || "SansNom";
-        const filename = `KHALFA_${today}_${subjectCode}.pdf`;
-
-        const safeT = typeof globalT === 'number' ? globalT : "NA";
-
-        let data2table = "<table>";
-        data2table += `
-        <tr>
-        <td><strong>Score total</strong></td>
-        <td> ${safeT}</td></tr>`;
-        data2table += "</table>";
-
-        let data2table_longue = "<table>";
-        for (let i = 1; i <= 14; i++) {
-          let hq = document.querySelector(`input[name="hq${i}"]:checked`);
-          let value = hq ? hq.value : "NA";
-          data2table_longue += `<tr><td><strong>Item ${i}</strong> ${value}</td></tr>`;
-        }
-        data2table_longue += "</table>";
-
-        const content = document.createElement('div');
-        content.innerHTML = `
-          <style>
-          .header_report,
-          .body_report,
-          .footer_report {
-          text-align: center;
-          margin: 0 auto;
-          width: 100%;
-          }
-          .header_report {
-          padding-top: 4%;
-          padding-bottom: 4%;
-          border-bottom: 1px solid #2B176C;
-          }
-          .footer_report {
-          padding-top: 3%;
-          padding-bottom:3%;
-
-          }
-          .body_report {
-          padding-top: 5%;
-          padding-bottom:10%;
-          background-color: white;
-          color: black;
-          }
-
-          .body_report table {
-          border-collapse: collapse;
-          width: 80%;
-          margin: 0 auto;
-          }
-
-          .body_report th, td {
-          border: 1px solid #eeeeee;
-          }
-          .body_report td strong {
-          display: block;
-          text-align: left;
-          }
-
-              </style>
-          <div class="header_report">
-          <img src="https://data.memau.eu/wp-content/uploads/2025/06/logo-memau-data.svg" alt="Logo" style="max-width: 210px;
-          margin-top: 10px;margin-bottom: 5px;">
-          <p><i>Contact : hello@memau.eu </i></p>
-              </div>
-          <div class="body_report">
-          <h1>KHALFA</h1>
-          <p>Code du Sujet : ${subjectCode} </p>
-          <p>Rapport généré le : ${today}</p>
-          ${data2table}
-          <br>
-          ${data2table_longue}
-          </div>
-          `;
-
-        document.body.appendChild(content);
-
-        const opt = {
-          margin: 10,
-          filename: filename,
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2, useCORS: true, scrollY: 0,windowHeight: 1200 },
-          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-          pagebreak: { avoid: '.body_report' }
-        };
-
-        html2pdf().set(opt).from(content).save().then(() => {
-          document.body.removeChild(content);
+      function khalfaValues() {
+        return Array.from({ length: KHALFA_NB_ITEMS }, (_, i) => {
+          const c = document.querySelector(`input[name="hq${i + 1}"]:checked`);
+          return c ? c.value : 'NA';
         });
       }
+
+      function calculerScores() {
+        const values = khalfaValues();
+
+        if (values.includes('NA')) {
+          globalT = null;
+          document.getElementById('scoreDisplay').innerHTML =
+            '<p class="Error_message_not_all_answered">Veuillez répondre svp à toutes les questions !</p>';
+          document.getElementById('results').style.display = 'block';
+          showExports(false);
+          return;
+        }
+
+        globalT = values.reduce((s, v) => s + parseInt(v, 10), 0);
+        displayResult(globalT);
+      }
+
+      function displayResult(score) {
+        let result = 'Le score est : ' + score + '/42. Ceci indique une';
+
+        if (score <= 14) {
+          result += ' gêne légère ou négligeable.';
+        } else if (score <= 28) {
+          result += ' gêne modérée.';
+        } else {
+          result += ' gêne importante.';
+        }
+
+        document.getElementById('scoreDisplay').innerHTML = result;
+        document.getElementById('results').style.display = 'block';
+        showExports(true);
+      }
+
+      function resetForm() {
+        document.getElementById('KHALFA').reset();
+        document.getElementById('results').style.display = 'none';
+        document.getElementById('ID').value = '';
+        globalT = null;
+      }
+
+      // Invalide le score dès qu'une réponse change (évite d'exporter un score périmé)
+      document.getElementById('KHALFA').addEventListener('change', e => {
+        if (e.target && e.target.type === 'radio') {
+          globalT = null;
+          document.getElementById('results').style.display = 'none';
+        }
+      });
+
+      function collectKHALFA() {
+        return {
+          questionnaire: 'KHALFA',
+          subject: document.getElementById('ID').value || 'SansNom',
+          score: globalT,
+          items: khalfaValues()
+        };
+      }
+
     </script>
 
   </body>

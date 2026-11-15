@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+     <!-- Author's details-->
+     <meta name="author" content="Nicolas Vannson">
+     <meta name="contact" content="hello@memau.eu">
+     <meta name="license" content="EUPL-1.2">
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+     <link rel="stylesheet" href="/style.css">
+     <style>
+       /* style is within the style.css sheet */
+     </style>
+    <title>Aide au choix prothétique</title>
+</head>
+<body>
+    <!-- Reproduction du Google Form « Aide au choix prothétique », réalisée avec l'accord de son auteur.
+         Styles : section « OUTILS : arbres de décision » de style.css. -->
+    <h1>Aide au choix prothétique</h1>
+    <div id="acp-view" aria-live="polite"></div>
+
+    <script>
+    (function(){
+    "use strict";
+
+    /* ============================================================
+       CONTENU DU FORMULAIRE : le dictionnaire ETAPES
+       ------------------------------------------------------------
+       Chaque étape a un nom court (la clé) et peut contenir :
+         titre, texte : le cadre gris affiché en haut
+         image        : un schéma (nom de fichier dans IMAGES_DOSSIER)
+         question + reponses : une question à choix unique ;
+                        chaque réponse indique le nom de l'étape suivante
+         suite        : étape suivante quand il n'y a pas de question
+       "debut" est la première étape. "fin" termine le parcours.
+       Pour corriger un enchaînement, changez simplement le nom
+       d'étape à droite d'une réponse (ou après "suite").
+       ============================================================ */
+    var IMAGES_DOSSIER = "/wp-content/plugins/questionnaires/OUTILS/img/aide-choix-prothetique/";
+
+    var ETAPES = {
+      debut: {
+        question: "La demande concerne",
+        reponses: {
+          "Un appareillage": "type_d_appareillage",
+          "Une protection contre le bruit": "protection",
+          "Une protection anti-eau": "protection_anti_eau",
+          "Une solution de communication": "communication",
+          "Un accessoire pour malentendant": "dispositif_pour_malentendant",
+          "Divertissement": "divertissement",
+        },
+      },
+      type_d_appareillage: {
+        titre: "Type d'appareillage",
+        question: "Cela concerne :",
+        reponses: {
+          "Primo appareillage": "primo_appareillage",
+          "Renouvellement": "renouvellement",
+        },
+      },
+      primo_appareillage: {
+        titre: "Primo appareillage",
+        question: "Le patient a-t-il une mauvaise vue, une pathologie importante de la vision, une mauvaise dextérité ou un trouble cognitif important ?",
+        reponses: {
+          "Oui": "mauvaise_autonomie",
+          "Non": "plenitude",
+        },
+      },
+      mauvaise_autonomie: {
+        titre: "Mauvaise autonomie",
+        texte: `Manipuler des appareils à piles est à éviter, tout comme les RIC avec dômes qui nécessitent un fouet de maintien pour éviter qu'ils soient perdus : mals enfoncés, trop de manipulations, augmentation du risque de perte car le fil est à l'extérieur...
+
+Il faudrait privilégier des intras rechargeables ou des RIC/BTE rechargeables avec embouts sur mesures.`,
+        suite: "plenitude",
+      },
+      plenitude: {
+        titre: "Plénitude ?",
+        question: "Le patient a-t-il la sensation que son oreille est bouchée, un acouphène ou un syndrome ménièriforme ?",
+        reponses: {
+          "Oui": "eviter_de_fermer_l_oreille",
+          "Non": "irritations",
+        },
+      },
+      eviter_de_fermer_l_oreille: {
+        titre: "Eviter de fermer l'oreille",
+        texte: `Dans le cas d'un acouphène avec de bons graves, fermer l'oreille diminuerait le bruit de fond ambiant et entraînerait un risque d'aggravation de l'acouphène si insuffisamment compensé. Cela est donc possible qu'en vérifiant de préférence en in vivo ou en amplifiant davantage les graves à défaut d'une acouphénométrie précise.
+
+Dans le cas de syndromes ménièriformes, la sensation de plénitude est fréquente et entrave le port d'un appareil.
+
+De façon générale, suivant la façon dont se plaint ou non le patient de la résonnance de sa voix lors de la prise d'empreinte, la sensation d'oreille bouchée ne permettrait pas le port régulier des appareils.
+
+On ne fermera donc pas complètement l'oreille, on privilégiera la plus grande aération possible.
+
+Préférer les otoblocs avec tuyau de décompression lors de la prise d'empreinte.
+
+Si résultats insuffisants, il faudra demander l'avis du médecin ORL qui pourrait orienter vers des solutions non conventionnelles (chirurgie, implant, etc).`,
+        suite: "irritations",
+      },
+      irritations: {
+        titre: "Irritations ?",
+        question: "Le patient se plaint-il ou est-il sujet à des irritations des oreilles ?",
+        reponses: {
+          "Oui": "oreille_irritable",
+          "Non": "sensibilite_aux_sons_forts",
+        },
+      },
+      oreille_irritable: {
+        titre: "Oreille irritable",
+        texte: "Eviter le standard et privilégier le sur-mesure transparent anallergique et insister pour un entretien rigoureux et régulier (perfect clean).",
+        suite: "sensibilite_aux_sons_forts",
+      },
+      sensibilite_aux_sons_forts: {
+        titre: "Sensibilité aux sons forts",
+        question: "Le patient a-t-il des UCL inférieurs à 90 ou un questionnaire hyperacousie supérieur à 28 ?",
+        reponses: {
+          "Oui": "hyperacousie",
+          "Non": "asna",
+        },
+      },
+      hyperacousie: {
+        titre: "Hyperacousie",
+        texte: `Le profil auditif de l'hyperacousique peut varier d'un individu à un autre.
+
+Deux phénomènes sont également à distinguer de l'hyperacousie :
+La phonophobie, ou la peur des sons forts, qui peut pousser le patient à avoir des crises d'angoisse face à des bruits inattendus. Les sujets ont souvent peur d'une émission soudaine de sons forts.
+La misophonie, ou la peur d'être exposé à certains bruits précis. Elle est souvent liée à une expérience négative vécue avec ce bruit (ressenti désagréable et agaçant).
+
+Dans ces deux phénomènes, les voies auditives sont tout à fait normales lors d’une audiométrie classique, mais une réaction émotionnelle aberrante est créée par le système limbique et le système nerveux autonome.
+
+Un dôme fermé de la bonne taille suffit quand l'UCL (ou le MCL)est remonté dans les aigues mais on doit fermer avec un embout lorsque les graves sont atteints.
+
+Le traitement de l'hyperacousie se fait grâce à un appareil auditif (bruit coloré), permettant une restimulation progressive et contrôlée jusqu'à un retour à la normale du seuil de confort (qu'il faudra contrôler régulièrement).
+
+Ce traitement permet de reprogrammer les voies centrales en diminuant l’hyperactivation cérébrale à l’origine de l’hyperacousie (même mécanisme que pour un acouphène).
+A cela peut s'ajouter une prise en charge de l’émotionnel comme la sophrologie, l'acupuncture, l'hypnose, la psychothérapie …
+
+L’hyperacousie aggravée par l'émotionnel, peut dans les cas graves être traitée médicalement. L’utilisation durant une courte période et à des doses très minimes d’antalgiques à visée centrale comme les antiépileptiques est extrêmement efficace.
+L’association d’un traitement médical et audioprothétique est souvent nécessaire devant l’importance de l’hyperacousie.`,
+        suite: "asna",
+      },
+      asna: {
+        titre: "ASNA ?",
+        question: "Le patient a-t-il été diagnostiqué comme souffrant d'une Affection du Spectre des Neuropathies Auditives  ?",
+        reponses: {
+          "Oui": "asna_2",
+          "Non": "troubles_centraux",
+        },
+      },
+      asna_2: {
+        titre: "ASNA",
+        texte: `Essai de prolongé de 45 jours
+Amplifier davantage les aiguës en évitant si possible la compression fréquentielle
+Débruiteurs au max et suramplifier légèrement les sons faibles
+Tests tonaux et vocaux (silence+bruit) réguliers
+Le choix prothétique est "classique" à conserver si gain prothétique suffisant à un moment donné de l'essai
+Envisager l'implant cochléaire si SRT supérieur à 60 dB SPL dans le silence avec appareil des 2 côtés
+Tester VDB à 45 et 65 dB si tonale/vocale normale (besoin de fermer si SIB50 de 45 est meilleur car fibres de hauts seuils saturés avec beaucoup de compression assez tôt si possibilité de gérer les TK-Signia)
+Privilégier les RIC/BTE/ITC pour avoir un réseau de microphones permettant davantage de fonctions de directivité
+Montrer de l'intérêt pour les microphones déportés et la connectivité`,
+        suite: "troubles_centraux",
+      },
+      troubles_centraux: {
+        titre: "Troubles centraux ?",
+        question: "Le patient a-t-il été diagnostiqué comme souffrant de troubles centraux  ?",
+        reponses: {
+          "Oui": "troubles_centraux_2",
+          "Non": "age",
+        },
+      },
+      troubles_centraux_2: {
+        titre: "Troubles centraux",
+        texte: `Confirmer l'atteinte périphérique avant d'appareiller (recrutement mesuré fréquent pas forcément signe d'hyperacousie) : Tone Decay, listes de Lafon...
+Pour une tonale normale, gain inférieur à 10 dB sur sons faibles, 4 à 6 dB sons moyens et 0 pour les sons forts avec un MPO<100 dB
+Directivité pas trop restreinte
+Micro déporté avant de pouvoir obtenir le financement MDPH pour des Roger`,
+        suite: "age",
+      },
+      age: {
+        titre: "Âge",
+        texte: `Lorsqu'elle est possible, une empreinte pour embout doit être réalisée dès le départ.
+Chez l'enfant, les mesures du REUG et du RECD (via l'embout) sont cruciales puisque le conduit grandit. 
+On priviligera toujours les BTE rechargeables avec embouts souples (plus fermé que pour l'adulte).
+Un audiogramme via les embouts, le plus complet possible, peut s'étendre sur plusieurs rendez-vous.
+Mieux vaut être spécialisé dans l'enfant et avoir un réseau pluridisciplinaire pour prendre les enfants de moins de 12 ans en charge.`,
+        question: "Quel est l'âge du patient ?",
+        reponses: {
+          "Entre 2 et 6 mois": "entre_2_et_6_mois",
+          "Entre 6 mois et 2 ans": "entre_6_mois_et_2_ans",
+          "Entre 2 et 3 ans": "entre_2_et_3_ans",
+          "Entre 3 et 6 ans": "entre_3_et_6_ans",
+          "Entre 7 et 12 ans": "entre_7_et_12_ans",
+          "Entre 12 et 20 ans inclut": "entre_12_et_20_ans",
+          "Adulte": "type_de_perte",
+        },
+      },
+      entre_2_et_6_mois: {
+        titre: "Entre 2 et 6 mois",
+        texte: `Réalisation d'une audiométrie comportementale sans osseuse et sans masking où le bébé éveillé est assis comfortablement dans les bras de l'un de ses parents ou un baby relax.
+
+On observe attentivement les éventuelles réactions réflexes qu'il peut avoir lorsqu'il entend des sons qui seront renforcées par des réactions positives du parent (sourire, mimique ou parole) uniquement lorsque cela correspond à un son émis.
+
+Appareillage omnidirectionnel sans débruiteur mais avec un peu de réduction des sons impulsionnels et réducteur de vent.`,
+        suite: "entre_6_mois_et_2_ans",
+      },
+      entre_6_mois_et_2_ans: {
+        titre: "Entre 6 mois et 2 ans",
+        texte: `Réalisation d'une audiométrie comportementale sans masking où l'enfant est conditionné à l'aide d'une récompense visuelle (ROC).
+
+On mesurera les seuils en champ libre (erreur de 10 à 15 dB) et on réalisera une acoumétrie vocale grâce à l'appellation de son prénom, "coucou" et "tch-tch" (testant la zone du 3000-4000 Hz).
+
+Appareillage omnidirectionnel sans débruiteur mais avec un peu de réduction des sons impulsionnels et réducteur de vent.`,
+        suite: "type_de_perte",
+      },
+      entre_2_et_3_ans: {
+        titre: "Entre 2 et 3 ans",
+        texte: `Réalisation d'une audiométrie comportementale sans masking où l'enfant est conditionné à l'aide d'une récompense visuelle (ROC).
+
+On mesurera les seuils en champ libre (erreur de 10 à 15 dB) et on réalisera une acoumétrie vocale grâce à l'appellation de son prénom, "coucou" et "tch-tch" (testant la zone du 3000-4000 Hz). 
+
+Si le vocabulaire de l'enfant le permet, des listes ouvertes où il devra désigner des images ou des parties du corps sans et avec lecture labiale.
+
+Appareillage omnidirectionnel sans débruiteur mais avec un peu de réduction des sons impulsionnels et réducteur de vent.`,
+        suite: "type_de_perte",
+      },
+      entre_3_et_6_ans: {
+        titre: "Entre 3 et 6 ans",
+        texte: `Réalisation d'une audiométrie comportementale (masking à partir de 5 ans en l'absence de pathologies graves du comportement) où l'enfant est conditionné à l'aide d'une récompense visuelle (ROC).
+
+On mesurera les seuils de préférence aux inserts/embouts et on réalisera une audiométrie vocale, si le vocabulaire de l'enfant le permet, avec des listes ouvertes ou fermées.
+
+Appareillage omnidirectionnel sans débruiteur mais avec un peu de réduction des sons impulsionnels et réducteur de vent.`,
+        suite: "type_de_perte",
+      },
+      entre_7_et_12_ans: {
+        titre: "Entre 7 et 12 ans",
+        texte: `L'audiométrie suit cette fois-ci les mêmes règles que l'adulte en veillant à ce que les listes vocales correspondent au niveau scolaire de l'enfant.
+
+Débruiteurs et directionnalité du fabricant.`,
+        suite: "type_de_perte",
+      },
+      entre_12_et_20_ans: {
+        titre: "Entre 12 et 20 ans",
+        texte: `Audiométrie identique à celle de l'adulte.
+
+Calculer les renouvellements pour bénéficier du meilleur remboursement possible avant son 21ème anniversaire.
+
+Débruiteurs et directionnalité du fabricant.`,
+        suite: "type_de_perte",
+      },
+      type_de_perte: {
+        titre: "Type de perte",
+        question: "Choisir le profil auditif correspondant :",
+        reponses: {
+          "Surdité de perception pure": "surdite_de_perception_pure",
+          "Surdité de transmission pure": "surdite_de_transmission_pure",
+          "Surdité mixte": "surdite_mixte",
+          "Ordonnance unilatérale": "ordonnance_unilaterale",
+        },
+      },
+      ordonnance_unilaterale: {
+        titre: "Ordonnance unilatérale",
+        texte: `Lorsqu'un système CROS est envisagé ET que le budget est limité, recontacter l'ORL pour obtenir une ordonnance bilatérale en vue d'un système TriCROS peut-être un second choix. Sinon toujours respecter ce qui est indiqué sur l'ordonnance.
+Il est à noter qu'un système TriCROS peut contribuer à réduire une gêne lié à un acouphène du côté de la mauvaise oreille s'il persiste des restes auditifs.`,
+        question: "Choisir le profil auditif correspondant.",
+        reponses: {
+          "Perte < 45 dB et oreille controlatérale normale": "perte_inferieure_a_45_db_et_oreille",
+          "45 < Perte avec des restes auditifs exploitables et oreille controlatérale normale": "perte_superieure_a_45_db_avec_des_restes",
+          "Restes auditifs non exploitables et oreille controlatérale normale": "restes_auditifs_non_exploitables_et_oreille",
+          "Perte < 45 dB et oreille controlatérale légère à moyenne": "perte_inferieure_a_45_db_et_oreille_2",
+          "45 < Perte avec des restes auditifs exploitables et oreille controlatérale légère à moyenne": "perte_superieure_a_45_db_avec_des_restes_2",
+          "Restes auditifs non exploitables et oreille controlatérale légère à moyenne": "restes_auditifs_non_exploitables_et_meilleure",
+        },
+      },
+      perte_inferieure_a_45_db_et_oreille: {
+        titre: "Perte inférieure à 45 dB et oreille controlatérale normale",
+        texte: "Un appareillage monaural peut suffire bien que les appareils fonctionnent mieux par 2.",
+        suite: "perte_superieure_a_45_db_avec_des_restes",
+      },
+      perte_superieure_a_45_db_avec_des_restes: {
+        titre: "Perte supérieure à 45 dB avec des restes auditifs exploitables et oreille controlatérale normale",
+        texte: "Un appareillage classique du côté à appareiller peut suffire mais il est possible d'aller plus loin avec un BiCROS stimulant la mauvaise oreille si non satisfait ou gêne encore trop présente.",
+        suite: "fin",
+      },
+      restes_auditifs_non_exploitables_et_oreille: {
+        titre: "Restes auditifs non exploitables et oreille controlatérale normale",
+        texte: "Envisager un système CROS en Silk ou en RIC ouvert.",
+        suite: "fin",
+      },
+      perte_inferieure_a_45_db_et_oreille_2: {
+        titre: "Perte inférieure à 45 dB et oreille controlatérale légère à moyenne",
+        texte: "Encourager l'appareillage binaural / Nuances audio",
+        suite: "fin",
+      },
+      perte_superieure_a_45_db_avec_des_restes_2: {
+        titre: "Perte supérieure à 45 dB avec des restes auditifs exploitables et oreille controlatérale légère à moyenne",
+        texte: "Un appareillage de la meilleure oreille si ordo unilatérale. Voir si l'oreille controlatérale est appareillable pour bénéficier de la meilleure correction possible et un traitement binaural de l'information. Créer dans ce cas un programme TriCROS si asymétrie persistante que le patient pourra activer selon ses préférences.",
+        suite: "fin",
+      },
+      restes_auditifs_non_exploitables_et_meilleure: {
+        titre: "Restes auditifs non exploitables et meilleure oreille (oreille controlatérale) légère à moyenne",
+        texte: "Un système CROS (contro légère max) ou BiCROS sont à privilégier.",
+        suite: "fin",
+      },
+      surdite_de_perception_pure: {
+        titre: "Surdité de perception pure",
+        image: "zone-ombree-ca.png",
+        question: "Quelle zone ombrée contient les valeurs de la conduction aérienne ?",
+        reponses: {
+          "Gauche": "sp_gauche",
+          "Milieu": "sp_milieu",
+          "Droite": "sp_droite",
+        },
+      },
+      sp_gauche: {
+        titre: "SP Gauche",
+        texte: `On essaie de préférence un RIC qui sera mieux supporté pour ceux ayant de bons graves et qui supportent mal l'autophonation (embout nugget).
+
+Cependant, bien que tout type d'appareillage soit possible, il faut chercher à stimuler les HF afin de préparer le nerf à une éventuelle implantation cochléaire.`,
+        question: `La perte est-elle stable ?
+Moins de 15 dB de variation en 2 ans`,
+        reponses: {
+          "Oui": "surdite_de_perception_dans_les_hf_non_stabilisee",
+          "Non": "surdite_de_perception_dans_les_hf_non_stabilisee",
+        },
+      },
+      surdite_de_perception_dans_les_hf_non_stabilisee: {
+        titre: "Surdité de perception dans les HF non stabilisée",
+        texte: "Appareil puissant conventionnel le temps que la perte soit stabilisée après avoir vérifié les seuils par pas de 2 dB au TEN TEST dans les HF et détaillé les seuils de la pente au dB et avec la meilleure résolution possible en fréquence.",
+        image: "zone-morte.png",
+        suite: "surdite_de_perception_dans_les_hf_stable",
+      },
+      surdite_de_perception_dans_les_hf_stable: {
+        titre: "Surdité de perception dans les HF stable",
+        question: "Seuil d'intelligibilité en dissyllabique de Fournier homme en CL appareillé inférieur ou égal à 60 dB SPL ?",
+        reponses: {
+          "Oui": "surdite_de_perception_dans_les_hf_stable_avec",
+          "Non": "surdite_de_perception_dans_les_hf_stable_avec_2",
+        },
+      },
+      surdite_de_perception_dans_les_hf_stable_avec: {
+        titre: "Surdité de perception dans les HF stable avec intelligibilité préservée",
+        texte: "Garder appareillage de l'essai préconisé précédemment",
+        suite: "surdite_de_perception_dans_les_hf_stable_avec_2",
+      },
+      surdite_de_perception_dans_les_hf_stable_avec_2: {
+        titre: "Surdité de perception dans les HF stable avec intelligibilité dégradée",
+        texte: `Orienter vers un centre expert implant et leur remettre un compte-rendu au bout de 30 jours (attention à attendre leur avis avant de facturer).
+
+En effet, cela semble être une indication pour implant cochléaire.
+
+Cependant, c'est l'ORL expert qui prendra la décision AVEC l'accord du patient. Subséquemment, si le patient ne souhaite pas l'implantation on peut facturer.`,
+        suite: "fin",
+      },
+      sp_milieu: {
+        titre: "SP Milieu",
+        texte: "Mettre BTE ou RIC surpuissant pour un essai prolongé et vérifier le temps de port",
+        question: "A l'issue de l'essai :",
+        reponses: {
+          "Port régulier de 4h/jour minimum": "port_regulier_de_4h_jour_minimum",
+          "Port irrégulier ou moins de 4h/jour": "port_irregulier_ou_moins_de_4h_jour",
+          "Cophose sans résultat": "cophose_sans_resultat",
+        },
+      },
+      port_regulier_de_4h_jour_minimum: {
+        titre: "Port régulier de 4h/jour minimum",
+        texte: "Un bénéfice adéquat de l'amplification acoustique exclut la nécessité d'une implantation à un moment donné. Si l'audition s'aggrave ou s'il n'y a pas de progrès adaptés à l'âge au fil du temps, une évaluation plus approfondie auprès d'un centre expert implant peut être nécessaire. ",
+        suite: "port_irregulier_ou_moins_de_4h_jour",
+      },
+      port_irregulier_ou_moins_de_4h_jour: {
+        titre: "Port irrégulier ou moins de 4h/jour",
+        texte: `La motivation est insuffisante et s'il refuse de s'orienter vers un centre expert implant, tenter malgré tout de facturer et inciter à porter plus souvent avant de reposer la question car ses résultats peuvent s'expliquer par un temps de port insuffisant.
+
+Si le patient poursuit revoir tout de même :
+Couplage acoustique
+Méthodologie de préréglage
+Débruiteurs`,
+        suite: "fin",
+      },
+      cophose_sans_resultat: {
+        titre: "Cophose sans résultat",
+        texte: "Orienter vers centre expert implant mais si le patient souhaite garder l'appareil, au moins pour avoir une fonction d'alerte, facturer.",
+        suite: "fin",
+      },
+      sp_droite: {
+        titre: "SP Droite",
+        question: "L'appareillage conventionnel en conduction aérienne est-il possible ?",
+        reponses: {
+          "Oui": "sp_appareillable_en_ca",
+          "Non": "sp_non_appareillable_en_ca",
+        },
+      },
+      sp_appareillable_en_ca: {
+        titre: "SP appareillable en CA",
+        question: "Concernant le profil auditif :",
+        reponses: {
+          "Surdité légère à moyenne": "sp_legere_a_moyenne",
+          "Surdité moyenne à sévère ou mauvais graves": "sp_legere_a_moyenne",
+        },
+      },
+      sp_legere_a_moyenne: {
+        titre: "SP légère à moyenne",
+        texte: "Privilégier les appareillages ouverts et tenter l'essai immédiat avec des RIC ou des Silk",
+        suite: "sp_moyenne_a_severe_ou_mauvais_graves",
+      },
+      sp_moyenne_a_severe_ou_mauvais_graves: {
+        titre: "SP moyenne à sévère ou mauvais graves",
+        texte: `Proposer les différents styles d'appareils ainsi que la bobine T et voir en fonction du patient.
+
+Si petits conduits, ne pas choisir d'écouteurs trop gros, passer en BTE si réel besoin de puissance. Dans ces cas, un dôme fermé laissera peu de fuites acoustiques et peut être une alternative au double dôme.`,
+        suite: "fin",
+      },
+      sp_non_appareillable_en_ca: {
+        titre: "SP non appareillable en CA",
+        question: `Perte stable ? 
+(Moins de 15 dB de variation en 2 ans)`,
+        reponses: {
+          "Oui": "sp_stable_non_ca",
+          "Non": "perte_non_stabilisee_non_ca",
+        },
+      },
+      sp_stable_non_ca: {
+        titre: "SP stable non CA",
+        texte: "Voir quelle solution entre l'implant à conduction osseuse (ADHEAR ou autre) ou implant de l'oreille moyenne est préférée par le patient en orientant si possible plutôt vers l'IOM.",
+        suite: "perte_non_stabilisee_non_ca",
+      },
+      perte_non_stabilisee_non_ca: {
+        titre: "Perte non stabilisée non CA",
+        texte: "Voir quelle solution d'implant à conduction osseuse (ADHEAR ou autre) est envisagée et envisageable pour le patient.",
+        suite: "fin",
+      },
+      surdite_de_transmission_pure: {
+        titre: "Surdité de transmission pure",
+        question: `La perte est-elle stable ? 
+(Moins de 15 dB de variation en 2 ans)`,
+        reponses: {
+          "Oui": "transmission_stabilisee",
+          "Non": "transmission_pure_non_stabilisee",
+        },
+      },
+      transmission_pure_non_stabilisee: {
+        titre: "Transmission pure non stabilisée",
+        texte: `Si la perte de transmission peut-être traitée ou n'est que temporaire, un ADHEAR peu suffire si ordonnance osseuse (entièrement pris en charge tous les 2 ans).
+
+Si ordonnance aérienne, un RIC peut suffire en 1ère intention.
+
+Dans les 2 cas, l'essai doit être étendu à 45 jours pour s'assurer que cela est bien nécessaire.`,
+        suite: "transmission_stabilisee",
+      },
+      transmission_stabilisee: {
+        titre: "Transmission stabilisée",
+        question: "Le Rinne (CA-CO) est-il inférieur à 30 dB ?",
+        reponses: {
+          "Oui": "transmission_stable_avec_rinne_30",
+          "Non": "transmission_stable_avec_rinne_30_2",
+        },
+      },
+      transmission_stable_avec_rinne_30: {
+        titre: "Transmission stable avec Rinne < 30",
+        texte: `On essaie un RIC en 1ère intention que l'on garde si le patient est satisfait.
+
+Le cas échéant, en parler à l'ORL pour voir si un essai en conduction osseuse (implant actif de préférence ou ADHEAR) est possible.`,
+        suite: "transmission_stable_avec_rinne_30_2",
+      },
+      transmission_stable_avec_rinne_30_2: {
+        titre: "Transmission stable avec Rinne >= 30",
+        texte: `En CA, si la pathologie ne contre-indique pas un appareillage plutôt fermé, un BTE ou un RIC sont possibles avec un écouteur plus puissant que pour une perte de perception pure (tester si possible l'inconfort pour choisir un écouteur avec le niveau de sortie max permettant d'exploiter la dynamique résiduelle).
+
+En CO, un implant d'oreille moyenne ou un implant à ancrage osseux (de préférence actif) sont à envisager.`,
+        suite: "fin",
+      },
+      surdite_mixte: {
+        titre: "Surdité mixte",
+        question: `La perte est-elle stable ?
+(Moins de 15 dB de variation en 2 ans)`,
+        reponses: {
+          "Oui": "sm_stable",
+          "Non": "sm_non_stabilisee",
+        },
+      },
+      sm_stable: {
+        titre: "SM stable",
+        image: "zone-ombree-co-1.png",
+        question: "Les valeurs de conduction osseuse sont-elles comprises dans la zone ombrée ?",
+        reponses: {
+          "Oui": "sm_stable_v1",
+          "Non": "sm_stable_v2",
+        },
+      },
+      sm_stable_v1: {
+        titre: "SM stable v1",
+        question: "Le Rinne est-il supérieur ou égal à 30 dB ?",
+        reponses: {
+          "Oui": "rinne_30_2",
+          "Non": "rinne_30",
+        },
+      },
+      rinne_30: {
+        titre: "Rinne<30",
+        texte: "Un appareillage conventionnel un peu plus fermé et puissant qu'à l'accoutumée est à essayer en première intention avant d'envisager l'implant d'oreille moyenne ou des solutions à conduction osseuse.",
+        suite: "rinne_30_2",
+      },
+      rinne_30_2: {
+        titre: "Rinne>30",
+        texte: "Bien qu'un appareillage conventionnel plus fermé et puissant qu'à l'accoutumée soit possible, de meilleurs résultats sont attendus avec un implant d'oreille moyenne ou des solutions à conduction osseuse. Dans tous les cas, un essai avec des appareils conventionnels est à faire avant.",
+        suite: "fin",
+      },
+      sm_stable_v2: {
+        titre: "SM stable v2 ?",
+        image: "zone-ombree-co-2.png",
+        question: "Les valeurs de conduction osseuse sont-elles comprises dans la zone ombrée ?",
+        reponses: {
+          "Oui": "sm_stable_v2_2",
+          "Non": "sm_hors_criteres",
+        },
+      },
+      sm_stable_v2_2: {
+        titre: "SM stable V2",
+        question: "Le Rinne est-il supérieur ou égal à 30 dB ?",
+        reponses: {
+          "Oui": "sm_stable_v2_avec_rinne_30_2",
+          "Non": "sm_stable_v2_avec_rinne_30",
+        },
+      },
+      sm_stable_v2_avec_rinne_30: {
+        titre: "SM stable V2 avec Rinne < 30",
+        texte: "Un appareillage conventionnel est à essayer avant d'envisager l'implant d'oreille moyenne ou à défaut, la conduction osseuse.",
+        suite: "sm_stable_v2_avec_rinne_30_2",
+      },
+      sm_stable_v2_avec_rinne_30_2: {
+        titre: "SM stable V2 avec Rinne >= 30",
+        texte: "Un appareillage conventionnel ne sera sans doute pas suffisant mais il est à essayer avant d'envisager l'implant d'oreille moyenne ou à défaut, l'implant à conduction osseuse.",
+        suite: "fin",
+      },
+      sm_non_stabilisee: {
+        titre: "SM non stabilisée",
+        texte: "Avant d'envisager des solutions comme l'implant d'oreille moyenne ou à conduction osseuse, il vaut mieux commencer par un appareillage conventionnel le temps que la perte se stabilise. Sinon, faire selon les SM stables.",
+        suite: "fin",
+      },
+      sm_hors_criteres: {
+        titre: "SM hors critères",
+        texte: "Si les valeurs de conduction osseuse de la perte auditive mixte ne correspondent pas aux critères indiqués dans le graphique, les implants d'oreille moyenne et les implants à conduction osseuse ne seront pas efficaces. Orienter vers centre expert implant si l'appareillage conventionnel n'est pas satisfaisant.",
+        suite: "sm_stable",
+      },
+      renouvellement: {
+        titre: "Renouvellement",
+        question: "Le patient est :",
+        reponses: {
+          "Satisfait de son appareillage précédent": "satisfait_de_son_appareillage_precedent",
+          "Satisfait mais non adapté": "satisfait_mais_non_adapte",
+          "Non satisfait mais adapté": "non_satisfait_mais_adapte",
+          "Non satisfait et non adapté": "non_satisfait_et_non_adapte",
+        },
+      },
+      satisfait_de_son_appareillage_precedent: {
+        titre: "Satisfait de son appareillage précédent",
+        texte: `Son appareillage actuel semble adapté à sa perte, mieux vaut éviter les déconvenues et choisir un modèle de la même marque, de la même catégorie et avec un couplage acoustique équivalent (voire un peu plus fermé pour exploiter les traitements à fond).
+
+Mettre en avant l'intérêt du rechargeable, les avancées en traitement du signal et les avancées en termes de connectivité.
+
+Si le budget est limité, montrer que le 100% Santé reste tout de même aussi performant que ses homologues haut de gammes plus anciens et qu'il sera plus fiable car tout neuf.
+
+Dans certains cas, il suffit de connecter le nouvel appareil à une session corrrespondante à l'ancien appareil pour repartir sur la même base.
+
+Préférer malgré tout de coller aux courbes REAR de l'appareillage précédent.`,
+        suite: "satisfait_mais_non_adapte",
+      },
+      satisfait_mais_non_adapte: {
+        titre: "Satisfait mais non adapté",
+        texte: `Le patient peut se suffire d'une sous correction de la même façon qu'il a attendu avant de s'appareiller... Cependant, au bout d'un moment la gêne deviendra plus importante et il risquerait une mauvaise surprise en restant sur la même base.
+
+C'est pourquoi il faut l'orienter vers un autre type d'appareil plus adapté mais en privilégiant la même marque d'une part pour le rassurer, d'autre part parce qu'il ne voudrait pas forcément que l'on bouscule ses habitudes (par exemple Starkey possède des alertes vocales alors que Rexton de simples indicateurs sonores) et son style d'écoute.
+
+On peut se rapprocher du REAR de son ancien appareil dans un premier temps pour se rapprocher progressivement des nouvelles cibles de la même méthodologie d'appareillage.`,
+        suite: "fin",
+      },
+      non_satisfait_mais_adapte: {
+        titre: "Non satisfait mais adapté",
+        texte: `Cette situation peut s'expliquer par tout un tas de raisons d'ordre psychologique, auditive ou autre.
+
+Il faut en profiter pour vanter les mérites d'une autre marque avec qui l'on a de meilleures conditions d'achats et les dernières avancées technologiques.
+
+Pour éviter la même frustration on peut essayer une méthodologie de préréglage différente, de préférence utilisant les seuils supraliminaires, tout en évitant de se montrer trop hésitant dans notre façon de régler les appareils.
+
+Cependant, à moins que le problème concerne spécifiquement la forme de l'appareil, il vaut mieux rester sur la même catégorie d'aide auditive afin de préserver les habitudes acquises (en orientant vers le rechargeable).`,
+        suite: "primo_appareillage",
+      },
+      non_satisfait_et_non_adapte: {
+        titre: "Non satisfait et non adapté",
+        texte: `Dans ce cas, mieux vaut partir d'une feuille blanche.
+
+Il faut en profiter pour vanter les mérites d'une autre marque avec qui l'on a de meilleures conditions d'achats et les dernières avancées technologiques.`,
+        suite: "fin",
+      },
+      protection_anti_eau: {
+        titre: "Protection anti-eau",
+        texte: "En standard mais de préférence en sur-mesure, les protections sur-mesure ne nécessitent pas d'avoir une empreinte profonde.",
+        question: "Est-ce important d'entendre les sons sous l'eau ?",
+        reponses: {
+          "Oui": "entendre_sous_l_eau",
+          "Non": "pas_besoin_d_entendre_sous_l_eau",
+        },
+      },
+      entendre_sous_l_eau: {
+        titre: "Entendre sous l'eau",
+        texte: "Réaliser des empreintes pour des embouts Aquason d'Interson Protac",
+        suite: "pas_besoin_d_entendre_sous_l_eau",
+      },
+      pas_besoin_d_entendre_sous_l_eau: {
+        titre: "Pas besoin d'entendre sous l'eau",
+        texte: `Plusieurs solutions sont envisageables : des protections standards ou sur-mesure.
+
+En standard les Silicone Soft d'Alpine constituent la solution la plus économique pouvant éventuellement être complétée par un bandeau anti-eau pour plus de sécurité.
+
+En sur-mesure, commander des embouts flottants et prévenir du délai de livraison et du fait que l'insertion peut-être difficile au début : conseiller une crème pour faciliter l'insertion et prévenir les démangeaisons (Gincko Care).
+
+Une solution standard peut-être proposée en attendant des bouchons sur-mesure.`,
+        suite: "fin",
+      },
+      dispositif_pour_malentendant: {
+        titre: "Dispositif pour malentendant",
+        question: "La demande concerne",
+        reponses: {
+          "Un microphone déporté": "microphone_deporte",
+          "Un réveil": "un_reveil",
+          "Une sonnette": "une_sonnette",
+          "Un écoute bébé": "un_ecoute_bebe",
+          "Une boucle magnétique (orienter vers un Auracast en complément et inversement)": "une_boucle_a_induction",
+          "Un téléphone amplifié": "telephone_amplifie",
+          "Un détecteur de fumée": "un_detecteur_de_fumee",
+        },
+      },
+      microphone_deporte: {
+        titre: "Microphone déporté",
+        texte: `Si le patient n'a pas de véritables besoin de communiquer dans des situations relativement complexe, n'importe quel microphone déporté ferait l'affaire.
+
+Lorsque les besoins deviennent plus important, il convient d'orienter plutôt vers Phonak Roger :
+https://www.easyguide.phonakpro.com/#/
+Des aides existent pour les enfants, les bénéficiaires d'une RQTH liée à l'audition et les travailleurs de moins de 60 ans.
+
+Il faut noter qu'il vaut mieux un classe 1 avec un micro déporté que le meilleur des classes 2 seul (portée du traitement du signal ne dépassant pas 2m de rayon).`,
+        suite: "un_reveil",
+      },
+      un_reveil: {
+        titre: "Un réveil",
+        question: "Le patient préfère un réveil",
+        reponses: {
+          "Emetteur de lumière": "reveil_lumineux",
+          "Vibrant": "reveil_vibrant",
+          "Sonore amplifié": "reveil_sonore",
+        },
+      },
+      reveil_lumineux: {
+        titre: "Réveil lumineux",
+        texte: `Réveillez-vous grâce à la lumière en vous sentant plus reposé
+La simulation de lever de soleil vous réveille progressivement
+La simulation du crépuscule prépare votre corps au sommeil
+Fonction veilleuse & guide de nuit, avec port USB intégré (recharge du portable)
+Développé par Philips, expert de l'éclairage depuis plus de 100 ans. La seule lampe de réveil à l'efficacité prouvée cliniquement
+Philips Eveil Lumière`,
+        suite: "reveil_vibrant",
+      },
+      reveil_vibrant: {
+        titre: "Réveil vibrant",
+        texte: `Le coussin vibrant avancé Coussin vibrant Bluetooth - contrôle sans fil via une application pour smartphone
+Connexion facile avec Bluetooth 5.2
+Configuration facile des heures de réveil à l'aide d'un menu
+Possibilité de sélectionner 5 niveaux de vibration différents
+Longue durée de vie de la batterie par charge
+L'exécution des heures de réveil programmées se fait indépendamment du smartphone. 
+Le téléphone peut être éteint - le pad suivra son programme défini quoi qu'il arrive.
+Réveil Smart Shaker 3`,
+        suite: "fin",
+      },
+      reveil_sonore: {
+        titre: "Réveil sonore",
+        texte: `Alarme puissante (85 dB spl à 1m)
+Fonction « répétition de la sonnerie » (temps SNOOZE=de 1 à 30 minutes)
+Durée de l’alarme de 1 à 59 minutes
+2 alarmes programmables
+4 configurations d’alarme possibles :
+Arrêt
+Sonnerie + Flash
+Vibreur + Flash
+Sonnerie + Flash + Vibreur
+Volume et tonalité réglables
+Voyant lumineux de sonnerie
+Luminosité : 5 positions
+Réglage 12h/24h
+Réveil Geemarc SBB500SS`,
+        suite: "fin",
+      },
+      une_sonnette: {
+        titre: "Une sonnette",
+        texte: "Pack émetteur / récepteur lumineux / téléphone Doorbell à 225€",
+        suite: "fin",
+      },
+      un_ecoute_bebe: {
+        titre: "Un écoute bébé",
+        texte: "AMPLICALL 140 à 109€",
+        suite: "fin",
+      },
+      un_detecteur_de_fumee: {
+        titre: "Un détecteur de fumée",
+        texte: "Kit FireAngel avec récepteur à lumière stroboscopique et coussin vibrant à 215€",
+        suite: "fin",
+      },
+      une_boucle_a_induction: {
+        titre: "Une boucle à induction",
+        question: "Votre demande concerne :",
+        reponses: {
+          "L'équipement d'une petite salle (<60 m2)": "bim_salle_60m2",
+          "Une BIM portative (portée de 1m10 autour de la boucle)": "bim_portative",
+          "Autre": "autre_besoin_en_bim",
+        },
+      },
+      bim_salle_60m2: {
+        titre: "BIM salle<60m2",
+        texte: `DCL20-SA – KIT DE BOUCLE À INDUCTION POUR PETITE SALLE
+
+Le kit DCL20-SA est un ensemble complet permettant d’équiper des petites salles, type salle de réunions ou salles de classe allant jusqu’à 60 m2. Il permet d’améliorer la communication pour les personnes malentendantes. Ce produit est destiné aux particuliers mais aussi à tous les établissements recevant du public. Il a l’avantage d’être un des plus compact du marché et donc de s’intégrer en toute discrétion pour un résultat optimal.
+
+Le kit comprend un amplificateur DCL20-SA, 35 m de câble, un adaptateur bornier – RCA, un micro col de cygne, une alimentation 12 V et 2 autocollants « Espace adapté aux malentendants ». Norme EN60118-4.`,
+        suite: "bim_portative",
+      },
+      bim_portative: {
+        titre: "BIM portative",
+        texte: `AMPLIFICATEUR DE BOUCLE LH102 à 229€
+
+Compacte et portative, la borne LH102 est parfaitement adaptée pour les espaces publics accueillant des personnes équipées d’aides auditives.
+
+Avec une autonomie de 8h et un microphone intégré, cette boucle d'induction mobile permet aux utilisateurs de la bobine T de mieux entendre l'orateur.
+`,
+        suite: "fin",
+      },
+      autre_besoin_en_bim: {
+        titre: "Autre besoin en BIM",
+        texte: `Contacter entreprise spécialisée (AudioFils)
+https://www.audiofils.com/contact
+
+Contacter Phonak Roger pour l'équipement audio spécialisé.`,
+        suite: "fin",
+      },
+      telephone_amplifie: {
+        titre: "Téléphone amplifié",
+        question: "Quelle catégorie de téléphone ?",
+        reponses: {
+          "Filaires": "telephones_filaires",
+          "Mobiles": "telephone_amplifie",
+        },
+      },
+      telephones_filaires: {
+        titre: "Téléphones filaires",
+        texte: "GEEMARC Amplidect Combi Photo 295 à 119€",
+        suite: "telephones_sans_fil",
+      },
+      telephones_sans_fil: {
+        titre: "Téléphones sans fil",
+        texte: "swissvoice Xtra 2355 Duo",
+        suite: "fin",
+      },
+      protection: {
+        titre: "Protection",
+        question: "Type de protection envisagée",
+        reponses: {
+          "Avion": "avion",
+          "Musique": "musique",
+          "Sommeil": "sommeil",
+          "Tir": "tir",
+          "Travail": "travail",
+          "Moto": "moto",
+        },
+      },
+      travail: {
+        titre: "Travail",
+        texte: `Protection standard Alpine WorkSafe avec cordon à 15€
+Casque anti-bruit passif MSA à € (3 niveau d'atténuation à choisir idéalement selon le niveau de bruit moyen de façon à ne pas trop atténuer l'environnement sonore)
+Casque anti-bruit actif MSA à 169€
+Embout sur-mesure passif à €
+Embout sur-mesure actif d'Interson Protac à €`,
+        suite: "moto",
+      },
+      moto: {
+        titre: "Moto",
+        texte: `Protection standard Alpine MotoSafe à 15€
+Embout sur-mesure à €`,
+        suite: "fin",
+      },
+      avion: {
+        titre: "Avion",
+        texte: `Protection standard Alpine FlyFit avec son filtre anti pression à 15€
+Protection standard Soft Silicone d'Alpine à 7€
+Protection sur-mesure X€ (ref)`,
+        suite: "fin",
+      },
+      sommeil: {
+        titre: "Sommeil",
+        texte: `Protection standard SleepSoft à 15€
+Protection standard Soft Silicone d'Alpine à 7€
+Protection sur-mesure à X€`,
+        suite: "fin",
+      },
+      musique: {
+        titre: "Musique",
+        question: "Type de protection",
+        reponses: {
+          "Passive": "protection_musique_passive",
+          "Retour de scène": "retour_de_scene",
+          "Retour de scène pour malentendant": "retour_de_scene_pour_malentendant",
+        },
+      },
+      retour_de_scene_pour_malentendant: {
+        titre: "Retour de scène pour malentendant",
+        texte: `Cette possibilité dépend de l'appareillage du patient.
+
+Dans tous les cas, il faut un embout en silicone fermé. 
+
+Selon le modèle, il existe des boîtiers  pouvant transférer le son à l'appareil qui peuvent se brancher à une source audio si besoin.
+
+Il faut alors créer un programme spécifique en omni, sans débruiteur ou anti-larsen avec la réponse la plus linéaire possible (éviter la compression) et avec un TK2 à 85, un FC2 au max et un MPO sous l'UCL.`,
+        suite: "protection_musique_passive",
+      },
+      protection_musique_passive: {
+        titre: "Protection musique passive",
+        question: "Type de musique",
+        reponses: {
+          "Concert excessif, transport en commun, travaux domestiques, nuisances sonores...": "protection_musique_excessive",
+          "Percussions, guitares électriques, discothèques, rock,... (en général)": "protection_musique_percussion",
+          "Orchestres classiques, solistes, ingénieurs du son...": "protection_musique_douce",
+        },
+      },
+      protection_musique_excessive: {
+        titre: "Protection musique excessive",
+        texte: `Pianisssimo -30 dB (moins linéaire en HF)
+Protection Alpine SoftSilicone
+Protection standard MusicSafePro d'Alpine à avec 3 filtres interchangeables
+Protection standard Loop
+Protection standard Earos avec filtre réduisant la sensation d'oreille bouchée
+Protection standard dBud avec 2 niveaux d'atténuations réglables`,
+        suite: "protection_musique_percussion",
+      },
+      protection_musique_percussion: {
+        titre: "Protection musique percussion",
+        texte: `Pianissimo -25 dB (linéaire)
+Protection Alpine SoftSilicone
+Protection standard MusicSafePro d'Alpine avec 3 filtres interchangeables
+Protection standard Loop
+Protection standard Earos avec filtre réduisant la sensation d'oreille bouchée
+Protection standard dBud avec 2 niveaux d'atténuations réglables`,
+        suite: "fin",
+      },
+      protection_musique_douce: {
+        titre: "Protection musique douce",
+        texte: `Pianissimo -15 dB (linéaire)
+Protection Alpine SoftSilicone
+Protection standard MusicSafePro d'Alpine avec 3 filtres interchangeables
+Protection standard Loop
+Protection standard Earos avec filtre réduisant la sensation d'oreille bouchée
+Protection standard dBud avec 2 niveaux d'atténuations réglables`,
+        suite: "fin",
+      },
+      retour_de_scene: {
+        titre: "Retour de scène",
+        texte: "Un retour de scène permet de pouvoir entendre le son de son matériel tout en se protégeant des sons environnants.",
+        suite: "fin",
+      },
+      tir: {
+        titre: "Tir",
+        texte: `Des protections actives permettent de traiter les sons forts impulsionnels en permettant d'entendre les sons environnants idéales pour la chasse.
+
+Il existe cependant des protections passives qui sont à privilégier dans les stands de tirs mais qui restent cependant moins efficaces que les casques à protections actives et passives qui ne sont pas destinées à entendre les sons environnants.
+
+Si le client est appareillé, il est possible, en dômes fermés siliconés, de créer un programme omni avec un TK1 bas et un TK2 à 80 avec un FC2 au max de façon à ce que la parole soit perçue en veillant à régler le MPO à 90, à activer le traitement des sons impulsionnels à fond.`,
+        suite: "fin",
+      },
+      communication: {
+        titre: "Communication",
+        texte: "Voir catalogue Earow (Interson Protac)",
+        suite: "fin",
+      },
+      divertissement: {
+        titre: "Divertissement",
+        question: "La demande concerne :",
+        reponses: {
+          "Gaming": "gaming",
+          "Ecouteurs poyvalents": "ecouteurs",
+          "Casque polyvalent": "casque",
+          "L'écoute de la TV": "ecoute_de_la_tv",
+        },
+      },
+      gaming: {
+        titre: "Gaming",
+        texte: `Pour le Gaming, on peut soit orienter vers les casques Arctis multifonctions et compatibles avec un égaliseur multi bandes, soit vers des écouteurs JBL Quantum TWS sans fil.
+
+Possibilité aussi de passer par Interson Protac avec du sur mesure plus économique mais à réduction passive du bruit seulement.`,
+        suite: "fin",
+      },
+      ecouteurs: {
+        titre: "Ecouteurs",
+        texte: `Pour les sportifs, les écouteurs ouverts ou à conduction osseuse (avantage HF pour les ouverts qui serrent moins que les CO / les CO sont mieux adaptées pour les pertes transmissionnelles).
+
+Pour tous les autres, des intra-auriculaires sont plus adaptés. La réduction active contre le bruit permet de réduire le niveau sonore d'écoute et prévient des effets nocifs contre le bruit à condition d'avoir une bonne étanchéité des conduits.
+
+Le sur-mesure est possible avec Earow et est compatible multi-marque d'écouteurs mais peut affecter l'ANC.`,
+        suite: "fin",
+      },
+      casque: {
+        titre: "Casque",
+        texte: `Pour un usage intérieur sans trop de bruits, privilégier les casques ouverts qui ont de meilleures HF.
+
+A l'extérieur ou à l'intérieur si présence de bruit, privilégier les casques fermés avec réduction active du bruit.
+Il existe des casques circum-aural ou supra-aural, choisir la taille permettant d'acheminer correctement le son vers le conduit auditif car un mauvais placement affectera la qualité sonore.`,
+        suite: "fin",
+      },
+      ecoute_de_la_tv: {
+        titre: "Ecoute de la TV",
+        texte: `Sennheiser propose un casque pour malentendant que tout le monde connaît et de très bonne qualité mais il propose aussi un boîtier permettant d'y connecter un casque ou des écouteurs sans fil.
+
+Sinon, il vaut mieux un boîtier reliant les appareils à la source audio pour l'écoute de la TV mais pas forcément pour l'écoute musicale (bande passante des aides auditives limitée).
+
+Un boîtier Auracast permet aussi de diffuser le son sans limite de marque d'appareils auditifs et d'écouteurs/casques à condition qu'ils soient compatibles Bluetooth LE Audio.`,
+        suite: "fin",
+      },
+    };
+
+    /* ============================================================
+       MOTEUR : affiche l'étape courante et suit le dictionnaire
+       ============================================================ */
+    var DEBUT = "debut", FIN = "fin", MAX_ETAPES = 200;
+    var vue = document.getElementById("acp-view");
+    var parcours = [];   /* étapes parcourues : [{etape: "nom", reponse: "libellé choisi"}] */
+
+    function echapper(t){
+      return String(t).replace(/[&<>"']/g, function(c){
+        return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+      });
+    }
+    /* Transforme les adresses http(s) en liens, après échappement du texte */
+    function avecLiens(t){
+      return echapper(t).replace(/https?:\/\/[^\s<]+[^\s<.,;:!?)]/g, function(u){
+        return '<a href="'+u+'" target="_blank" rel="noopener noreferrer">'+u+'</a>';
+      });
+    }
+    /* Une ligne vide dans le texte = un nouveau paragraphe */
+    function texteHtml(t){
+      if(!t) return "";
+      return t.split(/\n{2,}/).map(function(p){ return '<p>'+avecLiens(p)+'</p>'; }).join("");
+    }
+    function imageHtml(fichier){
+      return '<figure class="Aide_figure"><img src="'+echapper(IMAGES_DOSSIER+fichier)+'" alt="Schéma de référence" '+
+        'onerror="this.outerHTML=\'<p class=&quot;Error_message_not_all_answered&quot;>Schéma indisponible.</p>\'"></figure>';
+    }
+
+    /* Nom de l'étape qui suit, selon la réponse donnée */
+    function suivante(nom, reponse){
+      var e = ETAPES[nom];
+      return e.question ? e.reponses[reponse] : e.suite;
+    }
+
+    function afficher(){
+      var p = parcours[parcours.length-1], e = ETAPES[p.etape], h = "";
+      h += '<p class="Aide_step">Étape '+parcours.length+'</p>';
+      if(e.titre || e.texte){
+        h += '<div class="Aide_card">'+(e.titre ? '<h3>'+echapper(e.titre)+'</h3>' : '')+texteHtml(e.texte)+'</div>';
+      }
+      if(e.image && !e.question) h += imageHtml(e.image);
+      if(e.question){
+        h += '<fieldset class="Aide_question"><legend>'+echapper(e.question)+' *</legend>';
+        if(e.image) h += imageHtml(e.image);
+        Object.keys(e.reponses).forEach(function(libelle){
+          h += '<label><input type="radio" name="reponse" value="'+echapper(libelle)+'"'+(p.reponse===libelle ? ' checked' : '')+'>'+echapper(libelle)+'</label>';
+        });
+        h += '<p class="Error_message_not_all_answered" hidden>Cette question est obligatoire.</p></fieldset>';
+      }
+      h += '<div class="buttons-container">'+
+           '<button type="button" id="acp-prev"'+(parcours.length < 2 ? ' style="visibility:hidden"' : '')+'>Précédent</button>'+
+           '<button type="button" id="acp-next">'+(suivante(p.etape, p.reponse) === FIN ? 'Terminer' : 'Suivant')+'</button></div>';
+      vue.innerHTML = h;
+      document.getElementById("acp-prev").onclick = precedent;
+      document.getElementById("acp-next").onclick = suivant;
+      vue.scrollIntoView({behavior:"smooth", block:"start"});
+    }
+
+    /* Réponse choisie : on la mémorise et on adapte le libellé du bouton */
+    vue.addEventListener("change", function(ev){
+      if(!ev.target || ev.target.type !== "radio") return;
+      var p = parcours[parcours.length-1];
+      p.reponse = ev.target.value;
+      var fs = ev.target.closest("fieldset");
+      fs.classList.remove("Aide_invalid");
+      fs.querySelector(".Error_message_not_all_answered").hidden = true;
+      document.getElementById("acp-next").textContent = (suivante(p.etape, p.reponse) === FIN ? "Terminer" : "Suivant");
+    });
+
+    function suivant(){
+      var p = parcours[parcours.length-1], e = ETAPES[p.etape];
+      if(e.question && !p.reponse){   /* toutes les questions sont obligatoires */
+        var fs = vue.querySelector("fieldset");
+        fs.classList.add("Aide_invalid");
+        fs.querySelector(".Error_message_not_all_answered").hidden = false;
+        return;
+      }
+      var n = suivante(p.etape, p.reponse);
+      if(n === FIN || parcours.length >= MAX_ETAPES) return synthese();
+      if(!ETAPES[n]){ console.error("Étape inconnue : "+n); return synthese(); }
+      parcours.push({etape: n, reponse: null});
+      afficher();
+    }
+    function precedent(){
+      if(parcours.length < 2) return;
+      parcours.pop();
+      afficher();
+    }
+
+    function enregistrerPdf(){
+      var zone = document.getElementById("acp-summary");
+      if(typeof window.html2pdf === "function"){
+        window.html2pdf().set({
+          margin: 10, filename: "aide-choix-prothetique.pdf",
+          image: {type:"jpeg", quality:0.98}, html2canvas: {scale:2, useCORS:true},
+          jsPDF: {unit:"mm", format:"a4", orientation:"portrait"}
+        }).from(zone).save();
+      } else { window.print(); }
+    }
+
+    /* Page finale : rappel des étapes parcourues, avec les réponses données */
+    function synthese(){
+      var h = '<div class="Aide_card Aide_summary" id="acp-summary"><h3>Synthèse du parcours</h3>';
+      parcours.forEach(function(p){
+        var e = ETAPES[p.etape];
+        if(!e.titre && !e.texte && !p.reponse) return;
+        h += '<section>'+(e.titre ? '<h4>'+echapper(e.titre)+'</h4>' : '');
+        if(p.reponse) h += '<p class="Aide_answer">'+echapper(e.question.replace(/\s+/g, " "))+' <strong>'+echapper(p.reponse)+'</strong></p>';
+        h += texteHtml(e.texte)+'</section>';
+      });
+      h += '</div><div class="buttons-container">'+
+           '<button type="button" id="acp-print">'+(typeof window.html2pdf === "function" ? 'Enregistrer en PDF' : 'Imprimer')+'</button>'+
+           '<button type="button" id="acp-back">Retour</button>'+
+           '<button type="button" id="acp-reset">Recommencer</button></div>';
+      vue.innerHTML = h;
+      document.getElementById("acp-print").onclick = enregistrerPdf;
+      document.getElementById("acp-back").onclick = afficher;
+      document.getElementById("acp-reset").onclick = demarrer;
+      vue.scrollIntoView({behavior:"smooth", block:"start"});
+    }
+
+    function demarrer(){
+      parcours = [{etape: DEBUT, reponse: null}];
+      afficher();
+    }
+    demarrer();
+    })();
+    </script>
+</body>
+</html>

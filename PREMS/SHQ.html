@@ -9,6 +9,9 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
       <link rel="stylesheet" href="/style.css">
+    <script src="/UTILS/scoreSSQ.js?v=1"></script>
+    <script src="/UTILS/exporterCSV.js?v=6"></script>
+    <script src="/UTILS/exporterPDF.js?v=6"></script>
       <style>
         /* style is within the style.css sheet */
       </style>
@@ -38,7 +41,7 @@
                 <span>Non, pas du tout</span>
                 <span>Oui, parfaitement</span>
               </div>
-              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="q1">
+              <input type="range" min="0" max="10" step="0.1" value="5" class="slider" id="qex">
                <div class="SSQ_answer">
                 <span>0</span>
                 <span>1</span>
@@ -54,7 +57,7 @@
               </div>
             </td>
             <td class="na-checkbox">
-              <input type="checkbox" id="q1_na">
+              <input type="checkbox" id="qex_na">
               <span style="float: right;">Non appliquable</span>
             </td>
           </tr>
@@ -891,308 +894,124 @@
 
     <div id="results" style="display:none">
         <p id="scoreDisplay"></p><br>
-        <label for="nameID" class="Subject_name">Nom du sujet (si besoin)</label>
+        <label for="ID" class="Subject_name">Nom du sujet (si besoin)</label>
         <input type="text" id="ID" name="nameID"><br>
-        <button id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
-        <button id="saveXLSbutton" onclick="saveXLS()">Exporter en CSV</button>
+        <button type="button" id="savePdfButton" onclick="exporterPDF({ ...collectSHQ(), perRow: 6 })">Exporter en PDF</button>
+        <button type="button" id="saveXLSbutton" onclick="exporterCSV(collectSHQ())">Exporter en CSV</button>
       </div>
 
     <script>
+      // ---------- SHQ ----------
+      // 26 sliders. Les items 25 et 26 sont des questions de contrôle
+      // (facilité du questionnaire, représentativité) : exportés mais non scorés.
+      const SHQ_SLIDERS = Array.from({ length: 26 }, (_, i) => `q${i + 1}`);
+      const SHQ_NA = SHQ_SLIDERS.map(id => `${id}_na`);
 
-        let globalmale_voice = null;
-        let globalfemale_voice = null;
-        let globalchildren_voice = null;
-        let globalmusic = null;
-        let globalsound_localization = null;
-        let globalspeech_quiet = null;
-        let globalspeech_noise_target_noise_mixed = null;
-        let globalspeech_noise_target_noise_separated = null;
+      // Sous-échelles, par NUMÉRO d'item (1-based).
+      // La version précédente passait ces numéros comme indices de tableau :
+      // chaque sous-échelle lisait donc l'item suivant (voix masculine lisait
+      // les items féminins, etc.). Les numéros sont ici convertis par ssqMoyenneItems.
+      const SHQ_SOUS = {
+        'male':      [1, 5, 9, 13, 17],
+        'female':    [2, 6, 10, 14, 18],
+        'children':  [3, 7, 11, 15, 19],
+        'music':     [4, 8, 12, 16, 20],
+        'localisation': [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
+        'calme':     [1, 2, 3, 4],
+        'bruitMele': [5, 6, 7, 8],
+        'bruitSepare': [9, 10, 11, 12]
+      };
+      const SHQ_LIBELLES = {
+        'male': 'Audition de la parole (voix masculine)',
+        'female': 'Audition de la parole (voix féminine)',
+        'children': "Audition de la parole (voix d'enfant)",
+        'music': 'Audition de la musique',
+        'localisation': 'Localisation sonore',
+        'calme': 'Compréhension de la parole dans le calme',
+        'bruitMele': 'Compréhension de la parole dans le bruit (bruit et cible mélangés)',
+        'bruitSepare': 'Compréhension de la parole dans le bruit (bruit et cible séparés)'
+      };
 
- 
-        // Sliders colors
-        const sliders = document.querySelectorAll(".slider");
-        sliders.forEach(function(slider) {
-        slider.addEventListener("input", function () {
-        const value = (this.value - this.min) / (this.max - this.min) * 100;
-        this.style.background = `linear-gradient(to right, #2B176C ${value}%,  #eeeeee ${value}%)`;
-        });
+      let shqScores = {};
 
-        // Appliquer le dégradé à l’état initial
-        const initialValue = (slider.value - slider.min) / (slider.max - slider.min) * 100;
-        slider.style.background = `linear-gradient(to right, #2B176C ${initialValue}%, #eeeeee ${initialValue}%)`;
-        });
+      const exportButtons = () => [
+        document.getElementById('savePdfButton'),
+        document.getElementById('saveXLSbutton')
+      ];
+      const showExports = show =>
+        exportButtons().forEach(b => b.style.display = show ? 'inline-block' : 'none');
 
-
-
-        function calculerScores() {
-            let male_voice = 0;
-            let female_voice = 0;
-            let children_voice = 0;
-            let music = 0;
-            let sound_localization = 0;
-            let speech_quiet = 0;
-            let speech_noise_target_noise_mixed = 0;
-            let speech_noise_target_noise_separated = 0;
-
-            let na_male_voice = 0;
-            let na_female_voice = 0;
-            let na_children_voice = 0;
-            let na_music = 0;
-            let na_sound_localization = 0;
-            let na_speech_quiet = 0;
-            let na_speech_noise_target_noise_mixed = 0;
-            let na_speech_noise_target_noise_separated = 0;
-
-            // Slider and Na id
-            const sliderIds = ["q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9", "q10", "q11", "q12", "q13", "q14", "q15", "q16", "q17", "q18", "q19", "q20", "q21", "q22", "q23", "q24","q25"];
-            const naCheckboxIds = ["q1_na", "q2_na", "q3_na", "q4_na", "q5_na", "q6_na", "q7_na", "q8_na", "q9_na", "q10_na", "q11_na", "q12_na", "q13_na", "q14_na", "q15_na", "q16_na", "q17_na", "q18_na", "q19_na", "q20_na", "q21_na", "q22_na", "q23_na", "q24_na","q25_na"];
-
-            // Calculate scores for each subscale
-            male_voice = sumScores([1, 5, 9, 13, 17], sliderIds, naCheckboxIds);
-            female_voice = sumScores([2, 6, 10, 14, 18], sliderIds, naCheckboxIds);
-            children_voice = sumScores([3, 7, 11, 15, 19], sliderIds, naCheckboxIds);
-            music = sumScores([4, 8, 12, 16, 20], sliderIds, naCheckboxIds);
-            sound_localization = sumScores([13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,24], sliderIds, naCheckboxIds);
-            speech_quiet = sumScores([1, 2, 3, 4], sliderIds, naCheckboxIds);
-            speech_noise_target_noise_mixed = sumScores([5, 6, 7, 8], sliderIds, naCheckboxIds);
-            speech_noise_target_noise_separated = sumScores([9, 10, 11, 12], sliderIds, naCheckboxIds);
-
-            displayscores(male_voice, female_voice, children_voice, music, sound_localization, speech_quiet, speech_noise_target_noise_mixed, speech_noise_target_noise_separated);
-
-            // add to global values
-            globalmale_voice = male_voice ;
-            globalfemale_voice = female_voice;
-            globalchildren_voice = children_voice;
-            globalmusic = music;
-            globalsound_localization = sound_localization;
-            globalspeech_quiet = speech_quiet;
-            globalspeech_noise_target_noise_mixed = speech_noise_target_noise_mixed;
-            globalspeech_noise_target_noise_separated = speech_noise_target_noise_separated;
-
-        }
-
-        function sumScores(indices, sliderIds, naCheckboxIds) {
-            let sum = 0;
-            let count = 0;
-            for (let i = 0; i < indices.length; i++) {
-            let index = indices[i];
-            if (!document.getElementById(naCheckboxIds[index]).checked) {
-                sum += parseFloat(document.getElementById(sliderIds[index]).value);
-                count++;
-            }
-            }
-            return count > 0 ? sum / count : 0;
-        }
-
-
-        function displayscores(male_voice, female_voice, children_voice, music, sound_localization, speech_quiet, speech_noise_target_noise_mixed, speech_noise_target_noise_separated) {
-        
-            let display = "<p >Résultats</p>";
-            display += "<br>"; 
-            display += "<ul class='myList'>"; 
-            display += "<li> Audition de la parole (voix masculine) : " + male_voice.toFixed(2) + "</li>" ;
-            display += "<li> Audition de la parole (voix féminine) : " + female_voice.toFixed(2) + "</li>" ;
-            display += "<li> Audition de la parole (voix d'enfant) : " + children_voice.toFixed(2) + "</li>"; 
-            display += "<li> Audition de la musique : " + music.toFixed(2)+ "</li>" ;
-            display += "<li> Localisation sonore : " + sound_localization.toFixed(2) + "</li>" ;
-            display += "<li> Compréhension de la parole dans le calme : " + speech_quiet.toFixed(2) + "</li>" ;
-            display += "<li> Compréhension de la parole dans le bruit (bruit et cible mélangés) : " + speech_noise_target_noise_mixed.toFixed(2) + "</li>" ;
-            display += "<li> Compréhension de la parole dans le bruit (bruit et cible séparés) : " + speech_noise_target_noise_separated.toFixed(2) + "</li>" ;
-            display += "</ul>";
-        
-        // Update the results div with the constructed HTML
-        document.getElementById("scoreDisplay").innerHTML = display;
-            document.getElementById("results").style.display = "block";
-            document.getElementById('savePdfButton').style.display = 'inline-block';
-            document.getElementById('saveXLSbutton').style.display = 'inline-block';
-
-        } // end function
-
-
-        function resetForm() {
-        document.getElementById("SHQ").reset();
-        document.getElementById("DEMO").reset();
-        // Reset subject's name
-        document.getElementById("ID").value = "";
-        document.getElementById('results').style.display = 'none';
-        // Hide the save PDF button on reset
-        document.getElementById('savePdfButton').style.display = 'none';
-        document.getElementById('saveXLSbutton').style.display = 'none';
-
-
-        // Réinitialise le fond des sliders
-        const sliders = document.querySelectorAll(".slider");
-        sliders.forEach(function (slider) {
-        const initialValue = (slider.value - slider.min) / (slider.max - slider.min) * 100;
-        slider.style.background = `linear-gradient(to right, #2B176C ${initialValue}%, #eeeeee ${initialValue}%)`;
+      // Dégradé des sliders
+      document.querySelectorAll('.slider').forEach(function (slider) {
+        const peindre = el => {
+          const v = (el.value - el.min) / (el.max - el.min) * 100;
+          el.style.background = `linear-gradient(to right, #2B176C ${v}%, #eeeeee ${v}%)`;
+        };
+        slider.addEventListener('input', function () { peindre(this); });
+        peindre(slider);
       });
 
-      } // end function
+      function shqValeurs() {
+        return ssqValeurs(SHQ_SLIDERS, SHQ_NA);
+      }
 
-      function saveXLS() {
-
-        const subjectCode = document.getElementById('ID').value || "SansNom"; // Nom du sujet
-        const today = new Date().toLocaleDateString('fr-FR');
-        const filename = `SHQ_${today}_${subjectCode}.csv`;
-
-        const safemale_voice = typeof globalmale_voice === 'number' ? globalmale_voice.toFixed(2) : "NA";
-        const safefemale_voice = typeof globalfemale_voice === 'number' ? globalfemale_voice.toFixed(2) : "NA";
-        const safechildren_voice = typeof globalchildren_voice === 'number' ? globalchildren_voice.toFixed(2) : "NA";
-        const safemusic = typeof globalmusic === 'number' ? globalmusic.toFixed(2) : "NA";
-        const safesound_localization = typeof globalsound_localization === 'number' ? globalsound_localization.toFixed(2) : "NA";
-        const safespeech_quiet = typeof globalspeech_quiet === 'number' ? globalspeech_quiet.toFixed(2) : "NA";
-        const safespeech_noise_target_noise_mixed = typeof globalspeech_noise_target_noise_mixed === 'number' ? globalspeech_noise_target_noise_mixed.toFixed(2) : "NA";
-        const safespeech_noise_target_noise_separated = typeof globalspeech_noise_target_noise_separated === 'number' ? globalspeech_noise_target_noise_separated.toFixed(2) : "NA";
-
-
-        // Slider and Na id
-        const sliderIds = ["q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9", "q10", "q11", "q12", "q13", "q14", "q15", "q16", "q17", "q18", "q19", "q20", "q21", "q22", "q23", "q24","q25"];
-        const naCheckboxIds = ["q1_na", "q2_na", "q3_na", "q4_na", "q5_na", "q6_na", "q7_na", "q8_na", "q9_na", "q10_na", "q11_na", "q12_na", "q13_na", "q14_na", "q15_na", "q16_na", "q17_na", "q18_na", "q19_na", "q20_na", "q21_na", "q22_na", "q23_na", "q24_na","q25_na"];
-
-
-        let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
-        csvContent += "Sujet,Date,Questionnaire,Score Male, Female, Children, Music, Sound loc,Speech quiet, Speech noise mixed, Speech noise separated";
-        sliderIds.forEach(q => {
-        csvContent += `,${q}`;
+      function calculerScores() {
+        const v = shqValeurs();
+        shqScores = {};
+        Object.keys(SHQ_SOUS).forEach(k => {
+          shqScores[k] = ssqMoyenneItems(v, SHQ_SOUS[k]);
         });
-        csvContent += "\n";
+        displayscores();
+      }
 
-        let row = `"${subjectCode}","${today}","SHQ","${safemale_voice}","${safefemale_voice}","${safechildren_voice}","${safemusic}","${safesound_localization}","${safespeech_quiet}","${safespeech_noise_target_noise_mixed}","${safespeech_noise_target_noise_separated}" `;
-        for (let i = 0; i < sliderIds.length; i++) {
-        const slider = document.getElementById(sliderIds[i]);
-        const naCheckbox = document.getElementById(naCheckboxIds[i]);
-        let answer = naCheckbox.checked ? "NA" : slider.value;
-        row += `,"${answer}"`;
-        }
+      function displayscores() {
+        let display = '<p>Résultats</p><br>';
+        display += "<ul class='myList'>";
+        Object.keys(SHQ_LIBELLES).forEach(k => {
+          display += `<li>${SHQ_LIBELLES[k]} : ${ssqFmt(shqScores[k])}</li>`;
+        });
+        display += '</ul>';
+        display += "<p class='Consignes_SSQ'>NA : la sous-échelle correspondante a été "
+                 + 'entièrement cochée « non applicable ». Les items 25 et 26 sont des '
+                 + "questions de contrôle et n'entrent dans aucun score.</p>";
 
-        csvContent += row + "\n";
+        document.getElementById('scoreDisplay').innerHTML = display;
+        document.getElementById('results').style.display = 'block';
+        showExports(true);
+      }
 
-        const link = document.createElement("a");
-        link.setAttribute("href", encodeURI(csvContent));
-        link.setAttribute("download", filename);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        }
+      function resetForm() {
+        document.getElementById('SHQ').reset();
+        document.getElementById('DEMO').reset();
+        document.getElementById('results').style.display = 'none';
+        document.getElementById('ID').value = '';
+        shqScores = {};
 
-        function savePdf() {
-        const today = new Date().toLocaleDateString('fr-FR');
-        const subjectCode = document.getElementById('ID').value || "SansNom";
-        const filename = `SHQ_${today}_${subjectCode}.pdf`;
+        document.querySelectorAll('.slider').forEach(function (slider) {
+          const v = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+          slider.style.background = `linear-gradient(to right, #2B176C ${v}%, #eeeeee ${v}%)`;
+        });
+      }
 
-        const safemale_voice = typeof globalmale_voice === 'number' ? globalmale_voice.toFixed(2) : "NA";
-        const safefemale_voice = typeof globalfemale_voice === 'number' ? globalfemale_voice.toFixed(2) : "NA";
-        const safechildren_voice = typeof globalchildren_voice === 'number' ? globalchildren_voice.toFixed(2) : "NA";
-        const safemusic = typeof globalmusic === 'number' ? globalmusic.toFixed(2) : "NA";
-        const safesound_localization = typeof globalsound_localization === 'number' ? globalsound_localization.toFixed(2) : "NA";
-        const safespeech_quiet = typeof globalspeech_quiet === 'number' ? globalspeech_quiet.toFixed(2) : "NA";
-        const safespeech_noise_target_noise_mixed = typeof globalspeech_noise_target_noise_mixed === 'number' ? globalspeech_noise_target_noise_mixed.toFixed(2) : "NA";
-        const safespeech_noise_target_noise_separated = typeof globalspeech_noise_target_noise_separated === 'number' ? globalspeech_noise_target_noise_separated.toFixed(2) : "NA";
+      // Invalide les scores dès qu'une réponse change
+      ['input', 'change'].forEach(ev =>
+        document.getElementById('SHQ').addEventListener(ev, () => {
+          shqScores = {};
+          document.getElementById('results').style.display = 'none';
+        }));
 
-
-        // Slider and Na id
-        const sliderIds = ["q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9", "q10", "q11", "q12", "q13", "q14", "q15", "q16", "q17", "q18", "q19", "q20", "q21", "q22", "q23", "q24","q25"];
-        const naCheckboxIds = ["q1_na", "q2_na", "q3_na", "q4_na", "q5_na", "q6_na", "q7_na", "q8_na", "q9_na", "q10_na", "q11_na", "q12_na", "q13_na", "q14_na", "q15_na", "q16_na", "q17_na", "q18_na", "q19_na", "q20_na", "q21_na", "q22_na", "q23_na", "q24_na","q25_na"];
-
-        let data2table = '<table><tr>';
-            for (let i = 0; i < sliderIds.length; i++) {
-                const answer = document.getElementById(naCheckboxIds[i])?.checked
-                    ? "Non applicable (NA)"
-                    : document.getElementById(sliderIds[i])?.value || 'N/A';
-
-                data2table += `<p><strong>${sliderIds[i]}</strong>: ${answer}</p>`;
-
-                // Add a new row every two columns
-                if (i % 2 === 1 && i !== sliderIds.length - 1) {
-                    data2table += '</tr><tr>';
-                }
-            }
-            data2table += '</tr></table>';
-
-        const content = document.createElement('div');
-        content.innerHTML = `
-        <style>
-            .header_report,
-            .body_report,
-            .footer_report {
-                text-align: center;
-                margin: 0 auto;
-                width: 100%;
-            }
-            .header_report {
-                padding-top: 4%;
-                padding-bottom: 4%;
-                background-color:white; /*color for test*/
-                border-bottom: 1px solid #2B176C;
-            }
-            .footer_report {
-                padding-top: 3%;
-                padding-bottom:3%;
-                
-            }
-            .body_report {
-                padding-top: 5%;
-                padding-bottom:20%;
-                background-color: white;
-                color: black; 
-            }
-            
-            .data2columns {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 8px;
-            }
-
-            .data2columns p {
-                width: 10%;
-                margin: 0;
-                padding: 8px;
-                box-sizing: border-box;
-                text-align: center;
-            }
-            
-        </style>
-        <div class="header_report">
-            <img src="https://data.memau.eu/wp-content/uploads/2025/06/logo-memau-data.svg" alt="Logo" style="max-width: 210px; 
-            margin-top: 10px;margin-bottom: 5px;">
-            <p><i>Contact : hello@memau.eu </i></p>
-        </div>    
-        <div class="body_report">
-            <h1>SHQ</h1>
-            <p>Code du Sujet : ${subjectCode} </p>
-            <p>Rapport généré le : ${today}</p>
-            <p>Audition de la parole (voix masculine)  : ${safemale_voice}</p>
-            <p>Audition de la parole (voix féminine) : ${safefemale_voice}</p>
-            <p>Audition de la parole (voix d'enfant) : ${safechildren_voice}</p>
-            <p>Audition de la musique: ${safemusic}</p>
-            <p>Localisation sonore : ${safesound_localization}</p>
-            <p>Compréhension de la parole dans le calme  : ${safespeech_quiet}</p>
-            <p>Compréhension de la parole dans le bruit (bruit et cible mélangés) : ${safespeech_noise_target_noise_mixed}</p>
-            <p>Compréhension de la parole dans le bruit (bruit et cible mélangés) : ${safespeech_noise_target_noise_separated}</p>
-            <p>Score de chaque question</p>
-            <div class="data2columns">
-                ${data2table}
-            </div>
-            </div>
-        `;
-
-        document.body.appendChild(content);
-
-        // Use html2pdf to convert the HTML content to PDF
-        const opt = {
-            margin: [10, 10, 10, 10], // Adjusted margin to ensure content is visible
-            filename: filename,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true,scrollY: 0  },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      function collectSHQ() {
+        const sous = {};
+        Object.keys(SHQ_LIBELLES).forEach(k => { sous[SHQ_LIBELLES[k]] = shqScores[k] ?? null; });
+        return {
+          questionnaire: 'SHQ',
+          // Pas de score global publié pour le SHQ : seules les 8 sous-échelles
+          subject: document.getElementById('ID').value || 'SansNom',
+          subscores: sous,
+          items: shqValeurs(),
+          itemLabels: SHQ_SLIDERS.map((_, i) => `Question ${i + 1}`)
         };
-
-        // Generate PDF from HTML content
-        html2pdf().set(opt).from(content).save().then(() => {
-            document.body.removeChild(content);
-        });
-    }
+      }
 
     </script>
   </body>

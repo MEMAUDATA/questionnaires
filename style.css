@@ -444,3 +444,73 @@ ol.my_QSCPGS {
   }
 
 
+
+
+/* --- OUTILS : arbres de décision (Aide au choix prothétique, Aides complémentaires) --- */
+.Aide_step {
+    font-size: 13px;
+}
+
+.Aide_card,
+.Aide_question {
+    max-width: 800px;
+    margin: 15px auto;
+    padding: 15px;
+    border: 1px solid #eeeeee;
+    border-radius: 5px;
+}
+
+.Aide_card {
+    background-color: #eeeeee;
+}
+
+.Aide_card h3,
+.Aide_card h4,
+.Aide_card p {
+    text-align: left;
+}
+
+.Aide_card p {
+    white-space: pre-line;
+}
+
+.Aide_card a {
+    color: #2B176C;
+    word-break: break-all;
+}
+
+.Aide_question legend {
+    font-weight: bold;
+    white-space: pre-line;
+    text-align: left;
+}
+
+.Aide_question label {
+    display: flex;
+    align-items: flex-start;
+    padding: 4px 0;
+    text-align: left;
+}
+
+.Aide_invalid {
+    border-color: #2B176C;
+}
+
+.Aide_figure {
+    text-align: center;
+    margin: 15px auto;
+}
+
+.Aide_figure img {
+    max-width: 100%;
+    height: auto;
+}
+
+.Aide_summary section {
+    border-top: 1px solid #ffffff;
+    padding: 10px 0;
+}
+
+.Aide_answer {
+    font-size: 15px;
+}

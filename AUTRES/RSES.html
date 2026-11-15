@@ -9,6 +9,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
         <link rel="stylesheet" href="/style.css">
+    <script src="/UTILS/exporterCSV.js?v=3"></script>
+    <script src="/UTILS/exporterPDF.js?v=3"></script>
         <style>
           /* style is within the style.css sheet */
         </style>
@@ -204,223 +206,97 @@
         <p id="scoreDisplay"></p><br>
         <label for="nameID" class="Subject_name">Nom du sujet (si besoin)</label>
         <input type="text" id="ID" name="nameID"><br>
-        <button id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
-        <button id="saveXLSbutton" onclick="saveXLS()">Exporter en CSV</button>
+        <button type="button" id="savePdfButton" onclick="exporterPDF(collectRSES())">Exporter en PDF</button>
+        <button type="button" id="saveXLSbutton" onclick="exporterCSV(collectRSES())">Exporter en CSV</button>
       </div>
 
     <script>
+      // ---------- RSES ----------
+      const RSES_NB_ITEMS = 10;
+      const RSES_INVERSES = new Set([3, 5, 8, 9, 10]);   // items formulés négativement
+      const RSES_MIN = 1;
+      const RSES_MAX = 4;
 
-      // var globales
+      // Score total (null tant qu'il n'est pas calculé)
       let globalScore = null;
 
-      function calculateScore() {
-        let score = 0;
-        let allAnswered = true; // Flag to track if all questions have been answered
+      const exportButtons = () => [
+        document.getElementById('savePdfButton'),
+        document.getElementById('saveXLSbutton')
+      ];
+      const showExports = show =>
+        exportButtons().forEach(b => b.style.display = show ? 'inline-block' : 'none');
 
-        for (let i = 1; i <= 10; i++) {
-          let q = document.querySelector(`input[name="q${i}"]:checked`);
-
-          if (!q) { // Check if a radio button for the current question is not checked
-            allAnswered = false;
-            break; // Exit the loop early if a question is unanswered
-          }
-
-          let reponse = parseInt(q.value); // Convert the value to a number
-
-          // Inverser le score for negative questions (3, 5, 8, 9 and 10)
-          if ([3, 5, 8, 9, 10].includes(i)) {
-            score += 5 - reponse;
-          } else {
-            score += reponse;
-          }
-        } // end for loop
-
-        if (allAnswered) {
-          globalScore = score;
-          afficherResultat(score); // Call your existing function to display the result
-        } else {
-          // Display a message to the user that not all questions have been answered
-          const scoreDiv = document.getElementById("scoreDisplay");
-          scoreDiv.innerHTML = "<p class=Error_message_not_all_answered>Veuillez répondre svp à toutes les questions avant de calculer le score!</p>";
-          document.getElementById("results").style.display = "block"; // Make sure the result div is visible
-        }
-      } // end function
-
-
-      function afficherResultat(score) {
-
-
-        let display = "<h2>Résultats</h2>";
-        display += "Score: " + score;
-
-        if (score <= 25) {
-          display += "<p>Votre score indique une très faible estime de soi.</p>";}
-        else if (score > 25 && score <31) {
-          display += "<p>Votre score indique une faible estime de soi.</p>";}
-        else if (score >= 31 && score <34) {
-          display += "<p>Votre score suggère une estime de soi moyenne.</p>";}
-        else if (score >= 34 && score <39) {
-          display += "<p>Votre score suggère une estime de soi forte.</p>";}
-        else  {
-          display += "<p>Votre score suggère une estime de soi très forte.</p>";}
-
-
-        document.getElementById("scoreDisplay").innerHTML = display;
-        document.getElementById("results").style.display = "block";
-        document.getElementById('savePdfButton').style.display = 'inline-block';
-        document.getElementById('saveXLSbutton').style.display = 'inline-block';
-
-      }// end function
-
-
-
-      function resetForm() {
-        document.getElementById("RSES").reset();
-        document.getElementById("results").style.display = "none";
-        // Reset subject's name
-        document.getElementById("ID").value = "";
-        // Hide the save buttons on reset
-        document.getElementById('savePdfButton').style.display = 'none';
-        document.getElementById('saveXLSbutton').style.display = 'none';
-      }// end function
-
-
-      function saveXLS() {
-
-        const subjectCode = document.getElementById('ID').value || "SansNom"; // Nom du sujet
-        const today = new Date().toLocaleDateString('fr-FR');
-        const filename = `RSES_${today}_${subjectCode}.csv`;
-
-        const safeT = typeof globalScore === 'number' ? globalScore.toFixed(2) : "NA";
-
-        let csvContent = "data:text/csv;charset=utf-8,﻿";
-        csvContent += "Sujet,Date,Questionnaire,Score Total";
-        for (let i = 1; i <= 10; i++) {
-          csvContent += `,"Question ${i}"`;
-        }
-        csvContent += "\n";
-
-        let row = `"${subjectCode}","${today}","RSES","${safeT}"`;
-        for (let i = 1; i <= 10; i++) {
-          let q = document.querySelector(`input[name="q${i}"]:checked`);
-          let value = q ? q.value : "NA";
-          row += `,"${value}"`;
-        }
-
-        csvContent += row + "\n";
-        const link = document.createElement("a");
-        link.setAttribute("href", encodeURI(csvContent));
-        link.setAttribute("download", filename);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+      // Réponses brutes (non inversées) : c'est ce qui part dans le CSV, pour ré-analyse
+      function rsesValues() {
+        return Array.from({ length: RSES_NB_ITEMS }, (_, i) => {
+          const c = document.querySelector(`input[name="q${i + 1}"]:checked`);
+          return c ? c.value : 'NA';
+        });
       }
 
+      function calculateScore() {
+        const values = rsesValues();
 
-      function savePdf() {
-
-        const today = new Date().toLocaleDateString('fr-FR');
-        const subjectCode = document.getElementById('ID').value || "SansNom";
-        const filename = `RSES_${today}_${subjectCode}.pdf`;
-
-        const safeT = typeof globalScore === 'number' ? globalScore.toFixed(2) : "NA";
-
-        let data2table = "<table>";
-        data2table += `
-        <tr>
-        <td><strong>Score total</strong></td>
-        <td> ${safeT}</td></tr>`;
-        data2table += "</table>";
-
-        let data2table_longue = "<table>";
-        // Loop through rows (2 rows x 5 cols = 10 items)
-        for (let row = 0; row < 2; row++) {
-          data2table_longue += "<tr>";
-          for (let col = 1; col <= 5; col++) {
-            let index = row * 5 + col;
-            let q = document.querySelector(`input[name="q${index}"]:checked`);
-            let value = q ? q.value : "NA";
-            data2table_longue += `<td><strong>Item ${index}</strong> ${value}</td>`;
-          }
-          data2table_longue += "</tr>";
+        if (values.includes('NA')) {
+          globalScore = null;
+          document.getElementById('scoreDisplay').innerHTML =
+            '<p class="Error_message_not_all_answered">Veuillez répondre svp à toutes les questions avant de calculer le score !</p>';
+          document.getElementById('results').style.display = 'block';
+          showExports(false);   // manquait dans la version précédente
+          return;
         }
-        data2table_longue += "</table>";
 
+        globalScore = values.reduce((s, v, idx) => {
+          const n = parseInt(v, 10);
+          return s + (RSES_INVERSES.has(idx + 1) ? (RSES_MIN + RSES_MAX - n) : n);
+        }, 0);
 
+        afficherResultat(globalScore);
+      }
 
-        const content = document.createElement('div');
-        content.innerHTML = `
-          <style>
-          .header_report,
-          .body_report,
-          .footer_report {
-          text-align: center;
-          margin: 0 auto;
-          width: 100%;
-          }
-          .header_report {
-          padding-top: 4%;
-          padding-bottom: 4%;
-          border-bottom: 1px solid #2B176C;
-          }
-          .footer_report {
-          padding-top: 3%;
-          padding-bottom:3%;
+      function afficherResultat(score) {
+        // Échelle 10 items cotés 1 à 4 : le score va de 10 à 40
+        let display = '<h2>Résultats</h2>';
+        display += 'Score : ' + score + '/40';
 
-          }
-          .body_report {
-          padding-top: 5%;
-          padding-bottom:10%;
-          background-color: white;
-          color: black;
-          }
+        if (score <= 25) {
+          display += '<p>Votre score indique une très faible estime de soi.</p>';
+        } else if (score < 31) {
+          display += '<p>Votre score indique une faible estime de soi.</p>';
+        } else if (score < 34) {
+          display += '<p>Votre score suggère une estime de soi moyenne.</p>';
+        } else if (score < 39) {
+          display += '<p>Votre score suggère une estime de soi forte.</p>';
+        } else {
+          display += '<p>Votre score suggère une estime de soi très forte.</p>';
+        }
 
-          .body_report table {
-          border-collapse: collapse;
-          width: 80%;
-          margin: 0 auto;
-          }
+        document.getElementById('scoreDisplay').innerHTML = display;
+        document.getElementById('results').style.display = 'block';
+        showExports(true);
+      }
 
-          .body_report th, td {
-          border: 1px solid #eeeeee;
-          }
-          .body_report td strong {
-          display: block;
-          text-align: left;
-          }
+      function resetForm() {
+        document.getElementById('RSES').reset();
+        document.getElementById('results').style.display = 'none';
+        document.getElementById('ID').value = '';
+        globalScore = null;
+      }
 
-              </style>
-          <div class="header_report">
-          <img src="https://data.memau.eu/wp-content/uploads/2025/06/logo-memau-data.svg" alt="Logo" style="max-width: 210px;
-          margin-top: 10px;margin-bottom: 5px;">
-          <p><i>Contact : hello@memau.eu </i></p>
-              </div>
-          <div class="body_report">
-          <h1>RSES</h1>
-          <p>Code du Sujet : ${subjectCode} </p>
-          <p>Rapport généré le : ${today}</p>
-          ${data2table}
-          <br>
-          ${data2table_longue}
-          </div>
-          `;
+      // Invalide le score dès qu'une réponse change (évite d'exporter un score périmé)
+      document.getElementById('RSES').addEventListener('change', () => {
+        globalScore = null;
+        document.getElementById('results').style.display = 'none';
+      });
 
-        document.body.appendChild(content);
-
-        // Define options for html2pdf
-        const opt = {
-          margin: 10,
-          filename: filename,
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2, useCORS: true, scrollY: 0,windowHeight: 1200 },
-          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-          pagebreak: { avoid: '.body_report' }
+      function collectRSES() {
+        return {
+          questionnaire: 'RSES',
+          subject: document.getElementById('ID').value || 'SansNom',
+          score: globalScore,
+          items: rsesValues()
         };
-
-        // Generate and download the PDF
-        html2pdf().set(opt).from(content).save().then(() => {
-          document.body.removeChild(content);
-        });
       }
 
     </script>

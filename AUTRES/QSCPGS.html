@@ -9,6 +9,8 @@
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
      <link rel="stylesheet" href="/style.css">
+    <script src="/UTILS/exporterCSV.js?v=3"></script>
+    <script src="/UTILS/exporterPDF.js?v=3"></script>
      <style>
        /* style is within the style.css sheet */
      </style>
@@ -416,224 +418,99 @@
         <p id="scoreDisplay"></p><br>
         <label for="nameID" class="Subject_name">Nom du sujet (si besoin)</label>
         <input type="text" id="ID" name="nameID"><br>
-        <button id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
-        <button id="saveXLSbutton" onclick="saveXLS()">Exporter en XLS</button>
+        <button type="button" id="savePdfButton" onclick="exporterPDF(collectQSCPGS())">Exporter en PDF</button>
+        <button type="button" id="saveXLSbutton" onclick="exporterCSV(collectQSCPGS())">Exporter en CSV</button>
       </div>
 
     <script>
+      // ---------- QSCPGS ----------
+      const QSCPGS_NB_ITEMS = 20;   // 1 à 10 : corps ; 11 à 20 : perception globale de soi
 
-      // var globales
+      // Scores (null tant qu'ils ne sont pas calculés)
       let globalCorps = null;
       let globalGlobal = null;
       let globalT = null;
 
+      const exportButtons = () => [
+        document.getElementById('savePdfButton'),
+        document.getElementById('saveXLSbutton')
+      ];
+      const showExports = show =>
+        exportButtons().forEach(b => b.style.display = show ? 'inline-block' : 'none');
+
+      function qscpgsValues() {
+        return Array.from({ length: QSCPGS_NB_ITEMS }, (_, i) => {
+          const c = document.querySelector(`input[name="q${i + 1}"]:checked`);
+          return c ? c.value : 'NA';
+        });
+      }
+
       function calculateScore() {
-        let total = 0;
-        let corps = 0;
-        let global = 0;
+        const values = qscpgsValues();
 
-
-        // Satisfaction corporelle (questions 1 à 10 : section "votre corps")
-        for (let i = 1; i <= 10; i++) {
-          const radioButtons = document.querySelectorAll(`input[name="q${i}"]:checked`);
-          if (radioButtons.length > 0) {
-            corps += parseInt(radioButtons[0].value);
-          }
+        // Sans ce contrôle, un item non répondu était silencieusement compté 0,
+        // ce qui n'est pas neutre ici puisque 0 est une valeur valide de l'échelle
+        if (values.includes('NA')) {
+          globalCorps = null;
+          globalGlobal = null;
+          globalT = null;
+          document.getElementById('scoreDisplay').innerHTML =
+            '<p class="Error_message_not_all_answered">Veuillez répondre svp à toutes les questions avant de calculer le score !</p>';
+          document.getElementById('results').style.display = 'block';
+          showExports(false);
+          return;
         }
 
-        // Perception globale de soi (questions 11 à 20 : section "Globalement")
-        for (let i = 11; i <= 20; i++) {
-          const radioButtons = document.querySelectorAll(`input[name="q${i}"]:checked`);
-          if (radioButtons.length > 0) {
-            global += parseInt(radioButtons[0].value);
-          }
-        }
+        const nums = values.map(v => parseInt(v, 10));
+        globalCorps = nums.slice(0, 10).reduce((s, v) => s + v, 0);
+        globalGlobal = nums.slice(10).reduce((s, v) => s + v, 0);
+        globalT = globalCorps + globalGlobal;
 
-        // Total
-        total = corps + global;
-
-        displayResult(corps, global, total);
-
-        globalCorps = corps;
-        globalGlobal = global;
-        globalT = total;
+        displayResult();
       }
 
-
-      function displayResult(corps, global, total) {
-
+      function displayResult() {
         let display = "<p style='text-align: center;'>Résultats</p>";
-        display += "<br>";
+        display += '<br>';
         display += "<ul class='myList'>";
-        display += "<li>Satisfaction corporelle : " + corps + "</li>";
-        display += "<li>Perception globale de soi : " + global + "</li>";
-        display += "<li>Score total : " + total + "</li>";
-        display += "</ul>";
-        document.getElementById("scoreDisplay").innerHTML = display;
-        document.getElementById("results").style.display = "block";
-        document.getElementById('savePdfButton').style.display = 'inline-block';
-        document.getElementById('saveXLSbutton').style.display = 'inline-block';
+        display += '<li>Satisfaction corporelle : ' + globalCorps + '</li>';
+        display += '<li>Perception globale de soi : ' + globalGlobal + '</li>';
+        display += '<li>Score total : ' + globalT + '</li>';
+        display += '</ul>';
 
+        document.getElementById('scoreDisplay').innerHTML = display;
+        document.getElementById('results').style.display = 'block';
+        showExports(true);
       }
-
 
       function resetForm() {
-        document.getElementById("QSCPGS").reset();
-        document.getElementById("results").style.display = "none";
-        // Reset subject's name
-        document.getElementById("ID").value = "";
-        // Hide the export buttons on reset
-        document.getElementById('savePdfButton').style.display = 'none';
-        document.getElementById('saveXLSbutton').style.display = 'none';
+        document.getElementById('QSCPGS').reset();
+        document.getElementById('results').style.display = 'none';
+        document.getElementById('ID').value = '';
+        globalCorps = null;
+        globalGlobal = null;
+        globalT = null;
       }
 
-      function saveXLS() {
+      // Invalide les scores dès qu'une réponse change (évite d'exporter un score périmé)
+      document.getElementById('QSCPGS').addEventListener('change', () => {
+        globalCorps = null;
+        globalGlobal = null;
+        globalT = null;
+        document.getElementById('results').style.display = 'none';
+      });
 
-        const subjectCode = document.getElementById('ID').value || "SansNom"; // Nom du sujet
-        const today = new Date().toLocaleDateString('fr-FR');
-        const filename = `QSCPGS_${today}_${subjectCode}.csv`;
-
-        const safeCorps = typeof globalCorps === 'number' ? globalCorps.toFixed(2) : "NA";
-        const safeGlobal = typeof globalGlobal === 'number' ? globalGlobal.toFixed(2) : "NA";
-        const safeT = typeof globalT === 'number' ? globalT.toFixed(2) : "NA";
-
-        let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
-        csvContent += "Sujet,Date,Questionnaire,Score Total,Satisfaction corporelle,Perception globale de soi";
-        for (let i = 1; i <= 20; i++) {
-          csvContent += `,"Question ${i}"`;
-        }
-        csvContent += "\n";
-
-        let row = `"${subjectCode}","${today}","QSCPGS","${safeT}","${safeCorps}","${safeGlobal}"`;
-        for (let i = 1; i <= 20; i++) {
-          let q = document.querySelector(`input[name="q${i}"]:checked`);
-          let value = q ? q.value : "NA";
-          row += `,"${value}"`;
-        }
-
-        csvContent += row + "\n";
-        const link = document.createElement("a");
-        link.setAttribute("href", encodeURI(csvContent));
-        link.setAttribute("download", filename);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
-
-
-      function savePdf() {
-
-        const today = new Date().toLocaleDateString('fr-FR');
-        const subjectCode = document.getElementById('ID').value || "SansNom";
-        const filename = `QSCPGS_${today}_${subjectCode}.pdf`;
-
-        const safeCorps = typeof globalCorps === 'number' ? globalCorps.toFixed(2) : "NA";
-        const safeGlobal = typeof globalGlobal === 'number' ? globalGlobal.toFixed(2) : "NA";
-        const safeT = typeof globalT === 'number' ? globalT.toFixed(2) : "NA";
-
-        col = ["Score total",
-                "Satisfaction corporelle",
-                "Perception globale de soi"];
-
-        const safeScores = [safeT, safeCorps, safeGlobal];
-        let data2table = "<table>";
-        for (let i = 0; i < 3; i++) {
-          data2table += `
-          <tr>
-          <td><strong>${col[i]}</strong></td>
-          <td> ${safeScores[i]}</td></tr>`;}
-                data2table += "</table>";
-
-        let data2table_longue = "<table>"
-        // Loop through rows
-        for (let row = 0; row < 4; row++) {
-          data2table_longue += "<tr>";
-          // Loop through columns in each row
-          for (let col = 1; col <= 5; col++) {
-            let index = row * 5 + col;
-            let q = document.querySelector(`input[name="q${index}"]:checked`);
-            let value = q ? q.value : "NA";
-            data2table_longue += `<td><strong>Item ${index}</strong> ${value}</td>`;
-          }
-          data2table_longue += "</tr>";
-        }
-        data2table_longue += "</table>";
-
-
-
-        const content = document.createElement('div');
-        content.innerHTML = `
-          <style>
-          .header_report,
-          .body_report,
-          .footer_report {
-          text-align: center;
-          margin: 0 auto;
-          width: 100%;
-          }
-          .header_report {
-          padding-top: 4%;
-          padding-bottom: 4%;
-          border-bottom: 1px solid #2B176C;
-          }
-          .footer_report {
-          padding-top: 3%;
-          padding-bottom:3%;
-
-          }
-          .body_report {
-          padding-top: 5%;
-          padding-bottom:10%;
-          background-color: white;
-          color: black;
-          }
-
-          .body_report table {
-          border-collapse: collapse;
-          width: 80%;
-          margin: 0 auto;
-          }
-
-          .body_report th, td {
-          border: 1px solid #eeeeee;
-          }
-          .body_report td strong {
-          display: block;
-          text-align: left;
-          }
-
-              </style>
-          <div class="header_report">
-          <img src="https://data.memau.eu/wp-content/uploads/2025/06/logo-memau-data.svg" alt="Logo" style="max-width: 210px;
-          margin-top: 10px;margin-bottom: 5px;">
-          <p><i>Contact : hello@memau.eu </i></p>
-              </div>
-          <div class="body_report">
-          <h1>QSCPGS</h1>
-          <p>Code du Sujet : ${subjectCode} </p>
-          <p>Rapport généré le : ${today}</p>
-          ${data2table}
-          <br>
-          ${data2table_longue}
-          </div>
-          `;
-
-        document.body.appendChild(content);
-
-        // Define options for html2pdf
-        const opt = {
-          margin: 10,
-          filename: filename,
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2, useCORS: true, scrollY: 0,windowHeight: 1200 },
-          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-          pagebreak: { avoid: '.body_report' }
+      function collectQSCPGS() {
+        return {
+          questionnaire: 'QSCPGS',
+          subject: document.getElementById('ID').value || 'SansNom',
+          score: globalT,
+          subscores: {
+            'Satisfaction corporelle': globalCorps,
+            'Perception globale de soi': globalGlobal
+          },
+          items: qscpgsValues()
         };
-
-        // Generate and download the PDF
-        html2pdf().set(opt).from(content).save().then(() => {
-          document.body.removeChild(content);
-        });
       }
 
     </script>

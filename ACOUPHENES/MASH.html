@@ -9,6 +9,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
         <link rel="stylesheet" href="/style.css">
+    <script src="/UTILS/exporterCSV.js?v=5"></script>
+    <script src="/UTILS/exporterPDF.js?v=5"></script>
         <style>
           /* style is within the style.css sheet */
         </style>
@@ -294,212 +296,94 @@
         <p id="scoreDisplay"></p><br>
         <label for="ID" class="Subject_name">Nom du sujet (si besoin)</label>
         <input type="text" id="ID" name="nameID"><br>
-        <button type="button" id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
-        <button type="button" id="saveXLSbutton" onclick="saveXLS()">Exporter en CSV</button>
+        <button type="button" id="savePdfButton" onclick="exporterPDF({ ...collectMASH(), perRow: 2 })">Exporter en PDF</button>
+        <button type="button" id="saveXLSbutton" onclick="exporterCSV(collectMASH())">Exporter en CSV</button>
       </div>
   
 
 
     <script>
+      // ---------- MASH ----------
+      const MASH_NB_ITEMS = 14;   // items cotés 0 à 10 ; le score est leur moyenne, sur 10
 
-      // var globales
       let globalT = null;
 
-      function calculateScore() {
+      const exportButtons = () => [
+        document.getElementById('savePdfButton'),
+        document.getElementById('saveXLSbutton')
+      ];
+      const showExports = show =>
+        exportButtons().forEach(b => b.style.display = show ? 'inline-block' : 'none');
 
-        let total = 0;
-        let allAnswered = true;
-        for (let i = 1; i <= 14; i++) {
-          let question= document.querySelector(`input[name="q${i}"]:checked`);
-          if (!question) {
-            allAnswered = false;
-            break;
-          }
-          total += parseInt(question.value);
-        } // enf for loop
-
-        if (allAnswered) {
-          total = total /14;
-          globalT = total;
-          displayscores(total);
-        } else {
-          // Display a message to the user that not all questions have been answered
-          document.getElementById("scoreDisplay").innerHTML = "<p class='Error_message_not_all_answered'>Veuillez répondre svp à toutes les questions avant de calculer le score!</p>";
-          document.getElementById("results").style.display = "block";
-          document.getElementById('savePdfButton').style.display = 'none';
-          document.getElementById('saveXLSbutton').style.display = 'none';
-        }
-
-      } // end calculateScore function
-
-      function displayscores(total) {
-        let displayHtml = "<p'>Résultat</p>";
-        displayHtml += "<p>Le score global : " + total.toFixed(2) + " /10 </p>";
-        if (total >= 0 && total < 3) {
-          displayHtml += "Cela indique une hyperacousie faible : score entre 0 et 3";
-        } else if (total >= 3 && total <5) {
-          displayHtml += "Cela indique une hyperacousie modérée : score entre 3 et 5";
-        } else if (total >= 5 && total < 7) {
-          displayHtml += "Cela indique une hyperacousie substantielle : score entre  5 et 7";
-        }
-        else if (total >7) {
-          displayHtml += " Cela indique une hyperacousie sévère : score > à 7";
-        }
-        document.getElementById("scoreDisplay").innerHTML = displayHtml;
-        document.getElementById("results").style.display = "block";
-        document.getElementById('savePdfButton').style.display = 'inline-block';
-        document.getElementById('saveXLSbutton').style.display = 'inline-block';
-      } // end display function
-
-      function resetForm() {
-        document.getElementById("MASH").reset();
-        document.getElementById("results").style.display = "none";
-        // Reset subject's name
-        document.getElementById("ID").value = "";
-        // Hide the export buttons on reset
-        document.getElementById('savePdfButton').style.display = 'none';
-        document.getElementById('saveXLSbutton').style.display = 'none';
-      } // end resetForm function
-
-      function saveXLS() {
-
-        const subjectCode = document.getElementById('ID').value || "SansNom"; // Nom du sujet
-        const today = new Date().toLocaleDateString('fr-FR');
-        const filename = `MASH_${today}_${subjectCode}.csv`;
-
-        const safeT = typeof globalT === 'number' ? globalT.toFixed(2) : "NA";
-
-        let csvContent = "data:text/csv;charset=utf-8,﻿";
-        csvContent += "Sujet,Date,Questionnaire,Score Total";
-        for (let i = 1; i <= 14; i++) {
-          csvContent += `,"Question ${i}"`;
-        }
-        csvContent += "\n";
-
-        let row = `"${subjectCode}","${today}","MASH","${safeT}"`;
-        for (let i = 1; i <= 14; i++) {
-          let question = document.querySelector(`input[name="q${i}"]:checked`);
-          let value = question ? question.value : "NA";
-          row += `,"${value}"`;
-        }
-
-        csvContent += row + "\n";
-        const link = document.createElement("a");
-        link.setAttribute("href", encodeURI(csvContent));
-        link.setAttribute("download", filename);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
-
-
-      function savePdf() {
-
-        const today = new Date().toLocaleDateString('fr-FR');
-        const subjectCode = document.getElementById('ID').value || "SansNom";
-        const filename = `MASH_${today}_${subjectCode}.pdf`;
-
-        const safeT = typeof globalT === 'number' ? globalT.toFixed(2) : "NA";
-
-        const col = ["Score total"];
-        const safeScores = [safeT];
-        let data2table = "<table>";
-        for (let i = 0; i < col.length; i++) {
-          data2table += `
-          <tr>
-          <td><strong>${col[i]}</strong></td>
-          <td> ${safeScores[i]}</td></tr>`;}
-        data2table += "</table>";
-
-        let data2table_longue = "<table>";
-        // Loop through rows (2 items per row, 7 rows = 14 items)
-        for (let row = 0; row < 7; row++) {
-          data2table_longue += "<tr>";
-          for (let col = 1; col <= 2; col++) {
-            let index = row * 2 + col;
-            let question = document.querySelector(`input[name="q${index}"]:checked`);
-            let value = question ? question.value : "NA";
-            data2table_longue += `<td><strong>Item ${index}</strong> ${value}</td>`;
-          }
-          data2table_longue += "</tr>";
-        }
-        data2table_longue += "</table>";
-
-
-        const content = document.createElement('div');
-        content.innerHTML = `
-          <style>
-          .header_report,
-          .body_report,
-          .footer_report {
-          text-align: center;
-          margin: 0 auto;
-          width: 100%;
-          }
-          .header_report {
-          padding-top: 4%;
-          padding-bottom: 4%;
-          border-bottom: 1px solid #2B176C;
-          }
-          .footer_report {
-          padding-top: 3%;
-          padding-bottom:3%;
-
-          }
-          .body_report {
-          padding-top: 5%;
-          padding-bottom:10%;
-          background-color: white;
-          color: black;
-          }
-
-          .body_report table {
-          border-collapse: collapse;
-          width: 80%;
-          margin: 0 auto;
-          }
-
-          .body_report th, td {
-          border: 1px solid #eeeeee;
-          }
-          .body_report td strong {
-          display: block;
-          text-align: left;
-          }
-
-              </style>
-          <div class="header_report">
-          <img src="https://data.memau.eu/wp-content/uploads/2025/06/logo-memau-data.svg" alt="Logo" style="max-width: 210px;
-          margin-top: 10px;margin-bottom: 5px;">
-          <p><i>Contact : hello@memau.eu </i></p>
-              </div>
-          <div class="body_report">
-          <h1>MASH</h1>
-          <p>Code du Sujet : ${subjectCode} </p>
-          <p>Rapport généré le : ${today}</p>
-          ${data2table}
-          <br>
-          ${data2table_longue}
-          </div>
-          `;
-
-        document.body.appendChild(content);
-
-        // Define options for html2pdf
-        const opt = {
-          margin: 10,
-          filename: filename,
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2, useCORS: true, scrollY: 0,windowHeight: 1200 },
-          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-          pagebreak: { avoid: '.body_report' }
-        };
-
-        // Generate and download the PDF
-        html2pdf().set(opt).from(content).save().then(() => {
-          document.body.removeChild(content);
+      function mashValues() {
+        return Array.from({ length: MASH_NB_ITEMS }, (_, i) => {
+          const c = document.querySelector(`input[name="q${i + 1}"]:checked`);
+          return c ? c.value : 'NA';
         });
       }
+
+      function calculateScore() {
+        const values = mashValues();
+
+        if (values.includes('NA')) {
+          globalT = null;
+          document.getElementById('scoreDisplay').innerHTML =
+            '<p class="Error_message_not_all_answered">Veuillez répondre svp à toutes les questions avant de calculer le score !</p>';
+          document.getElementById('results').style.display = 'block';
+          showExports(false);
+          return;
+        }
+
+        const somme = values.reduce((s, v) => s + parseInt(v, 10), 0);
+        globalT = Math.round((somme / MASH_NB_ITEMS) * 100) / 100;
+        displayscores(globalT);
+      }
+
+      function displayscores(total) {
+        let html = '<p>Résultat</p>';
+        html += '<p>Le score global : ' + total.toFixed(2) + ' /10</p>';
+
+        // Bornes continues : un score de 7,00 exactement n'était couvert par
+        // aucune branche dans la version précédente et n'affichait rien
+        if (total < 3) {
+          html += '<p>Cela indique une hyperacousie faible : score inférieur à 3</p>';
+        } else if (total < 5) {
+          html += '<p>Cela indique une hyperacousie modérée : score de 3 à 5</p>';
+        } else if (total < 7) {
+          html += '<p>Cela indique une hyperacousie substantielle : score de 5 à 7</p>';
+        } else {
+          html += '<p>Cela indique une hyperacousie sévère : score de 7 ou plus</p>';
+        }
+
+        document.getElementById('scoreDisplay').innerHTML = html;
+        document.getElementById('results').style.display = 'block';
+        showExports(true);
+      }
+
+      function resetForm() {
+        document.getElementById('MASH').reset();
+        document.getElementById('results').style.display = 'none';
+        document.getElementById('ID').value = '';
+        globalT = null;
+      }
+
+      // Invalide le score dès qu'une réponse change (évite d'exporter un score périmé)
+      document.getElementById('MASH').addEventListener('change', e => {
+        if (e.target && e.target.type === 'radio') {
+          globalT = null;
+          document.getElementById('results').style.display = 'none';
+        }
+      });
+
+      function collectMASH() {
+        return {
+          questionnaire: 'MASH',
+          subject: document.getElementById('ID').value || 'SansNom',
+          score: globalT,
+          items: mashValues()
+        };
+      }
+
     </script>
   </body>
 </html>

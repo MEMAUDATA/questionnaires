@@ -9,6 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link rel="stylesheet" href="/style.css">
+    <script src="/UTILS/exporterCSV.js?v=6"></script>
+    <script src="/UTILS/exporterPDF.js?v=6"></script>
     <style>
       /* style is within the style.css sheet */
     </style>
@@ -419,437 +421,132 @@
 
     <div id="results" style="display:none">
       <p id="scoreDisplay"></p><br>
-      <label id ="labelId" for="nameID" class="Subject_name">Nom du sujet (si besoin)</label>
+      <label id ="labelId" for="ID" class="Subject_name">Nom du sujet (si besoin)</label>
       <input type="text" id="ID" name="nameID"><br>
-      <button type="button" id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
-      <button type="button" id="saveXLSbutton" onclick="saveXLS()">Exporter en CSV</button>
+      <button type="button" id="savePdfButton" onclick="exporterPDF({ ...collectSF36(), perRow: 6 })">Exporter en PDF</button>
+      <button type="button" id="saveXLSbutton" onclick="exporterCSV(collectSF36())">Exporter en CSV</button>
     </div>
 
 
     <script>
+      // ---------- RAND SF-36 ----------
+      // Items déjà cotés 0 à 100 dans le HTML. Huit dimensions plus l'item
+      // d'évolution de la santé (HT, item unique). Pas de score global.
+      const SF36_ITEMS = ['q1', 'q2',
+        'q3a', 'q3b', 'q3c', 'q3d', 'q3e', 'q3f', 'q3g', 'q3h', 'q3i', 'q3j',
+        'q4a', 'q4b', 'q4c', 'q4d',
+        'q5a', 'q5b', 'q5c',
+        'q6', 'q7', 'q8',
+        'q9a', 'q9b', 'q9c', 'q9d', 'q9e', 'q9f', 'q9g', 'q9h', 'q9i',
+        'q10',
+        'q11a', 'q11b', 'q11c', 'q11d'];
 
+      // Dimension -> items. Le diviseur est toujours le nombre d'items de la
+      // dimension : MH en compte 5 et était divisé par 4 dans la version
+      // précédente, ce qui faisait dépasser 100 %.
+      const SF36_DIMENSIONS = {
+        'GH': { libelle: 'Santé générale',                      items: ['q1', 'q11a', 'q11b', 'q11c', 'q11d'] },
+        'PF': { libelle: 'Activité physique',                    items: ['q3a', 'q3b', 'q3c', 'q3d', 'q3e', 'q3f', 'q3g', 'q3h', 'q3i', 'q3j'] },
+        'BP': { libelle: 'Douleur',                              items: ['q7', 'q8'] },
+        'RP': { libelle: "Limitations dues à l'état physique",    items: ['q4a', 'q4b', 'q4c', 'q4d'] },
+        'VT': { libelle: 'Fatigue (vitalité)',                    items: ['q9a', 'q9e', 'q9g', 'q9i'] },
+        'SF': { libelle: 'Vie et relation avec les autres',       items: ['q6', 'q10'] },
+        'RE': { libelle: "Limitations dues à l'état émotionnel",  items: ['q5a', 'q5b', 'q5c'] },
+        'MH': { libelle: 'Bien-être émotionnel',                  items: ['q9b', 'q9c', 'q9d', 'q9f', 'q9h'] },
+        'HT': { libelle: 'Évolution de la santé perçue',          items: ['q2'] }
+      };
 
-      const SF36 = {
-          globalGH : null,
-          globalPF : null,
-          globalBP : null,
-          globalRP : null,
-          globalVT : null,
-          globalSF : null,
-          globalRE : null,
-          globalMH : null,
-          globalHT : null
-        };
+      let sf36Scores = {};
 
+      const exportButtons = () => [
+        document.getElementById('savePdfButton'),
+        document.getElementById('saveXLSbutton')
+      ];
+      const champsSujet = () => [
+        document.getElementById('ID'),
+        document.getElementById('labelId')
+      ];
+      const showExports = show => {
+        exportButtons().forEach(b => b.style.display = show ? 'inline-block' : 'none');
+        champsSujet().forEach(e => { if (e) e.style.display = show ? 'inline-block' : 'none'; });
+      };
 
-      function calculateScore() {
-        // For ease, scores were already converted within the question
-        // source :https://www-rand-org.translate.goog/health-care/surveys_tools/mos/36-item-short-form/scoring.html?_x_tr_sl=en&_x_tr_tl=fr&_x_tr_hl=fr&_x_tr_pto=rq    
-
-        const form = document.getElementById('SF36');
-        let answeredQuestionsCount = 0; // Counter for answered questions
-
-        // List of all expected question names (including sub-questions)
-        const allQuestionNames = [
-          'q1', 'q2',
-          'q3a', 'q3b', 'q3c', 'q3d', 'q3e', 'q3f', 'q3g', 'q3h', 'q3i', 'q3j',
-          'q4a', 'q4b', 'q4c', 'q4d',
-          'q5a', 'q5b', 'q5c',
-          'q6', 'q7', 'q8',
-          'q9a', 'q9b', 'q9c', 'q9d', 'q9e', 'q9f', 'q9g', 'q9h', 'q9i',
-          'q10',
-          'q11a', 'q11b', 'q11c', 'q11d'
-        ];
-        const totalQuestions = allQuestionNames.length;
-        let allAnswered = true;
-
-        // Helper function to get the value of a selected radio button from a group
-        const getRadioValue = (name) => {
-          const radios = form.elements[name];
-          if (radios) { // Check if the radio group exists
-            for (let i = 0; i < radios.length; i++) {
-              if (radios[i].checked) {
-                return parseFloat(radios[i].value); 
-              }
-            }
-          }
-          allAnswered = false; 
-          return NaN; 
-        };
-
-        
-
-        // Initialize scores for each domain
-        let scorePF = 0; // Physical Functioning
-        let scoreRP = 0; // Role-Physical
-        let scoreBP = 0; // Bodily Pain
-        let scoreGH = 0; // General Health
-        let scoreVT = 0; // Vitality
-        let scoreSF = 0; // Social Functioning
-        let scoreRE = 0; // Role-Emotional
-        let scoreMH = 0; // Mental Health
-        let scoreHT = 0; // Heath thinking
-
-
-        // Source : https://www.mdpi.com/2077-0383/13/20/6106
-
-        // HT (Health Transition) - Q2
-        const q2Val = getRadioValue('q2');
-        scoreHT = q2Val;
-
-        // General Health (GH) - Q1 and Q11a-d
-        const q1Val = getRadioValue('q1');
-        scoreGH += q1Val;
-        const q11aVal = getRadioValue('q11a');
-        scoreGH += q11aVal;
-        const q11bVal = getRadioValue('q11b');
-        scoreGH += q11bVal;
-        const q11cVal = getRadioValue('q11c');
-        scoreGH += q11cVal;
-        const q11dVal = getRadioValue('q11d');
-        scoreGH += q11dVal;
-
-
-        // Physical Functioning (PF) - Q3a-j
-        for (let i = 0; i < 10; i++) {
-          const charCode = 'a'.charCodeAt(0) + i;
-          const q3Val = getRadioValue(`q3${String.fromCharCode(charCode)}`);
-          scorePF += q3Val;
-        }
-
-
-        // Role-Physical (RP) - Q4a-d
-        const q4aVal = getRadioValue('q4a');
-        scoreRP += q4aVal;
-        const q4bVal = getRadioValue('q4b');
-        scoreRP += q4bVal;
-        const q4cVal = getRadioValue('q4c');
-        scoreRP += q4cVal;
-        const q4dVal = getRadioValue('q4d');
-        scoreRP += q4dVal;
-
-        // Bodily Pain (BP) - Q7 and Q8
-        const q7Val = getRadioValue('q7');
-        scoreBP += q7Val;
-        const q8Val = getRadioValue('q8');
-        scoreBP += q8Val;
-
-        // Social Functioning (SF) - Q6 and Q10
-        const q6Val = getRadioValue('q6');
-        scoreSF += q6Val;
-        const q10Val = getRadioValue('q10');
-        scoreSF += q10Val;
-
-        // Role-Emotional (RE) - Q5a-c
-        const q5aVal = getRadioValue('q5a');
-        scoreRE += q5aVal;
-        const q5bVal = getRadioValue('q5b');
-        scoreRE += q5bVal;
-        const q5cVal = getRadioValue('q5c');
-        scoreRE += q5cVal;
-
-        // Vitality (VT) - Q9a, Q9e, Q9g, Q9i
-        const q9aVal = getRadioValue('q9a');
-        scoreVT += q9aVal;
-        const q9eVal = getRadioValue('q9e');
-        scoreVT += q9eVal;
-        const q9gVal = getRadioValue('q9g');
-        scoreVT += q9gVal;
-        const q9iVal = getRadioValue('q9i');
-        scoreVT += q9iVal;
-
-        // Mental Health (MH) - Q9b, Q9c, Q9d, Q9f, Q9h
-        const q9bVal = getRadioValue('q9b');
-        scoreMH += q9bVal;
-        const q9cVal = getRadioValue('q9c');
-        scoreMH += q9cVal;
-        const q9dVal = getRadioValue('q9d');
-        scoreMH += q9dVal;
-        const q9fVal = getRadioValue('q9f');
-        scoreMH += q9fVal;
-        const q9hVal = getRadioValue('q9h');
-        scoreMH += q9hVal;
-
-
-        // Mean scores	
-        let mscorePF = scorePF/10;
-        let mscoreRP = scoreRP/4;
-        let mscoreBP = scoreBP/2;
-        let mscoreGH = scoreGH/5;
-        let mscoreVT = scoreVT/4;
-        let mscoreSF = scoreSF/2;
-        let mscoreRE = scoreRE/3;
-        let mscoreMH = scoreMH/4;
-        let mscoreHT = scoreHT;// One unique item !
-
-
-       // Check if all questions are answered
-       if (!allAnswered) {
-
-            let errormsg = "<p class=Error_message_not_all_answered>Veuillez répondre svp à toutes les questions avant de calculer le score!</p>";
-            document.getElementById("scoreDisplay").innerHTML = errormsg;
-            document.getElementById('savePdfButton').style.display = "none";
-            document.getElementById('saveXLSbutton').style.display = "none";
-            document.getElementById("ID").style.display = "none";
-            document.getElementById("labelId").style.display = "none";
-            document.getElementById("results").style.display = "block";
-            
-            return;
-        }
-
-
-        // Save global scores
-        SF36.globalGH = mscoreGH;
-        SF36.globalPF = mscorePF;
-        SF36.globalBP = mscoreBP;
-        SF36.globalRP = mscoreRP;
-        SF36.globalVT = mscoreVT;
-        SF36.globalSF = mscoreSF;
-        SF36.globalRE = mscoreRE;
-        SF36.globalMH = mscoreMH;
-        SF36.globalHT = mscoreHT;
-
-       
-       // Display scores
-       displayscores(mscoreGH, mscorePF, mscoreBP, mscoreRP, mscoreVT, mscoreSF, mscoreRE, mscoreMH, mscoreHT) 
-
-      } // end calculateScore function
-
-
-      function  displayscores(mscoreGH, mscorePF, mscoreBP, mscoreRP, mscoreVT, mscoreSF, mscoreRE, mscoreMH, mscoreHT){
-        const resultsDiv = document.getElementById("results");
-        let display = "<p>Résultats</p>";
-        display += "<br>";
-        display += "<p> Les scores vont de 0 (faible niveau qualité de vie) à 100 (niveau très élevé).</p>"; 
-        display += "<br>";
-        display += "<ul class='myList'>";
-        display += "<li>Santé Générale : " + mscoreGH.toFixed(2) + " % </li>";
-        display += "<li>Activité physique : " + mscorePF.toFixed(2) + " % </li>";
-        display += "<li>Limitations dues à l’état physique : " + mscoreRP.toFixed(2) + " % </li>";
-        display += "<li>Douleur : " + mscoreBP.toFixed(2) + " % </li>";
-        display += "<li>Fatigue (vitalité) : " + mscoreVT.toFixed(2) + " % </li>";
-        display += "<li>Vie et relation avec les autres : " + mscoreSF.toFixed(2) + " % </li>";
-        display += "<li>Limitations dues à l’état émotionnel : " + mscoreRE.toFixed(2) + " % </li>";
-        display += "<li>Bien-être émotionnelle : " + mscoreMH.toFixed(2) + " % </li>";
-        display += "<li>Évolution de la santé perçue : " + mscoreHT.toFixed(2) + " % </li>";
-        display += "</ul>";
-
-        // Update the results div with the constructed HTML
-        document.getElementById("scoreDisplay").innerHTML = display;
-        document.getElementById("results").style.display = "block";
-        document.getElementById('savePdfButton').style.display = 'inline-block';
-        document.getElementById('saveXLSbutton').style.display = 'inline-block';
-        document.getElementById("ID").style.display = 'inline-block';
-        document.getElementById("labelId").style.display = 'inline-block';
-      }
-
-      // Neutralise l'injection de formule CSV (=, +, -, @ en début de champ)
-      function sanitizeForCsv(v) {
-        return /^[=+\-@\t\r]/.test(v) ? "'" + v : v;
-      }
-
-      function saveXLS() {
-
-        const rawCode = document.getElementById('ID').value || "SansNom"; // Nom du sujet
-        const subjectCode = sanitizeForCsv(rawCode);
-        const today = new Date().toLocaleDateString('fr-FR');
-        const filename = `SF36v1_${today}_${rawCode}.csv`;
-
-
-        const safeGH = typeof SF36.globalGH === 'number' ? SF36.globalGH.toFixed(2) : "NA";
-        const safePF = typeof SF36.globalPF === 'number' ? SF36.globalPF.toFixed(2) : "NA";
-        const safeBP = typeof SF36.globalBP === 'number' ? SF36.globalBP.toFixed(2) : "NA";
-        const safeRP = typeof SF36.globalRP === 'number' ? SF36.globalRP.toFixed(2) : "NA";
-        const safeVT = typeof SF36.globalVT === 'number' ? SF36.globalVT.toFixed(2) : "NA";
-        const safeSF = typeof SF36.globalSF === 'number' ? SF36.globalSF.toFixed(2) : "NA";
-        const safeRE = typeof SF36.globalRE === 'number' ? SF36.globalRE.toFixed(2) : "NA";
-        const safeMH = typeof SF36.globalMH === 'number' ? SF36.globalMH.toFixed(2) : "NA";
-        const safeHT = typeof SF36.globalHT === 'number' ? SF36.globalHT.toFixed(2) : "NA";
-
-		  const allQuestionNames = [
-          'q1', 'q2',
-          'q3a', 'q3b', 'q3c', 'q3d', 'q3e', 'q3f', 'q3g', 'q3h', 'q3i', 'q3j',
-          'q4a', 'q4b', 'q4c', 'q4d',
-          'q5a', 'q5b', 'q5c',
-          'q6', 'q7', 'q8',
-          'q9a', 'q9b', 'q9c', 'q9d', 'q9e', 'q9f', 'q9g', 'q9h', 'q9i',
-          'q10',
-          'q11a', 'q11b', 'q11c', 'q11d'
-        ];
-
-        let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
-        csvContent += "Sujet,Date,Questionnaire,GH,PF,BP,RP,VT,SF,RE,MH,HT";
-        for (let i = 0; i <36; i++) {
-          csvContent += `,"${allQuestionNames[i]}"`;
-        }
-        csvContent += "\n";
-
-        let row =       `"${subjectCode}","${today}","SF36v1","${safeGH}","${safePF}","${safeBP}","${safeRP}","${safeVT}","${safeSF}","${safeRE}","${safeMH}","${safeHT}"`;
-        allQuestionNames.forEach(name => {
-        let selectedInput = document.querySelector(`input[name="${name}"]:checked`);
-        let value = selectedInput ? selectedInput.value : "NA";
-        row += `,"${value}"`;
-      });
-        
-       
-
-        csvContent += row + "\n";
-        const link = document.createElement("a");
-        link.setAttribute("href", encodeURI(csvContent));
-        link.setAttribute("download", filename);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
-
-
-      function savePdf() {
-
-        const today = new Date().toLocaleDateString('fr-FR');
-        const subjectCode = document.getElementById('ID').value || "SansNom";
-        const filename = `SF36v1_${today}_${subjectCode}.pdf`;
-
-        
-        const safeGH = typeof SF36.globalGH === 'number' ? SF36.globalGH.toFixed(2) : "NA";
-        const safePF = typeof SF36.globalPF === 'number' ? SF36.globalPF.toFixed(2) : "NA";
-        const safeBP = typeof SF36.globalBP === 'number' ? SF36.globalBP.toFixed(2) : "NA";
-        const safeRP = typeof SF36.globalRP === 'number' ? SF36.globalRP.toFixed(2) : "NA";
-        const safeVT = typeof SF36.globalVT === 'number' ? SF36.globalVT.toFixed(2) : "NA";
-        const safeSF = typeof SF36.globalSF === 'number' ? SF36.globalSF.toFixed(2) : "NA";
-        const safeRE = typeof SF36.globalRE === 'number' ? SF36.globalRE.toFixed(2) : "NA";
-        const safeMH = typeof SF36.globalMH === 'number' ? SF36.globalMH.toFixed(2) : "NA";
-        const safeHT = typeof SF36.globalHT === 'number' ? SF36.globalHT.toFixed(2) : "NA";
-
-
-    
-        const col = ["GH","PF","BP","RP","VT","SF","RE","MH","HT"];
-        const safeScores = [safeGH, safePF, safeBP, safeRP,safeVT,safeSF,safeRE,safeMH,safeHT];
-        let data2table = "<table>";
-        for (let i = 0; i < col.length; i++) {
-          data2table += `
-          <tr>
-          <td><strong>${col[i]}</strong></td>
-          <td> ${safeScores[i]}</td></tr>`;}
-          data2table += "</table>";
-
-        const allQuestionNames = [
-          'q1', 'q2',
-          'q3a', 'q3b', 'q3c', 'q3d', 'q3e', 'q3f', 'q3g', 'q3h', 'q3i', 'q3j',
-          'q4a', 'q4b', 'q4c', 'q4d',
-          'q5a', 'q5b', 'q5c',
-          'q6', 'q7', 'q8',
-          'q9a', 'q9b', 'q9c', 'q9d', 'q9e', 'q9f', 'q9g', 'q9h', 'q9i',
-          'q10',
-          'q11a', 'q11b', 'q11c', 'q11d'
-        ];
-        
-        let data2table_longue = "<table>"
-        for (let row = 0; row < 6; row++) {
-          data2table_longue += "<tr>";
-          for (let col = 0; col < 6; col++) {
-              let index = row * 6 + col;
-              if (index < allQuestionNames.length) {
-                  let name = allQuestionNames[index];
-                  let selectedInput = document.querySelector(`input[name="${name}"]:checked`);
-                  let value = selectedInput ? selectedInput.value : "NA";
-                  data2table_longue += `<td><strong>${name}</strong> ${value}</td>`;
-              } else {
-                  data2table_longue += "<td></td>"; // Empty cell if there are no more questions
-              }
-          }
-          data2table_longue += "</tr>";
-      }
-
-        data2table_longue += "</table>";
-   
-        const content = document.createElement('div');
-        content.lang = 'fr';
-        content.innerHTML = `
-              <style>
-                .header_report,
-                .body_report,
-                .footer_report {
-                text-align: center;
-                margin: 0 auto;
-                width: 100%;
-                }
-                .header_report {
-                padding-top: 4%;
-                padding-bottom: 4%;
-                border-bottom: 1px solid #2B176C;
-                }
-                .footer_report {
-                padding-top: 3%;
-                padding-bottom:3%;
-                }
-                .body_report {
-                padding-top: 2%;
-                padding-bottom:0;
-                background-color: white;
-                color: black; 
-                }
-                table {
-                border-collapse: collapse;
-                width: 80%;
-
-                margin: 0 auto;
-                }
-
-                th, td {
-                border: 1px solid #eeeeee;
-                }
-                td strong {
-                display: block;
-                text-align: left;
-                }
-              </style>
-              <div class="header_report">
-                <img src="https://data.memau.eu/wp-content/uploads/2025/06/logo-memau-data.svg" alt="Logo" style="max-width: 210px; 
-                margin-top: 10px;margin-bottom: 5px;">
-                <p><i>Contact : hello@memau.eu </i></p>
-              </div>    
-              <div class="body_report">
-                <h1>SF36v1.0</h1>
-                <p>Code du Sujet : ${subjectCode} </p>
-                <p>Rapport généré le : ${today}</p>
-                <p> Scores globaux </p>
-                ${data2table}
-                <br>
-                <p> Score brut par item</p>
-                ${data2table_longue}
-              </div>
-              `;
-
-        document.body.appendChild(content);
-
-        // Define options for html2pdf
-        const opt = {
-          margin: [10, 10, 10, 10],
-          filename: filename,
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
-          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-
-        // Generate and download the PDF
-        html2pdf().set(opt).from(content).save().then(() => {
-          document.body.removeChild(content);
+      function sf36Valeurs() {
+        return SF36_ITEMS.map(name => {
+          const c = document.querySelector(`input[name="${name}"]:checked`);
+          return c ? c.value : 'NA';
         });
       }
 
-      function resetForm() {
-        document.getElementById("SF36").reset();
-        document.getElementById("ID").value = ""; 
-        document.getElementById("scoreDisplay").innerHTML = "";
-        document.getElementById("results").style.display = "none";
+      function calculateScore() {
+        const v = sf36Valeurs();
 
+        if (v.includes('NA')) {
+          sf36Scores = {};
+          document.getElementById('scoreDisplay').innerHTML =
+            '<p class="Error_message_not_all_answered">Veuillez répondre svp à toutes les questions avant de calculer le score !</p>';
+          document.getElementById('results').style.display = 'block';
+          showExports(false);
+          return;
+        }
 
+        const brut = {};
+        SF36_ITEMS.forEach((name, i) => { brut[name] = parseFloat(v[i]); });
 
+        sf36Scores = {};
+        Object.keys(SF36_DIMENSIONS).forEach(code => {
+          const items = SF36_DIMENSIONS[code].items;
+          const somme = items.reduce((s, name) => s + brut[name], 0);
+          sf36Scores[code] = Math.round((somme / items.length) * 100) / 100;
+        });
 
+        displayscores();
       }
 
+      function displayscores() {
+        let display = '<p>Résultats</p><br>';
+        display += '<p>Les scores vont de 0 (faible qualité de vie) à 100 (niveau très élevé).</p><br>';
+        display += "<ul class='myList'>";
+        Object.keys(SF36_DIMENSIONS).forEach(code => {
+          display += `<li>${SF36_DIMENSIONS[code].libelle} : ${sf36Scores[code].toFixed(2)} %</li>`;
+        });
+        display += '</ul>';
 
+        document.getElementById('scoreDisplay').innerHTML = display;
+        document.getElementById('results').style.display = 'block';
+        showExports(true);
+      }
 
+      function resetForm() {
+        document.getElementById('SF36').reset();
+        document.getElementById('ID').value = '';
+        document.getElementById('scoreDisplay').innerHTML = '';
+        document.getElementById('results').style.display = 'none';
+        sf36Scores = {};
+      }
+
+      // Invalide les scores dès qu'une réponse change (évite d'exporter un score périmé)
+      document.getElementById('SF36').addEventListener('change', e => {
+        if (e.target && e.target.type === 'radio') {
+          sf36Scores = {};
+          document.getElementById('results').style.display = 'none';
+        }
+      });
+
+      function collectSF36() {
+        const sous = {};
+        Object.keys(SF36_DIMENSIONS).forEach(code => {
+          sous[`Score ${code}`] = sf36Scores[code] ?? null;
+        });
+        return {
+          questionnaire: 'SF36v1',
+          // Pas de score global : le SF-36 s'interprète dimension par dimension
+          subject: document.getElementById('ID').value || 'SansNom',
+          subscores: sous,
+          items: sf36Valeurs(),
+          itemLabels: SF36_ITEMS
+        };
+      }
     </script>
   </body>
 </html>

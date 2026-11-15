@@ -9,6 +9,8 @@
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
      <link rel="stylesheet" href="/style.css">
+    <script src="/UTILS/exporterCSV.js?v=3"></script>
+    <script src="/UTILS/exporterPDF.js?v=3"></script>
      <style>
        /* style is within the style.css sheet */
      </style>
@@ -179,202 +181,140 @@
         <p id="scoreDisplay"></p><br>
         <label for="nameID" class="Subject_name">Nom du sujet (si besoin)</label>
         <input type="text" id="ID" name="nameID"><br>
-        <button id="savePdfButton" onclick="savePdf()">Exporter en PDF</button>
-        <button id="saveXLSbutton" onclick="saveXLS()">Exporter en CSV</button>
+        <button type="button" id="savePdfButton" onclick="exporterEHIPDF()">Exporter en PDF</button>
+        <button type="button" id="saveXLSbutton" onclick="exporterCSV(collectEHI())">Exporter en CSV</button>
       </div>
 
-    <script>
+  
+      
 
-      // var globales
+    <script>
+      // ---------- EHI ----------
+      const EHI_NB_ITEMS = 10;
+
+      // Seuils d'interprétation du quotient de latéralité (Oldfield, 1971)
+      const EHI_SEUIL_GAUCHE = -40;
+      const EHI_SEUIL_DROITE = 40;
+
+      // Quotient de latéralité (null tant qu'il n'est pas calculé)
       let globalScore = null;
 
-      function calculateScore() {
-        let score = 0;
-        let countR = 0
-        let countL = 0;
-        const form = document.getElementById('EHI');
-        const dropdowns = form.querySelectorAll('select.EHI_menu');
+      const exportButtons = () => [
+        document.getElementById('savePdfButton'),
+        document.getElementById('saveXLSbutton')
+      ];
+      const showExports = show =>
+        exportButtons().forEach(b => b.style.display = show ? 'inline-block' : 'none');
 
-        dropdowns.forEach((selectElement) => {
-          const selectedValue = selectElement.value;
-          // Check if a value is selected (not the empty "Faire un choix" option)
-          if (selectedValue !== "") {
-            const numericValue = parseInt(selectedValue);
-            if (numericValue > 0) { countR += numericValue;}
-            else if (numericValue < 0) {countL += Math.abs(numericValue);}
-          }
+      // Réponses brutes : valeur du menu déroulant, ou "NA" si laissé vide
+      // (les consignes autorisent explicitement à ne pas répondre)
+      function ehiValues() {
+        return Array.from({ length: EHI_NB_ITEMS }, (_, i) => {
+          const el = document.getElementById(`q${i + 1}`);
+          return (el && el.value !== '') ? el.value : 'NA';
+        });
+      }
+
+      function ehiAnswered() {
+        return ehiValues().filter(v => v !== 'NA').length;
+      }
+
+      // Interprétation du quotient. Fonction unique, utilisée par l'affichage
+      // écran ET par le PDF : les deux ne peuvent donc pas diverger.
+      function ehiDominance(score) {
+        if (!Number.isFinite(score)) return 'Non déterminable (aucun item renseigné)';
+        if (score <= EHI_SEUIL_GAUCHE) return 'Gauche';
+        if (score >= EHI_SEUIL_DROITE) return 'Droite';
+        return 'Indéterminée (ambidextrie)';
+      }
+
+      const EHI_EXPLICATION =
+        `Le quotient de latéralité varie de -100 (usage exclusif de la main gauche) `
+        + `à +100 (usage exclusif de la main droite). `
+        + `Il vaut (D - G) / (D + G) x 100, où D et G sont les sommes des pondérations `
+        + `attribuées à chaque main. Les items laissés vides sont exclus du calcul. `
+        + `Interprétation : quotient inférieur ou égal à ${EHI_SEUIL_GAUCHE}, main gauche dominante ; `
+        + `supérieur ou égal à +${EHI_SEUIL_DROITE}, main droite dominante ; `
+        + `entre les deux, latéralité indéterminée.`;
+
+      function calculateScore() {
+        let countR = 0;
+        let countL = 0;
+        let answered = 0;
+
+        ehiValues().forEach(v => {
+          if (v === 'NA') return;
+          answered++;
+          const n = parseInt(v, 10);
+          if (n > 0) countR += n;
+          else if (n < 0) countL += Math.abs(n);
         });
 
-        // Forumule
-        let denominateur= countL+countR;
-        if (denominateur > 0) {
-          score = ((countR - countL) / denominateur) * 100;
-          score = score.toFixed(2);
-        } else {
-          score = 0;
-        }
-        globalScore = parseFloat(score);
-        displayResult(score);
-      }
-
-
-      function displayResult(score) {
-        let resultText = "Le quotient de latéralité est " + score + ", la main dominante est donc  ";
-
-        if (score <= -40) {
-          resultText += "la gauche";
-        } else if (score >= 40) {
-          resultText += "la droite";
-        } else {
-          resultText += "indéterminée";
+        // Aucun item renseigné : le score est incalculable, pas égal à 0
+        // (0 signifie "aucune préférence", ce qui n'est pas la même chose)
+        if (answered === 0) {
+          globalScore = null;
+          document.getElementById('scoreDisplay').innerHTML =
+            '<p class="Error_message_not_all_answered">Veuillez répondre à au moins une question avant de calculer le score !</p>';
+          document.getElementById('results').style.display = 'block';
+          showExports(false);
+          return;
         }
 
-        document.getElementById("scoreDisplay").innerHTML = resultText;
-        document.getElementById("results").style.display = "block";
-        document.getElementById('savePdfButton').style.display = 'inline-block';
-        document.getElementById('saveXLSbutton').style.display = 'inline-block';
+        // Dénominateur nul = toutes les réponses sont "Pas de préférence" :
+        // le quotient vaut bien 0, c'est une réponse à part entière
+        const denominateur = countR + countL;
+        globalScore = denominateur > 0
+          ? Math.round(((countR - countL) / denominateur) * 10000) / 100
+          : 0;
+
+        displayResult(globalScore, answered);
       }
 
+      function displayResult(score, answered) {
+        let html = `<p>Le quotient de latéralité est ${score}, `
+          + `calculé sur ${answered} item(s) renseigné(s) sur ${EHI_NB_ITEMS}.</p>`;
+        html += `<p>Main dominante : <b>${ehiDominance(score)}</b></p>`;
+        html += `<p class="EHI_explication">${EHI_EXPLICATION}</p>`;
+
+        document.getElementById('scoreDisplay').innerHTML = html;
+        document.getElementById('results').style.display = 'block';
+        showExports(true);
+      }
 
       function resetForm() {
-        document.getElementById("EHI").reset();
-        document.getElementById("results").style.display = "none";
-        document.getElementById("ID").value = "";
-        document.getElementById('savePdfButton').style.display = 'none';
-        document.getElementById('saveXLSbutton').style.display = 'none';
+        document.getElementById('EHI').reset();
+        document.getElementById('results').style.display = 'none';
+        document.getElementById('ID').value = '';
+        globalScore = null;
       }
 
-      function saveXLS() {
+      // Invalide le score dès qu'une réponse change (évite d'exporter un score périmé)
+      document.getElementById('EHI').addEventListener('change', () => {
+        globalScore = null;
+        document.getElementById('results').style.display = 'none';
+      });
 
-        const subjectCode = document.getElementById('ID').value || "SansNom"; // Nom du sujet
-        const today = new Date().toLocaleDateString('fr-FR');
-        const filename = `EHI_${today}_${subjectCode}.csv`;
-
-        const safeScore = (typeof globalScore === 'number' && !isNaN(globalScore)) ? globalScore.toFixed(2) : "NA";
-
-        let csvContent = "data:text/csv;charset=utf-8,﻿";
-        csvContent += "Sujet,Date,Questionnaire,Score Total";
-        for (let i = 1; i <= 10; i++) {
-          csvContent += `,"Question ${i}"`;
-        }
-        csvContent += "\n";
-
-        let row = `"${subjectCode}","${today}","EHI","${safeScore}"`;
-        for (let i = 1; i <= 10; i++) {
-          let sel = document.getElementById(`q${i}`);
-          let value = (sel && sel.value !== "") ? sel.value : "NA";
-          row += `,"${value}"`;
-        }
-
-        csvContent += row + "\n";
-        const link = document.createElement("a");
-        link.setAttribute("href", encodeURI(csvContent));
-        link.setAttribute("download", filename);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
-
-
-      function savePdf() {
-
-        const today = new Date().toLocaleDateString('fr-FR');
-        const subjectCode = document.getElementById('ID').value || "SansNom";
-        const filename = `EHI_${today}_${subjectCode}.pdf`;
-
-        const safeScore = (typeof globalScore === 'number' && !isNaN(globalScore)) ? globalScore.toFixed(2) : "NA";
-
-        const col = ["Quotient de latéralité"];
-        const safeScores = [safeScore];
-        let data2table = "<table>";
-        for (let i = 0; i < col.length; i++) {
-          data2table += `
-          <tr>
-          <td><strong>${col[i]}</strong></td>
-          <td> ${safeScores[i]}</td></tr>`;}
-        data2table += "</table>";
-
-        let data2table_longue = "<table>";
-        for (let i = 1; i <= 10; i++) {
-          let sel = document.getElementById(`q${i}`);
-          let value = (sel && sel.value !== "") ? sel.value : "NA";
-          data2table_longue += `<tr><td><strong>Item ${i}</strong> ${value}</td></tr>`;
-        }
-        data2table_longue += "</table>";
-
-
-        const content = document.createElement('div');
-        content.innerHTML = `
-          <style>
-          .header_report,
-          .body_report,
-          .footer_report {
-          text-align: center;
-          margin: 0 auto;
-          width: 100%;
-          }
-          .header_report {
-          padding-top: 4%;
-          padding-bottom: 4%;
-          border-bottom: 1px solid #2B176C;
-          }
-          .footer_report {
-          padding-top: 3%;
-          padding-bottom:3%;
-
-          }
-          .body_report {
-          padding-top: 5%;
-          padding-bottom:10%;
-          background-color: white;
-          color: black;
-          }
-
-          .body_report table {
-          border-collapse: collapse;
-          width: 80%;
-          margin: 0 auto;
-          }
-
-          .body_report th, td {
-          border: 1px solid #eeeeee;
-          }
-          .body_report td strong {
-          display: block;
-          text-align: left;
-          }
-
-              </style>
-          <div class="header_report">
-          <img src="https://data.memau.eu/wp-content/uploads/2025/06/logo-memau-data.svg" alt="Logo" style="max-width: 210px;
-          margin-top: 10px;margin-bottom: 5px;">
-          <p><i>Contact : hello@memau.eu </i></p>
-              </div>
-          <div class="body_report">
-          <h1>EHI</h1>
-          <p>Code du Sujet : ${subjectCode} </p>
-          <p>Rapport généré le : ${today}</p>
-          ${data2table}
-          <br>
-          ${data2table_longue}
-          </div>
-          `;
-
-        document.body.appendChild(content);
-
-        // Define options for html2pdf
-        const opt = {
-          margin: 10,
-          filename: filename,
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2, useCORS: true, scrollY: 0,windowHeight: 1200 },
-          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-          pagebreak: { avoid: '.body_report' }
+      function collectEHI() {
+        return {
+          questionnaire: 'EHI',
+          subject: document.getElementById('ID').value || 'SansNom',
+          score: globalScore,
+          items: ehiValues()
         };
+      }
 
-        // Generate and download the PDF
-        html2pdf().set(opt).from(content).save().then(() => {
-          document.body.removeChild(content);
+      // Le PDF porte l'interprétation ; le CSV garde les colonnes communes
+      // à tous les questionnaires (la main dominante s'y redéduit du score)
+      function exporterEHIPDF() {
+        exporterPDF({
+          ...collectEHI(),
+          scoreLabel: 'Quotient de latéralité',
+          extra: {
+            'Main dominante': ehiDominance(globalScore),
+            'Items renseignés': `${ehiAnswered()} / ${EHI_NB_ITEMS}`,
+            'Interprétation': EHI_EXPLICATION
+          }
         });
       }
 
