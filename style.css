@@ -606,3 +606,10 @@ ol.my_QSCPGS {
 }
 .Fc h1, .Fc h2, .Fc h3, .Fc h4, .Fc p { text-align: left; }
 .Fc .toolbar .tab.active:hover { background:var(--ink); color:#fff; border-color:var(--ink); }
+.Fc .rng input[type=range] { -webkit-appearance:none; appearance:none; height:10px; border-radius:5px; background:#d9dde6; border:1px solid #b5bbc9; outline:0; padding:0; }
+.Fc .rng input[type=range]::-webkit-slider-runnable-track { height:10px; border-radius:5px; background:#d9dde6; }
+.Fc .rng input[type=range]::-moz-range-track { height:10px; border-radius:5px; background:#d9dde6; }
+.Fc .rng input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:20px; height:20px; margin-top:-5px; border-radius:50%; background:var(--accent); border:2px solid #fff; box-shadow:0 0 0 1px var(--accent); }
+.Fc .rng input[type=range]::-moz-range-thumb { width:16px; height:16px; border-radius:50%; background:var(--accent); border:2px solid #fff; box-shadow:0 0 0 1px var(--accent); }
+.Fc .rng.untouched input[type=range]::-webkit-slider-thumb { background:#b5bbc9; box-shadow:0 0 0 1px #b5bbc9; }
+.Fc .rng.untouched input[type=range]::-moz-range-thumb { background:#b5bbc9; box-shadow:0 0 0 1px #b5bbc9; }
