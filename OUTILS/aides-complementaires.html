@@ -264,13 +264,24 @@ Crédit d’impôt de 50% sur le montant à charge (après déduction du montant
 
     function enregistrerPdf(){
       var zone = document.getElementById("aco-summary");
-      if(typeof window.html2pdf === "function"){
-        window.html2pdf().set({
-          margin: 10, filename: "aide-choix-prothetique.pdf",
-          image: {type:"jpeg", quality:0.98}, html2canvas: {scale:2, useCORS:true},
-          jsPDF: {unit:"mm", format:"a4", orientation:"portrait"}
-        }).from(zone).save();
-      } else { window.print(); }
+      if(typeof window.html2pdf !== "function"){ window.print(); return; }
+      /* Copie dédiée au PDF : titre + synthèse, sur fond blanc, sans cadre ni marge. */
+      var copie = zone.cloneNode(true);
+      copie.removeAttribute("id");
+      copie.style.cssText = "background:#fff;border:0;box-shadow:none;margin:0;padding:0;max-width:none;width:100%;";
+      var entete = document.createElement("div");
+      entete.innerHTML = '<h2 style="text-align:left;margin:0 0 4px">Aides complémentaires</h2>'+
+        '<p style="text-align:left;margin:0 0 12px;color:#555">'+new Date().toLocaleDateString("fr-FR")+'</p>';
+      var page = document.createElement("div");
+      page.appendChild(entete); page.appendChild(copie);
+      window.scrollTo(0, 0);   /* html2canvas décale la capture si la page est défilée */
+      window.html2pdf().set({
+        margin: [12, 12, 12, 12], filename: "aides-complementaires.pdf",
+        image: {type:"jpeg", quality:0.98},
+        html2canvas: {scale:2, useCORS:true, scrollX:0, scrollY:0},
+        jsPDF: {unit:"mm", format:"a4", orientation:"portrait"},
+        pagebreak: {mode:["css","legacy"], avoid:["section","h4","p.Aide_answer"]}
+      }).from(page).save();
     }
 
     /* Page finale : rappel des étapes parcourues, avec les réponses données */
