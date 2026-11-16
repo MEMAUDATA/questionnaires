@@ -9,8 +9,8 @@
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
      <link rel="stylesheet" href="/style.css">
-    <script src="/UTILS/exporterCSV.js?v=3"></script>
-    <script src="/UTILS/exporterPDF.js?v=3"></script>
+    <script src="/UTILS/exporterCSV.js?v=5"></script>
+    <script src="/UTILS/exporterPDF.js?v=5"></script>
      <style>
        /* style is within the style.css sheet */
      </style>
@@ -18,7 +18,7 @@
   </head>
   <body>
     <h1 style="text-align:center;">Échelle de Zarit</h1>
-    <p style="text-align: center;">Revel et al., 2002</p>
+    <p style="text-align: center;">Zarit, Orr &amp; Zarit, 1985 ; grille de Zarit (version française)</p>
     <p ><b>Consignes</b></p> 
     <p style="text-align: center;">Veuillez indiquer à quelle fréquence vous vous sentez de la manière décrite ci-dessous :</p>
 
@@ -31,14 +31,14 @@
             <th >Question</th>
             <th >Jamais</th>
             <th >Rarement</th>
-            <th >Parfois</th>
+            <th >Quelquefois</th>
             <th >Assez Souvent</th>
-            <th >Très Souvent</th>
+            <th >Presque toujours</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td class="ZARIT_question">1. Pensez-vous que la personne dont vous vous occupez demande plus d’aide qu’elle n’en a réellement besoin ?</td>
+            <td class="ZARIT_question">1. Sentir que votre parent vous demande plus d’aide qu’il n’en a besoin ?</td>
             <td><input type="radio" name="q1" value="0"></td>
             <td><input type="radio" name="q1" value="1"></td>
             <td><input type="radio" name="q1" value="2"></td>
@@ -46,7 +46,7 @@
             <td><input type="radio" name="q1" value="4"></td>
           </tr>
           <tr>
-            <td class="ZARIT_question">2. Pensez-vous que, du fait du temps que vous consacrez à la personne dont vous vous occupez, vous n’avez pas assez de temps pour vous-même ?</td>
+            <td class="ZARIT_question">2. Sentir que le temps consacré à votre parent ne vous en laisse pas assez pour vous ?</td>
             <td><input type="radio" name="q2" value="0"></td>
             <td><input type="radio" name="q2" value="1"></td>
             <td><input type="radio" name="q2" value="2"></td>
@@ -54,7 +54,7 @@
             <td><input type="radio" name="q2" value="4"></td>
           </tr>
           <tr>
-            <td class="ZARIT_question">3. Vous sentez-vous contrarié(e) par votre relation avec la personne dont vous vous occupez ?</td>
+            <td class="ZARIT_question">3. Vous sentir tiraillé entre les besoins à votre parent et vos autres responsabilités familiales ou professionnelles ?</td>
             <td><input type="radio" name="q3" value="0"></td>
             <td><input type="radio" name="q3" value="1"></td>
             <td><input type="radio" name="q3" value="2"></td>
@@ -62,7 +62,7 @@
             <td><input type="radio" name="q3" value="4"></td>
           </tr>
           <tr>
-            <td class="ZARIT_question">4. Avez-vous peur de ce que l’avenir réserve à la personne dont vous vous occupez ?</td>
+            <td class="ZARIT_question">4. Vous sentir embarrassé par le(s) comportement(s) de votre parent ?</td>
             <td><input type="radio" name="q4" value="0"></td>
             <td><input type="radio" name="q4" value="1"></td>
             <td><input type="radio" name="q4" value="2"></td>
@@ -70,7 +70,7 @@
             <td><input type="radio" name="q4" value="4"></td>
           </tr>
           <tr>
-            <td class="ZARIT_question">5. Avez-vous l’impression que la personne dont vous vous occupez dépend de vous ?</td>
+            <td class="ZARIT_question">5. Vous sentir en colère quand vous êtes en présence de votre parent ?</td>
             <td><input type="radio" name="q5" value="0"></td>
             <td><input type="radio" name="q5" value="1"></td>
             <td><input type="radio" name="q5" value="2"></td>
@@ -78,7 +78,7 @@
             <td><input type="radio" name="q5" value="4"></td>
           </tr>
           <tr>
-            <td class="ZARIT_question">6. Avez-vous l’impression que du fait de la personne dont vous vous occupez, votre vie sociale est restreinte ?</td>
+            <td class="ZARIT_question">6. Sentir que votre parent nuit à vos relations avec d’autres membres de la famille ?</td>
             <td><input type="radio" name="q6" value="0"></td>
             <td><input type="radio" name="q6" value="1"></td>
             <td><input type="radio" name="q6" value="2"></td>
@@ -86,7 +86,7 @@
             <td><input type="radio" name="q6" value="4"></td>
           </tr>
           <tr>
-            <td class="ZARIT_question">7. Vous sentez-vous mal à l’aise d’être avec la personne dont vous vous occupez ?</td>
+            <td class="ZARIT_question">7. Avoir peur de ce que l’avenir réserve à votre parent ?</td>
             <td><input type="radio" name="q7" value="0"></td>
             <td><input type="radio" name="q7" value="1"></td>
             <td><input type="radio" name="q7" value="2"></td>
@@ -94,7 +94,7 @@
             <td><input type="radio" name="q7" value="4"></td>
           </tr>
           <tr>
-            <td class="ZARIT_question">8. Avez-vous l’impression que votre santé s’est altérée du fait de votre implication auprès de la personne dont vous vous occupez ?</td>
+            <td class="ZARIT_question">8. Sentir que votre parent est dépendant de vous ?</td>
             <td><input type="radio" name="q8" value="0"></td>
             <td><input type="radio" name="q8" value="1"></td>
             <td><input type="radio" name="q8" value="2"></td>
@@ -102,7 +102,7 @@
             <td><input type="radio" name="q8" value="4"></td>
           </tr>
           <tr>
-            <td class="ZARIT_question">9. Avez-vous l’impression que vous n’avez pas autant d’intimité que vous le souhaiteriez ?</td>
+            <td class="ZARIT_question">9. Vous sentir tendu en présence de votre parent ?</td>
             <td><input type="radio" name="q9" value="0"></td>
             <td><input type="radio" name="q9" value="1"></td>
             <td><input type="radio" name="q9" value="2"></td>
@@ -110,7 +110,7 @@
             <td><input type="radio" name="q9" value="4"></td>
           </tr>
           <tr>
-            <td class="ZARIT_question">10. Avez-vous l’impression que votre vie sociale s’est détériorée du fait de votre implication auprès de la personne dont vous vous occupez ?</td>
+            <td class="ZARIT_question">10. Sentir que votre santé s’est détériorée à cause de votre implication auprès de votre parent ?</td>
             <td><input type="radio" name="q10" value="0"></td>
             <td><input type="radio" name="q10" value="1"></td>
             <td><input type="radio" name="q10" value="2"></td>
@@ -118,7 +118,7 @@
             <td><input type="radio" name="q10" value="4"></td>
           </tr>
           <tr>
-            <td class="ZARIT_question">11. Avez-vous le sentiment que vous êtes accablé(e) par les responsabilités que vous avez envers la personne dont vous vous occupez ?</td>
+            <td class="ZARIT_question">11. Sentir que vous n’avez pas autant d’intimité que vous aimeriez à cause de votre parent ?</td>
             <td><input type="radio" name="q11" value="0"></td>
             <td><input type="radio" name="q11" value="1"></td>
             <td><input type="radio" name="q11" value="2"></td>
@@ -126,7 +126,7 @@
             <td><input type="radio" name="q11" value="4"></td>
           </tr>
           <tr>
-            <td class="ZARIT_question">12. Avez-vous l’impression que vous n’avez plus la maîtrise de votre vie depuis que la personne dont vous vous occupez a eu besoin de vous ?</td>
+            <td class="ZARIT_question">12. Sentir que votre vie sociale s’est détériorée du fait que vous prenez soin de votre parent ?</td>
             <td><input type="radio" name="q12" value="0"></td>
             <td><input type="radio" name="q12" value="1"></td>
             <td><input type="radio" name="q12" value="2"></td>
@@ -134,7 +134,7 @@
             <td><input type="radio" name="q12" value="4"></td>
           </tr>
           <tr>
-            <td class="ZARIT_question">13. Souhaitez-vous pouvoir confier la personne dont vous vous occupez à quelqu’un d’autre ?</td>
+            <td class="ZARIT_question">13. Vous sentir mal à l’aise de recevoir des amis à cause de votre parent ?</td>
             <td><input type="radio" name="q13" value="0"></td>
             <td><input type="radio" name="q13" value="1"></td>
             <td><input type="radio" name="q13" value="2"></td>
@@ -142,7 +142,7 @@
             <td><input type="radio" name="q13" value="4"></td>
           </tr>
           <tr>
-            <td class="ZARIT_question">14. Avez-vous l’impression qu’il est difficile de concilier votre rôle d’aidant et vos autres responsabilités ?</td>
+            <td class="ZARIT_question">14. Sentir que votre parent semble s’attendre à ce que vous preniez soin de lui comme si vous étiez la seule personne sur qui il puisse compter ?</td>
             <td><input type="radio" name="q14" value="0"></td>
             <td><input type="radio" name="q14" value="1"></td>
             <td><input type="radio" name="q14" value="2"></td>
@@ -150,7 +150,7 @@
             <td><input type="radio" name="q14" value="4"></td>
           </tr>
           <tr>
-            <td class="ZARIT_question">15. Avez-vous l’impression que vous n’êtes pas reconnu(e) pour les sacrifices que vous faites pour la personne dont vous vous occupez ?</td>
+            <td class="ZARIT_question">15. Sentir que vous n’avez pas assez d’argent pour prendre soin de votre parent encore longtemps compte tenu de vos dépenses ?</td>
             <td><input type="radio" name="q15" value="0"></td>
             <td><input type="radio" name="q15" value="1"></td>
             <td><input type="radio" name="q15" value="2"></td>
@@ -158,7 +158,7 @@
             <td><input type="radio" name="q15" value="4"></td>
           </tr>
           <tr>
-            <td class="ZARIT_question">16. Avez-vous l’impression que si vous aviez de meilleurs moyens de prendre soin de la personne dont vous vous occupez, votre situation serait différente ?</td>
+            <td class="ZARIT_question">16. Sentir que vous ne serez plus capable de prendre soin de votre parent encore bien longtemps ?</td>
             <td><input type="radio" name="q16" value="0"></td>
             <td><input type="radio" name="q16" value="1"></td>
             <td><input type="radio" name="q16" value="2"></td>
@@ -166,7 +166,7 @@
             <td><input type="radio" name="q16" value="4"></td>
           </tr>
           <tr>
-            <td class="ZARIT_question">17. Sentez-vous que vous devriez faire plus pour la personne dont vous vous occupez ?</td>
+            <td class="ZARIT_question">17. Sentir que vous avez perdu le contrôle de votre vie depuis la maladie de votre parent ?</td>
             <td><input type="radio" name="q17" value="0"></td>
             <td><input type="radio" name="q17" value="1"></td>
             <td><input type="radio" name="q17" value="2"></td>
@@ -174,7 +174,7 @@
             <td><input type="radio" name="q17" value="4"></td>
           </tr>
           <tr>
-            <td class="ZARIT_question">18. Pensez-vous que vous pourriez prendre soin de la personne dont vous vous occupez mieux que la plupart des gens ?</td>
+            <td class="ZARIT_question">18. Souhaiter pouvoir laisser le soin de votre parent à quelqu’un d’autre ?</td>
             <td><input type="radio" name="q18" value="0"></td>
             <td><input type="radio" name="q18" value="1"></td>
             <td><input type="radio" name="q18" value="2"></td>
@@ -182,7 +182,7 @@
             <td><input type="radio" name="q18" value="4"></td>
           </tr>
           <tr>
-            <td class="ZARIT_question">19. Avez-vous l’impression que vous avez changé en tant que personne depuis que vous vous occupez de la personne dont vous vous occupez ?</td>
+            <td class="ZARIT_question">19. Sentir que vous ne savez pas trop quoi faire pour votre parent ?</td>
             <td><input type="radio" name="q19" value="0"></td>
             <td><input type="radio" name="q19" value="1"></td>
             <td><input type="radio" name="q19" value="2"></td>
@@ -190,7 +190,7 @@
             <td><input type="radio" name="q19" value="4"></td>
           </tr>
           <tr>
-            <td class="ZARIT_question">20. Êtes-vous satisfait(e) de ce que vous faites pour la personne dont vous vous occupez ?</td>
+            <td class="ZARIT_question">20. Sentir que vous devriez en faire plus pour votre parent ?</td>
             <td><input type="radio" name="q20" value="0"></td>
             <td><input type="radio" name="q20" value="1"></td>
             <td><input type="radio" name="q20" value="2"></td>
@@ -198,7 +198,7 @@
             <td><input type="radio" name="q20" value="4"></td>
           </tr>
           <tr>
-            <td class="ZARIT_question">21. Avez-vous l’impression que la personne dont vous vous occupez vous apprécie ?</td>
+            <td class="ZARIT_question">21. Sentir que vous pourriez donner de meilleurs soins à votre parent ?</td>
             <td><input type="radio" name="q21" value="0"></td>
             <td><input type="radio" name="q21" value="1"></td>
             <td><input type="radio" name="q21" value="2"></td>
@@ -206,7 +206,7 @@
             <td><input type="radio" name="q21" value="4"></td>
           </tr>
           <tr>
-            <td class="ZARIT_question">22. Avez-vous l’impression que la personne dont vous vous occupez vous considère comme la seule personne qui puisse s’occuper d’elle ?</td>
+            <td class="ZARIT_question">22. En fin de compte, vous arrive-t-il de sentir que les soins à votre parent sont une charge, un fardeau ?</td>
             <td><input type="radio" name="q22" value="0"></td>
             <td><input type="radio" name="q22" value="1"></td>
             <td><input type="radio" name="q22" value="2"></td>
@@ -271,8 +271,8 @@
         // 22 items cotés 0 à 4 : le score va de 0 à 88
         let display = 'Votre score est ' + score + '/88.';
 
-        if (score <= 21) {
-          display += ' Fardeau absent ou léger.';
+        if (score <= 20) {
+          display += ' Fardeau léger.';
         } else if (score <= 40) {
           display += ' Fardeau léger à modéré.';
         } else if (score <= 60) {
