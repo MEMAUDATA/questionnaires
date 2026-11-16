@@ -9,8 +9,8 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
    <link rel="stylesheet" href="/style.css">
-    <script src="/UTILS/exporterCSV.js?v=3"></script>
-    <script src="/UTILS/exporterPDF.js?v=3"></script>
+    <script src="/UTILS/exporterCSV.js?v=5"></script>
+    <script src="/UTILS/exporterPDF.js?v=5"></script>
    <style>
      /* style is within the style.css sheet */
    </style>
@@ -19,7 +19,7 @@
   <body>
 
       <h1>Hearing Handicap Inventory for the Elderly-Screening (HHIE-S)</h1>
-      <p>Duchêne et al., 2022</p>
+      <p>Duchêne et al., 2022 (version française) ; Ventry &amp; Weinstein, 1983</p>
       <br>
       <form id="HHIE-S">
         <table>
@@ -27,7 +27,7 @@
           </thead>
           <tbody>
             <tr>
-              <td class="Question_HHIES">Vous sentez-vous mal à l’aiseà cause d’un problème d’audition lorsque vous rencontrez de nouvelles
+              <td class="Question_HHIES">Vous sentez-vous mal à l’aise à cause d’un problème d’audition lorsque vous rencontrez de nouvelles
                 personnes ?</td>
               <td>
                 <div class="options">
@@ -100,7 +100,8 @@
               </td>
             </tr>
             <tr>
-              <td class="Question_HHIES">Est-ce qu’un problème d’audition vous met en difficulté pour écouter la TV ou la radio ?<td>
+              <td class="Question_HHIES">Est-ce qu’un problème d’audition vous met en difficulté pour écouter la TV ou la radio ?</td>
+              <td>
               <div class="options">
                 <label><input type="radio" name="q8" value="oui"> oui</label>
                 <label><input type="radio" name="q8" value="parfois"> parfois</label>
@@ -190,16 +191,14 @@
 
       function displayResult(score) {
         // Items cotés 0 / 2 / 4 : le score est toujours pair et va de 0 à 40
-        let resultat = 'Le score est ' + score + '/40, ce qui indique ';
-
-        if (score <= 8) {
-          resultat += 'une probabilité de 11 % d’avoir une perte auditive.';
-        } else if (score >= 10 && score <= 16) {
-          resultat += 'une probabilité de 74,5 % d’avoir une perte auditive.';
-        } else {
-          resultat += 'une probabilité de 94 % d’avoir une perte auditive.';
-        }
-
+        // Tableau 3 de Duchêne (2020) : [probabilité de déficience auditive, probabilité de déficience éligible à un appareillage]
+        let pDef, pApp;
+        if (score <= 8) { pDef = '11 %'; pApp = '4 %'; }
+        else if (score <= 16) { pDef = '74,5 %'; pApp = '61 %'; }
+        else { pDef = '94 %'; pApp = '88 %'; }
+        let resultat = 'Le score est ' + score + '/40, ce qui indique une probabilité de ' + pDef +
+          ' d’avoir une déficience auditive, et de ' + pApp +
+          ' d’avoir une déficience auditive répondant aux critères d’appareillage.';
         document.getElementById('scoreDisplay').innerHTML = resultat;
         document.getElementById('results').style.display = 'block';
         showExports(true);
