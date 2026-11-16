@@ -10,7 +10,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <link rel="stylesheet" href="/style.css">
     <script src="/UTILS/exporterCSV.js?v=5"></script>
-    <script src="/UTILS/exporterPDF.js?v=5"></script>
+    <script src="/UTILS/exporterPDF.js?v=6"></script>
   <style>
     /* style is within the style.css sheet */
   </style>
@@ -21,7 +21,7 @@
 
   <h1>Questionnaire Biphasique Acouphène Hyperacousie
 Insensibilité de la face et Autres sensations<br>(BAHIA)</h1>
-  <p> Lurquin et al., 2013</p>
+  <p>Lurquin, Real &amp; Leleu, 2013</p>
 
   <form id="bahia">
 
@@ -251,7 +251,7 @@ Insensibilité de la face et Autres sensations<br>(BAHIA)</h1>
 
 
     <div class="buttons-container">
-      <button type="button" onclick="calculateScoreBAHIA()">Calculer le Score</button>
+      <button type="button" onclick="showProfileBAHIA()">Afficher le profil</button>
       <button type="reset" onclick="resetFormBAHIA()">Réinitialiser</button>
     </div>
 
@@ -269,12 +269,37 @@ Insensibilité de la face et Autres sensations<br>(BAHIA)</h1>
 
   <script>
       // ---------- BAHIA ----------
-      // Sous-échelles : nom -> liste des groupes de boutons radio
-      const BAHIA_SUBSCALES = {
-        "Acouphène": ["acouphene", "intensite_acouphene", "acouphene_time", "acouphene_incidence", "acouphene_annoyance"],
-        "Perte d'audition": ["audition", "deafness_time", "deafness_incidence"],
-        "Hyperacousie et sensibilité aux sons": ["sensibilite", "hyperacusis_time", "hyperacusis_incidence", "hyperacusis_annoyance"],
-        "Gêne faciale": ["gene_faciale", "facial_discomfort_time", "facial_discomfort_incidence"]
+      // Le BAHIA (Lurquin, Real & Leleu, 2013) ne définit ni score total ni score
+      // de sous-échelle : les échelles sont hétérogènes (0-5, 0-10, 0-100 %) et la
+      // source les analyse item par item. On affiche donc un profil par problème
+      // (réponses brutes) et on exporte les réponses brutes pour le suivi
+      // longitudinal (comparaison de deux passations).
+
+      // Domaine -> items [champ, libellé, unité]
+      const BAHIA_PROFILE = {
+        "Acouphène": [
+          ["acouphene", "Importance du problème", "/5"],
+          ["intensite_acouphene", "Intensité", "/10"],
+          ["acouphene_time", "Temps d'incommodation", "%"],
+          ["acouphene_incidence", "Incidence sur la vie courante", "/10"],
+          ["acouphene_annoyance", "Ennui lié à l'acouphène", "/10"]
+        ],
+        "Perte d'audition": [
+          ["audition", "Importance du problème", "/5"],
+          ["deafness_time", "Temps d'incommodation", "%"],
+          ["deafness_incidence", "Incidence sur la vie courante", "/10"]
+        ],
+        "Hyperacousie et sensibilité aux sons": [
+          ["sensibilite", "Importance du problème", "/5"],
+          ["hyperacusis_time", "Temps d'incommodation", "%"],
+          ["hyperacusis_incidence", "Incidence sur la vie courante", "/10"],
+          ["hyperacusis_annoyance", "Ennui face à un son trop fort", "/10"]
+        ],
+        "Gêne faciale": [
+          ["gene_faciale", "Importance du problème", "/5"],
+          ["facial_discomfort_time", "Temps d'incommodation", "%"],
+          ["facial_discomfort_incidence", "Incidence sur la vie courante", "/10"]
+        ]
       };
 
       // Ordre des items dans les exports
@@ -286,11 +311,7 @@ Insensibilité de la face et Autres sensations<br>(BAHIA)</h1>
         "facial_discomfort_time", "facial_discomfort_incidence"
       ];
 
-      let globalAcouphene = null;
-      let globalAudition = null;
-      let globalHyperacousie = null;
-      let globalGeneFaciale = null;
-      let globalTotal = null;
+      let profileReady = false;
 
       const exportButtons = () => [
         document.getElementById('savePdfButton'),
@@ -306,15 +327,14 @@ Insensibilité de la face et Autres sensations<br>(BAHIA)</h1>
         });
       }
 
-      function calculateScoreBAHIA() {
+      function showProfileBAHIA() {
         const values = bahiaValues();
 
-        // Sans ce contrôle, un item non répondu était silencieusement compté 0
+        // Un item non répondu n'est jamais compté 0 : on bloque l'affichage
         if (values.includes('NA')) {
-          globalAcouphene = globalAudition = globalHyperacousie = null;
-          globalGeneFaciale = globalTotal = null;
+          profileReady = false;
           document.getElementById('scoreDisplay').innerHTML =
-            '<p class="Error_message_not_all_answered">Veuillez répondre svp à toutes les questions avant de calculer le score !</p>';
+            '<p class="Error_message_not_all_answered">Veuillez répondre svp à toutes les questions avant d\'afficher le profil !</p>';
           document.getElementById('results').style.display = 'block';
           showExports(false);
           return;
@@ -323,30 +343,18 @@ Insensibilité de la face et Autres sensations<br>(BAHIA)</h1>
         const brut = {};
         BAHIA_ITEMS.forEach((name, i) => { brut[name] = parseInt(values[i], 10); });
 
-        const scores = {};
-        let total = 0;
-        for (const sous in BAHIA_SUBSCALES) {
-          scores[sous] = BAHIA_SUBSCALES[sous].reduce((s, g) => s + brut[g], 0);
-          total += scores[sous];
+        let display = "<p style='text-align: center;'>Profil BAHIA</p><br>";
+        for (const domaine in BAHIA_PROFILE) {
+          display += `<p><strong>${domaine}</strong></p><ul class='myList'>`;
+          for (const [champ, libelle, unite] of BAHIA_PROFILE[domaine]) {
+            const v = unite === '%' ? `${brut[champ]} %` : `${brut[champ]}${unite}`;
+            display += `<li>${libelle} : ${v}</li>`;
+          }
+          display += '</ul>';
         }
+        display += "<p><em>Le BAHIA ne comporte pas de score total : les réponses sont à comparer item par item, notamment entre deux passations.</em></p>";
 
-        globalAcouphene    = scores["Acouphène"];
-        globalAudition     = scores["Perte d'audition"];
-        globalHyperacousie = scores["Hyperacousie et sensibilité aux sons"];
-        globalGeneFaciale  = scores["Gêne faciale"];
-        globalTotal        = total;
-
-        displayResult(scores, total);
-      }
-
-      function displayResult(scores, total) {
-        let display = "<p style='text-align: center;'>Résultats</p>";
-        display += '<br>';
-        display += "<ul class='myList'>";
-        for (const sous in scores) display += `<li>${sous} : ${scores[sous]}</li>`;
-        display += `<li>Score total : ${total}</li>`;
-        display += '</ul>';
-
+        profileReady = true;
         document.getElementById('scoreDisplay').innerHTML = display;
         document.getElementById('results').style.display = 'block';
         showExports(true);
@@ -356,15 +364,13 @@ Insensibilité de la face et Autres sensations<br>(BAHIA)</h1>
         document.getElementById('bahia').reset();
         document.getElementById('results').style.display = 'none';
         document.getElementById('ID').value = '';
-        globalAcouphene = globalAudition = globalHyperacousie = null;
-        globalGeneFaciale = globalTotal = null;
+        profileReady = false;
       }
 
-      // Invalide les scores dès qu'une réponse change (évite d'exporter un score périmé)
+      // Masque le profil dès qu'une réponse change (évite d'exporter un profil périmé)
       document.getElementById('bahia').addEventListener('change', e => {
         if (e.target && e.target.type === 'radio') {
-          globalAcouphene = globalAudition = globalHyperacousie = null;
-          globalGeneFaciale = globalTotal = null;
+          profileReady = false;
           document.getElementById('results').style.display = 'none';
         }
       });
@@ -373,13 +379,9 @@ Insensibilité de la face et Autres sensations<br>(BAHIA)</h1>
         return {
           questionnaire: 'BAHIA',
           subject: document.getElementById('ID').value || 'SansNom',
-          score: globalTotal,
-          subscores: {
-            'Score Acouphene': globalAcouphene,
-            "Score Perte d'audition": globalAudition,
-            'Score Hyperacousie': globalHyperacousie,
-            'Score Gene faciale': globalGeneFaciale
-          },
+          score: null,              // pas de score total pour le BAHIA
+          scoreLabel: null,         // pas de ligne « score total » dans le PDF
+          subscores: {},
           items: bahiaValues(),
           itemLabels: BAHIA_ITEMS   // noms de champs conservés : plus parlants que "Question N"
         };

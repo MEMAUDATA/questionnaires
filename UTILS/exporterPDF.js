@@ -10,7 +10,8 @@
 //   items         : ["0", "1", "NA", ...],      // obligatoire, réponses brutes
 //   itemLabels    : ["Anxiete 1", ...],         // optionnel, défaut "Item 1..N"
 //   extra         : { "Heures de port": "..." },// optionnel, tableau supplémentaire
-//   perRow        : 5                           // items par ligne dans le tableau
+//   perRow        : 5,                          // items par ligne dans le tableau
+//   scoreLabel    : "Score total"              // null -> pas de ligne de score total
 // })
 function exporterPDF({ questionnaire, subject = 'SansNom', score, subscores = {},
   items, itemLabels = null, extra = {}, perRow = 5,
@@ -23,7 +24,8 @@ const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const fmt = v => Number.isFinite(v) ? v : 'NA';
 const safeSubject = String(subject).replace(/[\\/:*?"<>|]/g, '_');
-const scoreRows = [[scoreLabel, score], ...Object.entries(subscores)]
+// scoreLabel === null : questionnaire sans score total (ex. BAHIA), pas de ligne total
+const scoreRows = [...(scoreLabel === null ? [] : [[scoreLabel, score]]), ...Object.entries(subscores)]
 .map(([label, v]) => `<tr><td><strong>${esc(label)}</strong></td><td>${fmt(v)}</td></tr>`)
 .join('');
 
