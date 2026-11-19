@@ -76,7 +76,24 @@ add_shortcode('memaudata', function ($atts) {
         return '';
     }
 
+    // Seul le <body> est injecté : les <script src> du <head> sont perdus.
+    // On charge donc ici, depuis le plugin, les scripts UTILS/ que le fichier référence.
     wp_enqueue_script('memaudata-html2pdf', MEMAUDATA_HTML2PDF_URL, [], '0.10.1', true);
+    if (preg_match_all('#<script[^>]+src=["\'][^"\']*UTILS/([A-Za-z0-9_-]+)\.js#i', $html, $scripts)) {
+        foreach (array_unique($scripts[1]) as $name) {
+            $path = MEMAUDATA_ROOT . 'UTILS/' . $name . '.js';
+            if (!is_readable($path)) {
+                continue;
+            }
+            wp_enqueue_script(
+                'memaudata-' . $name,
+                plugins_url('UTILS/' . $name . '.js', __FILE__),
+                $name === 'exporterPDF' ? ['memaudata-html2pdf'] : [],
+                filemtime($path),
+                true
+            );
+        }
+    }
     wp_enqueue_style('memaudata-style', plugins_url('style.css', __FILE__), [], filemtime(MEMAUDATA_ROOT . 'style.css'));
 
     return '<div class="mdq" data-questionnaire="' . esc_attr(basename($file, '.html')) . '">' . $m[1] . '</div>';
